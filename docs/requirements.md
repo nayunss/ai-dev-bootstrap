@@ -473,6 +473,25 @@
   대조하고, direct 변경 없는 lockfile-only diff는 이전·새 SHA-256 승인을 요구한다.
 - 승인 누락·만료·범위 불일치 negative fixture와 정확한 승인 positive fixture를 CI Eval로 유지한다.
 
+### REQ-035: GitHub Actions CI와 Vercel 배포 프로파일
+
+- CI·배포 provider는 프로젝트별 개발환경으로 관리하고 upstream 공통값으로 강제하지 않는다.
+- 사용자가 GitHub Actions를 선택하면 실제 stack 명령을 기반으로 최소 권한, action commit SHA 고정,
+  exact runtime·package manager, frozen lockfile·scripts-off·strict peer, dependency 승인, secret·SAST·
+  audit, format·lint·typecheck·test·build와 필요한 E2E의 기본 CI를 구성한다.
+- workflow event·branch, cache·artifact·network·timeout·비용과 fork PR secret 경계를 preview하고 승인
+  전에는 remote에 push하거나 required check를 변경하지 않는다.
+- Vercel을 선택하면 framework 공식 Git integration을 우선하고 불필요한 CLI·token·`vercel.json`을
+  추가하지 않는다.
+- Vercel account·team·private repository access, Preview·Production branch, deployment URL 공개·보호,
+  environment·secret 분리, analytics·telemetry, region·domain·비용과 rollback을 사용자에게 확인한다.
+- CI 성공은 production 배포 승인이 아니다. Preview 검증과 production promotion·custom domain은
+  별도의 Human-in-the-loop 결정을 요구한다.
+- GitHub App·Vercel integration과 production external state는 project-local 파일 삭제만으로
+  rollback되지 않으므로 권한 회수·이전 deployment 복구를 별도로 검증한다.
+- token-aware와 full 모두 provider 연결·production·secret·공개 범위 질문과 필수 보안·품질 gate를
+  생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -546,3 +565,4 @@
 | 2026-07-11 | 작업·PR의 HANDOFF 갱신 누락을 공통 validator와 CI에서 차단하도록 강화 |
 | 2026-07-11 | Downstream pilot 피드백을 공통 bootstrap preview·dependency·validate gate로 자동화 |
 | 2026-07-11 | 설치된 package version 변경 전 영향 preview와 사용자 승인·재승인 요구사항 추가 |
+| 2026-07-11 | GitHub Actions 기본 CI와 Vercel Git integration 배포 프로파일 요구사항 추가 |

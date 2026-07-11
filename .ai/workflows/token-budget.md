@@ -35,6 +35,9 @@
 변경 승인·호환성 검증, 파괴적 작업 승인, 관련 테스트와 handoff를 생략하지 않는다. 필수 검증을
 실행할 수 없으면 완료로 선언하지 않고 중단 지점과 다음 행동을 기록한다.
 
+GitHub Actions·Vercel 프로파일에서도 토큰 부족을 이유로 action pin·permission·secret 경계,
+Preview·Production 분리, URL 공개 범위, rollback과 provider 연결 승인을 생략하지 않는다.
+
 ## 요구사항 변경 시
 
 1. 추가·수정·철회된 요구사항 ID를 확인한다.

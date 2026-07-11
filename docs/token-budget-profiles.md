@@ -64,6 +64,7 @@ aiExecution:
 - secret scanner, SAST와 승인된 공급망 검사
 - MCP server 승인 manifest, 미승인 호출 차단과 필수 권한·공급망 심사
 - 설치된 package version 변경의 사용자 승인과 호환성·migration·회귀 검증
+- CI provider 연결, Vercel 공개·production 승인과 필수 quality·security gate
 - 파일·DB 삭제, 배포, 권한 변경과 외부 전송의 사용자 승인
 - 변경 파일의 포맷, 린트, 타입 검사와 관련 테스트
 - 보안·개인정보·접근성 요구사항에 직접 관련된 검증

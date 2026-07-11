@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-034까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-035까지 수집했다.
 
 ## 완료
 
@@ -81,6 +81,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - CI·배포 3단계 자동 감지 결과 downstream에는 workflow·배포 설정·remote가 없고 Todo는
   localStorage-only 정적 Next.js 앱이다. GitHub Actions CI를 추천할 수 있으나 배포 provider·공개
   범위·production 승인은 사용자 확인 대기 상태다.
+- REQ-035와 CI·배포 workflow를 추가했다. GitHub Actions 선택 시 pinned action·최소 권한·exact
+  runtime·security·quality·E2E 기본 CI를, Vercel 선택 시 zero-config Git integration과 Preview·
+  Production·URL 공개·secret·rollback 승인 계약을 적용한다.
 
 ## 현재 상태
 
