@@ -78,6 +78,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   asset 재다운로드 검증을 통과했다.
 - Dependency 승인 자동 gate를 추가했다. staged·PR range의 direct version과 lockfile-only SHA-256
   diff를 구조화된 승인 record와 대조하고 positive·negative fixture를 CI에서 실행한다.
+- CI·배포 3단계 자동 감지 결과 downstream에는 workflow·배포 설정·remote가 없고 Todo는
+  localStorage-only 정적 Next.js 앱이다. GitHub Actions CI를 추천할 수 있으나 배포 provider·공개
+  범위·production 승인은 사용자 확인 대기 상태다.
 
 ## 현재 상태
 
@@ -156,7 +159,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. Downstream CI·배포 제공자와 운영 환경을 감지하고 미확정 항목을 Human-in-the-loop로 확인한다.
+1. Downstream에서 GitHub Actions CI 사용 여부와 배포 provider·공개 범위를 Human-in-the-loop로
+   확정한다.
 2. 승인된 범위의 CI·배포 프로파일을 적용하고 security·quality·deployment preview를 검증한다.
 
 ## 위험·주의
