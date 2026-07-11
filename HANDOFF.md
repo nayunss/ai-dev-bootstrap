@@ -71,6 +71,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   safe lint 수정으로 upstream main과 downstream local override에 반영했다. 다음 release에 포함한다.
 - REQ-034와 dependency upgrade workflow를 추가했다. 설치된 package의 update·downgrade·override·
   lockfile-only 변경은 영향 preview와 정확한 version 승인을 받기 전에는 실행하지 않는다.
+- `v0.2.2-pilot` package version과 release note를 준비했다. v0.2.1 이후 validator lint 수정과
+  REQ-034 dependency version 승인 계약만 묶고 application dependency는 변경하지 않는다.
 
 ## 현재 상태
 
@@ -148,7 +150,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. `v0.2.1-pilot` 이후 upstream 변경을 다음 release 후보로 묶을 시점을 결정한다.
+1. `v0.2.2-pilot`을 clean clone 검증하고 tag·checksum artifact로 발행한다.
 2. dependency version approval workflow의 자동 Eval·CI 검사를 추가한다.
 3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
