@@ -23,7 +23,10 @@ scripts/codesight-context read      # index 읽기
 ```
 
 Claude Code는 `.claude/settings.json`, Codex는 `.codex/hooks.json`의 `SessionStart`에서 같은
-read 명령을 실행한다. pre-commit은 wiki를 재생성해 stage하고 CI는 재생성 후 diff가 없는지
-확인한다.
+read 명령을 실행한다. 개발환경 승인 후 Git hook profile이 활성화되면 commit 전에 재생성하고,
+CI는 재생성 후 diff가 없는지 확인한다.
+
+CodeSight가 생성하는 실행 날짜·시각은 매번 달라지므로 공통 스크립트가 결정론적 문구로
+정규화한다. 최신성의 근거는 timestamp가 아니라 생성 후 Git diff다.
 
 CodeSight 문서가 실제 코드와 충돌하면 실제 코드와 테스트를 우선한다.

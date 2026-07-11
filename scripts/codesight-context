@@ -6,7 +6,31 @@ BIN="$ROOT/node_modules/.bin/codesight"
 case "${1:-read}" in
   generate)
     [ -x "$BIN" ] || { echo "CodeSight is not installed." >&2; exit 127; }
-    cd "$ROOT" && exec "$BIN" --wiki
+    cd "$ROOT"
+    "$BIN" --wiki
+    node - "$ROOT" <<'NODE'
+const fs = require("node:fs");
+const path = require("node:path");
+const root = process.argv[2];
+const replacements = new Map([
+  [".codesight/CODESIGHT.md", [
+    [/^> \*\*Last scanned:\*\*.*$/m, "> **Last scanned:** normalized — Git diff is the freshness authority"],
+  ]],
+  [".codesight/wiki/index.md", [
+    [/^_Generated \d{4}-\d{2}-\d{2}.*$/m, "_Generated from the repository — re-run `scripts/codesight-context generate` after code changes._"],
+    [/^_Last compiled: \d{4}-\d{2}-\d{2}(.*)$/m, "_Last compiled from the repository$1"],
+  ]],
+  [".codesight/wiki/overview.md", [
+    [/ · Generated \d{4}-\d{2}-\d{2}_$/m, " · Generated from the repository_"],
+  ]],
+]);
+for (const [relative, rules] of replacements) {
+  const file = path.join(root, relative);
+  let content = fs.readFileSync(file, "utf8");
+  for (const [pattern, value] of rules) content = content.replace(pattern, value);
+  fs.writeFileSync(file, content);
+}
+NODE
     ;;
   read|session)
     [ -f "$INDEX" ] || { echo "CodeSight index missing; run scripts/codesight-context generate." >&2; exit 0; }

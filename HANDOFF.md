@@ -90,16 +90,17 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - Opengrep local-rule 전체 SAST: PASS
 - SAST positive fixture 탐지·negative fixture 비탐지: PASS
 - AI hook destructive Git 명령 차단: PASS
+- 원격 clean clone bootstrap·npm audit·security full scan: PASS
+- 원격 clean clone CodeSight stale check: 최초 FAIL — timestamp 비결정성 정규화 수정 적용
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. Codex·Claude Code post-edit adapter와 GitHub Actions 설정을 최종 검증한다.
-2. CodeSight deterministic output과 npm dependency audit를 검증한다.
-3. 보안 자동화 파일을 논리적 단위로 커밋하고 push한다.
-4. clean clone에서 bootstrap·security-check·Eval을 재실행한다.
-5. pilot tag와 checksum을 발행하고 downstream pin을 갱신한다.
-6. downstream 최종 설치 preview 승인 후 Todo 환경을 적용한다.
+1. CodeSight timestamp 정규화를 로컬과 clean clone에서 재검증한다.
+2. 정규화 수정 커밋을 push한다.
+3. clean clone 최종 gate를 재실행한다.
+4. pilot tag와 checksum을 발행하고 downstream pin을 갱신한다.
+5. downstream 최종 설치 preview 승인 후 Todo 환경을 적용한다.
 
 ## 위험·주의
 

@@ -4,7 +4,7 @@
 
 > 0 routes | 0 models | 0 components | 0 lib files | 0 env vars | 2 middleware
 > **Token savings:** this file is ~200 tokens. Without it, AI exploration would cost ~3,400 tokens. **Saves ~3,200 tokens per conversation.**
-> **Last scanned:** 2026-07-11 11:58 — re-run after significant changes
+> **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
 

@@ -9,4 +9,4 @@
 2 middleware layers
 
 ---
-_Back to [index.md](./index.md) · Generated 2026-07-11_
+_Back to [index.md](./index.md) · Generated from the repository_
