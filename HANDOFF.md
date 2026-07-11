@@ -91,16 +91,17 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - SAST positive fixture 탐지·negative fixture 비탐지: PASS
 - AI hook destructive Git 명령 차단: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
-- 원격 clean clone CodeSight stale check: 최초 FAIL — timestamp 비결정성 정규화 수정 적용
+- 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
+- 최신 clean clone `npm ci --ignore-scripts`·npm audit·checksum bootstrap·full security: PASS
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. CodeSight timestamp 정규화를 로컬과 clean clone에서 재검증한다.
-2. 정규화 수정 커밋을 push한다.
-3. clean clone 최종 gate를 재실행한다.
-4. pilot tag와 checksum을 발행하고 downstream pin을 갱신한다.
-5. downstream 최종 설치 preview 승인 후 Todo 환경을 적용한다.
+1. `v0.1.0-pilot` tag와 archive checksum을 발행한다.
+2. downstream pin을 pilot tag로 갱신한다.
+3. downstream direct tarball·transitive dependency audit를 완료한다.
+4. 최종 설치 preview 승인 후 Todo 환경을 적용한다.
+5. 품질 명령이 통과하면 Husky 적용을 별도 승인한다.
 
 ## 위험·주의
 
