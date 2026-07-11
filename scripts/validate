@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+TARGET=${1:-$ROOT}
+shift 2>/dev/null || true
+exec node "$ROOT/scripts/validate-downstream.mjs" "$TARGET" "$@"

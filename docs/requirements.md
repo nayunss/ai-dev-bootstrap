@@ -435,6 +435,22 @@
   CI는 manifest와 설정 drift를 독립적으로 검증한다.
 - 토큰 프로파일은 조사 설명량만 바꿀 수 있고 MCP 심사·차단·필수 Eval을 생략하지 않는다.
 
+### REQ-033: Pilot 기반 Bootstrap·Validate 자동화
+
+- bootstrap 기본 동작은 변경 없는 preview이며 project-local 변경, network, lifecycle, browser
+  binary, hook과 제거 방법을 먼저 표시한다.
+- package manager와 runtime은 정확한 버전으로 고정하고 Corepack이나 `latest` fallback을 사용하지
+  않는다.
+- dependency 적용은 lockfile, lifecycle 비활성화와 strict peer 검사를 강제하며 network 승인을
+  명시적으로 분리한다.
+- validate는 exact dependency·engine, lockfile, pnpm 11 override 위치, EditorConfig, Next
+  telemetry 차단, 공통 보안 자산, MCP manifest와 HANDOFF를 결정론적으로 검사한다.
+- 전이 dependency 취약점 audit은 network가 필요한 별도 모드이며 moderate 이상 finding을
+  downstream 승인 없이 무시하지 않는다.
+- Playwright browser binary와 Husky는 bootstrap dependency 단계에 포함하지 않고 각각 별도
+  preview·Human-in-the-loop 및 품질 gate 후 활성화한다.
+- token-aware와 full 모두 같은 bootstrap mutation boundary와 필수 validate 결과를 사용한다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -506,3 +522,4 @@
 | 2026-07-11 | 언어·레이어별 코드 스타일 일관성과 저장소 formatter·linter 우선 원칙 추가 |
 | 2026-07-11 | 프로젝트 로컬 EditorConfig와 formatter·linter 간 일관성 요구사항 추가 |
 | 2026-07-11 | 작업·PR의 HANDOFF 갱신 누락을 공통 validator와 CI에서 차단하도록 강화 |
+| 2026-07-11 | Downstream pilot 피드백을 공통 bootstrap preview·dependency·validate gate로 자동화 |

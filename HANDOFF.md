@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-032까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-033까지 수집했다.
 
 ## 완료
 
@@ -53,6 +53,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   upstream 자체에도 UTF-8·LF·끝 개행·공백 정리·2칸 들여쓰기 기준 파일을 적용했다.
 - HANDOFF 갱신을 문서 규칙에서 자동 gate로 강화했다. staged task 변경과 PR base 범위에서
   `HANDOFF.md`가 빠지면 validator가 실패하며 공통 security-check와 CI가 이를 호출한다.
+- Pilot 피드백을 `scripts/bootstrap`과 `scripts/validate`로 자동화했다. preview 기본값, exact
+  version·lockfile·strict peer·scripts-off·pnpm 11 override·Next telemetry·Corepack 금지·온라인
+  audit 분리와 Playwright/Husky 별도 승인을 검사한다.
 
 ## 현재 상태
 
@@ -122,6 +125,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - AI hook `.env*` Read·Glob·Grep·Bash·MCP 차단과 일반 소스 Read 허용: PASS
 - MCP manifest schema·만료·integrity 검증과 미승인 MCP 호출·설정 변경 차단: PASS
 - HANDOFF 필수 구조·staged 동반 변경·PR range validator: PASS
+- Bootstrap preview·downstream validator positive/negative fixture: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
 - 최신 clean clone `npm ci --ignore-scripts`·npm audit·checksum bootstrap·full security: PASS
@@ -129,10 +133,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. downstream pilot 피드백을 bootstrap·validate 자동화 요구사항으로 전환한다.
-2. 현재 upstream의 `.env*`·MCP·EditorConfig·HANDOFF 변경을 새 release로 묶고 checksum을 발행한다.
-3. downstream에서 변경 preview와 Human-in-the-loop 승인 후 새 release upgrade를 검증한다.
-4. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
+1. 현재 upstream의 `.env*`·MCP·EditorConfig·HANDOFF·bootstrap/validate 변경을 새 release로 묶고
+   checksum을 발행한다.
+2. downstream에서 변경 preview와 Human-in-the-loop 승인 후 새 release upgrade를 검증한다.
+3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
 ## 위험·주의
 

@@ -1,0 +1,68 @@
+#!/bin/sh
+set -eu
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+MODE=${1:-preview}
+
+case "$MODE" in
+  preview)
+    cat <<'EOF'
+Bootstrap preview
+- Scope: project-local files and .tools only
+- Global AI, Git, shell and package-manager settings: unchanged
+- Corepack fallback and floating latest versions: forbidden
+- Dependency lifecycle scripts: disabled by default
+- Security binaries: exact versions and checksums from .ai/manifests/security-tools.yaml
+- Playwright browser binaries: excluded; separate preview and Human-in-the-loop approval required
+- Husky: excluded until the downstream environment and quality commands pass
+
+Apply reviewed security tools only: scripts/bootstrap security-tools
+Install locked dependencies with scripts disabled and strict peers:
+  scripts/bootstrap dependencies /absolute/path/to/project --allow-network
+Validate a downstream project: scripts/validate /absolute/path/to/project
+Online vulnerability audit: scripts/validate /absolute/path/to/project --online-audit
+EOF
+    ;;
+  security-tools)
+    "$ROOT/scripts/bootstrap-security-tools"
+    ;;
+  dependencies)
+    TARGET=${2:-}
+    NETWORK=${3:-}
+    if [ -z "$TARGET" ] || [ "$NETWORK" != "--allow-network" ]; then
+      echo "Dependency install requires a target and explicit --allow-network approval." >&2
+      exit 2
+    fi
+    TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
+    MANAGER=$(node -e 'const p=require(process.argv[1]); process.stdout.write(String(p.packageManager || ""))' "$TARGET/package.json")
+    case "$MANAGER" in
+      pnpm@*)
+        NODE="$TARGET/.tools/node/bin/node"
+        PNPM="$TARGET/.tools/pnpm/package/bin/pnpm.cjs"
+        [ -x "$NODE" ] && [ -f "$PNPM" ] || {
+          echo "Reviewed project-local Node and pnpm are required; Corepack fallback is forbidden." >&2
+          exit 1
+        }
+        (cd "$TARGET" && "$NODE" "$PNPM" install --ignore-scripts --strict-peer-dependencies --store-dir "$TARGET/.tools/pnpm-store")
+        ;;
+      npm@*)
+        EXPECTED=${MANAGER#npm@}
+        ACTUAL=$(npm --version)
+        [ "$EXPECTED" = "$ACTUAL" ] || {
+          echo "npm version mismatch: expected $EXPECTED, found $ACTUAL." >&2
+          exit 1
+        }
+        (cd "$TARGET" && npm ci --ignore-scripts --strict-peer-deps)
+        ;;
+      *)
+        echo "Unsupported or unpinned packageManager: $MANAGER" >&2
+        exit 1
+        ;;
+    esac
+    node "$ROOT/scripts/validate-downstream.mjs" "$TARGET"
+    ;;
+  *)
+    echo "Usage: scripts/bootstrap [preview|security-tools|dependencies TARGET --allow-network]" >&2
+    exit 2
+    ;;
+esac

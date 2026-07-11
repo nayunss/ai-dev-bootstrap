@@ -3,7 +3,7 @@
 > **Stack:** raw-http | none | unknown | javascript
 
 > 0 routes | 0 models | 0 components | 0 lib files | 0 env vars | 2 middleware
-> **Token savings:** this file is ~200 tokens. Without it, AI exploration would cost ~4,000 tokens. **Saves ~3,700 tokens per conversation.**
+> **Token savings:** this file is ~200 tokens. Without it, AI exploration would cost ~4,200 tokens. **Saves ~3,900 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
