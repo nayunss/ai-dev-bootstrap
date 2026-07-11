@@ -29,6 +29,7 @@
 | [CodeSight](codesight.md) | AI 도구가 공유하는 프로젝트 코드 컨텍스트 | 적용 |
 | [에이전트 체계](agents.md) | 역할, 권한, 위임 및 산출물 규칙 정의 | 제안 |
 | [SDLC](sdlc.md) | 요구사항부터 운영까지의 AI 협업 절차 정의 | 제안 |
+| [v0.2.0-pilot Release](releases/v0.2.0-pilot.md) | Pilot 자동화·보안 변경과 migration·rollback | 발행 준비 |
 
 ## 문서 상태
 

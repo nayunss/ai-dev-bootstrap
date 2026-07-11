@@ -56,6 +56,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - Pilot 피드백을 `scripts/bootstrap`과 `scripts/validate`로 자동화했다. preview 기본값, exact
   version·lockfile·strict peer·scripts-off·pnpm 11 override·Next telemetry·Corepack 금지·온라인
   audit 분리와 Playwright/Husky 별도 승인을 검사한다.
+- `v0.2.0-pilot` release note와 package version을 준비했다. clean clone 검증 결과, migration,
+  rollback과 별도 checksum artifact 발행 계약을 기록했다.
 
 ## 현재 상태
 
@@ -133,8 +135,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. 현재 upstream의 `.env*`·MCP·EditorConfig·HANDOFF·bootstrap/validate 변경을 새 release로 묶고
-   checksum을 발행한다.
+1. `v0.2.0-pilot` tag와 checksum artifact를 발행한다.
 2. downstream에서 변경 preview와 Human-in-the-loop 승인 후 새 release upgrade를 검증한다.
 3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
