@@ -1,0 +1,14 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+.tools/
+.security-reports/
+dist/
+build/
+coverage/
+evals/results/
+.idea/
+.vscode/
+*.log
