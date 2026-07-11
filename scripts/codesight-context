@@ -1,0 +1,17 @@
+#!/bin/sh
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+INDEX="$ROOT/.codesight/wiki/index.md"
+BIN="$ROOT/node_modules/.bin/codesight"
+case "${1:-read}" in
+  generate)
+    [ -x "$BIN" ] || { echo "CodeSight is not installed." >&2; exit 127; }
+    cd "$ROOT" && exec "$BIN" --wiki
+    ;;
+  read|session)
+    [ -f "$INDEX" ] || { echo "CodeSight index missing; run scripts/codesight-context generate." >&2; exit 0; }
+    echo "CodeSight index follows. Use it for navigation and verify relevant source before editing."
+    cat "$INDEX"
+    ;;
+  *) exit 2 ;;
+esac

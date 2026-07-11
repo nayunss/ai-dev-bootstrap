@@ -1,0 +1,11 @@
+{
+  "name": "common-ai-development-harness",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "codesight": "codesight --wiki"
+  },
+  "devDependencies": {
+    "codesight": "1.18.0"
+  }
+}
