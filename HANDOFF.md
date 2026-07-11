@@ -51,6 +51,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   명시적 migration 원칙을 추가했다. 두 토큰 프로파일 모두 같은 필수 품질 기준이라 분기하지 않는다.
 - REQ-012에 project-local `.editorconfig` 적용과 formatter·linter 충돌 방지 요구사항을 추가하고
   upstream 자체에도 UTF-8·LF·끝 개행·공백 정리·2칸 들여쓰기 기준 파일을 적용했다.
+- HANDOFF 갱신을 문서 규칙에서 자동 gate로 강화했다. staged task 변경과 PR base 범위에서
+  `HANDOFF.md`가 빠지면 validator가 실패하며 공통 security-check와 CI가 이를 호출한다.
 
 ## 현재 상태
 
@@ -104,6 +106,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - AI hook destructive Git 명령 차단: PASS
 - AI hook `.env*` Read·Glob·Grep·Bash·MCP 차단과 일반 소스 Read 허용: PASS
 - MCP manifest schema·만료·integrity 검증과 미승인 MCP 호출·설정 변경 차단: PASS
+- HANDOFF 필수 구조·staged 동반 변경·PR range validator: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
 - 최신 clean clone `npm ci --ignore-scripts`·npm audit·checksum bootstrap·full security: PASS

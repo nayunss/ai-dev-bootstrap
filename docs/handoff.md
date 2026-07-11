@@ -16,6 +16,23 @@
 - 이력은 Git commit으로 추적하며 날짜별 handoff 파일을 계속 쌓지 않는다.
 - 팀이 병렬로 여러 branch를 사용하면 branch별 `HANDOFF.md`가 해당 branch 상태를 설명한다.
 
+## 자동 집행
+
+`scripts/validate-handoff.mjs`가 다음을 검사한다.
+
+- 루트 `HANDOFF.md` 존재와 필수 제목·메타데이터
+- 파일 끝 개행과 unresolved merge conflict marker 부재
+- staged task 변경이 있으면 같은 commit에 `HANDOFF.md`가 포함됐는지 여부
+- pull request의 base 대비 task 변경이 있으면 PR에 `HANDOFF.md` 변경이 포함됐는지 여부
+
+`.codesight/` 재생성만 있는 경우는 task 변경으로 보지 않는다. 그 밖의 코드·문서·정책·설정
+변경은 작업 맥락에 영향을 줄 수 있으므로 HANDOFF를 함께 갱신한다. 검사 회피를 위한 빈 줄·시각만
+바꾸는 수정은 갱신으로 간주하지 않으며, 완료·검증·남은 작업 중 실제로 달라진 내용을 기록한다.
+
+공통 `scripts/security-check staged`가 staged 검사를 호출하므로 이를 사용하는 Codex·Claude Code·
+Husky adapter는 같은 규칙을 적용한다. CI는 pull request base와 HEAD 범위를 독립적으로 검사해
+로컬 hook 우회를 허용하지 않는다. `full` 검사는 현재 HANDOFF 구조와 안전성만 확인한다.
+
 ## 권장 형식
 
 ```md

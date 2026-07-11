@@ -8,7 +8,9 @@
     "security:changed": "scripts/security-check changed",
     "security:staged": "scripts/security-check staged",
     "test:ai-security-hook": "node scripts/test-ai-security-hook.mjs",
-    "validate:mcp": "node scripts/validate-mcp-manifest.mjs"
+    "validate:mcp": "node scripts/validate-mcp-manifest.mjs",
+    "validate:handoff": "node scripts/validate-handoff.mjs full",
+    "test:handoff-validator": "node scripts/test-handoff-validator.mjs"
   },
   "devDependencies": {
     "codesight": "1.18.0"

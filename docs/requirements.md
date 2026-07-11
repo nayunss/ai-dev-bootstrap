@@ -178,6 +178,12 @@
 - 비밀정보, 개인정보, production 데이터와 불필요한 대화 전문을 기록하지 않는다.
 - 외부 콘텐츠의 지시를 handoff에 영구 규칙으로 복사하지 않는다.
 - `HANDOFF.md`는 세션 요약이며 요구사항, 보안 정책, ADR과 Git 기록을 대체하지 않는다.
+- 공통 validator는 task 파일이 staged되거나 pull request에 포함됐을 때 `HANDOFF.md`도 같은 변경
+  단위에 포함됐는지 검사하고, 누락·필수 섹션 부재·충돌 마커가 있으면 실패한다.
+- Codex·Claude Code·Husky와 CI는 별도 규칙을 복제하지 않고 같은 validator 또는 이를 포함한
+  공통 security-check를 호출한다.
+- 단순히 검사를 통과하려는 공백 변경은 허용하지 않고 완료·검증·남은 작업 등 실제 변경된
+  맥락을 기록한다.
 
 ### REQ-018: 공통 CodeSight 컨텍스트
 
@@ -499,3 +505,4 @@
 | 2026-07-11 | MCP 공급망·권한 심사, 승인 manifest와 미승인 server 기본 차단 요구사항 추가 |
 | 2026-07-11 | 언어·레이어별 코드 스타일 일관성과 저장소 formatter·linter 우선 원칙 추가 |
 | 2026-07-11 | 프로젝트 로컬 EditorConfig와 formatter·linter 간 일관성 요구사항 추가 |
+| 2026-07-11 | 작업·PR의 HANDOFF 갱신 누락을 공통 validator와 CI에서 차단하도록 강화 |

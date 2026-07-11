@@ -63,6 +63,12 @@ if (mcpManifest.status !== 0) {
   process.stderr.write(mcpManifest.stderr || mcpManifest.stdout || "MCP approval manifest validation failed.\n");
   process.exit(1);
 }
+const handoffMode = mode === "staged" ? "staged" : "full";
+const handoff = run(process.execPath, ["scripts/validate-handoff.mjs", handoffMode], true);
+if (handoff.status !== 0) {
+  process.stderr.write(handoff.stderr || handoff.stdout || "HANDOFF.md validation failed.\n");
+  process.exit(1);
+}
 
 const gitleaks = verify("gitleaks", ["version"]);
 const opengrep = verify("opengrep", ["--version"]);
