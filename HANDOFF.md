@@ -94,6 +94,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-037을 추가해 frontend·backend·fullstack의 언어·framework·database·도구를 고정하지 않고,
   기본 질문에 없는 사용자 정의 스펙도 확장 field·공급망 심사·설치 승인·project-local adapter와
   검증으로 적용하도록 했다. 문서의 특정 기술 조합은 예시 또는 pilot 기록일 뿐 기본값이 아니다.
+- Backend·fullstack pilot은 프론트엔드 Todo 사례처럼 하네스 경로를 빠르게 확인하는 최소 기능만
+  구현하며 제품 수준의 기능 확장을 pilot 범위에 포함하지 않는다는 참고 메모를 남겼다.
 
 ## 현재 상태
 
