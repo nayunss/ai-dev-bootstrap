@@ -67,6 +67,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - `v0.2.1-pilot` tag commit `ee4b352`과 GitHub prerelease를 발행했다. archive SHA-256은
   `a283c4688d141e67c519cc129bdeec3d9518fa90e0decbbe49ad37ff2df8fcbd`이며 clean clone과 게시
   asset 재다운로드 검증을 통과했다.
+- Downstream ESLint가 validator의 미사용 `execFileSync` import warning을 발견해 동작 변화 없는
+  safe lint 수정으로 upstream main과 downstream local override에 반영했다. 다음 release에 포함한다.
 
 ## 현재 상태
 
