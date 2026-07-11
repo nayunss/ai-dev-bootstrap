@@ -149,5 +149,7 @@ CodeSight, 검색과 기존 문서로 탐색 범위를 먼저 좁힌다.
   grader는 두 프로파일 모두 필수다.
 - 역할 분리 영향: 두 프로파일 모두 upstream 유지보수와 downstream 도입을 먼저 구분하며,
   공급망·비밀 분리·명시적 upgrade 조건은 공통 필수다.
+- Git hook 적용 영향: 두 프로파일 모두 개발환경과 실제 품질 명령의 승인 전에는 Husky를
+  설치하지 않는다. `full`은 추가 hook 대안과 호환성을 더 넓게 검토할 수 있다.
 - 관련 문서: [프로젝트 개발환경 정의](project-environment-definition.md),
   [하네스 구성](harness.md), [SDLC](sdlc.md), [Handoff](handoff.md)

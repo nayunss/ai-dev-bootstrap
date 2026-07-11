@@ -38,6 +38,9 @@ validate + 필수 security/Eval gate
 - 프로젝트 도입: 회사·팀·개인이 검증된 release를 고정하고 조직 정책과 기술 스택을 확장해
   구성원들이 같은 AI 환경에서 제품을 개발하게 한다.
 
+Husky 같은 기술 스택별 hook manager는 clone 직후 설치하지 않습니다. downstream의 개발환경과
+실제 format·lint·test 명령이 승인된 뒤 해당 프로파일에서 적용합니다.
+
 회사·프로젝트의 비밀과 전용 규칙은 public upstream과 분리한다. 자세한 책임과 업데이트 흐름은
 [`docs/adoption-and-maintenance-model.md`](docs/adoption-and-maintenance-model.md)를 따른다.
 

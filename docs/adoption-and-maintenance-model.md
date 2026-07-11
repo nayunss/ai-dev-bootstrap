@@ -67,6 +67,7 @@ platform owner/adopter → application developer + AI tools
 - 전역 설정 변경 없이 프로젝트 로컬 환경 우선 적용
 - 조직 policy, 제품 테스트와 보안 Eval 통과
 - 설치 manifest, upstream 버전, local override와 rollback 기록
+- 승인된 개발환경에 맞는 품질 명령이 먼저 검증되고 그 뒤에만 Git hook이 활성화됨
 
 ## 회사 적용 구조
 
@@ -107,9 +108,10 @@ Eval 결과로 전송하지 않는다.
 1. Upstream이 서명·해시된 versioned release와 변경 내용을 제공한다.
 2. Downstream adopter가 source, checksum, license, telemetry와 migration을 검토한다.
 3. 격리 환경에서 bootstrap, validate와 공통·조직 Eval을 실행한다.
-4. 생성된 설정·코드 diff, 권한과 제거 방법을 사람이 검토한다.
-5. 승인된 버전을 조직 baseline에 반영하고 애플리케이션은 명시적으로 업그레이드한다.
-6. 실패 시 이전 잠금 버전으로 rollback하고 일반화 가능한 실패를 regression으로 제출한다.
+4. 프로젝트 개발환경과 format·lint·test 명령을 확정한 뒤 필요한 Git hook profile을 선택한다.
+5. 생성된 설정·코드 diff, 권한과 제거 방법을 사람이 검토한다.
+6. 승인된 버전을 조직 baseline에 반영하고 애플리케이션은 명시적으로 업그레이드한다.
+7. 실패 시 이전 잠금 버전으로 rollback하고 일반화 가능한 실패를 regression으로 제출한다.
 
 `main` 또는 `latest`를 자동으로 production 개발환경에 동기화하지 않는다.
 

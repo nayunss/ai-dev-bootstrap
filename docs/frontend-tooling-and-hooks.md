@@ -4,7 +4,9 @@
 
 ## 결론
 
-프론트엔드 기본 품질 스택은 다음과 같다.
+프론트엔드 개발환경이 JavaScript·TypeScript 기반으로 승인된 경우의 기본 품질 스택은 다음과
+같다. upstream clone 직후에는 Husky를 설치하지 않는다. 패키지 관리자, workspace 경계와 실제
+검증 명령이 확정된 뒤 이 도구들을 하나의 프로파일로 적용한다.
 
 | 역할 | 기본 도구 | 책임 |
 |---|---|---|
@@ -37,6 +39,7 @@ ESLint와 typescript-eslint로의 전환을 선언했고 저장소도 보관 상
 
 ### Husky
 
+- 개발환경 문서가 승인되고 실행 대상 명령이 존재할 때만 활성화한다.
 - Git의 native hook 진입점에서 저장소 스크립트를 호출한다.
 - 복잡한 검증 로직을 `.husky/pre-commit`에 직접 중복 작성하지 않는다.
 - 훅은 빠르게 유지하고 전체 빌드처럼 오래 걸리는 검사는 pre-push나 CI로 옮긴다.
@@ -77,6 +80,21 @@ AI가 파일 변경
 - 생성 파일과 vendor 파일은 명시적인 ignore 목록으로 제외한다.
 
 ## Git 훅 정책
+
+### 활성화 선행 조건
+
+다음을 모두 만족해야 Husky 또는 다른 hook manager를 설치한다.
+
+1. `docs/development-environment.md` 상태가 `approved`다.
+2. 언어, 런타임, 패키지 관리자와 monorepo 경계가 확정됐다.
+3. format, lint, typecheck, test와 security 명령이 실제로 존재하고 단독 실행에 성공한다.
+4. Prettier, ESLint, typescript-eslint, staged runner와 Husky가 공급망 심사를 통과했다.
+5. 생성·수정 파일, lifecycle script, 자동 수정 범위와 uninstall 절차를 사용자가 승인했다.
+6. CI가 같은 명령 또는 더 강한 독립 gate를 실행한다.
+
+조건이 충족되지 않으면 hook 상태를 `pending-environment-definition`으로 유지한다. 보안 검사만
+연결한 임시 Husky를 만들지 않고, 개발환경과 무관한 검사는 명시적인 검증 명령이나 CI로
+실행한다.
 
 ### pre-commit
 
@@ -143,7 +161,8 @@ CI는 클라이언트 훅과 독립적으로 다음을 실행한다.
 }
 ```
 
-`quality`와 `quality:changed`의 실제 구현은 스택과 monorepo 여부가 정해진 뒤 결정한다.
+`quality`와 `quality:changed`의 실제 구현과 `prepare` 추가는 스택과 monorepo 여부가 정해진 뒤
+결정한다.
 문서의 의사 코드를 그대로 shell 문자열로 복사하지 않는다.
 
 ## 커스텀 규칙 후보

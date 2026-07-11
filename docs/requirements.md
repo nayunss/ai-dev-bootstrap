@@ -111,6 +111,8 @@
   typescript-eslint로 마이그레이션하는 동안에만 한시적으로 허용한다.
 - 포맷은 Prettier, 코드 정확성과 유지보수 규칙은 ESLint가 담당하도록 책임을 분리한다.
 - 도구와 플러그인은 정확한 버전을 잠그고 공급망 보안 게이트를 통과해야 한다.
+- 단, 실제 설치와 Husky 활성화는 프로젝트 개발환경 프로파일이 JavaScript·TypeScript 기반
+  프론트엔드 사용을 확정하고 실행할 format·lint·typecheck·test 명령이 정의된 뒤 수행한다.
 
 ### REQ-013: AI 변경과 Git 훅
 
@@ -331,6 +333,23 @@
 - 하나의 사람이 maintainer와 adopter 역할을 동시에 수행할 수 있지만 작업 모드와 적용 대상,
   권한 및 완료 조건은 섞지 않는다.
 
+### REQ-028: 개발환경 확정 후 Git Hook 적용
+
+- upstream 공통 저장소는 Husky를 무조건 설치·활성화하거나 모든 downstream에 JavaScript
+  package lifecycle을 강제하지 않는다.
+- `docs/development-environment.md`가 승인되고 언어, 패키지 관리자, monorepo 경계와 실제 검증
+  명령이 확정된 뒤 해당 기술 스택용 Git hook adapter를 적용한다.
+- JavaScript·TypeScript 프론트엔드 프로파일은 공급망 심사를 통과한 Prettier, ESLint,
+  typescript-eslint, staged-file runner와 Husky를 정확한 버전으로 함께 구성한다.
+- 다른 언어·생태계는 해당 환경의 native hook manager 또는 도구 중립 Git hook adapter를
+  선택할 수 있으며 Husky를 필수로 설치하지 않는다.
+- hook 적용 전 설치 파일, lifecycle script, 실행 명령, 자동 수정 범위와 제거 방법을 preview해
+  사용자의 승인을 받는다.
+- 설정되지 않은 명령을 가리키는 빈 hook이나 보안 검사만 있는 불완전한 Husky 구성을 만들지
+  않는다.
+- hook은 CI를 대체하지 않으며 활성화 여부와 무관하게 공통 보안·필수 품질 gate를 CI에서
+  독립적으로 실행한다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -395,3 +414,4 @@
 | 2026-07-11 | 실제 개발에서 하네스·루프 변경을 판정하는 outcome 중심 Eval 요구사항 추가 |
 | 2026-07-11 | clone 후 사용자별 AI 환경을 안전한 프로젝트 로컬 공통 환경으로 정렬하는 목적 명시 |
 | 2026-07-11 | 공통 환경 유지보수자와 프로젝트 도입자의 두 사용 경로·책임·업데이트 경계 추가 |
+| 2026-07-11 | 프로젝트 개발환경과 실제 품질 명령이 확정된 뒤에만 Husky를 적용하는 규칙 추가 |
