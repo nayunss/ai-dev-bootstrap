@@ -12,6 +12,8 @@ Bootstrap preview
 - Global AI, Git, shell and package-manager settings: unchanged
 - Corepack fallback and floating latest versions: forbidden
 - Dependency lifecycle scripts: disabled by default
+- Deployment install: approved exact-version build-script allowlist and separate provider-equivalent Eval required
+- Git/Vercel: verified commit identity and duplicate repository integration check required before push/import
 - Security binaries: exact versions and checksums from .ai/manifests/security-tools.yaml
 - Playwright browser binaries: excluded; separate preview and Human-in-the-loop approval required
 - Husky: excluded until the downstream environment and quality commands pass

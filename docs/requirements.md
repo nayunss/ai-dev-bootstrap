@@ -492,6 +492,29 @@
 - token-aware와 full 모두 provider 연결·production·secret·공개 범위 질문과 필수 보안·품질 gate를
   생략하지 않는다.
 
+### REQ-036: Dependency Build Script와 실제 배포 Eval
+
+- package lifecycle script는 dependency 설치와 별도의 실행 권한으로 취급하며 package·정확한 version·
+  script·publisher·필요성·network·filesystem 영향을 심사하고 Human-in-the-loop 승인을 받는다.
+- pnpm 11 이상은 `strictDepBuilds` 기본 차단을 유지하고 `allowBuilds`에 package와 정확한 version을
+  `true` 또는 `false`로 기록한다. placeholder, version 없는 matcher, wildcard와
+  `dangerouslyAllowAllBuilds`는 금지한다.
+- scripts-off CI 성공만으로 provider install 성공을 추론하지 않는다. 배포 전에는 provider와 같은
+  lifecycle 정책의 clean install, production build와 secret·SAST·test를 격리 환경에서 Eval한다.
+- Git provider와 배포 provider가 commit author를 확인할 수 있도록 verified email 또는 provider의
+  noreply email을 project-local Git 설정에 사용한다. 기존 commit 재작성·force push는 별도 승인 없이는
+  수행하지 않는다.
+- Vercel import 전 account·team에서 같은 Git repository와 root directory의 기존 project 연결을
+  검색한다. 중복 연결은 자동 삭제하지 않고 project·deployment 영향을 preview한 후 사람이 유지 대상과
+  제거 대상을 결정한다.
+- Preview는 commit status만 보지 않고 deployment environment·실제 URL·접근 정책·핵심 UI를 확인한다.
+  승인된 Preview 이후에만 main 병합과 Production을 수행하고 Production에서도 CI·deployment·rollback
+  상태를 독립 검증한다.
+- 배포 실패·성공, integration 정리, Preview·Production URL과 검증 결과를 비밀 없이 개발환경 문서와
+  `HANDOFF.md`에 기록한다.
+- token-aware와 full 모두 build-script 승인, commit identity, 중복 integration, Preview와 Production
+  승인 경계를 생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -566,3 +589,4 @@
 | 2026-07-11 | Downstream pilot 피드백을 공통 bootstrap preview·dependency·validate gate로 자동화 |
 | 2026-07-11 | 설치된 package version 변경 전 영향 preview와 사용자 승인·재승인 요구사항 추가 |
 | 2026-07-11 | GitHub Actions 기본 CI와 Vercel Git integration 배포 프로파일 요구사항 추가 |
+| 2026-07-11 | Downstream pilot 기반 dependency build-script·commit identity·실제 배포 Eval 요구사항 추가 |

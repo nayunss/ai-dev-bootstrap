@@ -8,10 +8,17 @@
    dependency approval·security·quality·build·E2E job의 preview를 만든다.
 5. Vercel이 선택되면 Git integration을 우선하고 account·team·repository scope, Preview·Production
    branch, URL 보호, environment, telemetry·비용과 rollback을 preview한다.
-6. 사용자가 정확한 CI 변경 범위와 provider 연결을 각각 승인하기 전에는 workflow를 push하거나
+6. pnpm 11 이상이면 `strictDepBuilds`와 version-qualified `allowBuilds`를 검사하고, 승인된 package만
+   provider-equivalent clean install에서 실행한다.
+7. commit author가 provider에서 확인 가능한지와 같은 repository의 기존 Vercel project 연결을
+   읽기 전용 확인한다. 중복 project를 자동 생성·삭제하지 않는다.
+8. 사용자가 정확한 CI 변경 범위와 provider 연결을 각각 승인하기 전에는 workflow를 push하거나
    GitHub App·Vercel project를 연결하지 않는다.
-7. local deterministic gate 후 isolated branch를 push해 CI를 검증한다. 실패 시 required check나
+9. local deterministic gate와 provider-equivalent install 후 isolated branch를 push해 CI를 검증한다.
+   실패 시 required check나
    production deploy를 활성화하지 않는다.
-8. Preview Deployment 검증 후 별도 production 승인이 있을 때만 production branch를 연결한다.
-9. 결과, 외부 integration ID가 아닌 비민감 설정, 검증·rollback과 재승인 조건을 개발환경 문서와
+10. Preview의 deployment environment·실제 URL·접근·핵심 UI 검증 후 별도 production 승인이 있을
+    때만 production branch를 연결한다.
+11. main CI와 Production Deployment·rollback을 독립 검증한다.
+12. 결과, 외부 integration ID가 아닌 비민감 설정, 검증·rollback과 재승인 조건을 개발환경 문서와
    `HANDOFF.md`에 기록한다.

@@ -33,6 +33,38 @@ function exactVersion(value) {
   return typeof value === "string" && /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(value);
 }
 
+function exactBuildMatcher(value) {
+  return /^(?:@[^/]+\/[^@]+|[^@]+)@\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(value);
+}
+
+function validatePnpmBuildPolicy() {
+  const relative = "pnpm-workspace.yaml";
+  if (!existsSync(join(root, relative))) return;
+  const workspace = read(relative);
+  if (/^\s*dangerouslyAllowAllBuilds\s*:\s*true\s*(?:#.*)?$/m.test(workspace)) {
+    errors.push("pnpm dangerouslyAllowAllBuilds must not be enabled");
+  }
+  if (/^\s*strictDepBuilds\s*:\s*false\s*(?:#.*)?$/m.test(workspace)) {
+    errors.push("pnpm strictDepBuilds must not be disabled");
+  }
+  const block = workspace.match(/^allowBuilds\s*:\s*(?:#.*)?\n((?:[ \t]+.*(?:\n|$))*)/m)?.[1];
+  if (!block) return;
+  for (const line of block.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const entry = trimmed.match(/^(['"]?)(.+?)\1\s*:\s*(true|false)?\s*(?:#.*)?$/);
+    if (!entry) {
+      errors.push(`invalid pnpm allowBuilds entry: ${trimmed}`);
+      continue;
+    }
+    const [, , matcher, decision] = entry;
+    if (!exactBuildMatcher(matcher)) {
+      errors.push(`pnpm allowBuilds matcher must pin an exact package version: ${matcher}`);
+    }
+    if (!decision) errors.push(`pnpm allowBuilds decision must be true or false: ${matcher}`);
+  }
+}
+
 requireFile("HANDOFF.md");
 requireFile(".editorconfig");
 for (const file of requiredSecurity) requireFile(file);
@@ -63,6 +95,7 @@ if (existsSync(packageFile)) {
   if (managerName === "pnpm" && managerMajor >= 11 && !existsSync(join(root, "pnpm-workspace.yaml"))) {
     notes.push("pnpm 11 project has no pnpm-workspace.yaml; create it when overrides or workspace policy is needed");
   }
+  if (managerName === "pnpm" && managerMajor >= 11) validatePnpmBuildPolicy();
   const allDependencies = { ...pkg.dependencies, ...pkg.devDependencies };
   for (const [name, version] of Object.entries(allDependencies)) {
     if (!exactVersion(version)) errors.push(`${name} must use an exact version, received '${version}'`);

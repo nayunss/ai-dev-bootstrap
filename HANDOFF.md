@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-035까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-036까지 수집했다.
 
 ## 완료
 
@@ -84,6 +84,13 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-035와 CI·배포 workflow를 추가했다. GitHub Actions 선택 시 pinned action·최소 권한·exact
   runtime·security·quality·E2E 기본 CI를, Vercel 선택 시 zero-config Git integration과 Preview·
   Production·URL 공개·secret·rollback 승인 계약을 적용한다.
+- frontend downstream pilot에서 GitHub Actions와 Vercel Preview·Production까지 검증했다. pnpm 11의
+  미승인 build script 차단, verified commit author, 중복 Vercel project와 실제 deployment URL 확인
+  경험을 REQ-036·보안·HITL·CI 배포 workflow에 환류했다.
+- downstream validator가 pnpm 11의 `dangerouslyAllowAllBuilds`, 비활성화된 `strictDepBuilds`, version
+  없는 `allowBuilds` matcher와 미결정 placeholder를 차단하도록 positive·negative Eval을 추가했다.
+- README에 공통 요구사항은 언어 중립이지만 실제 실증은 Next.js frontend pilot 한 건임을 명시했다.
+  Backend와 fullstack은 별도 downstream pilot·Eval 전까지 미검증 상태다.
 
 ## 현재 상태
 
@@ -98,7 +105,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   - `6b20f02`: HANDOFF staged·PR 자동 gate
 - Semgrep은 거부하고 Opengrep `1.22.0`을 조건부 승인해 공통 security-check를 구현했다.
 - 첫 downstream pilot `../env-downstream`은 독립 Git 저장소이며 upstream `v0.1.0-pilot`을
-  `upstream.lock.yaml`로 고정했다. 이후 upstream 변경은 자동 반영되지 않는다.
+  시작점으로 사용했고 이후 승인된 pilot release를 명시적으로 적용했다. GitHub Actions·Vercel
+  Preview·Production 검증을 완료했으며 upstream 변경은 자동 반영되지 않는다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
 
 ## 주요 결정
@@ -154,6 +162,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - MCP manifest schema·만료·integrity 검증과 미승인 MCP 호출·설정 변경 차단: PASS
 - HANDOFF 필수 구조·staged 동반 변경·PR range validator: PASS
 - Bootstrap preview·downstream validator positive/negative fixture: PASS
+- pnpm build-script allowlist positive·global allow·strict-disable·unpinned·placeholder negative fixture: PASS
 - Dependency direct version·lockfile-only 승인 positive/negative fixture: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
@@ -162,9 +171,11 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. Downstream에서 GitHub Actions CI 사용 여부와 배포 provider·공개 범위를 Human-in-the-loop로
-   확정한다.
-2. 승인된 범위의 CI·배포 프로파일을 적용하고 security·quality·deployment preview를 검증한다.
+1. Spring Boot·PostgreSQL 기준 backend downstream pilot을 만들고 dependency·DB migration·API·CI·
+   배포와 파괴적 작업 HITL Eval을 검증한다.
+2. frontend·backend 통합 fullstack downstream pilot에서 workspace·contract test·통합 E2E·secret·
+   다중 배포·rollback 호환성을 검증한다.
+3. REQ-036과 build-policy validator를 다음 pilot release로 묶고 checksum·migration을 발행한다.
 
 ## 위험·주의
 
@@ -176,4 +187,5 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 다음 시작점
 
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
-- 신규 설치나 파괴적 명령 없이 문서 승인 범위와 우선 기술 스택을 결정한다.
+- 신규 설치나 파괴적 명령 없이 backend pilot의 정확한 stack·DB·migration·test·배포 provider 범위를
+  Human-in-the-loop로 결정한다.

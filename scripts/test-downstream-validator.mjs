@@ -22,7 +22,14 @@ const validPackage = {
 };
 writeFileSync(join(fixture, "package.json"), `${JSON.stringify(validPackage, null, 2)}\n`);
 writeFileSync(join(fixture, "pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
-writeFileSync(join(fixture, "pnpm-workspace.yaml"), "packages:\n  - .\n");
+const validWorkspace = `packages:
+  - .
+
+allowBuilds:
+  sharp@0.34.5: true
+  '@parcel/watcher@2.5.6': false
+`;
+writeFileSync(join(fixture, "pnpm-workspace.yaml"), validWorkspace);
 
 function validate() {
   return spawnSync(process.execPath, [join(root, "scripts/validate-downstream.mjs"), fixture], {
@@ -39,5 +46,29 @@ const rejected = validate();
 assert.notEqual(rejected.status, 0);
 assert.match(rejected.stderr, /must use an exact version/);
 assert.match(rejected.stderr, /pnpm 11\+ overrides/);
+
+writeFileSync(join(fixture, "package.json"), `${JSON.stringify(validPackage, null, 2)}\n`);
+writeFileSync(
+  join(fixture, "pnpm-workspace.yaml"),
+  `${validWorkspace}\ndangerouslyAllowAllBuilds: true\nstrictDepBuilds: false\n`,
+);
+const unsafeGlobalBuilds = validate();
+assert.notEqual(unsafeGlobalBuilds.status, 0);
+assert.match(unsafeGlobalBuilds.stderr, /dangerouslyAllowAllBuilds/);
+assert.match(unsafeGlobalBuilds.stderr, /strictDepBuilds/);
+
+writeFileSync(
+  join(fixture, "pnpm-workspace.yaml"),
+  `packages:
+  - .
+allowBuilds:
+  sharp: true
+  'unrs-resolver@1.12.2':
+`,
+);
+const unpinnedBuilds = validate();
+assert.notEqual(unpinnedBuilds.status, 0);
+assert.match(unpinnedBuilds.stderr, /must pin an exact package version/);
+assert.match(unpinnedBuilds.stderr, /decision must be true or false/);
 
 process.stdout.write("Downstream validator regression tests: PASS\n");
