@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-030까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-032까지 수집했다.
 
 ## 완료
 
@@ -57,12 +57,17 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 현재 상태
 
 - branch: `main`
-- 논리적 단위의 최초 커밋 2개를 만들었다.
-  - `6448c61 docs: define common AI environment architecture`
-  - `f1181e3 feat: add tool-neutral AI workflows and policies`
-- 프로젝트 로컬 CodeSight 설치·생성 스크립트를 `1254db0` 커밋으로 추가했다.
+- remote: `git@github.com:nayunss/ai-dev-bootstrap.git`, `main` 추적
+- 최신 기능 commit: `6b20f02 feat: enforce task handoff updates`
+- 최근 보안·품질 변경:
+  - `7514549`: AI의 `.env*` 접근 차단
+  - `2140c25`: 미승인 MCP default-deny
+  - `f134ea1`: 코드 스타일 일관성
+  - `6eb6e64`: project-local EditorConfig
+  - `6b20f02`: HANDOFF staged·PR 자동 gate
 - Semgrep은 거부하고 Opengrep `1.22.0`을 조건부 승인해 공통 security-check를 구현했다.
-- 원격 `git@github.com:nayunss/ai-dev-bootstrap.git`의 `main`을 추적한다.
+- 첫 downstream pilot `../env-downstream`은 독립 Git 저장소이며 upstream `v0.1.0-pilot`을
+  `upstream.lock.yaml`로 고정했다. 이후 upstream 변경은 자동 반영되지 않는다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
 
 ## 주요 결정
@@ -82,6 +87,13 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 개인 전역 AI 설정은 자동으로 덮어쓰지 않고 프로젝트 로컬 bootstrap과 validate를 우선한다.
 - 회사·프로젝트의 private policy와 skill은 public upstream에서 분리하고 upstream release를
   명시적으로 고정·검증·업그레이드한다.
+- downstream은 upstream 파일을 symlink·submodule·실시간 참조하지 않는다. release/commit과
+  checksum을 고정하고 diff·보안·호환성 검토와 Human-in-the-loop 승인 후에만 명시적으로
+  upgrade한다.
+- 검증되지 않은 MCP와 `.env*` 접근은 기본 차단하며 hook만이 아니라 sandbox·OS 권한·egress·
+  IAM을 실제 보안 경계로 사용한다.
+- EditorConfig는 에디터 기본 표현을, formatter는 코드 포맷을, linter는 정확성·유지보수 규칙을
+  담당하며 서로 충돌하지 않게 한다.
 
 ## 변경 파일
 
@@ -89,6 +101,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - `.ai/`: 도구 중립 보안 정책·프로젝트 환경 워크플로·역할·manifest
 - `HANDOFF.md`: 현재 세션 재개 정보
 - `README.md`, `.gitignore`: 저장소 기본 파일
+- `scripts/`: 공통 security, MCP manifest, HANDOFF와 CodeSight validator
+- `.github/workflows/security.yml`: clean CI 보안 검사와 PR HANDOFF gate
+- `.editorconfig`: upstream 표현 형식 기준
 
 ## 검증
 
@@ -115,8 +130,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 남은 작업
 
 1. downstream pilot 피드백을 bootstrap·validate 자동화 요구사항으로 전환한다.
-2. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
-3. 다음 release에서 clean clone과 downstream upgrade 경로를 다시 검증한다.
+2. 현재 upstream의 `.env*`·MCP·EditorConfig·HANDOFF 변경을 새 release로 묶고 checksum을 발행한다.
+3. downstream에서 변경 preview와 Human-in-the-loop 승인 후 새 release upgrade를 검증한다.
+4. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
 ## 위험·주의
 
