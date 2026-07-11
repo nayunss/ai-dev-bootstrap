@@ -64,6 +64,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - Downstream 적용 중 `v0.2.0-pilot` validator가 telemetry evidence 후보로 `.env.example`을
   읽는 REQ-031 위반을 발견해 적용·lock 갱신을 중단했다. 참조를 제거하고 source regression을
   추가한 `v0.2.1-pilot` hotfix를 준비한다.
+- `v0.2.1-pilot` tag commit `ee4b352`과 GitHub prerelease를 발행했다. archive SHA-256은
+  `a283c4688d141e67c519cc129bdeec3d9518fa90e0decbbe49ad37ff2df8fcbd`이며 clean clone과 게시
+  asset 재다운로드 검증을 통과했다.
 
 ## 현재 상태
 
@@ -141,10 +144,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. `v0.2.1-pilot` hotfix를 clean clone 검증하고 tag·checksum artifact로 발행한다.
-2. downstream preview의 release·checksum을 갱신해 Human-in-the-loop로 다시 검토한다.
-3. 승인 후 별도 upgrade commit으로 적용하고 전체 품질·보안·E2E를 검증한 뒤 lock을 갱신한다.
-4. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
+1. 갱신된 downstream `v0.2.1-pilot` preview를 Human-in-the-loop로 다시 검토한다.
+2. 승인 후 별도 upgrade commit으로 적용하고 전체 품질·보안·E2E를 검증한 뒤 lock을 갱신한다.
+3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
 ## 위험·주의
 
