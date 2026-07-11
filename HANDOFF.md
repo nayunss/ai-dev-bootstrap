@@ -37,7 +37,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 현재 상태
 
 - branch: `main`
-- 저장소는 아직 첫 commit 전이며 모든 파일이 untracked 상태다.
+- 논리적 단위의 최초 커밋 2개를 만들었다.
+  - `6448c61 docs: define common AI environment architecture`
+  - `f1181e3 feat: add tool-neutral AI workflows and policies`
+- 보안 실행 계층, AI tool hook과 package 설정은 Semgrep runtime 실패 때문에 아직 uncommitted다.
 - 원격 저장소는 아직 연결하지 않았다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
 
@@ -73,22 +76,25 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 문서 trailing whitespace 검사: PASS
 - 상대 Markdown 링크 대상 검사: PASS
 - `security-tools.yaml` YAML 파싱: PASS
+- Gitleaks 전체 저장소 secret scan: PASS
+- 첫 commit pre-commit: FAIL — Semgrep `1.168.0` runtime/version 검증 실패
+- 실패 후 문서·정책 커밋만 `HUSKY=0`으로 생성했으며 보안 자동화 파일은 커밋하지 않았다.
 - Markdown 시각 렌더링 검사: 미구현
-- 보안 자동 검사: 승인 도구가 없어 미구현
+- SAST: FAIL — 현재 Semgrep 후보를 승인 목록에서 제거하고 대체 도구를 재심사해야 한다.
 
 ## 남은 작업
 
-1. 이번 보안 문서와 모든 내부 Markdown 링크를 검증한다.
-2. 요구사항의 미결정 항목과 우선 지원 웹 기술 스택을 확정한다.
-3. `.ai/project.yaml` 스키마와 최소 하네스 파일을 구현한다.
-4. 보안 도구 후보를 공급망 심사해 `security-tools.yaml`에 고정한다.
-5. `scripts/bootstrap`, `scripts/validate`와 AI 도구별 어댑터를 구현한다.
-6. 문서를 검토·승인하고 첫 commit과 원격 연결을 진행한다.
+1. 실패한 Semgrep 후보를 승인 목록과 실행 경로에서 제거한다.
+2. 대체 SAST 후보를 공급망·telemetry·runtime 관점에서 심사하고 고정한다.
+3. `security-check`를 통과시킨 뒤 남은 hook·CI·package·manifest를 논리적으로 커밋한다.
+4. 요구사항의 미결정 항목과 우선 지원 웹 기술 스택을 확정한다.
+5. `.ai/project.yaml`, `bootstrap`, `validate`와 downstream 설치 흐름을 구현한다.
+6. 원격 저장소를 연결하고 versioned upstream baseline을 발행한다.
 
 ## 위험·주의
 
-- 설치 후보는 아직 보안 승인을 받은 상태가 아니다.
-- 자체 보안 검사기는 아직 없으므로 문서 정책만으로 안전을 보증할 수 없다.
+- Gitleaks와 CodeSight 감사는 완료했지만 SAST 후보는 승인 상태가 아니다.
+- 현재 hook은 Semgrep 실패로 정상 commit을 차단하므로 보안 자동화를 완료한 것으로 간주하지 않는다.
 - Superpowers의 원격 이미지 요청과 Agent Skills의 network cache hook은 기본 도입에서 제외했다.
 - 현재 `tool/github-speckit`은 원본 clone이 아니라 Claude 통합 프로젝트 산출물이다.
 
