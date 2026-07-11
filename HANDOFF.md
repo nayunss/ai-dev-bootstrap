@@ -49,6 +49,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   미승인 server·tool 호출과 CLI 설정 변경을 pre-tool 훅에서 차단한다.
 - REQ-009에 언어·레이어별 코드 스타일 일관성, 저장소 formatter·linter 우선과 스타일 변경의
   명시적 migration 원칙을 추가했다. 두 토큰 프로파일 모두 같은 필수 품질 기준이라 분기하지 않는다.
+- REQ-012에 project-local `.editorconfig` 적용과 formatter·linter 충돌 방지 요구사항을 추가하고
+  upstream 자체에도 UTF-8·LF·끝 개행·공백 정리·2칸 들여쓰기 기준 파일을 적용했다.
 
 ## 현재 상태
 

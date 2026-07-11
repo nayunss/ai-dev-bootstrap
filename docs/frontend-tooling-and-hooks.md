@@ -10,6 +10,7 @@
 
 | 역할 | 기본 도구 | 책임 |
 |---|---|---|
+| 에디터 기본 형식 | EditorConfig | 문자셋, 줄바꿈, 파일 끝 개행, trailing whitespace와 기본 들여쓰기 통일 |
 | 코드 포맷 | Prettier | 공백, 줄바꿈, 따옴표 등 기계적인 표현 통일 |
 | JavaScript 린트 | ESLint | 오류 가능성, 유지보수성과 프로젝트 규칙 검사 |
 | TypeScript 린트 | typescript-eslint | TypeScript 구문과 타입 정보를 활용한 ESLint 규칙 |
@@ -22,6 +23,15 @@ ESLint와 typescript-eslint로의 전환을 선언했고 저장소도 보관 상
 프로젝트의 마이그레이션 기간 외에는 사용하지 않는다.
 
 ## 도구 책임 분리
+
+### EditorConfig
+
+- package 설치 없이 프로젝트 루트의 `.editorconfig`를 사용한다.
+- `root = true`로 상위·개인 설정이 프로젝트 규칙을 예기치 않게 바꾸지 못하게 한다.
+- UTF-8, LF, 파일 끝 개행과 trailing whitespace 같은 언어 중립 기본값을 담당한다.
+- 언어·파일별 들여쓰기는 개발환경 프로파일에 맞는 glob section으로 선언한다.
+- Prettier가 담당하는 세부 코드 포맷을 중복 정의하지 않고 두 설정의 들여쓰기·줄바꿈을 일치시킨다.
+- EditorConfig를 지원하지 않는 도구가 있어도 formatter와 CI가 같은 결과를 검증해야 한다.
 
 ### Prettier
 

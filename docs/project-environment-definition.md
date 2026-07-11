@@ -11,6 +11,10 @@
 개발환경 정의 문서가 이미 있으면 이를 먼저 읽고 실제 저장소 설정과 대조한다. 문서가 없으면
 AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사용자가 확인하게 한다.
 
+확정된 언어와 파일 유형에 맞춰 project-local `.editorconfig`를 생성하거나 검증한다. 상위·개인
+설정 상속을 막기 위해 `root = true`를 사용하고, formatter·linter와 들여쓰기·줄바꿈 규칙이
+충돌하면 hook 활성화 전에 하나의 프로젝트 기준으로 정리한다.
+
 ## 결정 흐름
 
 1. `package.json`, lockfile, 빌드 파일, 컨테이너, CI와 배포 설정을 읽어 기존 환경을 감지한다.

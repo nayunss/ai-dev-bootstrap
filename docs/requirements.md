@@ -111,7 +111,11 @@
 
 ### REQ-012: 프론트엔드 기본 품질 도구
 
-- 프론트엔드 프로젝트는 Prettier, ESLint, TypeScript용 typescript-eslint와 Husky를
+- 프로젝트 루트에는 `root = true`인 `.editorconfig`를 두고 문자 인코딩, 줄바꿈, 파일 끝 개행,
+  trailing whitespace와 들여쓰기의 에디터 기본값을 선언한다.
+- 언어·파일별 들여쓰기는 승인된 개발환경 프로파일에 맞춰 section으로 재정의하며 formatter·
+  linter 설정과 충돌하지 않게 검증한다.
+- 프론트엔드 프로젝트는 EditorConfig, Prettier, ESLint, TypeScript용 typescript-eslint와 Husky를
   기본 품질 도구로 구성한다.
 - TSLint는 폐기된 도구이므로 신규 프로젝트에 설치하지 않는다. 기존 프로젝트에서는
   typescript-eslint로 마이그레이션하는 동안에만 한시적으로 허용한다.
@@ -494,3 +498,4 @@
 | 2026-07-11 | AI의 민감정보 및 `.env*` 파일 읽기·검색·색인 금지 요구사항 추가 |
 | 2026-07-11 | MCP 공급망·권한 심사, 승인 manifest와 미승인 server 기본 차단 요구사항 추가 |
 | 2026-07-11 | 언어·레이어별 코드 스타일 일관성과 저장소 formatter·linter 우선 원칙 추가 |
+| 2026-07-11 | 프로젝트 로컬 EditorConfig와 formatter·linter 간 일관성 요구사항 추가 |

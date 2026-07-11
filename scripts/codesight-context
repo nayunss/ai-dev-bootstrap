@@ -28,6 +28,7 @@ for (const [relative, rules] of replacements) {
   const file = path.join(root, relative);
   let content = fs.readFileSync(file, "utf8");
   for (const [pattern, value] of rules) content = content.replace(pattern, value);
+  if (!content.endsWith("\n")) content += "\n";
   fs.writeFileSync(file, content);
 }
 NODE
