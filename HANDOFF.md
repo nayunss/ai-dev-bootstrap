@@ -42,6 +42,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 논리적 단위의 최초 커밋 2개를 만들었다.
   - `6448c61 docs: define common AI environment architecture`
   - `f1181e3 feat: add tool-neutral AI workflows and policies`
+- 프로젝트 로컬 CodeSight 설치·생성 스크립트를 `1254db0` 커밋으로 추가했다.
 - 보안 실행 계층, AI tool hook과 package 설정은 Semgrep runtime 실패 때문에 아직 uncommitted다.
 - 원격 저장소는 아직 연결하지 않았다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
@@ -79,6 +80,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 상대 Markdown 링크 대상 검사: PASS
 - `security-tools.yaml` YAML 파싱: PASS
 - Gitleaks 전체 저장소 secret scan: PASS
+- CodeSight generate·read: PASS
 - 첫 commit pre-commit: FAIL — Semgrep `1.168.0` runtime/version 검증 실패
 - 실패 후 문서·정책 커밋만 `HUSKY=0`으로 생성했으며 보안 자동화 파일은 커밋하지 않았다.
 - Markdown 시각 렌더링 검사: 미구현
