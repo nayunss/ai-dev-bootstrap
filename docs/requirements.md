@@ -515,6 +515,27 @@
 - token-aware와 full 모두 build-script 승인, commit identity, 중복 integration, Preview와 Production
   승인 경계를 생략하지 않는다.
 
+### REQ-037: 확장 가능한 프로젝트 기술 스펙
+
+- upstream은 frontend·backend·fullstack에 특정 언어, runtime, framework, database, package·build
+  manager, test, CI 또는 deployment provider를 기본값이나 필수 조합으로 고정하지 않는다.
+- Next.js, NestJS, Node.js, Python, Spring Boot, PostgreSQL과 Vercel 등 문서의 기술명은 검증 사례나
+  질문 예시이며 사용자가 선택하지 않은 프로젝트에 자동 적용·설치하지 않는다.
+- 기존 프로젝트는 manifest·lockfile·source·container·CI에서 실제 스펙을 먼저 감지하고, 신규
+  프로젝트는 사용자 답변이나 승인된 개발환경 정의서를 단일 결정 근거로 사용한다.
+- 기본 질문 카탈로그에 없는 runtime, framework, protocol, datastore, infrastructure, code generator,
+  quality tool과 조직별 제약도 사용자 정의 항목으로 추가할 수 있어야 한다.
+- 사용자 정의 스펙은 이름만 저장하지 않고 category, source, exact version 또는 version policy,
+  install·remove 명령, dependency, 권한·network·telemetry, 호환성, quality·security gate와 rollback을
+  개발환경 문서 또는 확장 프로파일에 기록한다.
+- 새 스펙의 설치·활성화·외부 연결은 공급망 심사와 Human-in-the-loop 승인 후 project-local adapter로
+  적용한다. 공통 validator가 모르는 category라는 이유만으로 삭제하거나 임의 기본값으로 치환하지
+  않는다.
+- 스펙 변경 시 영향을 받는 bootstrap, hook, CI, Eval, CodeSight와 HANDOFF를 재생성·검증하며 기존
+  설치 버전 변경은 REQ-034의 승인 계약을 따른다.
+- token-aware는 현재 작업에 필요한 custom field만 질문하고 full은 연관 운영·확장 항목까지
+  질문한다. 두 방식 모두 미확정 스펙을 `TBD`로 유지하고 설치 승인을 생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -549,7 +570,7 @@
 
 ## 검토가 필요한 항목
 
-- 최초 지원 웹 기술 스택
+- 최초 검증용 기술 스택과 추가 stack adapter 우선순위
 - 개인용 설정과 팀 필수 설정의 경계
 - 스킬 및 플러그인의 배포 방식
 - GitHub 조직과 원격 저장소 이름
@@ -590,3 +611,4 @@
 | 2026-07-11 | 설치된 package version 변경 전 영향 preview와 사용자 승인·재승인 요구사항 추가 |
 | 2026-07-11 | GitHub Actions 기본 CI와 Vercel Git integration 배포 프로파일 요구사항 추가 |
 | 2026-07-11 | Downstream pilot 기반 dependency build-script·commit identity·실제 배포 Eval 요구사항 추가 |
+| 2026-07-11 | 프로젝트별 임의 기술 스펙과 사용자 정의 확장·설치 승인 요구사항 추가 |

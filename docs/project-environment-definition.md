@@ -32,6 +32,8 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 ## 질문 카탈로그
 
 모든 질문을 매번 제시하지 않는다. 자동 감지할 수 없고 현재 작업에 필요한 항목만 선택한다.
+아래 목록은 닫힌 schema가 아니다. 사용자가 프로젝트에 필요한 추가 스펙을 제시하면 같은 감지·승인·
+기록·검증 절차로 확장한다.
 
 ### 프로젝트 공통
 
@@ -58,7 +60,7 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 
 ### 백엔드
 
-- 언어, 프레임워크, JVM·런타임과 빌드 도구
+- 언어, 프레임워크, 런타임과 빌드 도구
 - API 방식: REST, GraphQL, gRPC, event와 계약 관리
 - 데이터베이스 종류·버전, ORM·query 도구와 마이그레이션 방식
 - 트랜잭션 경계, 일관성, idempotency와 동시성 정책
@@ -81,6 +83,29 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 
 이 영역은 편리한 기본값으로 확정하지 않는다. 사용자 승인 전에는 운영 자격증명 연결,
 외부 데이터 전송, production migration 또는 배포를 수행하지 않는다.
+
+### 사용자 정의 스펙
+
+기본 카탈로그에 없는 항목도 `customSpecifications` 또는 의미에 맞는 새 section으로 추가한다.
+
+```yaml
+customSpecifications:
+  - category: runtime | framework | datastore | protocol | infrastructure | quality | other
+    name: <user-selected-name>
+    versionPolicy: <exact-or-reviewed-policy>
+    source: <manifest-doc-or-user-decision>
+    install: USER_CONFIRMATION_REQUIRED
+    permissions: []
+    network: []
+    telemetry: unknown
+    compatibility: []
+    validation: []
+    rollback: TBD
+```
+
+필드를 추가할 수는 있지만 비밀 값은 저장하지 않는다. 설치 대상이면 source·license·integrity·
+telemetry·lifecycle·권한을 심사하고 정확한 변경 preview를 승인받는다. validator는 알 수 없는 스펙을
+무시하지 않고 검증 adapter가 필요한 확장 항목으로 보고하되 자동 삭제하지 않는다.
 
 ## 버전 정책
 
@@ -136,7 +161,8 @@ frontend:
 
 ## 예시 프로파일
 
-다음은 정답이나 기본 설치 목록이 아니라 질문을 통해 확정할 수 있는 예시다.
+다음은 정답이나 기본 설치 목록이 아니라 질문을 통해 확정할 수 있는 예시다. frontend·backend 모두
+다른 언어와 framework로 대체하거나 사용하지 않을 수 있다.
 
 ```yaml
 frontend:
@@ -169,6 +195,6 @@ backend:
 
 ## 추적성
 
-- 관련 요구사항: REQ-007, REQ-020, REQ-021
+- 관련 요구사항: REQ-007, REQ-020, REQ-021, REQ-037
 - 관련 문서: [하네스 구성](harness.md), [권장 아키텍처](architecture.md),
   [공급망 보안](supply-chain-security.md), [SDLC](sdlc.md)

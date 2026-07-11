@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-036까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-037까지 수집했다.
 
 ## 완료
 
@@ -91,6 +91,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   없는 `allowBuilds` matcher와 미결정 placeholder를 차단하도록 positive·negative Eval을 추가했다.
 - README에 공통 요구사항은 언어 중립이지만 실제 실증은 Next.js frontend pilot 한 건임을 명시했다.
   Backend와 fullstack은 별도 downstream pilot·Eval 전까지 미검증 상태다.
+- REQ-037을 추가해 frontend·backend·fullstack의 언어·framework·database·도구를 고정하지 않고,
+  기본 질문에 없는 사용자 정의 스펙도 확장 field·공급망 심사·설치 승인·project-local adapter와
+  검증으로 적용하도록 했다. 문서의 특정 기술 조합은 예시 또는 pilot 기록일 뿐 기본값이 아니다.
 
 ## 현재 상태
 
@@ -171,8 +174,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. Spring Boot·PostgreSQL 기준 backend downstream pilot을 만들고 dependency·DB migration·API·CI·
-   배포와 파괴적 작업 HITL Eval을 검증한다.
+1. 사용자가 선택한 기술 스택으로 backend downstream pilot을 만들고 dependency·DB migration·API·
+   CI·배포와 파괴적 작업 HITL Eval을 검증한다.
 2. frontend·backend 통합 fullstack downstream pilot에서 workspace·contract test·통합 E2E·secret·
    다중 배포·rollback 호환성을 검증한다.
 3. REQ-036과 build-policy validator를 다음 pilot release로 묶고 checksum·migration을 발행한다.
@@ -187,5 +190,5 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 다음 시작점
 
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
-- 신규 설치나 파괴적 명령 없이 backend pilot의 정확한 stack·DB·migration·test·배포 provider 범위를
-  Human-in-the-loop로 결정한다.
+- 신규 설치나 파괴적 명령 없이 backend pilot의 언어·runtime·framework·DB·migration·test·배포
+  provider와 추가 사용자 정의 스펙을 Human-in-the-loop로 결정한다.

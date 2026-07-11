@@ -64,7 +64,7 @@ Pilot 자동화와 보안 baseline을 제공하는 pre-release 단계입니다.
 | 범위 | 현재 검증 수준 |
 |---|---|
 | 프론트엔드 | Next.js·TypeScript·pnpm·Zustand·SCSS Modules·Vitest·Playwright·GitHub Actions·Vercel로 bootstrap, 보안·품질·E2E, Preview와 Production 검증 완료 |
-| 백엔드 | 언어 중립 보안·품질·HITL 요구사항과 Spring Boot·PostgreSQL 질문 항목만 존재. 실제 backend 저장소의 bootstrap·DB·migration·CI·배포 Eval은 미검증 |
+| 백엔드 | 언어 중립 보안·품질·HITL 질문 항목만 존재. Node.js·NestJS·Python·Spring Boot 등 어떤 스택도 기본값이 아니며 실제 backend bootstrap·DB·migration·CI·배포 Eval은 미검증 |
 | 풀스택 | frontend·backend 분리, secret·BaaS·배포 경계의 설계 요구사항만 존재. 실제 통합 저장소의 workspace·계약 테스트·통합 E2E·다중 배포 Eval은 미검증 |
 
 따라서 “upstream 요구사항 전체가 프론트엔드 기준으로 작성됐다”는 표현은 정확하지 않다. 요구사항은
@@ -72,6 +72,11 @@ Pilot 자동화와 보안 baseline을 제공하는 pre-release 단계입니다.
 편중되어 있다는 것이 정확하다. 프론트엔드 pilot의 발견 사항은 `REQ-033`~`REQ-036`과 관련 문서·
 validator에 환류한다. backend와 fullstack을 지원 완료로 표시하려면 각각 독립 downstream pilot과
 positive·negative Eval을 통과해야 한다.
+
+Frontend·backend·fullstack 스펙은 프로젝트마다 사용자가 정의한다. 기본 질문에 없는 언어,
+framework, database, infrastructure와 품질 도구도 개발환경 프로파일에 추가할 수 있으며, upstream은
+감지·질문·공급망 심사·설치 승인·검증 adapter를 통해 적용한다. 문서의 특정 기술 조합은 검증 사례나
+예시일 뿐 자동 설치 기본값이 아니다.
 
 설계 문서와 요구사항은 [`docs/`](docs/README.md)에서 관리합니다.
 
