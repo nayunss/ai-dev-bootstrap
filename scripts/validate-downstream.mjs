@@ -68,7 +68,7 @@ if (existsSync(packageFile)) {
     if (!exactVersion(version)) errors.push(`${name} must use an exact version, received '${version}'`);
   }
   if (allDependencies.next) {
-    const telemetryEvidence = ["package.json", "scripts/run-next.mjs", ".env.example", ".github/workflows/security.yml"]
+    const telemetryEvidence = ["package.json", "scripts/run-next.mjs", ".github/workflows/security.yml"]
       .filter((file) => existsSync(join(root, file)))
       .some((file) => read(file).includes("NEXT_TELEMETRY_DISABLED"));
     if (!telemetryEvidence) errors.push("Next.js requires project-controlled NEXT_TELEMETRY_DISABLED=1 evidence");

@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const root = process.cwd();
+assert.equal(readFileSync(join(root, "scripts/validate-downstream.mjs"), "utf8").includes(".env.example"), false);
 const fixture = mkdtempSync(join(tmpdir(), "downstream-validator-"));
 for (const path of [".ai", ".claude", ".codex", "security", "scripts", ".editorconfig", ".gitleaks.toml", "HANDOFF.md"]) {
   cpSync(join(root, path), join(fixture, path), { recursive: true });
