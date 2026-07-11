@@ -1,0 +1,89 @@
+schemaVersion: 1
+policy:
+  source: ../standards/security.md
+  networkDefault: deny
+  telemetry: deny
+  productionCredentials: deny
+  destructiveActions: explicit-human-approval
+
+approvedTools:
+  - id: gitleaks
+    version: 8.30.1
+    source: https://github.com/gitleaks/gitleaks
+    commit: 83d9cd684c87d95d656c1458ef04895a7f1cbd8e
+    license: MIT
+    telemetry: none-found
+    networkAtRuntime: deny
+    install: verified-release-asset
+    assets:
+      darwin-arm64:
+        sha256: b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5
+      linux-x64:
+        sha256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+  - id: opengrep
+    version: 1.22.0
+    source: https://github.com/opengrep/opengrep
+    commit: f458d7f0d52cc58eae1ca3cf3d5caf101e637519
+    license: LGPL-2.1
+    telemetry: conditional-forced-off
+    networkAtRuntime: deny
+    install: verified-signed-release-asset
+    rules: security/sast-rules.yml
+    assets:
+      darwin-arm64:
+        sha256: 6105ab78eca041fcb9f83055939088ba8f96a6cb66683ceced39652938b217ce
+      linux-x64:
+        sha256: 45bcd58440e397ed52c50e953ccf5948909ea77087c9186fc7d277216f62e319
+    restrictions:
+      - local-rules-only
+      - metrics-off
+      - version-check-disabled
+      - project-local-home-and-cache
+      - no-auto-config
+      - no-remote-output
+      - no-autofix
+  - id: codesight
+    version: 1.18.0
+    source: https://github.com/Houseofmvps/codesight
+    commit: c2d49a5068661740dd4a70c8c078ee0f8061a9e4
+    license: MIT
+    telemetry: local-token-report-only
+    networkAtRuntime: deny
+    install: npm-ignore-scripts
+    restrictions:
+      - no-mcp-by-default
+      - no-codesight-hook-installer
+      - generated-wiki-reviewed-in-git
+
+requiredChecks:
+  local:
+    - secret-scan
+    - changed-files-review
+  ci:
+    - secret-scan
+    - dependency-audit
+    - static-analysis
+    - policy-integrity
+
+protectedPaths:
+  - .ai/standards/
+  - .ai/workflows/
+  - .ai/manifests/
+  - .github/workflows/
+  - .husky/
+
+approvalRequired:
+  - file-delete
+  - destructive-git
+  - database-write-production
+  - database-destructive-query
+  - deployment
+  - external-data-transfer
+  - secret-access
+  - iam-change
+  - security-control-change
+
+rejectedTools:
+  - id: semgrep-community
+    version: 1.168.0
+    reason: Runtime crashed while initializing OpenTelemetry/X509 even with metrics disabled.

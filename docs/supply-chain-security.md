@@ -96,6 +96,34 @@ Markdown 스킬도 에이전트에게 파일 삭제, 비밀 읽기 또는 외부
 - 영향받은 비밀이 있을 가능성이 있으면 폐기·교체하고, 조사 결과와 후속 방지를 기록한다.
 - 승인 철회 목록을 관리해 이미 설치된 환경에서도 탐지할 수 있게 한다.
 
+## 보안 검사기 심사 결과
+
+### Gitleaks 8.30.1 — 승인
+
+- 공식 release asset과 SHA-256을 macOS ARM64·Linux x64에 고정했다.
+- runtime telemetry를 발견하지 못했고 local repository scan만 허용한다.
+
+### Semgrep Community 1.168.0 — 거부
+
+metrics를 비활성화했는데도 version 실행 중 OpenTelemetry·X509 초기화에서 crash했다. runtime
+안전성과 재현성 gate를 통과하지 못해 승인 목록과 실행 경로에서 제거했다.
+
+### Opengrep 1.22.0 — 조건부 승인
+
+- tag `f458d7f0d52cc58eae1ca3cf3d5caf101e637519`, LGPL-2.1을 확인했다.
+- GitHub의 서명된 release와 공식 asset digest를 사용한다.
+- source에는 기본 version check와 legacy metrics 경로가 남아 있어 무조건 승인하지 않는다.
+- `OPENGREP_ENABLE_VERSION_CHECK=0`, `SEMGREP_SEND_METRICS=off`, local rules only를 강제한다.
+- `auto`, URL rules, remote output, autofix와 untrusted validator를 사용하지 않는다.
+- HOME·cache를 프로젝트 `.tools/`로 격리해 사용자 전역 파일을 만들지 않는다.
+- macOS ARM64 checksum은
+  `6105ab78eca041fcb9f83055939088ba8f96a6cb66683ceced39652938b217ce`, Linux x64는
+  `45bcd58440e397ed52c50e953ccf5948909ea77087c9186fc7d277216f62e319`이다.
+- 네트워크 없는 sandbox에서 version, local rule scan, positive·negative fixture가 통과했다.
+
+공식 출처: [Opengrep repository](https://github.com/opengrep/opengrep),
+[v1.22.0 release](https://github.com/opengrep/opengrep/releases/tag/v1.22.0).
+
 ## 자동 검증에 포함할 항목
 
 향후 `scripts/validate`는 최소한 다음을 검사한다.

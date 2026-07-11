@@ -1,0 +1,12 @@
+title = "Common project secret scanning policy"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Generated and dependency directories"
+paths = [
+  '''(^|/)node_modules/''',
+  '''(^|/)\.tools/''',
+  '''(^|/)\.security-reports/'''
+]

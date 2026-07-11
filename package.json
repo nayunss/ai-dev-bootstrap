@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "codesight": "codesight --wiki"
+    "codesight": "codesight --wiki",
+    "security": "scripts/security-check full",
+    "security:changed": "scripts/security-check changed",
+    "security:staged": "scripts/security-check staged"
   },
   "devDependencies": {
     "codesight": "1.18.0"

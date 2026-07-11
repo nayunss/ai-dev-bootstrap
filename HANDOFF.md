@@ -37,8 +37,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   가드레일을 추가했다.
 - upstream이 질문 조건을 정의하고 downstream 사용자가 선택·승인·거절로 답하는
   Human-in-the-loop 계약과 Eval 기준을 추가했다.
-- 첫 downstream 검증 대상은 형제 경로 `../env-downstream`으로 정했다. upstream이 아직 첫
-  commit 전이므로 실제 적용은 pin 가능한 baseline이 생길 때까지 대기한다.
+- 첫 downstream 검증 대상은 형제 경로 `../env-downstream`이며 pilot commit을 고정해 환경·
+  기술 스택과 공급망 preview를 검증 중이다.
 
 ## 현재 상태
 
@@ -47,8 +47,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   - `6448c61 docs: define common AI environment architecture`
   - `f1181e3 feat: add tool-neutral AI workflows and policies`
 - 프로젝트 로컬 CodeSight 설치·생성 스크립트를 `1254db0` 커밋으로 추가했다.
-- 보안 실행 계층, AI tool hook과 package 설정은 Semgrep runtime 실패 때문에 아직 uncommitted다.
-- 원격 저장소는 아직 연결하지 않았다.
+- Semgrep은 거부하고 Opengrep `1.22.0`을 조건부 승인해 공통 security-check를 구현했다.
+- 원격 `git@github.com:nayunss/ai-dev-bootstrap.git`의 `main`을 추적한다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
 
 ## 주요 결정
@@ -85,24 +85,26 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - `security-tools.yaml` YAML 파싱: PASS
 - Gitleaks 전체 저장소 secret scan: PASS
 - CodeSight generate·read: PASS
-- 첫 commit pre-commit: FAIL — Semgrep `1.168.0` runtime/version 검증 실패
-- 실패 후 문서·정책 커밋만 `HUSKY=0`으로 생성했으며 보안 자동화 파일은 커밋하지 않았다.
+- Semgrep `1.168.0`: FAIL·거부 — metrics off에서도 OpenTelemetry/X509 runtime crash
+- Opengrep `1.22.0` source·license·release checksum: PASS, version check·metrics 강제 차단 조건
+- Opengrep local-rule 전체 SAST: PASS
+- SAST positive fixture 탐지·negative fixture 비탐지: PASS
+- AI hook destructive Git 명령 차단: PASS
 - Markdown 시각 렌더링 검사: 미구현
-- SAST: FAIL — 현재 Semgrep 후보를 승인 목록에서 제거하고 대체 도구를 재심사해야 한다.
 
 ## 남은 작업
 
-1. 실패한 Semgrep 후보를 승인 목록과 실행 경로에서 제거한다.
-2. 대체 SAST 후보를 공급망·telemetry·runtime 관점에서 심사하고 고정한다.
-3. `security-check`를 통과시킨 뒤 남은 hook·CI·package·manifest를 논리적으로 커밋한다.
-4. 요구사항의 미결정 항목과 우선 지원 웹 기술 스택을 확정한다.
-5. `.ai/project.yaml`, `bootstrap`, `validate`와 downstream 설치 흐름을 구현한다.
-6. 원격 저장소를 연결하고 versioned upstream baseline을 발행한다.
+1. Codex·Claude Code post-edit adapter와 GitHub Actions 설정을 최종 검증한다.
+2. CodeSight deterministic output과 npm dependency audit를 검증한다.
+3. 보안 자동화 파일을 논리적 단위로 커밋하고 push한다.
+4. clean clone에서 bootstrap·security-check·Eval을 재실행한다.
+5. pilot tag와 checksum을 발행하고 downstream pin을 갱신한다.
+6. downstream 최종 설치 preview 승인 후 Todo 환경을 적용한다.
 
 ## 위험·주의
 
-- Gitleaks와 CodeSight 감사는 완료했지만 SAST 후보는 승인 상태가 아니다.
-- 현재 hook은 Semgrep 실패로 정상 commit을 차단하므로 보안 자동화를 완료한 것으로 간주하지 않는다.
+- Opengrep은 opt-out 강제 조건부 승인이므로 version check·metrics 환경변수 검증을 제거하면 안 된다.
+- Husky는 downstream 개발환경과 품질 명령 승인 전까지 적용하지 않는다.
 - Superpowers의 원격 이미지 요청과 Agent Skills의 network cache hook은 기본 도입에서 제외했다.
 - 현재 `tool/github-speckit`은 원본 clone이 아니라 Claude 통합 프로젝트 산출물이다.
 

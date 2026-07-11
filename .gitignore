@@ -5,6 +5,7 @@
 node_modules/
 .tools/
 .security-reports/
+.codesight/wiki/log.md
 dist/
 build/
 coverage/

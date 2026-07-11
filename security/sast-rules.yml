@@ -1,0 +1,48 @@
+rules:
+  - id: javascript-dangerous-eval
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: Dynamic code execution through eval is prohibited.
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: new Function(...)
+
+  - id: javascript-insecure-tls
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: TLS certificate verification must not be disabled.
+    pattern-either:
+      - pattern: process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+      - pattern: '$X = { ..., rejectUnauthorized: false, ... }'
+
+  - id: react-dangerously-set-inner-html
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: dangerouslySetInnerHTML requires trusted sanitization and security review.
+    pattern: <$X dangerouslySetInnerHTML={...} ... />
+
+  - id: python-dangerous-eval
+    languages: [python]
+    severity: ERROR
+    message: Dynamic code execution through eval or exec is prohibited.
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: exec(...)
+
+  - id: python-subprocess-shell
+    languages: [python]
+    severity: ERROR
+    message: subprocess shell=True can enable command injection.
+    pattern: subprocess.$F(..., shell=True, ...)
+
+  - id: python-unsafe-yaml-load
+    languages: [python]
+    severity: ERROR
+    message: Use yaml.safe_load for untrusted YAML.
+    pattern: yaml.load(...)
+
+  - id: generic-private-key
+    languages: [generic]
+    severity: ERROR
+    message: Private key material must never be committed.
+    pattern-regex: '-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'

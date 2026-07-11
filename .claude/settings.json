@@ -1,0 +1,31 @@
+{
+  "hooks": {
+    "SessionStart": [{
+      "matcher": "startup|resume|clear|compact",
+      "hooks": [{
+        "type": "command",
+        "command": "scripts/codesight-context",
+        "args": ["session"],
+        "timeout": 10
+      }]
+    }],
+    "PreToolUse": [{
+      "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit|mcp__.*",
+      "hooks": [{
+        "type": "command",
+        "command": "node",
+        "args": ["scripts/ai-security-hook.mjs", "pre"],
+        "timeout": 10
+      }]
+    }],
+    "PostToolUse": [{
+      "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+      "hooks": [{
+        "type": "command",
+        "command": "node",
+        "args": ["scripts/ai-security-hook.mjs", "post"],
+        "timeout": 120
+      }]
+    }]
+  }
+}
