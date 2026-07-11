@@ -8,5 +8,9 @@ description = "Generated and dependency directories"
 paths = [
   '''(^|/)node_modules/''',
   '''(^|/)\.tools/''',
-  '''(^|/)\.security-reports/'''
+  '''(^|/)\.cache/''',
+  '''(^|/)\.next/''',
+  '''(^|/)\.security-reports/''',
+  '''(^|/)playwright-report/''',
+  '''(^|/)test-results/'''
 ]

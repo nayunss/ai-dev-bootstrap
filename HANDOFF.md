@@ -37,8 +37,12 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   가드레일을 추가했다.
 - upstream이 질문 조건을 정의하고 downstream 사용자가 선택·승인·거절로 답하는
   Human-in-the-loop 계약과 Eval 기준을 추가했다.
-- 첫 downstream 검증 대상은 형제 경로 `../env-downstream`이며 pilot commit을 고정해 환경·
-  기술 스택과 공급망 preview를 검증 중이다.
+- 첫 downstream 검증 대상 `../env-downstream`에서 pilot pin, 공급망 심사, Todo 구현, 공통 보안,
+  CodeSight와 Husky 적용을 완료했다.
+- downstream에서 format·lint·typecheck·unit 3건·production build·브라우저 E2E 5건과 full
+  secret/SAST scan을 통과했다.
+- pilot 피드백으로 TypeScript 7·ESLint 10 peer 충돌, PostCSS 전이 취약점, pnpm 11 override 위치,
+  생성물 secret-scan 오탐과 Corepack 재다운로드 위험을 기록했다.
 
 ## 현재 상태
 
@@ -97,11 +101,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. `v0.1.0-pilot` tag와 archive checksum을 발행한다.
-2. downstream pin을 pilot tag로 갱신한다.
-3. downstream direct tarball·transitive dependency audit를 완료한다.
-4. 최종 설치 preview 승인 후 Todo 환경을 적용한다.
-5. 품질 명령이 통과하면 Husky 적용을 별도 승인한다.
+1. downstream pilot 피드백을 bootstrap·validate 자동화 요구사항으로 전환한다.
+2. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
+3. 다음 release에서 clean clone과 downstream upgrade 경로를 다시 검증한다.
 
 ## 위험·주의
 
