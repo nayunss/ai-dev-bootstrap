@@ -451,6 +451,25 @@
   preview·Human-in-the-loop 및 품질 gate 후 활성화한다.
 - token-aware와 full 모두 같은 bootstrap mutation boundary와 필수 validate 결과를 사용한다.
 
+### REQ-034: 설치된 Package Version 변경 승인
+
+- 이미 manifest·lockfile 또는 vendored artifact에 존재하는 package의 version을 변경하기 전에
+  downstream 사용자에게 확인하고 명시적 승인을 받는다.
+- patch·minor·major, direct·transitive, security update, downgrade, override와 lockfile-only 변경을
+  모두 승인 대상으로 본다. 자동 update bot과 AI의 추천도 예외가 아니다.
+- 질문에는 package 이름, 현재·목표 정확한 version, 변경 이유, release·migration·security 근거,
+  peer·runtime·framework 호환성, code·type·config·build·runtime·browser·data 영향, 예상 lockfile·
+  dependency 변화, 검증과 rollback을 포함한다.
+- 승인 전에는 package manifest, lockfile, package manager override와 vendored dependency를 수정하거나
+  install·update 명령을 실행하지 않는다. 답이 없거나 범위가 모호하면 현재 version을 유지한다.
+- 적용 중 예상하지 못한 code migration, 새 dependency, lifecycle, telemetry, network, permission 또는
+  breaking change가 나타나면 중단하고 변경된 범위로 재승인을 받는다.
+- 승인 후 exact version·scripts-off·strict peer·공급망 심사를 적용하고 관련 코드 migration과
+  formatter·linter·typecheck·unit·integration·E2E·build·security·dependency audit를 검증한다.
+- 결정과 결과는 개발환경 문서, ADR 또는 dependency upgrade record, lockfile과 `HANDOFF.md`에
+  기록하며 채팅의 과거 포괄 승인만으로 다른 package update를 수행하지 않는다.
+- token-aware와 full 모두 승인 질문과 필수 호환성·보안·회귀 검증을 생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -523,3 +542,4 @@
 | 2026-07-11 | 프로젝트 로컬 EditorConfig와 formatter·linter 간 일관성 요구사항 추가 |
 | 2026-07-11 | 작업·PR의 HANDOFF 갱신 누락을 공통 validator와 CI에서 차단하도록 강화 |
 | 2026-07-11 | Downstream pilot 피드백을 공통 bootstrap preview·dependency·validate gate로 자동화 |
+| 2026-07-11 | 설치된 package version 변경 전 영향 preview와 사용자 승인·재승인 요구사항 추가 |

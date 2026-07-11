@@ -15,7 +15,7 @@
 |---|---|
 | 요구사항 충돌 | 우선할 사용자 흐름·인수 조건 |
 | 개발환경 | 언어·framework·DB·provider·지원 범위 |
-| 의존성·plugin | source·version·권한·network 변경 |
+| 의존성·plugin | 기존·신규 package의 source·현재/목표 version·코드 영향·권한·network 변경 |
 | 데이터·개인정보 | 저장·전송 위치, 목적과 보존 기간 |
 | 인증·권한 | user·tenant·admin의 허용 작업 |
 | 비용 | 유료 API, cloud resource와 quota |
@@ -39,6 +39,11 @@
 MCP server의 최초 설정·활성화, version·integrity·publisher·tool·host·credential scope 변경과
 만료된 심사 갱신은 Human-in-the-loop 대상이다. 사용자는 비밀 값을 제공하지 않고 manifest diff,
 요청 권한, 데이터 흐름, 제거·rollback과 공급망 심사 결과를 확인해 활성화 여부만 결정한다.
+
+이미 설치된 package version 변경도 Human-in-the-loop 대상이다. patch나 security update라도 현재·
+목표 version, peer·runtime 호환성, 필요한 code migration, lockfile·전이 dependency 변화, 검증과
+rollback을 먼저 제시한다. 승인 전에 manifest·lockfile·override를 수정하거나 update 명령을
+실행하지 않으며 적용 중 preview 범위가 달라지면 재승인한다.
 
 ## 질문 없이 진행 가능한 경우
 
@@ -70,4 +75,4 @@ MCP server의 최초 설정·활성화, version·integrity·publisher·tool·hos
 
 ## 추적성
 
-- 관련 요구사항: REQ-004, REQ-007, REQ-015, REQ-016, REQ-019~023, REQ-026~030
+- 관련 요구사항: REQ-004, REQ-007, REQ-015, REQ-016, REQ-019~023, REQ-026~030, REQ-034

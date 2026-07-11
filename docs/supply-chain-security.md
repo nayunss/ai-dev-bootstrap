@@ -91,6 +91,10 @@ Markdown 스킬도 에이전트에게 파일 삭제, 비밀 읽기 또는 외부
 ## 업데이트와 사고 대응
 
 - 새 버전은 신규 설치와 동일하게 재심사한다. 기존 승인은 상속되지 않는다.
+- 이미 설치된 package의 update·downgrade·override·lockfile-only 변경은 공급망 심사와 별도로
+  downstream 사용자의 정확한 version 변경 승인을 먼저 받는다.
+- release note·migration·peer·runtime 호환성과 필요한 code 변경을 preview하고, 적용 중 예상하지
+  못한 dependency·lifecycle·권한·network 변화가 생기면 중단해 재승인한다.
 - 유지관리자 또는 저장소 소유권 변경 시 즉시 재심사한다.
 - 예상하지 못한 외부 통신이나 파일 접근을 발견하면 사용을 중단하고 버전을 격리한다.
 - 영향받은 비밀이 있을 가능성이 있으면 폐기·교체하고, 조사 결과와 후속 방지를 기록한다.

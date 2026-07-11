@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-033까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-034까지 수집했다.
 
 ## 완료
 
@@ -69,6 +69,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   asset 재다운로드 검증을 통과했다.
 - Downstream ESLint가 validator의 미사용 `execFileSync` import warning을 발견해 동작 변화 없는
   safe lint 수정으로 upstream main과 downstream local override에 반영했다. 다음 release에 포함한다.
+- REQ-034와 dependency upgrade workflow를 추가했다. 설치된 package의 update·downgrade·override·
+  lockfile-only 변경은 영향 preview와 정확한 version 승인을 받기 전에는 실행하지 않는다.
 
 ## 현재 상태
 
@@ -146,8 +148,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. 갱신된 downstream `v0.2.1-pilot` preview를 Human-in-the-loop로 다시 검토한다.
-2. 승인 후 별도 upgrade commit으로 적용하고 전체 품질·보안·E2E를 검증한 뒤 lock을 갱신한다.
+1. `v0.2.1-pilot` 이후 upstream 변경을 다음 release 후보로 묶을 시점을 결정한다.
+2. dependency version approval workflow의 자동 Eval·CI 검사를 추가한다.
 3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
 ## 위험·주의
