@@ -47,6 +47,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   Claude Code 공통 pre-tool 훅 및 회귀 테스트에 연결했다.
 - REQ-032와 MCP 보안 조사 문서를 추가했다. 승인 manifest는 빈 allowlist·default-deny이며
   미승인 server·tool 호출과 CLI 설정 변경을 pre-tool 훅에서 차단한다.
+- REQ-009에 언어·레이어별 코드 스타일 일관성, 저장소 formatter·linter 우선과 스타일 변경의
+  명시적 migration 원칙을 추가했다. 두 토큰 프로파일 모두 같은 필수 품질 기준이라 분기하지 않는다.
 
 ## 현재 상태
 
