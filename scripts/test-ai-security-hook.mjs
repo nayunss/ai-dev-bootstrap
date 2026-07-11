@@ -27,7 +27,16 @@ for (const file of [".env", ".env.local", ".env.example", ".environment", "confi
 expectDenied("Grep", { pattern: "TOKEN", path: ".env.development" });
 expectDenied("Glob", { pattern: "**/.env*" });
 expectDenied("Bash", { command: "sed -n '1,20p' .env.local" });
-expectDenied("mcp__filesystem__read_file", { path: "/workspace/.env" });
+
+const unapprovedMcp = run("mcp__filesystem__read_file", { path: "src/app.ts" });
+assert.equal(unapprovedMcp.status, 0);
+assert.match(unapprovedMcp.stdout, /"permissionDecision":"deny"/);
+assert.match(unapprovedMcp.stdout, /is not enabled in the reviewed project manifest/);
+
+const mcpMutation = run("Bash", { command: "claude mcp add filesystem -- npx server" });
+assert.equal(mcpMutation.status, 0);
+assert.match(mcpMutation.stdout, /"permissionDecision":"deny"/);
+assert.match(mcpMutation.stdout, /MCP configuration changes require supply-chain review/);
 
 const safe = run("Read", { file_path: "src/app.ts" });
 assert.equal(safe.status, 0);

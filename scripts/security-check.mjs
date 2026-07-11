@@ -58,6 +58,12 @@ function files() {
   return git(args).split("\0").filter(Boolean).filter((file) => existsSync(join(root, file)));
 }
 
+const mcpManifest = run(process.execPath, ["scripts/validate-mcp-manifest.mjs"], true);
+if (mcpManifest.status !== 0) {
+  process.stderr.write(mcpManifest.stderr || mcpManifest.stdout || "MCP approval manifest validation failed.\n");
+  process.exit(1);
+}
+
 const gitleaks = verify("gitleaks", ["version"]);
 const opengrep = verify("opengrep", ["--version"]);
 if (mode === "verify-tools") {

@@ -401,6 +401,24 @@
   제공한다.
 - 토큰 프로파일, 사용자 포괄 승인과 개발 편의를 이유로 이 차단을 생략하지 않는다.
 
+### REQ-032: MCP 공급망 심사와 기본 차단
+
+- upstream은 project-local MCP server를 설정하기 전에 source·publisher·license, 정확한 version·
+  integrity, lifecycle·binary, dependency·CVE·SAST, telemetry·network, tool description과 실제
+  filesystem·credential·API 권한을 심사한다.
+- 검증하지 않았거나 승인 manifest에 없는 MCP는 downstream에서 설정·활성화·호출하지 않는다.
+- manifest는 기본 빈 allowlist·default-deny이며 심사 승인과 프로젝트 사용자의 활성화를 분리한다.
+- `.env*`, ambient credential, home, 다른 repository와 production data는 MCP에 제공하지 않는다.
+- token passthrough, 인증 없는 원격 endpoint, floating version, checksum 없는 artifact, 끌 수 없는
+  telemetry, 과도한 shell·filesystem·network 권한과 미패치 high·critical 취약점은 거부한다.
+- tool poisoning, rug pull, shadowing, confused deputy, prompt injection, path traversal, command
+  injection과 credential exfiltration을 격리 환경에서 평가한다.
+- tool·version·publisher·integrity·host·scope가 바뀌거나 review가 만료되면 자동 활성화를 중단하고
+  Human-in-the-loop 재승인을 요구한다.
+- Codex·Claude Code 등 지원 adapter는 같은 승인 manifest와 pre-tool default-deny 훅을 사용하며
+  CI는 manifest와 설정 drift를 독립적으로 검증한다.
+- 토큰 프로파일은 조사 설명량만 바꿀 수 있고 MCP 심사·차단·필수 Eval을 생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -468,3 +486,4 @@
 | 2026-07-11 | 프로젝트 개발환경과 실제 품질 명령이 확정된 뒤에만 Husky를 적용하는 규칙 추가 |
 | 2026-07-11 | Supabase·Firebase 보안 프로파일과 Human-in-the-loop 역할 계약 추가 |
 | 2026-07-11 | AI의 민감정보 및 `.env*` 파일 읽기·검색·색인 금지 요구사항 추가 |
+| 2026-07-11 | MCP 공급망·권한 심사, 승인 manifest와 미승인 server 기본 차단 요구사항 추가 |

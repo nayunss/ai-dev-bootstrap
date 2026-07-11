@@ -15,6 +15,7 @@
 | [Eval 전략](evaluation-strategy.md) | 하네스·루프·모델 변경의 outcome 기반 평가 | 제안 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 제안 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 제안 |
+| [MCP 보안과 승인 절차](mcp-security.md) | MCP 공급망·권한 심사와 미승인 server 기본 차단 | 기본 차단 |
 | [Human-in-the-loop](human-in-the-loop.md) | Upstream 질문과 Downstream 응답·승인 계약 | 제안 |
 | [코드 품질 표준](code-quality-standards.md) | 언어 중립 클린 코드와 시멘틱 웹 접근성 기준 | 작성 중 |
 | [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md) | Prettier·ESLint·Husky 및 AI·Git 훅 정책 | 제안 |

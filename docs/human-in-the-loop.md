@@ -36,6 +36,10 @@
 
 비밀 값을 답변으로 요구하지 않고 secret manager의 key 이름과 설정 완료 여부만 확인한다.
 
+MCP server의 최초 설정·활성화, version·integrity·publisher·tool·host·credential scope 변경과
+만료된 심사 갱신은 Human-in-the-loop 대상이다. 사용자는 비밀 값을 제공하지 않고 manifest diff,
+요청 권한, 데이터 흐름, 제거·rollback과 공급망 심사 결과를 확인해 활성화 여부만 결정한다.
+
 ## 질문 없이 진행 가능한 경우
 
 - repository 범위 read-only 조사

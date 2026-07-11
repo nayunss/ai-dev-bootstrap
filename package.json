@@ -7,7 +7,8 @@
     "security": "scripts/security-check full",
     "security:changed": "scripts/security-check changed",
     "security:staged": "scripts/security-check staged",
-    "test:ai-security-hook": "node scripts/test-ai-security-hook.mjs"
+    "test:ai-security-hook": "node scripts/test-ai-security-hook.mjs",
+    "validate:mcp": "node scripts/validate-mcp-manifest.mjs"
   },
   "devDependencies": {
     "codesight": "1.18.0"
