@@ -58,6 +58,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   audit 분리와 Playwright/Husky 별도 승인을 검사한다.
 - `v0.2.0-pilot` release note와 package version을 준비했다. clean clone 검증 결과, migration,
   rollback과 별도 checksum artifact 발행 계약을 기록했다.
+- `v0.2.0-pilot` tag commit `a373c48`과 GitHub prerelease를 발행했다. archive SHA-256은
+  `454a3d4a2d9781ce529f9e41408d1f3f59bff941c3a3e94e67ae099df07a4584`이며 게시 후 재다운로드
+  검증을 통과했다.
 
 ## 현재 상태
 
@@ -135,8 +138,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. `v0.2.0-pilot` tag와 checksum artifact를 발행한다.
-2. downstream에서 변경 preview와 Human-in-the-loop 승인 후 새 release upgrade를 검증한다.
+1. downstream의 `v0.2.0-pilot` 변경 preview를 Human-in-the-loop로 검토한다.
+2. 승인 후 별도 upgrade commit으로 적용하고 전체 품질·보안·E2E를 검증한 뒤 lock을 갱신한다.
 3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
 
 ## 위험·주의
