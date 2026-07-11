@@ -73,6 +73,11 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   lockfile-only 변경은 영향 preview와 정확한 version 승인을 받기 전에는 실행하지 않는다.
 - `v0.2.2-pilot` package version과 release note를 준비했다. v0.2.1 이후 validator lint 수정과
   REQ-034 dependency version 승인 계약만 묶고 application dependency는 변경하지 않는다.
+- `v0.2.2-pilot` tag commit `bfe3ef0`과 GitHub prerelease를 발행했다. archive SHA-256은
+  `880f9c6e127606bf746bf06ee7ba34285ac960b3187e06294348ce8e9c5972ca`이며 clean clone과 게시
+  asset 재다운로드 검증을 통과했다.
+- Dependency 승인 자동 gate를 추가했다. staged·PR range의 direct version과 lockfile-only SHA-256
+  diff를 구조화된 승인 record와 대조하고 positive·negative fixture를 CI에서 실행한다.
 
 ## 현재 상태
 
@@ -143,6 +148,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - MCP manifest schema·만료·integrity 검증과 미승인 MCP 호출·설정 변경 차단: PASS
 - HANDOFF 필수 구조·staged 동반 변경·PR range validator: PASS
 - Bootstrap preview·downstream validator positive/negative fixture: PASS
+- Dependency direct version·lockfile-only 승인 positive/negative fixture: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
 - 최신 clean clone `npm ci --ignore-scripts`·npm audit·checksum bootstrap·full security: PASS
@@ -150,9 +156,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-1. `v0.2.2-pilot`을 clean clone 검증하고 tag·checksum artifact로 발행한다.
-2. dependency version approval workflow의 자동 Eval·CI 검사를 추가한다.
-3. CI·배포 프로파일을 실제 downstream 요구가 확정될 때 적용한다.
+1. Downstream CI·배포 제공자와 운영 환경을 감지하고 미확정 항목을 Human-in-the-loop로 확인한다.
+2. 승인된 범위의 CI·배포 프로파일을 적용하고 security·quality·deployment preview를 검증한다.
 
 ## 위험·주의
 

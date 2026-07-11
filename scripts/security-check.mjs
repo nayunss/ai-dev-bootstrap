@@ -69,6 +69,12 @@ if (handoff.status !== 0) {
   process.stderr.write(handoff.stderr || handoff.stdout || "HANDOFF.md validation failed.\n");
   process.exit(1);
 }
+const dependencyMode = mode === "staged" ? "staged" : "full";
+const dependencyApproval = run(process.execPath, ["scripts/validate-dependency-upgrades.mjs", dependencyMode], true);
+if (dependencyApproval.status !== 0) {
+  process.stderr.write(dependencyApproval.stderr || dependencyApproval.stdout || "Dependency upgrade approval validation failed.\n");
+  process.exit(1);
+}
 
 const gitleaks = verify("gitleaks", ["version"]);
 const opengrep = verify("opengrep", ["--version"]);

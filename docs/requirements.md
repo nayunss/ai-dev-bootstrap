@@ -469,6 +469,9 @@
 - 결정과 결과는 개발환경 문서, ADR 또는 dependency upgrade record, lockfile과 `HANDOFF.md`에
   기록하며 채팅의 과거 포괄 승인만으로 다른 package update를 수행하지 않는다.
 - token-aware와 full 모두 승인 질문과 필수 호환성·보안·회귀 검증을 생략하지 않는다.
+- staged와 PR gate는 direct dependency version diff를 승인 record의 package·manifest·from·to와
+  대조하고, direct 변경 없는 lockfile-only diff는 이전·새 SHA-256 승인을 요구한다.
+- 승인 누락·만료·범위 불일치 negative fixture와 정확한 승인 positive fixture를 CI Eval로 유지한다.
 
 ## 비기능 요구사항
 

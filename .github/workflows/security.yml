@@ -34,6 +34,7 @@ jobs:
           scripts/bootstrap preview
           scripts/validate .
           npm run test:downstream-validator
+          npm run test:dependency-upgrade-validator
 
       - name: Install locked security tools
         run: scripts/bootstrap-security-tools
@@ -46,6 +47,10 @@ jobs:
       - name: Require HANDOFF update for pull requests
         if: github.event_name == 'pull_request'
         run: node scripts/validate-handoff.mjs range "${{ github.event.pull_request.base.sha }}"
+
+      - name: Require approval for dependency version changes
+        if: github.event_name == 'pull_request'
+        run: node scripts/validate-dependency-upgrades.mjs range "${{ github.event.pull_request.base.sha }}"
 
       - name: Run security checks
         run: scripts/security-check full

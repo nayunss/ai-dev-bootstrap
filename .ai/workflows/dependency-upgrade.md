@@ -17,3 +17,17 @@
 
 같은 version의 lockfile 재생성도 전이 dependency나 integrity가 달라질 수 있으므로 diff를 먼저
 검토한다. 자동 보안 update bot의 PR도 사용자 승인과 동일한 gate를 통과해야 한다.
+
+## 자동 gate
+
+- 승인 기록: `.ai/approvals/dependency-upgrades.json`
+- staged 검사: `node scripts/validate-dependency-upgrades.mjs staged`
+- PR 검사: `node scripts/validate-dependency-upgrades.mjs range <base-sha>`
+- direct version 변경은 package·manifest·from·to가 정확히 일치하는 유효 승인 record를 요구한다.
+- direct version 변경 없는 lockfile-only diff는 이전·새 파일의 SHA-256이 일치하는
+  `__lockfile__` 승인을 요구한다.
+- 승인에는 reason, migration, validation, rollback, approver, 승인·만료일과 `approved` 상태가
+  필요하다.
+
+이 validator는 승인자의 실제 신원을 암호학적으로 증명하지 않는다. protected approval file,
+CODEOWNERS·branch protection과 사람 review가 승인자 신뢰 경계를 담당해야 한다.
