@@ -31,9 +31,10 @@ if (mode === "pre") {
     /\b(?:DROP|TRUNCATE)\s+(?:DATABASE|SCHEMA|TABLE)\b/i,
     /\b(?:terraform\s+destroy|kubectl\s+delete|helm\s+uninstall)\b/i,
   ];
-  const sensitive = /(^|[/\\])(?:\.env(?:\.|$)|credentials?(?:\.|$)|secrets?\.(?:ya?ml|json)|\.ssh[/\\]|\.aws[/\\])/i;
+  const sensitive = /(?:^|[/\\\s"'=])(?:\.env[^/\\\s"']*|credentials?(?:\.|$)|secrets?\.(?:ya?ml|json)|\.ssh[/\\]|\.aws[/\\])/i;
   const protectedPath = /(^|[/\\])(?:\.ai[/\\](?:standards|workflows|manifests)|\.github[/\\]workflows|\.claude[/\\]settings|\.codex[/\\]hooks|\.husky)(?:[/\\]|$)/i;
   if (destructive.some((pattern) => pattern.test(text))) deny("Destructive action blocked; exact human approval and rollback evidence are required.");
+  if (/^(?:Bash|Read|Glob|Grep|mcp__.*)$/i.test(tool) && sensitive.test(text)) deny("Sensitive files must not be read by AI; files whose names start with .env are always blocked.");
   if (/^(?:Write|Edit|MultiEdit|NotebookEdit)$/i.test(tool) && sensitive.test(text)) deny("Sensitive credential path modification is blocked.");
   if (/^(?:Write|Edit|MultiEdit|NotebookEdit)$/i.test(tool) && protectedPath.test(text)) deny("Protected security configuration requires separate review.");
   process.exit(0);

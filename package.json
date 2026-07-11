@@ -6,7 +6,8 @@
     "codesight": "codesight --wiki",
     "security": "scripts/security-check full",
     "security:changed": "scripts/security-check changed",
-    "security:staged": "scripts/security-check staged"
+    "security:staged": "scripts/security-check staged",
+    "test:ai-security-hook": "node scripts/test-ai-security-hook.mjs"
   },
   "devDependencies": {
     "codesight": "1.18.0"

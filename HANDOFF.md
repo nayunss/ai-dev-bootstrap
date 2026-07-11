@@ -43,6 +43,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   secret/SAST scan을 통과했다.
 - pilot 피드백으로 TypeScript 7·ESLint 10 peer 충돌, PostCSS 전이 취약점, pnpm 11 override 위치,
   생성물 secret-scan 오탐과 Corepack 재다운로드 위험을 기록했다.
+- REQ-031로 AI의 민감정보 비접근과 모든 `.env*` 파일 읽기·검색·색인 차단을 추가하고 Codex·
+  Claude Code 공통 pre-tool 훅 및 회귀 테스트에 연결했다.
 
 ## 현재 상태
 
@@ -94,6 +96,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - Opengrep local-rule 전체 SAST: PASS
 - SAST positive fixture 탐지·negative fixture 비탐지: PASS
 - AI hook destructive Git 명령 차단: PASS
+- AI hook `.env*` Read·Glob·Grep·Bash·MCP 차단과 일반 소스 Read 허용: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
 - 최신 clean clone `npm ci --ignore-scripts`·npm audit·checksum bootstrap·full security: PASS

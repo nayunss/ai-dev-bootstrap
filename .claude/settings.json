@@ -10,7 +10,7 @@
       }]
     }],
     "PreToolUse": [{
-      "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit|mcp__.*",
+      "matcher": "Bash|Read|Glob|Grep|Write|Edit|MultiEdit|NotebookEdit|mcp__.*",
       "hooks": [{
         "type": "command",
         "command": "node",

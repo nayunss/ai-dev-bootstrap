@@ -109,6 +109,15 @@ rollback 방법:
 
 ## 비밀과 개인정보
 
+- AI는 민감한 정보를 읽지 않는다. 작업 편의를 위한 조회나 사용자의 포괄적 승인도 예외가 아니다.
+- 파일명이 `.env`로 시작하는 모든 파일은 내용의 실제 민감도와 관계없이 AI의 Read, Glob, Grep,
+  shell, MCP와 색인 대상에서 제외한다. `.env`, `.env.local`, `.env.production`, `.env.example`을
+  모두 포함한다.
+- 환경 변수 이름이나 예시가 AI 작업에 필요하면 `.env*` 파일을 열지 않고, 비밀 값이 없는 별도
+  환경 변수 스키마나 개발환경 문서에 필요한 항목만 제공한다.
+- 이 규칙은 AI 프로세스의 OS·container 권한에서 `.env*` 접근을 제거하는 것을 우선하며, 도구
+  훅은 추가 차단과 감사에 사용한다.
+
 ### Supabase·Firebase
 
 - provider 선택 시 `docs/backend-as-a-service-security.md`의 질문과 gate를 적용한다.
@@ -118,7 +127,7 @@ rollback 방법:
 - schema, RLS, Rules, App Check, production 연결과 destructive data 작업은 사람의 명시적
   승인을 요구한다.
 
-- `.env`, keychain, cloud credential과 production log를 기본 agent context에서 제외한다.
+- `.env*`, keychain, cloud credential과 production log를 agent context에서 제외한다.
 - secret은 저장소나 prompt에 붙여 넣지 않고 단기·최소 범위 credential을 사용한다.
 - 로그, diff, 승인 preview와 agent memory에서 secret과 개인정보를 redaction한다.
 - credential을 노출했을 가능성이 있으면 즉시 폐기·교체하고 audit log를 확인한다.

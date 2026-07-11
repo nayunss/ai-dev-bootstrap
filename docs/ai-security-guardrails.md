@@ -30,7 +30,8 @@ CI와 복구를 중첩한다.
 - `rm`, destructive Git, force push와 광범위한 overwrite
 - production hostname·account를 대상으로 하는 write
 - `DROP`, `TRUNCATE`, 조건 없는 bulk mutation
-- `.env`, credential, keychain, cloud config와 저장소 밖 민감 경로 접근
+- 파일명이 `.env`로 시작하는 모든 파일, credential, keychain, cloud config와 저장소 밖 민감
+  경로 읽기·검색·색인·수정
 - 승인되지 않은 network host와 upload
 - 보안 정책, hook, CI와 backup 설정 변경
 - 원격 script, package lifecycle과 신뢰하지 않는 binary 실행
@@ -50,6 +51,11 @@ CI와 복구를 중첩한다.
 문자열 검사는 alias, shell expansion, encoded payload, interpreter, API wrapper와 MCP를 통해
 우회될 수 있다. 따라서 hook PASS는 안전 보증이 아니다. workspace sandbox, OS permission,
 DB account, cloud IAM과 branch protection이 실제 권한 경계를 만든다.
+
+`.env*` 차단도 동일하다. 공통 hook은 Read·Glob·Grep·Bash·MCP의 명시적 경로 접근을 차단하지만
+우회 불가능한 기밀 경계를 보장하지 않는다. downstream은 가능하면 AI 프로세스가 실행되는
+container·sandbox·OS 권한에서 `.env*` 파일을 보이지 않게 하며, 필요한 변수 이름은 별도
+비민감 스키마 문서로 제공한다.
 
 ## AI 도구별 어댑터 원칙
 
