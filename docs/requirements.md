@@ -350,6 +350,44 @@
 - hook은 CI를 대체하지 않으며 활성화 여부와 무관하게 공통 보안·필수 품질 gate를 CI에서
   독립적으로 실행한다.
 
+### REQ-029: Supabase·Firebase 보안 프로파일
+
+- downstream이 Supabase 또는 Firebase를 선택하면 upstream은 서비스별 보안 질문, default-deny
+  정책, 검증기와 배포 gate를 제공한다.
+- Supabase browser에는 publishable·anon 범위 key만 허용하고 `service_role`, secret key, DB
+  password와 RLS bypass 권한을 포함하지 않는다.
+- Supabase exposed table과 Storage에는 RLS를 활성화하고 role·operation·ownership별 최소 권한과
+  cross-user·cross-tenant negative test를 검증한다.
+- Firebase client API key는 project 식별자일 수 있음을 구분하되 Firebase 관련 API로 제한하고,
+  데이터 권한은 Security Rules·IAM·App Check로 강제한다.
+- Firebase service account, Admin SDK credential, Gemini·비 Firebase API key는 browser bundle,
+  public 환경 변수와 저장소에 포함하지 않는다.
+- Firestore, Realtime Database와 Cloud Storage는 제품마다 default-deny Rules와 emulator test를
+  제공하고 production 배포 전에 ruleset diff를 승인받는다.
+- 두 서비스 모두 local·test·staging·production project와 credential, billing·quota, backup,
+  retention·deletion, audit log와 incident response를 분리한다.
+- AI는 production console, admin credential, schema·rules 배포, bulk write·delete와 project
+  삭제를 사용자 승인 없이 수행하지 않는다.
+- provider 선택은 telemetry, 외부 전송, region, 개인정보·규제, lock-in, export·rollback을
+  검토해 개발환경 문서와 ADR에 기록한다.
+
+### REQ-030: Upstream·Downstream Human-in-the-loop 계약
+
+- upstream은 질문 조건, 필수 필드, 승인 형식·유효 범위와 무응답 시 default-deny를 정의한다.
+- downstream AI는 자동 감지 가능한 값을 반복 질문하지 않고 결과를 크게 바꾸거나 권한·보안·
+  비용·데이터·배포에 영향을 주는 미확정 사항만 질문한다.
+- downstream 사용자는 대상, 영향, 대안, 추천안, 검증·rollback을 확인하고 선택·승인·거절하거나
+  추가 정보를 요청한다.
+- 승인은 특정 명령, 환경, resource, 범위와 유효 시간에 묶고 대상이 바뀌면 다시 질문한다.
+  침묵, 과거의 포괄 동의와 모호한 긍정은 승인으로 보지 않는다.
+- 인증·인가, 개인정보·외부 전송, production, secret, 비용, 의존성·hook 설치, 배포·migration·
+  삭제와 보안 통제 변경은 Human-in-the-loop 대상이다.
+- 저위험 read-only 진단, 승인된 범위의 결정론적 검사와 되돌릴 수 있는 project-local 변경은
+  질문 남발 없이 수행할 수 있다.
+- 질문과 답은 비밀 없는 구조화된 결정으로 요구사항·개발환경 문서·ADR 또는 승인 기록에
+  반영하며 채팅 기억만을 근거로 실행하지 않는다.
+- 토큰 프로파일은 설명 길이를 조정할 수 있지만 필수 질문과 승인 정보는 생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -415,3 +453,4 @@
 | 2026-07-11 | clone 후 사용자별 AI 환경을 안전한 프로젝트 로컬 공통 환경으로 정렬하는 목적 명시 |
 | 2026-07-11 | 공통 환경 유지보수자와 프로젝트 도입자의 두 사용 경로·책임·업데이트 경계 추가 |
 | 2026-07-11 | 프로젝트 개발환경과 실제 품질 명령이 확정된 뒤에만 Husky를 적용하는 규칙 추가 |
+| 2026-07-11 | Supabase·Firebase 보안 프로파일과 Human-in-the-loop 역할 계약 추가 |

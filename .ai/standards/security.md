@@ -109,6 +109,15 @@ rollback 방법:
 
 ## 비밀과 개인정보
 
+### Supabase·Firebase
+
+- provider 선택 시 `docs/backend-as-a-service-security.md`의 질문과 gate를 적용한다.
+- Supabase service role·secret key·DB credential과 Firebase service account·Admin credential은
+  client와 AI 세션에 제공하지 않는다.
+- browser authorization은 Supabase RLS 또는 Firebase Security Rules·IAM으로 강제한다.
+- schema, RLS, Rules, App Check, production 연결과 destructive data 작업은 사람의 명시적
+  승인을 요구한다.
+
 - `.env`, keychain, cloud credential과 production log를 기본 agent context에서 제외한다.
 - secret은 저장소나 prompt에 붙여 넣지 않고 단기·최소 범위 credential을 사용한다.
 - 로그, diff, 승인 preview와 agent memory에서 secret과 개인정보를 redaction한다.

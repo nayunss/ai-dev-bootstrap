@@ -6,7 +6,7 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-028까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-030까지 수집했다.
 
 ## 완료
 
@@ -33,6 +33,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   downstream adopter/developer의 책임, 확장 계층과 업데이트 흐름을 분리했다.
 - Husky 선행 설치를 제거하고 프로젝트 개발환경과 실제 format·lint·test 명령이 승인된 뒤
   기술 스택 프로파일로 적용하도록 변경했다.
+- Supabase·Firebase의 client/server key, RLS·Security Rules, App Check, environment와 배포
+  가드레일을 추가했다.
+- upstream이 질문 조건을 정의하고 downstream 사용자가 선택·승인·거절로 답하는
+  Human-in-the-loop 계약과 Eval 기준을 추가했다.
 - 첫 downstream 검증 대상은 형제 경로 `../env-downstream`으로 정했다. upstream이 아직 첫
   commit 전이므로 실제 적용은 pin 가능한 baseline이 생길 때까지 대기한다.
 

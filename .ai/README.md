@@ -17,6 +17,7 @@
 - `workflows/token-budget.md`: 토큰 예산에 따른 탐색·검증 범위 선택
 - `workflows/evaluation.md`: 하네스·루프 변경의 Eval 설계와 판정
 - `workflows/change-mode.md`: upstream 유지보수와 downstream 도입 경계
+- `workflows/human-in-the-loop.md`: upstream 질문 조건과 downstream 승인 처리
 
 보안 정책의 배경과 공개 사례는 `docs/ai-security-guardrails.md`와
 `docs/ai-security-incidents.md`를 참고한다.
