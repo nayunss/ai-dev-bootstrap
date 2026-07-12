@@ -6,7 +6,9 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-042까지 수집했다.
+하네스를 설계하고 downstream pilot으로 검증한다. 현재까지 REQ-001부터 REQ-045까지 수집했다.
+현재는 최종 실제 환경 구현 단계가 아니며, 설계·핵심 검증 종료 후 `docs/requirements.md`와 `docs/`를
+구현 입력 계약으로 삼아 실제 공통 환경을 구현한다.
 
 ## 완료
 
@@ -173,6 +175,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 주요 결정
 
+- 현재 script·validator·fixture는 설계 검증용 reference automation이다. pilot PASS를 최종 환경 구현
+  완료나 모든 stack 지원으로 해석하지 않으며, 실제 구현 전까지 미검증 범위를 명시적으로 유지한다.
+- 실제 환경 구현은 요구사항·설계·Eval의 핵심 gate를 닫은 뒤 별도 단계로 시작하고, 그 시점의
+  `docs/requirements.md`와 `docs/`를 source of truth로 사용한다.
 - 공통 정책은 `.ai/`에 두고 도구별 파일은 얇은 어댑터로 만든다.
 - plugin은 선택 자동화이며 하네스의 필수 runtime이 아니다.
 - security policy는 `.ai/standards/security.md`가 단일 진실 원천이다.
