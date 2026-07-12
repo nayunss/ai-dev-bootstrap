@@ -63,20 +63,22 @@ Pilot 자동화와 보안 baseline을 제공하는 pre-release 단계입니다.
 
 ### 검증 범위
 
-요구사항과 아키텍처의 목표는 언어·framework·AI 도구에 종속되지 않는 공통 환경이다. 그러나 현재
-실제 downstream 적용과 배포까지 완료한 pilot은 **프론트엔드 환경 한 건**이다.
+요구사항과 아키텍처의 목표는 언어·framework·AI 도구에 종속되지 않는 공통 환경이다. 현재 실제
+downstream 적용과 배포까지 완료한 pilot은 **Next.js frontend 한 건**과 **Spring Boot + Next.js
+full-stack 한 건**이다. full-stack pilot은 backend-only로 시작한 뒤 frontend를 추가하는 증분 전환도
+포함한다.
 
 | 범위 | 현재 검증 수준 |
 |---|---|
 | 프론트엔드 | Next.js·TypeScript·pnpm·Zustand·SCSS Modules·Vitest·Playwright·GitHub Actions·Vercel로 bootstrap, 보안·품질·E2E, Preview와 Production 검증 완료 |
-| 백엔드 | 언어 중립 보안·품질·HITL 질문 항목만 존재. Node.js·NestJS·Python·Spring Boot 등 어떤 스택도 기본값이 아니며 실제 backend bootstrap·DB·migration·CI·배포 Eval은 미검증 |
-| 풀스택 | frontend·backend 분리, secret·BaaS·배포 경계의 설계 요구사항만 존재. 실제 통합 저장소의 workspace·계약 테스트·통합 E2E·다중 배포 Eval은 미검증 |
+| 백엔드 | Spring Boot 4.1.0·Java 21·Maven·PostgreSQL·Flyway·JWT·Testcontainers·GitHub Actions·Railway 조합에서 compile, unit·integration, BOLA, CI, Preview와 Production 배포 검증 완료. 다른 backend stack adapter는 미검증 |
+| 풀스택 | Spring Boot backend에 Next.js frontend와 BFF를 증분 추가해 application별 CI, 3-browser·mobile E2E, Railway private network, 독립 service와 Production 기능 흐름 검증 완료. 최초 full-stack 일괄 bootstrap과 upstream의 재귀 manifest·CodeSight·hook drift 자동 검증은 미구현 |
 
-따라서 “upstream 요구사항 전체가 프론트엔드 기준으로 작성됐다”는 표현은 정확하지 않다. 요구사항은
-대부분 공통·언어 중립으로 작성됐지만, 현재 자동화와 운영 검증의 실증 근거가 프론트엔드 pilot에
-편중되어 있다는 것이 정확하다. 프론트엔드 pilot의 발견 사항은 `REQ-033`~`REQ-036`과 관련 문서·
-validator에 환류한다. backend와 fullstack을 지원 완료로 표시하려면 각각 독립 downstream pilot과
-positive·negative Eval을 통과해야 한다.
+요구사항은 대부분 공통·언어 중립으로 작성됐지만 검증 근거는 위 두 조합에 한정된다. frontend
+pilot의 발견 사항은 `REQ-033`~`REQ-036`에, backend→full-stack pilot의 발견 사항은 `REQ-045`와 관련
+문서에 환류했다. pilot 성공은 공통 bootstrap·validator가 모든 stack과 전환 경로를 지원한다는 뜻이
+아니다. 지원 완료로 표시하려면 최초 full-stack 일괄 구성, 재귀 application inventory,
+CodeSight·hook·CI drift의 positive·negative Eval과 추가 stack 호환성 검증이 필요하다.
 
 Frontend·backend·fullstack 스펙은 프로젝트마다 사용자가 정의한다. 기본 질문에 없는 언어,
 framework, database, infrastructure와 품질 도구도 개발환경 프로파일에 추가할 수 있으며, upstream은

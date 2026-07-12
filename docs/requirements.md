@@ -695,6 +695,35 @@
 - generator·template·generated source도 AI 생성 code와 동일한 license·snippet·security gate를 거친다.
 - 세부 질문과 Eval은 `docs/api-contract-documentation.md`를 따른다.
 
+### REQ-045: 점진적 Stack 확장과 최초 Full-stack 구성
+
+- 프로젝트 유형은 최초 bootstrap 시 한 번 정하고 고정하는 값이 아니다. backend-only·frontend-only로
+  시작한 저장소에 이후 frontend, backend, worker, mobile app 또는 다른 service가 추가될 수 있다.
+- 최초 요구사항이 full-stack이면 frontend·backend·공통 계층을 한 계획에서 함께 감지·질문·승인하고,
+  각 application의 runtime·dependency·quality·test·deploy profile과 shared contract를 한 번에 구성한다.
+- 기존 backend에 frontend를 추가하는 등 점진적 확장에서는 기존 application의 승인된 version·설정·
+  migration·배포를 보존하고 새 application과 영향을 받는 공통 계층만 preview한다. 전체 저장소를 신규
+  full-stack template으로 다시 생성하거나 기존 설정을 암묵적으로 덮어쓰지 않는다.
+- bootstrap과 validator는 저장소 root만 보지 않고 승인된 탐색 경계 안에서 하위 manifest, lockfile,
+  build file과 application root를 재귀적으로 발견한다. 각 application의 경로·역할·명령·소유 배포를
+  개발환경 문서에 기록하고 같은 package 이름만으로 경계를 추정하지 않는다.
+- stack 추가 시 root EditorConfig, CodeSight, AI adapter, security-check, HANDOFF, shared schema·contract,
+  Git hook, CI job, Preview·Production 배포와 rollback 조합의 영향을 다시 계산한다. 새 frontend를 감지한
+  뒤에도 CodeSight·Husky·lint-staged·frontend lint profile을 누락한 채 기존 backend 검증 성공만으로
+  full-stack 구성을 완료 처리하지 않는다.
+- 새 application dependency·hook·browser binary·외부 service 설치와 기존 version 변경은 각각 공급망
+  preview와 Human-in-the-loop 승인을 받는다. 기존 application의 승인 범위를 새 application 설치 승인으로
+  확대하지 않는다.
+- validator는 `docs/development-environment.md`의 선언된 application 목록과 실제 manifest·CI·hook·
+  CodeSight·EditorConfig profile을 대조하고, 새 application이 감지됐지만 문서·gate가 갱신되지 않으면
+  drift로 실패한다.
+- CI는 application별 독립 job과 필요한 contract·E2E 통합 job을 제공한다. 한 job 성공으로 다른
+  application을 검증했다고 추론하지 않으며, deployment provider에서도 application별 root directory,
+  environment variable, private/public network와 healthcheck를 검증한다.
+- token-aware는 새 application과 직접 영향받는 공통 계층을 우선 검사하고, full은 전체 application
+  조합·rollback·운영 경계를 추가 평가한다. 두 프로파일 모두 필수 CodeSight·hook·CI·보안 drift 검사를
+  생략하지 않는다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -743,6 +772,7 @@
 | 날짜 | 변경 내용 |
 |---|---|
 | 2026-07-11 | 초기 목표와 확정 요구사항 작성 |
+| 2026-07-12 | 최초 full-stack 구성과 backend→full-stack 점진 확장 lifecycle 요구사항 추가 |
 | 2026-07-11 | 선호 도구, 도구 중립 대체와 공급망 보안 요구사항 추가 |
 | 2026-07-11 | 플러그인 독립 하네스와 대화형 구성 요구사항 추가 |
 | 2026-07-11 | Agent Skills와 GitHub Spec Kit의 선택 도입 검토 요구사항 추가 |

@@ -229,6 +229,13 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 - Opengrep은 opt-out 강제 조건부 승인이므로 version check·metrics 환경변수 검증을 제거하면 안 된다.
 - Husky는 downstream 개발환경과 품질 명령 승인 전까지 적용하지 않는다.
+- env-be pilot에서 backend를 먼저 구성한 뒤 같은 저장소의 `frontend/`를 추가하자 root manifest만 보는
+  validator가 CodeSight·Husky·lint-staged와 frontend profile drift를 놓쳤다. REQ-045로 최초 full-stack
+  일괄 구성과 backend/frontend에서 full-stack으로 전환하는 증분 lifecycle, 재귀 application inventory,
+  공통 계층 재계산과 application별 CI·배포 검증 요구사항을 추가했다.
+- README 검증 범위를 실제 pilot 상태에 맞춰 갱신했다. Spring Boot backend와 Next.js full-stack의
+  CI·Railway Preview·Production 실증은 완료됐지만, REQ-045의 재귀 inventory와 application별 drift
+  자동 검사는 아직 bootstrap·validator에 구현되지 않았음을 분리해 기록했다.
 - Superpowers의 원격 이미지 요청과 Agent Skills의 network cache hook은 기본 도입에서 제외했다.
 - 현재 `tool/github-speckit`은 원본 clone이 아니라 Claude 통합 프로젝트 산출물이다.
 

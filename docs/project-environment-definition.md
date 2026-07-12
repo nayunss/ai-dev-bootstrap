@@ -17,7 +17,8 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 
 ## 결정 흐름
 
-1. `package.json`, lockfile, 빌드 파일, 컨테이너, CI와 배포 설정을 읽어 기존 환경을 감지한다.
+1. root와 승인된 하위 경계의 `package.json`, lockfile, 빌드 파일, 컨테이너, CI와 배포 설정을 읽어
+   application 목록과 기존 환경을 감지한다.
 2. 감지한 값과 출처를 제시하고 충돌·누락·낡은 문서만 표시한다.
 3. 프로젝트 유형과 사용 환경을 먼저 확인한다.
 4. 구현을 막는 핵심 항목부터 한 번에 소수의 질문으로 확정한다.
@@ -25,6 +26,50 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 6. 정확한 버전과 결정 근거를 문서, manifest, lockfile과 ADR에 기록한다.
 7. 실제 format·lint·typecheck·test 명령을 검증한 뒤 기술 스택에 맞는 Git hook을 선택한다.
 8. 로컬 검증과 CI에서 문서와 실제 설정의 일치 여부를 확인한다.
+
+## 최초 구성과 점진적 Stack 확장
+
+### 최초부터 Full-stack인 경우
+
+frontend·backend가 처음부터 요구되면 한 번의 계획에서 둘 다 질문하고 적용한다. 그러나 하나의
+runtime이나 package manager로 합치지 않고 application별 경계를 유지한다.
+
+1. frontend·backend 경로와 shared 영역을 먼저 확정한다.
+2. 각 application의 runtime, framework, dependency, quality·test 명령과 배포 service를 독립 기록한다.
+3. API contract, 인증·cookie·CORS·CSRF, private network와 통합 E2E처럼 경계를 넘는 항목을 별도 확정한다.
+4. root EditorConfig·AI adapter·CodeSight·security-check와 application별 formatter·linter·hook을 함께
+   materialize한다.
+5. CI의 frontend·backend 독립 job과 필요한 contract·E2E job이 모두 통과해야 완료한다.
+
+### Backend 또는 Frontend로 시작해 나중에 확장하는 경우
+
+새 application이 추가되면 개발환경 정의를 다시 실행하되 기존 application을 재생성하지 않는다.
+
+1. 이전 `docs/development-environment.md`, manifest, lockfile, CI와 배포 상태를 baseline으로 고정한다.
+2. 새 application root와 manifest를 감지하고 “새 stack 추가” diff를 사용자에게 표시한다.
+3. 새 dependency·hook·browser·배포 provider만 별도 공급망 심사와 승인을 받는다.
+4. 공통 계층(EditorConfig, CodeSight, AI adapter, security, HANDOFF)에서 새 파일 유형과 경로가 포함되는지
+   재검증한다.
+5. application별 format·lint·typecheck·test 명령이 실제로 통과한 뒤 hook과 CI를 확장한다.
+6. 기존 backend migration·version·production 설정이 새 frontend 추가로 변경되지 않았는지 확인한다.
+7. Preview에서 새·기존 application의 조합을 검증하고 승인 후 Production을 적용한다.
+
+개발환경 문서에는 최소한 다음과 같은 기계 판독 가능한 application inventory가 필요하다.
+
+```yaml
+applications:
+  - id: backend
+    root: .
+    type: backend
+    manifest: pom.xml
+  - id: frontend
+    root: frontend
+    type: frontend
+    manifest: frontend/package.json
+```
+
+새 manifest가 inventory에 없거나 inventory application의 quality·CI·deploy adapter가 없으면 validator는
+구성이 완료되지 않은 drift로 보고해야 한다.
 
 질문에 답이 없더라도 안전한 문서 작업은 계속할 수 있다. 다만 결과가 크게 달라지는 값을
 임의로 선택하거나 의존성을 설치하지 않고 `TBD`로 남긴다.
@@ -206,6 +251,6 @@ backend:
 
 ## 추적성
 
-- 관련 요구사항: REQ-007, REQ-020, REQ-021, REQ-037
+- 관련 요구사항: REQ-007, REQ-020, REQ-021, REQ-037, REQ-045
 - 관련 문서: [하네스 구성](harness.md), [권장 아키텍처](architecture.md),
   [공급망 보안](supply-chain-security.md), [SDLC](sdlc.md)
