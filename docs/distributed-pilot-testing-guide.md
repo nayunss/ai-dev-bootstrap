@@ -4,7 +4,7 @@
 
 ## 목적
 
-이 가이드는 실제 공통 환경 구축에 들어가기 전에 여러 참여자가 frontend, backend, full-stack
+이 가이드는 실제 공통 환경 구축에 들어가기 전에 한 명 또는 여러 참여자가 frontend, backend, full-stack
 (frontend + backend) 설계를 독립적으로 검증하는 절차를 정의한다. 각 참여자는 common-project를
 **upstream**으로 받아 기준 요구사항·문서·검증 도구를 사용하고, 별도 폴더와 별도 Git 저장소에
 최소 **downstream pilot**을 생성해 실제 적용 결과를 확인한다.
@@ -44,8 +44,32 @@ pilot-workspace/
 | Reviewer | 증거와 재현성을 검토하고 pilot PASS와 공통 지원 완료를 구분 |
 | Upstream maintainer | 일반화 가능한 실패를 요구사항·문서·validator·fixture로 환류 |
 
-한 사람이 여러 역할을 맡을 수 있지만 tester가 자신의 주장만으로 공통 지원 완료를 선언하지 않는다.
-최소한 reviewer가 증거와 upstream 반영 범위를 확인한다.
+한 사람이 여러 역할을 맡을 수 있다. 혼자 검증할 때는 tester·coordinator·maintainer 역할을 명시하고,
+구현 직후가 아닌 깨끗한 별도 trial에서 self-review한다. 다만 self-review 결과만으로 공통 지원 완료를
+선언하지 않고 `독립 재검증 대기`를 표시한다. 여러 사람이 참여하면 최소한 다른 reviewer가 증거와
+upstream 반영 범위를 확인한다.
+
+## AI 도구 Provenance
+
+AI 결과는 도구·모델·실행 방식에 따라 달라질 수 있으므로 모든 trial에 AI provenance를 필수로 남긴다.
+공개 저장소의 maintainer는 contributor의 화면이나 계정을 알 수 없으므로 PR 본문이나 pilot 결과에
+자기 신고한 값을 기록하게 하고 누락된 결과를 지원 범위 집계에 포함하지 않는다.
+
+| 필드 | 기록 예시 | 규칙 |
+|---|---|---|
+| provider | OpenAI, Anthropic | 서비스를 제공한 조직; 모르면 `unknown` |
+| tool/surface | Codex CLI, Codex app, Claude Code | 제품명과 CLI·IDE·app 등 실행 표면 구분 |
+| tool version | CLI 또는 app version | 확인할 수 없으면 `not-exposed`와 확인 방법 기록 |
+| model display name | UI에 표시된 원문 | 임의로 공식 model ID로 변환하지 않음 |
+| model ID/version | API·설정에 노출된 정확한 값 | 표시되지 않으면 `not-exposed` |
+| mode/profile | reasoning mode, token profile, plan/default mode | 결과에 영향을 준 선택값 기록 |
+| adapters | AGENTS.md, CLAUDE.md, skill/plugin/MCP | 활성화한 프로젝트 adapter와 추가 기능 |
+| permissions | sandbox, network, approval 범위 | trial의 실제 도구 권한 요약 |
+| evidence level | verified 또는 tester-declared | 명령/API로 확인했는지 사용자 진술인지 구분 |
+
+모델명이 UI 별칭이거나 “자동 선택”이면 보이는 문자열을 그대로 기록하고 추정하지 않는다. transcript·
+screenshot은 선택 증거이며 계정명, prompt의 비밀, 내부 경로와 credential을 제거한다. AI 도구 정보를
+공개하기 어렵다면 `undisclosed`로 제출할 수 있지만 해당 trial은 도구별 호환성 근거로 집계하지 않는다.
 
 ## 검증 Matrix 배정
 
@@ -108,7 +132,7 @@ AI가 기술 stack이나 dependency를 임의 선택하지 않게 한다. 설치
 
 ## 공통 실행 단계
 
-1. **Baseline**: OS, AI 도구·버전, upstream SHA, 선택 stack, runtime, 기존 전역 의존성을 기록한다.
+1. **Baseline**: OS, AI provenance, upstream SHA, 선택 stack, runtime, 기존 전역 의존성을 기록한다.
 2. **Read-only preview**: `scripts/bootstrap preview <downstream>`으로 manifest와 application inventory
    후보를 확인한다.
 3. **환경 확정**: downstream의 `docs/development-environment.md`와 application inventory를 작성하고
@@ -164,8 +188,19 @@ AI가 기술 stack이나 dependency를 임의 선택하지 않게 한다. 설치
 - upstream: <URL, tag/branch, commit SHA>
 - downstream: <commit SHA 또는 private reference>
 - type/stack: <frontend | backend | full-stack, exact versions>
-- environment: <OS, AI 도구·version, container/CI/deploy provider>
+- environment: <OS, container/CI/deploy provider>
 - requirement IDs: <REQ 목록>
+
+## AI provenance
+- provider: <값 또는 unknown>
+- tool/surface: <제품명과 CLI | IDE | app>
+- tool version: <값 또는 not-exposed>
+- model display name: <UI 표시 원문>
+- model ID/version: <정확한 값 또는 not-exposed>
+- mode/profile: <값>
+- adapters: <AGENTS/CLAUDE/skills/plugins/MCP>
+- permissions: <sandbox/network/approval>
+- evidence level: <verified | tester-declared>
 
 ## Outcome
 | Gate | Command/evidence | Result | Notes |
@@ -195,6 +230,7 @@ AI가 기술 stack이나 dependency를 임의 선택하지 않게 한다. 설치
 4. 비밀·회사명·내부 URL·proprietary code를 제거한 최소 synthetic fixture와 재현 절차를 작성한다.
 5. requirement 상태, 관련 docs, Eval/validator, README 검증 범위와 HANDOFF를 같은 변경에서 갱신한다.
 6. 다른 tester가 깨끗한 downstream 또는 결정론적 fixture에서 재검증한 뒤 지원 범위를 승격한다.
+   혼자 진행 중이면 별도 clean trial까지 수행하고 `독립 재검증 대기` 상태를 유지한다.
 
 여러 사람이 같은 finding을 제출하면 최초 보고자를 기준으로 합치되 OS·도구·stack이 다른 재현 증거는
 별도 trial로 보존한다. 서로 다른 결과가 나오면 성공 사례로 덮지 않고 환경 차이를 독립 변수로 기록한다.

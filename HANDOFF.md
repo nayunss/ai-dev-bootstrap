@@ -15,6 +15,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 여러 참여자가 upstream commit을 고정하고 frontend·backend·full-stack 독립 downstream을 생성해
   검증하는 가이드를 추가했다. 역할·matrix·AI 입력·공통/유형별 gate·증거 schema·환류·중단 조건과
   설계 검증 완료 판정을 REQ-046으로 연결했다.
+- 단독 tester도 별도 clean self-review와 `독립 재검증 대기` 상태로 참여할 수 있게 했고, 모든 trial에
+  provider·tool/surface·tool version·model 표시명/ID·mode·adapter·권한·확인 수준의 AI provenance를
+  요구한다. 현재 이 작업의 AI 정보는 사용자 진술 기준 `Codex`, model 표시명 `5.6 sol`이며 정확한
+  provider model ID와 tool version은 노출 증거가 없어 `not-exposed`, evidence는 `tester-declared`다.
 - 독립 Git 저장소와 문서 구조를 만들었다.
 - 아키텍처, 스킬, 에이전트, SDLC와 최소 하네스를 설계했다.
 - 선호 플러그인과 Agent Skills·GitHub Spec Kit을 비교 평가했다.

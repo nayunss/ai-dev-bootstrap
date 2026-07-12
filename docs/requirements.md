@@ -768,8 +768,11 @@
 
 - 실제 환경 구축 전에 여러 tester가 고정된 upstream commit을 기준으로 frontend·backend·full-stack
   downstream pilot을 독립 폴더·독립 Git 저장소·격리 자원에서 검증할 수 있어야 한다.
-- tester는 upstream과 downstream 경계를 유지하고 선택 stack·OS·AI 도구·정확한 version, 요구사항 ID,
+- tester는 upstream과 downstream 경계를 유지하고 선택 stack·OS·AI provider·tool/surface·tool version·
+  model 표시명과 노출된 정확한 ID·mode/profile·adapter·권한·확인 수준, 요구사항 ID,
   명령·exit status, positive·negative·rollback 결과, 비용과 미검증 범위를 공통 형식으로 기록한다.
+- AI model 정보가 UI 별칭·자동 선택·비노출이면 보이는 값을 그대로 기록하고 공식 ID를 추정하지 않는다.
+  `undisclosed` 결과는 기능 결과로 보존할 수 있지만 AI 도구별 호환성 근거에는 포함하지 않는다.
 - pilot PASS는 기록된 조합과 범위에만 유효하며 하나의 tester·stack 성공을 공통 지원 완료로 확대하지
   않는다. 독립 review와 clean 재현 뒤에만 지원 상태를 승격한다.
 - 일반화 가능한 실패는 비밀·내부 정보·proprietary source를 제거한 synthetic fixture로 upstream의
@@ -778,6 +781,8 @@
   참여가 권한을 확대하지 않는다.
 - 역할, matrix, 실행 단계, 결과 schema와 중단 조건은
   `docs/distributed-pilot-testing-guide.md`를 따른다.
+- 한 사람이 전 역할을 수행할 수 있지만 별도 clean self-review trial과 `독립 재검증 대기`를 기록하고,
+  자신의 결과만으로 공통 지원 완료를 선언하지 않는다.
 
 ## 비기능 요구사항
 
