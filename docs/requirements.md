@@ -12,7 +12,7 @@
 
 ## 확정 요구사항
 
-이 절의 `REQ-001`~`REQ-045`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
+이 절의 `REQ-001`~`REQ-046`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
 구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
 `HANDOFF.md`를 같은 작업에서 갱신한다.
 
@@ -40,6 +40,7 @@
 | REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure fixture PASS. undocumented endpoint·frontend BFF와 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
+| REQ-046 | 설계 완료 | 다중 참여자 downstream pilot 가이드 작성. 독립 tester 간 재현·결과 취합 운영은 미검증 |
 
 ### REQ-001: 독립 저장소
 
@@ -763,6 +764,21 @@
   조합·rollback·운영 경계를 추가 평가한다. 두 프로파일 모두 필수 CodeSight·hook·CI·보안 drift 검사를
   생략하지 않는다.
 
+### REQ-046: 다중 참여자 Downstream Pilot 검증
+
+- 실제 환경 구축 전에 여러 tester가 고정된 upstream commit을 기준으로 frontend·backend·full-stack
+  downstream pilot을 독립 폴더·독립 Git 저장소·격리 자원에서 검증할 수 있어야 한다.
+- tester는 upstream과 downstream 경계를 유지하고 선택 stack·OS·AI 도구·정확한 version, 요구사항 ID,
+  명령·exit status, positive·negative·rollback 결과, 비용과 미검증 범위를 공통 형식으로 기록한다.
+- pilot PASS는 기록된 조합과 범위에만 유효하며 하나의 tester·stack 성공을 공통 지원 완료로 확대하지
+  않는다. 독립 review와 clean 재현 뒤에만 지원 상태를 승격한다.
+- 일반화 가능한 실패는 비밀·내부 정보·proprietary source를 제거한 synthetic fixture로 upstream의
+  요구사항·docs·Eval·validator·HANDOFF에 환류한다. downstream 고유 오류와 공통 결함을 구분한다.
+- dependency·외부 도구·배포·파괴적 작업은 preview와 Human-in-the-loop 승인 범위를 유지하며 tester
+  참여가 권한을 확대하지 않는다.
+- 역할, matrix, 실행 단계, 결과 schema와 중단 조건은
+  `docs/distributed-pilot-testing-guide.md`를 따른다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -810,6 +826,7 @@
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-07-12 | 여러 tester의 frontend·backend·full-stack 독립 downstream pilot·증거·환류 요구사항 추가 |
 | 2026-07-11 | 초기 목표와 확정 요구사항 작성 |
 | 2026-07-12 | 최초 full-stack 구성과 backend→full-stack 점진 확장 lifecycle 요구사항 추가 |
 | 2026-07-11 | 선호 도구, 도구 중립 대체와 공급망 보안 요구사항 추가 |

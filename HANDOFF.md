@@ -6,12 +6,15 @@
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계하고 downstream pilot으로 검증한다. 현재까지 REQ-001부터 REQ-045까지 수집했다.
+하네스를 설계하고 downstream pilot으로 검증한다. 현재까지 REQ-001부터 REQ-046까지 수집했다.
 현재는 최종 실제 환경 구현 단계가 아니며, 설계·핵심 검증 종료 후 `docs/requirements.md`와 `docs/`를
 구현 입력 계약으로 삼아 실제 공통 환경을 구현한다.
 
 ## 완료
 
+- 여러 참여자가 upstream commit을 고정하고 frontend·backend·full-stack 독립 downstream을 생성해
+  검증하는 가이드를 추가했다. 역할·matrix·AI 입력·공통/유형별 gate·증거 schema·환류·중단 조건과
+  설계 검증 완료 판정을 REQ-046으로 연결했다.
 - 독립 Git 저장소와 문서 구조를 만들었다.
 - 아키텍처, 스킬, 에이전트, SDLC와 최소 하네스를 설계했다.
 - 선호 플러그인과 Agent Skills·GitHub Spec Kit을 비교 평가했다.

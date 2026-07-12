@@ -73,6 +73,8 @@ fixture는 설계의 실행 가능성과 누락을 검증하기 위한 reference
 [`docs/requirements.md`](docs/requirements.md)를 구현 입력 계약으로 삼아 실제 공통 환경을 구현한다.
 그전에는 pilot에서 발견된 실패를 요구사항·설계 문서·Eval에 환류하고, 검증하지 않은 범위를 완료나
 지원으로 표시하지 않는다. 특정 pilot 기술 조합도 실제 환경의 공통 기본값으로 확정하지 않는다.
+여러 사람이 검증에 참여할 때는 [다중 참여자 Downstream Pilot 검증 가이드](docs/distributed-pilot-testing-guide.md)에
+따라 upstream SHA, 독립 downstream, 격리 자원과 공통 결과 형식을 사용한다.
 
 ### 검증 범위
 

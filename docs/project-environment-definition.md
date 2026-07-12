@@ -271,6 +271,6 @@ backend:
 
 ## 추적성
 
-- 관련 요구사항: REQ-007, REQ-020, REQ-021, REQ-037, REQ-045
+- 관련 요구사항: REQ-007, REQ-020, REQ-021, REQ-037, REQ-045, REQ-046
 - 관련 문서: [하네스 구성](harness.md), [권장 아키텍처](architecture.md),
   [공급망 보안](supply-chain-security.md), [SDLC](sdlc.md)
