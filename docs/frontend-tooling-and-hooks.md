@@ -106,6 +106,12 @@ AI가 파일 변경
 연결한 임시 Husky를 만들지 않고, 개발환경과 무관한 검사는 명시적인 검증 명령이나 CI로
 실행한다.
 
+현재 upstream 자체의 hook 상태는 `pending-environment-definition`이다. `.husky/_` runtime 흔적은
+활성화된 `pre-commit`·`pre-push` 증거가 아니며, upstream에는 Husky·lint-staged dependency와 실제 hook
+파일이 없다. 따라서 local hook이 적용됐다고 주장하지 않고 CI와 명시적 `scripts/security-check`를
+현재 gate로 사용한다. 향후 hook을 활성화하려면 정확한 dependency version·lifecycle·uninstall preview와
+사용자 승인을 거쳐 이 상태를 갱신한다.
+
 ### pre-commit
 
 목표는 staged 파일이 최소 기준을 어긴 채 커밋되는 것을 빠르게 막는 것이다.

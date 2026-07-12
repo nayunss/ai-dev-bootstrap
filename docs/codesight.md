@@ -2,6 +2,11 @@
 
 상태: 적용
 
+`AGENTS.md`, `CLAUDE.md`와 `.ai/README.md`는 새 세션의 공통 시작 순서에
+`.codesight/wiki/index.md`를 포함한다. downstream validator는 CodeSight index가 존재하는 저장소에서
+두 기본 adapter가 index를 참조하는지 검사한다. index는 탐색 cache이며 관련 원본 source 확인을
+대체하지 않는다.
+
 CodeSight 1.18.0을 Codex와 Claude Code가 공유하는 프로젝트 코드 컨텍스트 생성기로 사용한다.
 로컬 AST 분석 결과를 `.codesight/wiki/`에 저장하며 새 세션은 `index.md`부터 읽는다.
 

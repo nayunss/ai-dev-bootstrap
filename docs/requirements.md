@@ -12,6 +12,31 @@
 
 ## 확정 요구사항
 
+이 절의 `REQ-001`~`REQ-045`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
+구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
+`HANDOFF.md`를 같은 작업에서 갱신한다.
+
+| 요구사항 | 구현·검증 상태 | 근거 또는 남은 gate |
+|---|---|---|
+| REQ-001~004 | 적용 | 독립 저장소·요구사항 목록·Git 이력. 개별 상태 추적은 이 표로 적용 |
+| REQ-005~008 | 부분 검증 | 선호 도구·외부 자산 검토 완료, 선택 설치 adapter는 계속 확장 |
+| REQ-009~014 | 부분 검증 | 공통 정책과 frontend pilot 검증. stack별 자동 lint·접근성 Eval은 제한적 |
+| REQ-015~016 | 부분 검증 | 보안 hook·SAST fixture 적용, 실제 IAM·복구 이중 통제는 downstream별 검증 필요 |
+| REQ-017 | 적용 | staged·PR HANDOFF gate와 semantic-change regression 적용 |
+| REQ-018 | 적용 | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
+| REQ-019~024 | 부분 검증 | 문서·workflow 적용. 요구사항 변경의 자동 추적성 검사는 제한적 |
+| REQ-025 | 부분 검증 | 결정론적 fixture 존재, 전체 capability suite·비결정 trial 계측은 미완료 |
+| REQ-026~028 | 부분 검증 | bootstrap·validate와 downstream 적용 검증. upstream hook은 환경 승인 대기 |
+| REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
+| REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
+| REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
+| REQ-040 | 부분 검증 | BOLA pilot PASS, rate limit·retention·restore·법률 applicability Eval 미완료 |
+| REQ-041 | 설계 완료 | bounded-patch pilot과 격리 grader Eval 미착수 |
+| REQ-042 | 부분 구현 | canonical `.ai/`와 Codex·Claude adapter 적용, generator hash·uninstall Eval 미완료 |
+| REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
+| REQ-044 | 설계 완료 | Spring Boot/OpenAPI contract·drift·exposure fixture 미착수 |
+| REQ-045 | 설계 완료 | 증분 stack 문서화 완료, 재귀 inventory·drift validator와 fixture 미구현 |
+
 ### REQ-001: 독립 저장소
 
 - 관련 작업은 `common-project` 저장소에서 진행한다.

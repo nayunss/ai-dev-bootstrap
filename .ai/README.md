@@ -30,10 +30,13 @@
 - `AGENTS.md`: Codex와 AGENTS 규약을 읽는 도구의 얇은 adapter
 - `CLAUDE.md`: Claude Code의 얇은 adapter
 - 그 밖의 AI 도구: 이 README에서 시작해 `standards/engineering.md`, `standards/security.md`와
-  `HANDOFF.md`를 같은 순서로 읽는다.
+  `HANDOFF.md`, `../.codesight/wiki/index.md`를 같은 순서로 읽는다.
 
 도구별 파일에는 공통 정책을 복제하지 않는다. 도구 고유 권한·hook·명령 매핑만 adapter에 두고
 공통 outcome과 gate는 `.ai/`에서 관리한다.
+
+CodeSight index는 탐색용 cache이며 원본 source·요구사항·테스트를 대체하지 않는다. 새 세션은 index로
+범위를 좁힌 뒤 관련 원본을 읽고, code 변경 후 commit 전에는 context를 재생성해 stale 여부를 확인한다.
 
 보안 정책의 배경과 공개 사례는 `docs/ai-security-guardrails.md`와
 `docs/ai-security-incidents.md`를 참고한다.

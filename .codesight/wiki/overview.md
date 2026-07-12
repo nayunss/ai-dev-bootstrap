@@ -6,7 +6,7 @@
 
 ## Scale
 
-2 middleware layers
+3 middleware layers
 
 ---
 _Back to [index.md](./index.md) · Generated from the repository_

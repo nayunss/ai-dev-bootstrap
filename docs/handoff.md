@@ -24,14 +24,19 @@
 - 파일 끝 개행과 unresolved merge conflict marker 부재
 - staged task 변경이 있으면 같은 commit에 `HANDOFF.md`가 포함됐는지 여부
 - pull request의 base 대비 task 변경이 있으면 PR에 `HANDOFF.md` 변경이 포함됐는지 여부
+- `갱신:` metadata가 ISO 날짜로 시작하는지 여부
+- task 변경과 함께 완료·현재 상태·검증·남은 작업·다음 시작점 중 하나가 실제로 달라졌는지 여부
 
 `.codesight/` 재생성만 있는 경우는 task 변경으로 보지 않는다. 그 밖의 코드·문서·정책·설정
-변경은 작업 맥락에 영향을 줄 수 있으므로 HANDOFF를 함께 갱신한다. 검사 회피를 위한 빈 줄·시각만
-바꾸는 수정은 갱신으로 간주하지 않으며, 완료·검증·남은 작업 중 실제로 달라진 내용을 기록한다.
+변경은 작업 맥락에 영향을 줄 수 있으므로 HANDOFF를 함께 갱신한다. 날짜·상태 metadata, 빈 줄·시각만
+바꾸는 수정은 갱신으로 간주하지 않으며, 완료·현재 상태·검증·남은 작업·다음 시작점 중 실제로 달라진
+내용을 기록한다.
 
 공통 `scripts/security-check staged`가 staged 검사를 호출하므로 이를 사용하는 Codex·Claude Code·
 Husky adapter는 같은 규칙을 적용한다. CI는 pull request base와 HEAD 범위를 독립적으로 검사해
-로컬 hook 우회를 허용하지 않는다. `full` 검사는 현재 HANDOFF 구조와 안전성만 확인한다.
+로컬 hook 우회를 허용하지 않는다. `full` 검사는 현재 HANDOFF 구조·metadata와 안전성만 확인하며,
+Git·README·release의 사실 관계까지 자동 추론하지 않는다. 그 일치는 review와 향후 전용 drift 검사의
+책임으로 남긴다.
 
 ## 권장 형식
 

@@ -33,6 +33,8 @@ jobs:
         run: |
           scripts/bootstrap preview
           scripts/validate .
+          npm run test:ai-security-hook
+          npm run test:handoff-validator
           npm run test:downstream-validator
           npm run test:dependency-upgrade-validator
 

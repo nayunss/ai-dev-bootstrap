@@ -115,6 +115,11 @@ Eval 결과로 전송하지 않는다.
 
 `main` 또는 `latest`를 자동으로 production 개발환경에 동기화하지 않는다.
 
+Upstream의 기본 변경 경로는 branch·PR·CI·사람 review다. maintainer가 사용자에게 정확한 commit·push
+대상과 영향을 제시하고 명시적 승인을 받은 저위험 문서 변경은 `main` 직접 반영을 예외로 허용할 수
+있다. 보안 정책·실행 code·dependency·release·배포 변경은 이 예외에 포함하지 않으며 PR과 독립 CI를
+사용한다. 직접 반영 여부와 검증 결과는 HANDOFF와 Git 이력에 남긴다.
+
 ## Downstream 저장소의 Stack 진화
 
 Downstream adoption은 설치 시점의 프로젝트 유형을 영구 고정하지 않는다.

@@ -78,6 +78,9 @@ for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
   for (const reference of [".ai/standards/engineering.md", ".ai/standards/security.md", "HANDOFF.md"]) {
     if (!content.includes(reference)) errors.push(`${adapter} must reference ${reference}`);
   }
+  if (existsSync(join(root, ".codesight/wiki/index.md")) && !content.includes(".codesight/wiki/index.md")) {
+    errors.push(`${adapter} must reference .codesight/wiki/index.md when CodeSight context is present`);
+  }
 }
 
 if (existsSync(join(root, ".editorconfig"))) {

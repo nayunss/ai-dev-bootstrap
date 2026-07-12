@@ -89,8 +89,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   경험을 REQ-036·보안·HITL·CI 배포 workflow에 환류했다.
 - downstream validator가 pnpm 11의 `dangerouslyAllowAllBuilds`, 비활성화된 `strictDepBuilds`, version
   없는 `allowBuilds` matcher와 미결정 placeholder를 차단하도록 positive·negative Eval을 추가했다.
-- README에 공통 요구사항은 언어 중립이지만 실제 실증은 Next.js frontend pilot 한 건임을 명시했다.
-  Backend와 fullstack은 별도 downstream pilot·Eval 전까지 미검증 상태다.
+- README에 공통 요구사항은 언어 중립이며, 실제 실증은 Next.js frontend pilot과 Spring Boot + Next.js
+  full-stack pilot의 두 조합에 한정됨을 명시했다. pilot 성공과 공통 bootstrap·validator의 지원 완료를
+  구분한다.
 - REQ-037을 추가해 frontend·backend·fullstack의 언어·framework·database·도구를 고정하지 않고,
   기본 질문에 없는 사용자 정의 스펙도 확장 field·공급망 심사·설치 승인·project-local adapter와
   검증으로 적용하도록 했다. 문서의 특정 기술 조합은 예시 또는 pilot 기록일 뿐 기본값이 아니다.
@@ -127,12 +128,23 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - FastAPI는 Python framework이고 OpenAPI·Swagger는 contract·tooling이라는 경계를 확인해 REQ-044와
   `docs/api-contract-documentation.md`를 추가했다. backend onboarding에서 framework, protocol contract,
   docs UI·SDK와 production exposure를 분리해 질문하고 generator output도 license gate를 적용한다.
+- upstream 자체 요구사항 준수 감사를 수행해 문서와 gate의 불일치를 정리했다. REQ-001~045의 승인
+  상태와 구현·검증 상태를 분리한 추적 표를 추가하고, release 색인의 v0.2.0~0.2.2 발행 상태와 누락된
+  v0.2.1 항목을 현행화했다.
+- HANDOFF validator가 날짜 metadata 변경만으로 통과하지 못하도록 완료·현재 상태·검증·남은 작업·
+  다음 시작점의 semantic change를 staged·range에서 요구하고 negative regression을 추가했다.
+- CodeSight index를 AGENTS·Claude·기타 AI의 공통 세션 시작 순서에 연결하고, index가 있는 저장소의
+  adapter reference를 downstream validator가 검사하도록 했다. AI security hook과 HANDOFF validator
+  regression도 GitHub Actions 필수 단계에 추가했다.
+- REQ-045의 token-aware·full 영향과 필수 drift gate를 토큰 프로파일·workflow에 동기화했다. upstream
+  Git hook은 dependency·환경 승인이 끝나지 않아 `pending-environment-definition`이며 CI와 명시적
+  security-check만 현재 적용된 gate임을 기록했다.
 
 ## 현재 상태
 
 - branch: `main`
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`, `main` 추적
-- 최신 기능 commit: `6b20f02 feat: enforce task handoff updates`
+- 최신 기능 commit: `d7a50b1 docs: define incremental full-stack adoption`
 - 최근 보안·품질 변경:
   - `7514549`: AI의 `.env*` 접근 차단
   - `2140c25`: 미승인 MCP default-deny
@@ -143,7 +155,13 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 첫 downstream pilot `../env-downstream`은 독립 Git 저장소이며 upstream `v0.1.0-pilot`을
   시작점으로 사용했고 이후 승인된 pilot release를 명시적으로 적용했다. GitHub Actions·Vercel
   Preview·Production 검증을 완료했으며 upstream 변경은 자동 반영되지 않는다.
+- backend→full-stack downstream pilot `../env-be`는 Spring Boot·PostgreSQL·JWT backend와 Next.js BFF
+  frontend의 unit·integration·BOLA·3-browser E2E, GitHub Actions, Railway Preview·Production을
+  검증했다. 다만 frontend를 포함한 PR Environment 자동 복제, contract drift, rollback·restore와
+  REQ-045의 증분 stack 자동화는 아직 미검증 또는 미구현이다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
+- 이번 감사 반영은 working tree에 있으며 아직 commit·push하지 않았다. 기존 미추적 사진 파일은
+  작업 범위에서 제외해 보존한다.
 
 ## 주요 결정
 
@@ -205,25 +223,42 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
 - 최신 clean clone `npm ci --ignore-scripts`·npm audit·checksum bootstrap·full security: PASS
 - Markdown 시각 렌더링 검사: 미구현
+- 요구사항 상태·release 색인·CodeSight adapter·token profile 문서 `git diff --check`: PASS
+- HANDOFF semantic-change positive·metadata-only negative regression: PASS
+- CodeSight adapter reference가 포함된 downstream validator regression: PASS
+- CodeSight `1.18.0` context 재생성·변경 source 반영: PASS
+- AI sensitive-file hook·dependency approval·MCP manifest regression 재실행: PASS
+- 변경 파일 Gitleaks·Opengrep 검사: PASS, finding 0
 
 ## 남은 작업
 
-1. 사용자가 선택한 기술 스택으로 backend downstream pilot을 만들고 dependency·DB migration·API·
-   CI·배포와 파괴적 작업 HITL Eval을 검증한다.
-2. frontend·backend 통합 fullstack downstream pilot에서 workspace·contract test·통합 E2E·secret·
-   다중 배포·rollback 호환성을 검증한다.
-3. REQ-036과 build-policy validator를 다음 pilot release로 묶고 checksum·migration을 발행한다.
-4. REQ-038의 공통 engineering 지침과 AI adapter를 다음 pilot release·upgrade preview에 포함한다.
-5. backend·fullstack pilot에서 REQ-040의 BOLA·rate limit·retention·restore·법률 applicability
-   positive·negative Eval을 구현한다.
-6. 결정론적 grader가 있는 공통 skill 하나로 REQ-041의 수동 bounded-patch pilot을 수행하고,
-   selection 재사용 편향·prompt injection·grader tampering negative Eval과 비용 기록을 검증한다.
-7. bootstrap에 REQ-042의 tool 선택형 adapter preview·source hash·drift 검사와 uninstall 보존 Eval을
-   구현하고, Codex·Claude Code 외 도구는 실제 지원 요청이 있을 때 순차 검증한다.
-8. REQ-043의 dependency license·source snippet scanner 후보를 공급망 심사하고, exact·near match,
-   scanner outage, suppression expiry와 GPL·unknown positive·negative fixture를 구현한다.
-9. REQ-044의 stack별 contract adapter와 syntax·drift·breaking-change·production docs exposure fixture를
-   backend·fullstack pilot에서 검증한다.
+### 우선순위 1: 실제 pilot에서 발견된 누락 자동화
+
+1. REQ-045의 재귀 application inventory를 bootstrap·validator에 구현하고 root·하위 manifest,
+   CodeSight·EditorConfig·AI adapter·Husky·lint-staged·application별 CI·배포 drift의 positive·negative
+   fixture를 추가한다.
+2. `../env-be`에서 frontend가 포함된 PR Environment의 frontend·backend·PostgreSQL 자동 복제,
+   API contract test, secret negative fixture와 배포 rollback 호환성을 검증한다. backend·full-stack
+   pilot 자체를 처음부터 다시 만들지는 않는다.
+3. REQ-040 잔여 범위인 rate limit·retention·restore·log와 법률 applicability Eval을 격리된 test·Preview
+   환경에서 구현한다. BOLA integration은 이미 PASS이므로 회귀 검사만 유지한다.
+4. REQ-044의 Spring Boot/OpenAPI contract adapter와 syntax·implementation drift·breaking-change·
+   frontend BFF contract·Production docs exposure fixture를 기존 pilot에서 검증한다.
+
+### 우선순위 2: 검증된 변경의 release
+
+5. REQ-036 build-policy validator, REQ-038 engineering·AI adapter와 검증을 마친 REQ-045 범위를 다음
+   pilot release로 묶어 clean clone·upgrade preview·migration·rollback·archive checksum을 검증하고
+   발행한다. 미완료인 REQ를 release에 완료로 포함하지 않는다.
+
+### 우선순위 3: 독립 보안·호환성 확장
+
+6. REQ-043의 dependency license·source snippet scanner 후보를 먼저 공급망 심사하고, 승인 후 exact·
+   near match, scanner outage, suppression expiry와 GPL·unknown positive·negative fixture를 구현한다.
+7. REQ-042의 Codex·Claude Code 선택형 adapter preview·source hash·drift·uninstall 보존 Eval을 구현한다.
+   다른 도구는 실제 지원 요청이 있을 때 순차 검증한다.
+8. 필수 bootstrap·security·deployment gate가 안정된 뒤 REQ-041의 수동 bounded-patch pilot을 수행하고,
+   selection 재사용 편향·prompt injection·grader tampering negative Eval과 비용을 기록한다.
 
 ## 위험·주의
 
@@ -236,11 +271,16 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - README 검증 범위를 실제 pilot 상태에 맞춰 갱신했다. Spring Boot backend와 Next.js full-stack의
   CI·Railway Preview·Production 실증은 완료됐지만, REQ-045의 재귀 inventory와 application별 drift
   자동 검사는 아직 bootstrap·validator에 구현되지 않았음을 분리해 기록했다.
+- upstream local Git hook은 아직 활성화되지 않았다. `.husky/_`만으로 적용됐다고 판단하지 않으며,
+  정확한 Husky·lint-staged version과 lifecycle·제거 절차를 별도 승인하기 전에는 dependency와 hook을
+  추가하지 않는다.
 - Superpowers의 원격 이미지 요청과 Agent Skills의 network cache hook은 기본 도입에서 제외했다.
 - 현재 `tool/github-speckit`은 원본 clone이 아니라 Claude 통합 프로젝트 산출물이다.
 
 ## 다음 시작점
 
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
-- 신규 설치나 파괴적 명령 없이 backend pilot의 언어·runtime·framework·DB·migration·test·배포
-  provider와 추가 사용자 정의 스펙을 Human-in-the-loop로 결정한다.
+- REQ-045의 재귀 application inventory와 drift validator를 첫 구현 단위로 삼고, 기존 fixture가 보존된
+  상태에서 backend-only → full-stack 증분 전환의 실패 fixture부터 작성한다.
+- 이후 `../env-be`의 contract·PR Environment·rollback 검증을 진행한다. production DB 파괴 작업 대신
+  격리된 test DB와 Preview 환경을 사용하며 dependency·외부 도구·배포 변경은 별도 승인을 받는다.

@@ -167,3 +167,7 @@ CodeSight, 검색과 기존 문서로 탐색 범위를 먼저 좁힌다.
   corpus·history·배포 의무와 suppression baseline까지 확대한다.
 - API 문서화 영향: 두 프로파일 모두 framework와 contract를 분리해 질문하고 drift·authorization·
   공개 gate를 유지한다. `full`은 SDK·consumer·versioning·deprecation 대안을 더 넓게 비교한다.
+- 증분 stack 확장 영향: 두 프로파일 모두 root와 승인된 하위 application inventory, CodeSight·hook·CI·
+  배포 drift를 검사한다. `token-aware`는 새 application과 직접 영향받는 공통 계층부터 확인하고,
+  `full`은 기존 application 조합·contract·Preview·rollback 호환성까지 확대한다. REQ-045의 필수 drift
+  gate는 어느 프로파일에서도 생략하지 않는다.

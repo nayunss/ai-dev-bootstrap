@@ -10,6 +10,10 @@ function git(args) {
   return execFileSync("git", args, { encoding: "utf8" }).split("\0").filter(Boolean);
 }
 
+function gitText(args) {
+  return execFileSync("git", args, { encoding: "utf8" });
+}
+
 function changedFiles() {
   if (mode === "staged") {
     return git(["diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z"]);
@@ -30,11 +34,37 @@ for (const marker of required) {
 }
 if (!content.endsWith("\n")) throw new Error("HANDOFF.md must end with a newline.");
 if (/^(?:<{7}|={7}|>{7})/m.test(content)) throw new Error("HANDOFF.md contains an unresolved conflict marker.");
+if (!/^갱신:\s*\d{4}-\d{2}-\d{2}(?:\s+.+)?$/m.test(content)) {
+  throw new Error("HANDOFF.md 갱신 metadata must start with an ISO date (YYYY-MM-DD).");
+}
 
 const files = changedFiles();
 const taskChanged = files.some((file) => !ignored(file));
 if (taskChanged && !files.includes(handoff)) {
   throw new Error("This task changes repository files, but HANDOFF.md is not included. Update it before commit or merge.");
+}
+
+if (taskChanged) {
+  const base = mode === "range" ? process.argv[3] : "HEAD";
+  let previous = "";
+  try {
+    previous = gitText(["show", `${base}:${handoff}`]);
+  } catch {
+    previous = "";
+  }
+  const semanticSections = ["완료", "현재 상태", "검증", "남은 작업", "다음 시작점"];
+  const section = (source, name) => {
+    const marker = `## ${name}\n`;
+    const start = source.indexOf(marker);
+    if (start < 0) return "";
+    const bodyStart = start + marker.length;
+    const next = source.indexOf("\n## ", bodyStart);
+    return source.slice(bodyStart, next < 0 ? source.length : next).trim();
+  };
+  const semanticChanged = semanticSections.some((name) => section(previous, name) !== section(content, name));
+  if (!semanticChanged) {
+    throw new Error("HANDOFF.md changed only metadata or non-semantic content; update completion, state, validation, remaining work, or next start.");
+  }
 }
 
 process.stdout.write(`Handoff validation (${mode}): PASS\n`);
