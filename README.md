@@ -76,6 +76,7 @@ fixture는 설계의 실행 가능성과 누락을 검증하기 위한 reference
 한 명 또는 여러 사람이 검증에 참여할 때는
 [Downstream Pilot 검증 가이드](docs/distributed-pilot-testing-guide.md)에 따라 upstream SHA, 독립 downstream,
 격리 자원, AI provider·tool·model·mode provenance와 공통 결과 형식을 사용한다.
+설계 완료는 참여 maintainer를 포함한 모든 tester의 배정 필수 항목이 전부 PASS일 때만 판정한다.
 
 ### 검증 범위
 

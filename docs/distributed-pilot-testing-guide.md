@@ -45,9 +45,9 @@ pilot-workspace/
 | Upstream maintainer | 일반화 가능한 실패를 요구사항·문서·validator·fixture로 환류 |
 
 한 사람이 여러 역할을 맡을 수 있다. 혼자 검증할 때는 tester·coordinator·maintainer 역할을 명시하고,
-구현 직후가 아닌 깨끗한 별도 trial에서 self-review한다. 다만 self-review 결과만으로 공통 지원 완료를
-선언하지 않고 `독립 재검증 대기`를 표시한다. 여러 사람이 참여하면 최소한 다른 reviewer가 증거와
-upstream 반영 범위를 확인한다.
+구현 직후가 아닌 깨끗한 별도 trial에서 self-review한다. 여러 사람이 참여하면 최소한 다른 reviewer가
+증거와 upstream 반영 범위를 확인한다. 참여자 수와 관계없이 시작 시 확정한 maintainer·tester 명단과
+필수 검증 matrix가 설계 완료 판정의 모집단이다.
 
 ## AI 도구 Provenance
 
@@ -229,8 +229,8 @@ AI가 기술 stack이나 dependency를 임의 선택하지 않게 한다. 설치
 3. 둘 이상의 stack·tester에 공통이거나 upstream 지침 때문에 재현되면 upstream 후보로 분류한다.
 4. 비밀·회사명·내부 URL·proprietary code를 제거한 최소 synthetic fixture와 재현 절차를 작성한다.
 5. requirement 상태, 관련 docs, Eval/validator, README 검증 범위와 HANDOFF를 같은 변경에서 갱신한다.
-6. 다른 tester가 깨끗한 downstream 또는 결정론적 fixture에서 재검증한 뒤 지원 범위를 승격한다.
-   혼자 진행 중이면 별도 clean trial까지 수행하고 `독립 재검증 대기` 상태를 유지한다.
+6. 다른 tester가 있으면 깨끗한 downstream 또는 결정론적 fixture에서 재검증한다. 혼자 진행 중이면
+   별도 clean self-review trial을 수행한다. 어느 경우든 참여자별 필수 matrix가 모두 PASS여야 한다.
 
 여러 사람이 같은 finding을 제출하면 최초 보고자를 기준으로 합치되 OS·도구·stack이 다른 재현 증거는
 별도 trial로 보존한다. 서로 다른 결과가 나오면 성공 사례로 덮지 않고 환경 차이를 독립 변수로 기록한다.
@@ -247,7 +247,16 @@ AI가 기술 stack이나 dependency를 임의 선택하지 않게 한다. 설치
 
 ## 설계 단계 완료 판정
 
-Frontend·backend·full-stack 각각에 대해 최소 한 개의 독립 downstream PASS만으로 전체 지원을 선언하지
-않는다. 선택한 지원 matrix의 positive·negative·rollback gate, clean clone 재현, 미해결 high-risk finding과
-문서 drift가 닫혀야 해당 범위를 “설계 검증 완료”로 올릴 수 있다. 이후 `docs/requirements.md`와 `docs/`를
-입력 계약으로 실제 환경 구축 단계를 별도로 시작한다.
+설계 완료는 시작 시 등록한 **참여 maintainer를 포함한 모든 tester**가 자신에게 배정된 frontend·backend·
+full-stack 테스트·검증 항목을 전부 `PASS`한 경우에만 판정한다. 한 사람이라면 그 사람이 맡은 maintainer·
+tester 항목과 clean self-review가 모두 PASS해야 한다. 여러 사람이라면 일부 참여자의 성공이나 다수결로
+대체하지 않는다.
+
+필수 matrix에 `FAIL`, `BLOCKED`, `NOT-RUN`, 증거 누락 또는 미검증 항목이 하나라도 있으면 설계 단계는
+진행 중이다. 해당 항목을 수정·재검증해 모든 참여자의 필수 항목이 PASS로 바뀌기 전에는 완료로 표시하지
+않는다. 참여자가 중도 이탈하면 결과를 임의로 제외하지 않고 coordinator와 maintainer가 사유·미검증
+범위·재배정 여부를 기록해 참여 matrix를 명시적으로 갱신해야 한다.
+
+모든 PASS 외에도 선택한 지원 matrix의 positive·negative·rollback gate, clean clone 재현, high-risk
+finding과 문서 drift가 닫혀 있어야 한다. 이 조건을 충족한 뒤 `docs/requirements.md`와 `docs/`를 입력
+계약으로 실제 환경 구축 단계를 별도로 시작한다.

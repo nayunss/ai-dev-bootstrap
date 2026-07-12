@@ -774,15 +774,19 @@
 - AI model 정보가 UI 별칭·자동 선택·비노출이면 보이는 값을 그대로 기록하고 공식 ID를 추정하지 않는다.
   `undisclosed` 결과는 기능 결과로 보존할 수 있지만 AI 도구별 호환성 근거에는 포함하지 않는다.
 - pilot PASS는 기록된 조합과 범위에만 유효하며 하나의 tester·stack 성공을 공통 지원 완료로 확대하지
-  않는다. 독립 review와 clean 재현 뒤에만 지원 상태를 승격한다.
+  않는다. 참여 maintainer를 포함해 시작 시 등록한 모든 tester의 배정된 필수 테스트·검증 항목이 전부
+  PASS이고 clean 재현·필수 증거가 갖춰진 경우에만 설계 완료와 지원 상태 승격을 판정한다.
+- 참여자별 필수 matrix에 `FAIL`, `BLOCKED`, `NOT-RUN`, 증거 누락이나 미검증 항목이 하나라도 있으면
+  설계는 진행 중이다. 다수결이나 일부 tester 성공으로 대체하지 않으며, 중도 이탈·재배정은 사유와
+  matrix 변경 이력을 기록한다.
 - 일반화 가능한 실패는 비밀·내부 정보·proprietary source를 제거한 synthetic fixture로 upstream의
   요구사항·docs·Eval·validator·HANDOFF에 환류한다. downstream 고유 오류와 공통 결함을 구분한다.
 - dependency·외부 도구·배포·파괴적 작업은 preview와 Human-in-the-loop 승인 범위를 유지하며 tester
   참여가 권한을 확대하지 않는다.
 - 역할, matrix, 실행 단계, 결과 schema와 중단 조건은
   `docs/distributed-pilot-testing-guide.md`를 따른다.
-- 한 사람이 전 역할을 수행할 수 있지만 별도 clean self-review trial과 `독립 재검증 대기`를 기록하고,
-  자신의 결과만으로 공통 지원 완료를 선언하지 않는다.
+- 한 사람이 전 역할을 수행할 수 있으며, 이 경우 배정된 모든 필수 항목과 별도 clean self-review가
+  전부 PASS해야 설계 완료로 판정한다.
 
 ## 비기능 요구사항
 
