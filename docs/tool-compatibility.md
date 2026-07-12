@@ -80,6 +80,10 @@ Claude Code에 종속된다는 뜻이다.
 - Karpathy Guidelines: 요구사항 명료화, 외과적 변경, 목표 기반 실행의 기본 행동 규칙
 - 중복 규칙은 공통 `engineering.md`에 한 번만 작성하고 원본 출처를 기록한다.
 
+공통 `engineering.md`에는 source-first, 가정 명시, 단순성, 외과적 변경과 검증 가능한 목표를
+흡수한다. Kent Beck의 Red·Green·Refactor, Tidy First와 작은 논리 commit 원칙도 도구 중립 계약으로
+관리한다. Claude 전용 응답 형식이나 개인 경로는 이식하지 않고 프로젝트 언어·공통 경로로 바꾼다.
+
 ### Brown Claude Marketplace
 
 현재 선호 대상은 마켓플레이스 전체가 아니라 `ideas-come-true`의 `sharpen`과 `productify`다.

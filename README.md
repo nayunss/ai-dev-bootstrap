@@ -28,6 +28,11 @@ validate + 필수 security/Eval gate
 프로젝트 개발 시작
 ```
 
+AI 도구의 공통 작업 지침은 `.ai/standards/engineering.md`에 한 번만 둔다. Claude Code는
+`CLAUDE.md`, Codex와 AGENTS 규약 지원 도구는 `AGENTS.md`, 그 밖의 도구는 `.ai/README.md`를 얇은
+진입점으로 사용한다. 프로젝트별 기술 스택과 반복되는 함정은 공통 지침에 복제하지 않고 각각
+`docs/development-environment.md`와 `docs/project-maintenance.md`에 기록한다.
+
 공통 진입점은 기본적으로 preview만 출력한다.
 
 ```sh

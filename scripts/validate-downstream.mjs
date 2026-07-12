@@ -8,6 +8,7 @@ const online = process.argv.includes("--online-audit");
 const errors = [];
 const notes = [];
 const requiredSecurity = [
+  ".ai/standards/engineering.md",
   ".ai/standards/security.md",
   ".ai/manifests/approved-mcp.json",
   ".claude/settings.json",
@@ -19,6 +20,8 @@ const requiredSecurity = [
   "scripts/validate-handoff.mjs",
   "scripts/validate-mcp-manifest.mjs",
   "security/sast-rules.yml",
+  "AGENTS.md",
+  "CLAUDE.md",
 ];
 
 function read(relative) {
@@ -68,6 +71,14 @@ function validatePnpmBuildPolicy() {
 requireFile("HANDOFF.md");
 requireFile(".editorconfig");
 for (const file of requiredSecurity) requireFile(file);
+
+for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
+  if (!existsSync(join(root, adapter))) continue;
+  const content = read(adapter);
+  for (const reference of [".ai/standards/engineering.md", ".ai/standards/security.md", "HANDOFF.md"]) {
+    if (!content.includes(reference)) errors.push(`${adapter} must reference ${reference}`);
+  }
+}
 
 if (existsSync(join(root, ".editorconfig"))) {
   const editorConfig = read(".editorconfig");

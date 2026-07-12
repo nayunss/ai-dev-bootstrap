@@ -1,12 +1,12 @@
 # Handoff
 
-갱신: 2026-07-11 Asia/Seoul
+갱신: 2026-07-12 Asia/Seoul
 상태: 진행 중
 
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통
-하네스를 설계한다. 현재까지 REQ-001부터 REQ-037까지 수집했다.
+하네스를 설계한다. 현재까지 REQ-001부터 REQ-042까지 수집했다.
 
 ## 완료
 
@@ -96,6 +96,37 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   검증으로 적용하도록 했다. 문서의 특정 기술 조합은 예시 또는 pilot 기록일 뿐 기본값이 아니다.
 - Backend·fullstack pilot은 프론트엔드 Todo 사례처럼 하네스 경로를 빠르게 확인하는 최소 기능만
   구현하며 제품 수준의 기능 확장을 pilot 범위에 포함하지 않는다는 참고 메모를 남겼다.
+- 외부 저장소의 Claude 작업 지침에서 source-first, 가정 명시, 단순성·외과적 변경, TDD·Tidy First,
+  목표·검증, Git 명시 승인, 중복 없는 응답과 hallucination guard를 선별해 REQ-038과 공통
+  `.ai/standards/engineering.md`로 이식했다.
+- 루트 `CLAUDE.md`와 `AGENTS.md`는 공통 engineering·security·HANDOFF를 참조하는 얇은 adapter로
+  만들고, 다른 AI 도구는 `.ai/README.md`를 진입점으로 사용한다. 개인 경로와 강제 bilingual 출력은
+  공통 규칙에서 제외했다.
+- 재발 가능한 패턴은 프로젝트가 운영하는 경우 `docs/project-maintenance.md`에 기록한다. 빈 문서
+  생성을 강제하지 않으며 validator는 공통 지침·adapter의 존재와 필수 reference만 검사한다.
+- 최신 공식 prompt 가이드를 검토하고 전역 성격형 persona를 기본값으로 두지 않는 REQ-039와
+  `docs/persona-and-role-guidelines.md`를 추가했다. 공통 행동·보안 계약을 우선하고 별도 관점·권한·
+  산출물이 필요한 경우에만 Eval된 작업 역할을 사용한다.
+- 웹서비스 보안·운영·대한민국 법률 주장을 공식 법령·감독기관·OWASP 자료로 팩트체크하고 REQ-040과
+  `docs/web-service-production-readiness.md`를 추가했다. 정수 PK 자체, 일률적 soft delete, 모든 시간의
+  UTC 저장, 고정 제재 금액과 모든 AI 사용의 표시 의무 같은 과도한 일반화를 정정했다.
+- authorization·secret·rate limit·paid API·DB exposure·password·backup restore·retention·log·시간·
+  금액 통제와 개인정보·아동·국외이전·위탁·위치·광고·전자상거래·subscription·사용자 제공 AI의
+  applicability를 SDLC·보안 정책·개발환경 질문과 Production gate에 연결했다.
+- SkillOpt 사전논문의 방법·비용·한계를 검토하고 REQ-041을 추가했다. 구현체는 도입하지 않고
+  bounded atomic patch, 고정된 model·harness, 격리된 train/selection/test, strict improvement와
+  보안 hard gate, rejected-edit 기록, Human-in-the-loop와 versioned release 원칙만 차용했다.
+- 제공된 Claude Code vault 이미지를 실제 확인하고 Codex·Copilot·Cursor·Gemini·Cline 공식 규약과
+  `openai/agents.md`, `openai/codex`, `anthropics/skills`, `github/awesome-copilot` 공개 저장소 구조를
+  비교해 REQ-042와 검토 문서를 추가했다. `.ai/`를 canonical source로 유지하고 선택한 도구의 얇은
+  adapter만 downstream에 materialize하며 drift·권한·제거 가능성을 검증하는 구조를 채택했다.
+- Copilot code referencing, dependency license와 source snippet scanning의 범위·한계를 검토해
+  REQ-043과 `docs/ai-generated-code-license-provenance.md`를 추가했다. Tim Davis sparse-matrix 사례는
+  축자 재현 위험의 complaint evidence이지 GPL 침해 확정 판결로 표현하지 않는다. scanner는 아직
+  설치하지 않았으며 ORT·ScanCode·SCANOSS·FOSSLight 후보의 공급망·code 전송·비용 심사가 남았다.
+- FastAPI는 Python framework이고 OpenAPI·Swagger는 contract·tooling이라는 경계를 확인해 REQ-044와
+  `docs/api-contract-documentation.md`를 추가했다. backend onboarding에서 framework, protocol contract,
+  docs UI·SDK와 production exposure를 분리해 질문하고 generator output도 license gate를 적용한다.
 
 ## 현재 상태
 
@@ -168,6 +199,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - HANDOFF 필수 구조·staged 동반 변경·PR range validator: PASS
 - Bootstrap preview·downstream validator positive/negative fixture: PASS
 - pnpm build-script allowlist positive·global allow·strict-disable·unpinned·placeholder negative fixture: PASS
+- AI adapter 필수 reference positive·negative fixture: PASS
 - Dependency direct version·lockfile-only 승인 positive/negative fixture: PASS
 - 원격 clean clone bootstrap·npm audit·security full scan: PASS
 - 원격 clean clone CodeSight stale check: 최초 FAIL 후 timestamp 정규화 적용, 최종 PASS
@@ -181,6 +213,17 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 2. frontend·backend 통합 fullstack downstream pilot에서 workspace·contract test·통합 E2E·secret·
    다중 배포·rollback 호환성을 검증한다.
 3. REQ-036과 build-policy validator를 다음 pilot release로 묶고 checksum·migration을 발행한다.
+4. REQ-038의 공통 engineering 지침과 AI adapter를 다음 pilot release·upgrade preview에 포함한다.
+5. backend·fullstack pilot에서 REQ-040의 BOLA·rate limit·retention·restore·법률 applicability
+   positive·negative Eval을 구현한다.
+6. 결정론적 grader가 있는 공통 skill 하나로 REQ-041의 수동 bounded-patch pilot을 수행하고,
+   selection 재사용 편향·prompt injection·grader tampering negative Eval과 비용 기록을 검증한다.
+7. bootstrap에 REQ-042의 tool 선택형 adapter preview·source hash·drift 검사와 uninstall 보존 Eval을
+   구현하고, Codex·Claude Code 외 도구는 실제 지원 요청이 있을 때 순차 검증한다.
+8. REQ-043의 dependency license·source snippet scanner 후보를 공급망 심사하고, exact·near match,
+   scanner outage, suppression expiry와 GPL·unknown positive·negative fixture를 구현한다.
+9. REQ-044의 stack별 contract adapter와 syntax·drift·breaking-change·production docs exposure fixture를
+   backend·fullstack pilot에서 검증한다.
 
 ## 위험·주의
 

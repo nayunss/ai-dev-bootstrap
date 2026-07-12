@@ -35,8 +35,18 @@
 변경 승인·호환성 검증, 파괴적 작업 승인, 관련 테스트와 handoff를 생략하지 않는다. 필수 검증을
 실행할 수 없으면 완료로 선언하지 않고 중단 지점과 다음 행동을 기록한다.
 
+AI 생성 code의 dependency license·source snippet provenance 검사와 unresolved match의 사람 review도
+공통 필수다. `token-aware`는 changed·high-risk source부터, `full`은 wider history·corpus·배포 의무와
+suppression baseline까지 검토 범위를 확장할 수 있지만 판정 gate는 동일하다.
+
+API project의 contract drift·breaking change·authorization test와 production docs UI 공개 승인도
+공통 필수다. `full`은 consumer·SDK·versioning·deprecation 대안을 확대할 수 있다.
+
 GitHub Actions·Vercel 프로파일에서도 토큰 부족을 이유로 action pin·permission·secret 경계,
 Preview·Production 분리, URL 공개 범위, rollback과 provider 연결 승인을 생략하지 않는다.
+
+웹서비스 Production에서도 token 부족을 이유로 authorization, secret, 개인정보·법률 applicability,
+rate limit·비용, DB exposure, backup restore, retention·파기와 사람 승인을 생략하지 않는다.
 
 ## 요구사항 변경 시
 

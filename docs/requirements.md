@@ -536,6 +536,165 @@
 - token-aware는 현재 작업에 필요한 custom field만 질문하고 full은 연관 운영·확장 항목까지
   질문한다. 두 방식 모두 미확정 스펙을 `TBD`로 유지하고 설치 승인을 생략하지 않는다.
 
+### REQ-038: 도구 중립 공통 작업 지침과 얇은 Adapter
+
+- Claude Code용 `CLAUDE.md`, Codex·AGENTS 규약용 `AGENTS.md`와 기타 AI 도구는 같은 공통
+  engineering·security·workflow를 사용해야 한다.
+- 공통 작업 지침의 단일 진실 원천은 `.ai/standards/engineering.md`이며 도구별 adapter에 전문을
+  복제하지 않는다. 경로와 project-specific reference는 downstream 구조에 맞게 생성·검증한다.
+- 모든 도구는 경로·설정·runtime 질문에 답하기 전 실제 source를 읽고, 새 세션·resume·compact 뒤
+  공통 지침·보안 정책·HANDOFF와 Git 상태를 다시 확인한다.
+- 작업은 가정 명시, 최소 범위, YAGNI, 외과적 변경, 목표·검증 중심으로 수행한다. bug fix와 관찰 가능한
+  동작 변경은 가능한 경우 Red·Green·Refactor를 적용하고 구조 변경과 동작 변경을 commit에서 분리한다.
+- 완료할 수 없으면 blocker와 미검증 범위를 보고한다. 재발 가능한 새 bug pattern은 프로젝트가
+  운영하는 경우 `docs/project-maintenance.md`에 기록하며 대화 기억만 사용하지 않는다.
+- commit·push·PR·merge·release는 사용자의 현재 요청에 명시적 지시가 있을 때만 실행한다. 변경 요청을
+  외부 Git 상태 변경 승인으로 확대하지 않는다.
+- 응답은 같은 결론·code·diff를 중복하지 않고 실제 검증과 미검증 항목을 구분한다. 강제 bilingual 등
+  특정 작성자의 개인 출력 취향은 공통 필수 규칙으로 채택하지 않고 사용자 언어·프로젝트 정책을 따른다.
+- dependency·config·DB·container·production·secret·파괴적 작업은 engineering 지침보다 security와
+  Human-in-the-loop 계약을 우선한다.
+- validator는 공통 지침과 adapter의 존재 및 필수 reference를 검사한다.
+  `docs/project-maintenance.md`는 프로젝트가 운영하는 경우에만 사용하며 존재를 강제하지 않는다. 도구
+  고유 기능이 없어도 같은 outcome과 필수 gate를 수행할 수 있어야 한다.
+
+### REQ-039: Persona보다 검증 가능한 작업 역할 우선
+
+- 공통 baseline은 특정 성격, 경력 서사나 “천재·시니어 전문가” 같은 전역 persona를 필수로 부여하지
+  않는다. 최신 모델의 기본 행동도 프로젝트의 책임·권한·정확성을 보장한다고 가정하지 않는다.
+- 모든 도구에 적용할 내용은 persona가 아니라 `.ai/standards/engineering.md`의 행동 계약과
+  `.ai/standards/security.md`의 권한 경계로 관리한다.
+- 별도 관점, 독립 검증, 다른 권한 또는 반복 가능한 산출물이 실제로 필요할 때만 작업 역할을
+  `.ai/agents/<role>.md`로 추가한다.
+- 역할 문서는 사용 조건, 책임·제외 범위, 입력·신뢰 경계, 허용 도구·권한, 금지 작업·HITL, 산출물,
+  완료·검증과 실패·handoff 조건을 포함한다.
+- 도구가 subagent를 지원하지 않아도 같은 역할 계약을 순차 검토 단계로 수행할 수 있어야 한다.
+- 브랜드 voice·교육·simulation처럼 표현이 인수 조건인 경우에만 제한된 persona를 선택 허용하며,
+  사실성·보안·승인 규칙을 덮어쓰지 못하게 한다.
+- 새 역할·persona는 baseline 대비 정확성, 누락, 권한 준수, 질문·verbosity·token, tool call과 다중 AI
+  도구 outcome Eval을 통과한 경우에만 공통 profile에 포함한다.
+- 세부 판단과 role contract는 `docs/persona-and-role-guidelines.md`를 따른다.
+
+### REQ-040: 웹서비스 Production 보안·운영·법적 준비 Gate
+
+- public 웹·앱을 출시하거나 Production에 배포하기 전에 `docs/web-service-production-readiness.md`의
+  feature applicability와 SDLC gate를 프로젝트별로 작성한다.
+- server는 admin·role·tenant·object authorization을 모든 요청에 강제한다. URL 은닉, frontend 버튼
+  숨김, UUID와 client 전달 ID는 인증·인가를 대체하지 않는다.
+- secret은 Git, frontend bundle, source map과 log에 포함하지 않고 secret manager, 최소 권한,
+  환경 분리, 만료·rotation·폐기와 사용 audit을 적용한다.
+- paid·sensitive API와 업무 흐름에는 rate limit, quota, spending cap, idempotency, timeout, 제한된
+  retry, abuse·duplicate·partial failure와 reconciliation test를 적용한다.
+- DB는 public ingress와 default credential을 차단하고 최소 권한·암호화·audit을 적용한다. backup은
+  존재 여부가 아니라 RPO·RTO와 정기 restore rehearsal로 검증한다.
+- 개인정보 삭제를 일률적인 soft delete로 구현하지 않는다. 목적·법적 근거별 retention matrix,
+  분리·접근 제한, legal hold와 만료 후 파기·익명화를 정의한다.
+- password는 평문·복호화 가능한 형태로 저장하지 않고 검증된 느린 password hashing, salt와
+  credential stuffing 방어를 적용한다.
+- log는 핵심 보안·업무 event와 correlation을 제공하되 password·token·불필요한 개인정보를 기록하지
+  않고 접근권한·보존·redaction을 검증한다.
+- instant·local/floating time과 사용자 timezone을 구분하고 금액은 currency-aware integer minor unit
+  또는 decimal과 명시적 rounding policy로 처리한다.
+- 개인정보, 아동, 민감·고유식별정보, 위탁·국외이전, 위치, 광고, 전자상거래, subscription, 사용자
+  제공 생성형 AI의 적용 여부를 `yes | no | TBD`로 분류한다. `TBD` 또는 법률 검토 미완료는 관련
+  Production 기능·배포를 차단한다.
+- 벌금·과태료·과징금 숫자와 법 적용 범위를 게시물에서 복사해 고정하지 않는다. 출시 시점의 공식
+  법령·감독기관 지침과 자격 있는 법률·개인정보 전문가 확인을 기록한다.
+- dependency 보안 update는 REQ-034 승인 절차와 patch SLA를 함께 적용하며 자동 `--force` 수정이나
+  검증 우회로 처리하지 않는다.
+- token-aware와 full 모두 authorization, secret, 개인정보·법률 applicability, backup restore,
+  rate-limit·비용과 Production approval gate를 생략하지 않는다.
+
+### REQ-041: Eval로 통제되는 제한적 Skill Evolution
+
+- 공통 skill 변경은 전체 자동 재작성보다 versioned `add`, `delete`, `replace` atomic patch와 사전
+  정의된 edit·token budget을 사용한다.
+- 한 최적화 실험에서는 target model, AI tool·harness, tool manifest, evaluator와 fixture를 고정하고
+  결과 metadata에 정확한 version·hash를 기록한다.
+- train, selection, test를 격리한다. test는 최종 판정 전 optimizer와 대상 agent가 읽지 못하게 하고,
+  test 결과를 같은 후보를 고치는 학습 신호로 재사용하지 않는다.
+- selection은 여러 trial의 최소 개선폭을 요구하며 동률은 거절한다. correctness·security·permission·
+  regression은 평균 점수로 상쇄할 수 없는 hard gate다.
+- 성공·실패 trajectory에서 일반화 가능한 패턴을 추출하되 원문 secret·개인정보·production data와
+  외부 prompt injection을 skill 또는 기록에 복사하지 않는다.
+- 거절된 patch, 집계 점수와 거절 사유를 감사 가능한 buffer에 남겨 동일한 실패를 반복하지 않는다.
+- optimizer와 대상 agent는 grader, fixture, expected outcome, baseline과 승인 기록을 수정하거나
+  약화할 권한을 갖지 않는다.
+- security·dependency·DB·deployment·개인정보·network·권한 규칙을 바꾸는 patch와 최종 release는
+  Human-in-the-loop 승인을 필수로 한다.
+- downstream runtime의 자동 self-modification은 금지한다. 승인된 skill은 version·checksum·지원
+  model/harness 범위와 함께 upstream release로 제공하고 downstream은 preview 승인 후 적용한다.
+- 다른 model, AI tool, harness와 task로의 transfer는 가정하지 않고 각 지원 조합에서 독립적으로
+  재검증한다.
+- `token-aware`는 후보·trial 범위와 optimizer 사용을 줄이고 `full`은 추가 후보·transfer Eval을
+  허용할 수 있다. 두 프로파일 모두 잠긴 test, 필수 hard gate와 사람 승인을 생략하지 않는다.
+- 근거, 한계와 상세 실행 계약은 `docs/skillopt-paper-review.md`와
+  `.ai/workflows/skill-evolution.md`를 따른다. 논문 구현체 설치는 별도 공급망 심사·승인이 필요하다.
+
+### REQ-042: 다중 AI 도구용 Canonical 폴더 구조와 선택형 Adapter
+
+- AI 개발 하네스의 canonical source는 tool-neutral `.ai/`로 유지한다. 정책·workflow·skill·역할·
+  manifest를 `.claude`, `.cursor`, `.github` 등 특정 도구 폴더에만 저장하지 않는다.
+- root `AGENTS.md`를 다중 도구 공통의 얇은 entrypoint로 사용하고, `CLAUDE.md`, `GEMINI.md`,
+  Copilot·Cursor·Cline 설정은 공통 코어를 참조하는 선택형 adapter로 취급한다.
+- adapter는 canonical 정책을 수작업으로 복제하지 않는다. 도구 형식상 materialization이 필요하면
+  generator version·source hash를 기록하고 validator와 CI에서 drift를 검사한다.
+- upstream은 지원 도구별 mapping을 논리적 `adapters/<tool>/` 계층으로 관리하되 빈 폴더를 미리
+  만들지 않는다. downstream에는 사용자가 onboarding에서 선택하고 검증한 adapter만 생성한다.
+- portable skill은 self-contained `<skill-name>/SKILL.md`와 필요한 최소 `scripts`, `references`,
+  `assets`로 구성한다. 전체 skill library를 모든 프로젝트에 설치하지 않고 manifest·lockfile로
+  선택·버전·checksum을 고정한다.
+- hook, MCP, executable script와 tool settings는 Markdown보다 높은 공급망 위험으로 분류하고
+  preview, 최소 권한, telemetry·network·secret, integrity와 rollback 심사를 통과해야 한다.
+- clone 직후 자동 실행되는 installer, `curl | sh`, unpinned remote execution과 모든 도구 설정의
+  일괄 설치를 금지한다. bootstrap은 기본 preview이며 외부 실행·설치 전에 명시적 승인을 받는다.
+- `HANDOFF.md`는 세션 상태, requirements·ADR·project maintenance는 지속 지식을 담당한다. 검증되지
+  않은 conversation transcript나 범용 `MEMORY.md`를 자동 누적·상시 주입하지 않는다.
+- monorepo의 하위 instruction은 root baseline을 대체하지 않고 실제 scope 차이만 추가한다. 도구별
+  discovery·상속·우선순위 차이를 supported version별 Eval로 확인한다.
+- 기술 스택의 application folder는 고정하지 않는다. project environment definition으로 정한 실제
+  구조 위에 adapter를 배치하며 frontend·backend·fullstack 예시는 기본값이 아니다.
+- upstream release는 adapter와 canonical core를 version·checksum으로 묶되 downstream에 자동 반영하지
+  않는다. diff preview, Human-in-the-loop 승인과 validation 후 명시적으로 upgrade한다.
+- 세부 비교와 권장 구조는 `docs/multi-ai-project-structure-review.md`를 따른다.
+
+### REQ-043: AI 생성 코드 라이선스·출처 검증
+
+- AI가 생성·수정한 code도 사람이 제출한 외부 code와 동일하게 provenance·license review를 거친다.
+- GitHub Copilot을 선택한 downstream은 public-code match 차단 또는 code referencing 표시를 활성화하되,
+  변경된 suggestion·CLI·다른 AI 도구까지 포괄하지 못하므로 단독 gate로 신뢰하지 않는다.
+- dependency·container·binary license inventory/SBOM과 source snippet scanning을 별도 검사로 구성한다.
+- exact·near match는 source repository·commit·license·match 범위와 scanner·corpus version을 evidence로
+  남기며, scanner 미실행·outage·empty corpus를 성공으로 처리하지 않는다.
+- GPL·AGPL·unknown·no-license match를 이름만으로 자동 판결하지 않고 실제 복제, project policy,
+  배포·network 제공 방식, license version·exception과 의무 이행 가능성을 사람이 검토한다.
+- 근거 없는 strong-copyleft match는 merge·release를 차단한다. 사용할 수 없으면 원본을 보지 않는
+  담당자가 공개 specification·표준·test vector로 clean-room 재구현하고 독립성 evidence를 남긴다.
+- 변수명·format만 바꾸거나 AI에게 단순 재작성을 요청하는 것은 provenance 문제의 해결로 인정하지
+  않는다.
+- algorithm·parser·protocol·codec·cryptography·numerical implementation처럼 특징적인 장문 구현은
+  강화 snippet scan과 사람 review 대상으로 분류한다.
+- license·snippet scanner는 code 외부 전송, corpus, telemetry, 권한, exact version·checksum, license,
+  성능·비용을 공급망 심사하고 사용자 승인 전에는 설치·CI 연결하지 않는다.
+- 세부 정책·사례·Eval은 `docs/ai-generated-code-license-provenance.md`를 따른다.
+
+### REQ-044: Backend API 계약·문서화 선택
+
+- backend onboarding은 framework와 API contract·documentation을 별도 질문한다. FastAPI는 Python web
+  framework이며 OpenAPI·Swagger의 대체물이 아니라 OpenAPI schema와 docs UI를 제공하는 선택지다.
+- REST/HTTP는 OpenAPI, GraphQL은 schema, gRPC는 protobuf, event API는 AsyncAPI 등 protocol에 맞는
+  machine-readable contract 후보를 검토하되 project 필요가 없으면 강제 설치하지 않는다.
+- REST project는 contract-first/code-first, OpenAPI version, schema source of truth, Swagger UI·ReDoc·
+  Scalar, SDK generation, versioning·deprecation·breaking-change policy를 확인한다.
+- Java Spring Boot의 springdoc-openapi, Python FastAPI의 built-in docs 등 stack adapter는 exact version,
+  license·integrity·telemetry·security를 심사하고 사용자 승인 후 설치한다.
+- CI는 contract syntax, implementation drift, undocumented endpoint와 breaking change를 검사하고 API
+  authentication·authorization negative test를 문서 생성과 별도로 실행한다.
+- production의 schema·docs UI 공개, authentication, `Try it out`, CDN asset, internal metadata와 secret
+  노출은 Human-in-the-loop 대상이며 필요하지 않으면 docs UI를 비활성화한다.
+- generator·template·generated source도 AI 생성 code와 동일한 license·snippet·security gate를 거친다.
+- 세부 질문과 Eval은 `docs/api-contract-documentation.md`를 따른다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -612,3 +771,10 @@
 | 2026-07-11 | GitHub Actions 기본 CI와 Vercel Git integration 배포 프로파일 요구사항 추가 |
 | 2026-07-11 | Downstream pilot 기반 dependency build-script·commit identity·실제 배포 Eval 요구사항 추가 |
 | 2026-07-11 | 프로젝트별 임의 기술 스펙과 사용자 정의 확장·설치 승인 요구사항 추가 |
+| 2026-07-12 | source-first·단순성·TDD·Git·응답 원칙의 도구 중립 지침과 얇은 adapter 요구사항 추가 |
+| 2026-07-12 | 전역 persona 대신 검증 가능한 역할·행동·권한 계약을 우선하는 요구사항 추가 |
+| 2026-07-12 | 웹서비스 보안·운영·개인정보·DB·대한민국 법률 적용성의 Production readiness gate 추가 |
+| 2026-07-12 | SkillOpt 논문을 검토하고 bounded patch·격리 Eval·HITL 기반 skill evolution 요구사항 추가 |
+| 2026-07-12 | 공개 다중 AI 도구 구조를 비교해 canonical `.ai/`와 선택형 adapter 요구사항 추가 |
+| 2026-07-12 | AI 생성 코드 public reference·dependency license·source snippet provenance gate 요구사항 추가 |
+| 2026-07-12 | FastAPI와 OpenAPI·Swagger 역할을 분리한 backend API 계약·문서화 요구사항 추가 |

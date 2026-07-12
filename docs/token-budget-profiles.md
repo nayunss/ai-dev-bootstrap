@@ -65,6 +65,8 @@ aiExecution:
 - MCP server 승인 manifest, 미승인 호출 차단과 필수 권한·공급망 심사
 - 설치된 package version 변경의 사용자 승인과 호환성·migration·회귀 검증
 - CI provider 연결, Vercel 공개·production 승인과 필수 quality·security gate
+- AI 생성 코드의 dependency license·source snippet provenance gate와 unresolved match의 사람 검토
+- API contract drift·breaking change와 production documentation 공개 승인
 - 파일·DB 삭제, 배포, 권한 변경과 외부 전송의 사용자 승인
 - 변경 파일의 포맷, 린트, 타입 검사와 관련 테스트
 - 보안·개인정보·접근성 요구사항에 직접 관련된 검증
@@ -106,6 +108,7 @@ CodeSight, 검색과 기존 문서로 탐색 범위를 먼저 좁힌다.
 - 문서와 실제 코드가 충돌하거나 영향 범위를 확인할 수 없음
 - 반복되는 테스트 실패와 원인 불명 회귀
 - 공급망·라이선스·텔레메트리 심사가 필요한 새 의존성
+- public-code reference 또는 strong-copyleft·unknown source snippet match
 
 확대가 승인되지 않거나 토큰이 부족하면 안전하게 완료 가능한 범위까지만 수행하고 미검증
 항목을 명시한다. 필수 게이트를 통과하지 않은 작업은 완료로 선언하지 않는다.
@@ -159,3 +162,8 @@ CodeSight, 검색과 기존 문서로 탐색 범위를 먼저 좁힌다.
   확장한다.
 - 관련 문서: [프로젝트 개발환경 정의](project-environment-definition.md),
   [하네스 구성](harness.md), [SDLC](sdlc.md), [Handoff](handoff.md)
+- AI 생성 코드 라이선스 영향: 두 프로파일 모두 dependency·snippet gate와 사람 승인을 생략하지
+  않는다. `token-aware`는 changed source와 high-risk implementation부터 검사하고, `full`은 broader
+  corpus·history·배포 의무와 suppression baseline까지 확대한다.
+- API 문서화 영향: 두 프로파일 모두 framework와 contract를 분리해 질문하고 drift·authorization·
+  공개 gate를 유지한다. `full`은 SDK·consumer·versioning·deprecation 대안을 더 넓게 비교한다.

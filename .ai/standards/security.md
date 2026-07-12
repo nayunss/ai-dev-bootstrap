@@ -116,6 +116,20 @@ rollback 방법:
 - production backup과 point-in-time recovery 권한은 agent의 DB 권한과 분리한다.
 - backup 존재 여부가 아니라 restore rehearsal 성공 여부를 확인한다.
 - 실제 고객 데이터는 AI 테스트 fixture나 prompt에 사용하지 않는다.
+- public DB ingress를 기본 차단하고 private network·firewall allowlist·TLS·최소 권한을 사용한다.
+- backup 존재만으로 복구 가능하다고 판단하지 않고 RPO·RTO와 정기 restore rehearsal을 검증한다.
+- 삭제를 일률적인 soft delete로 구현하지 않는다. 보존 근거·기간·분리·legal hold와 만료 후 파기·
+  익명화를 data category별로 정한다.
+
+## API·인증·비용 보호
+
+- frontend의 route·button 숨김은 권한 통제가 아니다. admin·function·tenant·object authorization은
+  server와 data policy에서 매 요청 강제한다.
+- 정수 ID와 UUID 모두 untrusted object reference다. ID 형식과 무관하게 BOLA negative test를 둔다.
+- SMS·email·AI·결제와 paid API는 user·device·IP·tenant rate limit, quota, spending cap과 alert를 둔다.
+- 외부 API는 timeout, 제한된 retry·backoff, idempotency, duplicate callback·partial failure와
+  reconciliation을 설계한다.
+- password는 평문이나 복호화 가능한 형태로 저장하지 않고 검증된 password hashing을 사용한다.
 
 ## 비밀과 개인정보
 
@@ -183,6 +197,29 @@ rollback 방법:
 - pre-push는 타입, 테스트와 선택된 보안 검사를 실행한다.
 - CI는 훅을 신뢰하지 않고 모든 필수 검사를 독립 실행한다.
 - 문자열 기반 훅은 obfuscation과 shell expansion을 놓칠 수 있어 sandbox와 IAM을 대체하지 않는다.
+
+## AI 생성 코드 라이선스와 출처
+
+- AI output도 외부 기여 code로 취급해 provenance·license·copyright review를 거친다.
+- AI 도구의 public-code reference는 활성화하되 변경 output과 다른 도구를 포괄하지 못하므로 단독
+  통제로 신뢰하지 않는다.
+- dependency license·SBOM과 source snippet scan을 분리하고 미실행·scanner outage·empty corpus를
+  성공으로 처리하지 않는다.
+- unresolved strong-copyleft·unknown·no-license match는 merge·release를 중단하고 사람의 compatibility·
+  의무 검토를 받는다.
+- 이름·format 변경이나 단순 AI 재작성은 clean-room evidence가 아니다. 필요한 경우 원본을 보지 않은
+  담당자가 public specification·test만으로 재구현한다.
+- scanner 설치와 외부 corpus 전송은 `docs/supply-chain-security.md`의 심사와 사용자 승인을 요구한다.
+- 상세 gate는 `docs/ai-generated-code-license-provenance.md`를 따른다.
+
+## Production 법적 준비
+
+- 개인정보·아동·국외이전·위탁·위치·광고·전자상거래·subscription·사용자 제공 AI 기능의 적용성을
+  출시 전에 분류한다.
+- 적용 여부가 `TBD`이거나 처리방침·동의·보존·파기·사업자 표시·신고 등 필수 evidence가 없으면 관련
+  Production 배포를 승인하지 않는다.
+- 온라인 게시물의 제재 금액을 정책으로 복사하지 않고 현재 공식 법령과 전문가 검토를 기록한다.
+- 세부 체크리스트는 `docs/web-service-production-readiness.md`를 따른다.
 
 ## 사고 대응
 

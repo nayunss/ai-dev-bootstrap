@@ -14,6 +14,7 @@ Bootstrap preview
 - Dependency lifecycle scripts: disabled by default
 - Deployment install: approved exact-version build-script allowlist and separate provider-equivalent Eval required
 - Git/Vercel: verified commit identity and duplicate repository integration check required before push/import
+- AI adapters: AGENTS.md and CLAUDE.md reference the shared .ai engineering and security standards
 - Security binaries: exact versions and checksums from .ai/manifests/security-tools.yaml
 - Playwright browser binaries: excluded; separate preview and Human-in-the-loop approval required
 - Husky: excluded until the downstream environment and quality commands pass

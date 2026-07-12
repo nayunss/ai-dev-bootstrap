@@ -31,6 +31,9 @@
 
 ## 권장 저장소 구조
 
+제공된 Claude Code vault 이미지와 Codex·Copilot·Cursor·Gemini·Cline의 공식 규약 및 공개
+저장소 비교는 [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md)에 정리한다.
+
 ```text
 common-project/
 ├── README.md
@@ -49,6 +52,8 @@ common-project/
 │   └── manifests/
 │       ├── tools.yaml
 │       └── skills.lock.yaml
+├── adapters/                 # 실제 지원하는 도구의 생성 mapping만 선택적으로 추가
+│   └── <tool>/
 ├── docs/
 │   ├── requirements.md
 │   ├── architecture.md
@@ -66,7 +71,8 @@ common-project/
 ```
 
 초기에는 문서로 계약을 확정하고, `.ai/`, 스크립트, 템플릿은 실제 요구사항이 정해지는
-순서대로 구현한다. 빈 디렉터리를 미리 대량 생성하지 않는다.
+순서대로 구현한다. `adapters/`도 실제 도구별 materialization이 필요할 때만 만들며 빈 디렉터리를
+미리 대량 생성하지 않는다.
 
 ## 계층별 책임
 
@@ -81,6 +87,8 @@ common-project/
 - 해당 도구가 공통 코어를 발견하고 읽도록 안내한다.
 - 도구 고유 기능과 공통 기능 사이의 대응 관계만 정의한다.
 - 공통 정책을 복제하지 않는다. 도구 제한 때문에 중복이 불가피하면 생성 스크립트로 관리한다.
+- `CLAUDE.md`와 `AGENTS.md`는 `.ai/standards/engineering.md`, 보안 정책, HANDOFF와 관련 workflow의
+  읽기 순서만 제공한다. 다른 AI 도구는 `.ai/README.md`를 공통 진입점으로 사용한다.
 
 ### 매니페스트와 잠금 파일
 

@@ -62,6 +62,8 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 
 - 언어, 프레임워크, 런타임과 빌드 도구
 - API 방식: REST, GraphQL, gRPC, event와 계약 관리
+- API contract: OpenAPI·GraphQL schema·protobuf·AsyncAPI, contract-first/code-first와 source of truth
+- API 문서·SDK: Swagger UI·ReDoc·Scalar·generated client, versioning·deprecation·breaking-change gate
 - 데이터베이스 종류·버전, ORM·query 도구와 마이그레이션 방식
 - 트랜잭션 경계, 일관성, idempotency와 동시성 정책
 - 인증·인가, 세션·토큰, 사용자·서비스 신원 경계
@@ -69,6 +71,7 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 - 캐시, 검색, 파일·object storage와 외부 서비스 연동
 - 입력 검증, 오류 계약, rate limit과 abuse 방어
 - 로그, metric, trace, health check와 alert 기준
+- schema·docs UI의 environment별 공개 범위, authentication, `Try it out`과 external asset 정책
 - 백업·복구 목표, 데이터 보존·삭제와 장애 대응
 
 ### 데이터·보안·운영
@@ -80,9 +83,17 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 - SAST, secret scan, dependency·container scan과 SBOM
 - SLO, RTO, RPO, 용량·비용 한도와 운영 책임자
 - 운영 접근·배포 승인, 감사 로그와 incident response
+- admin·tenant·object authorization과 paid API rate limit·quota·spending cap
+- 아동·국외이전·위탁·위치·광고·전자상거래·subscription·사용자 제공 AI 기능의 적용 여부
+- data retention·파기·legal hold, backup RPO·RTO와 restore rehearsal
+- instant·local time·timezone과 currency·rounding policy
 
 이 영역은 편리한 기본값으로 확정하지 않는다. 사용자 승인 전에는 운영 자격증명 연결,
 외부 데이터 전송, production migration 또는 배포를 수행하지 않는다.
+웹서비스 Production 준비는 [운영·배포 안전 및 법적 준비 가이드](web-service-production-readiness.md)를
+함께 적용한다.
+API project는 [API 계약과 문서화 프로파일](api-contract-documentation.md)의 framework·contract·
+문서 UI 분리 질문과 production exposure gate를 함께 적용한다.
 
 ### 사용자 정의 스펙
 

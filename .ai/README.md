@@ -8,6 +8,7 @@
 
 ## 보안 파일
 
+- `standards/engineering.md`: 모든 AI 도구의 구현·검증·Git·응답 기본 원칙
 - `standards/security.md`: 보안 정책의 단일 진실 원천
 - `workflows/threat-model.md`: 변경 전 위협 모델 템플릿
 - `workflows/security-review.md`: 구현·리뷰·릴리스 보안 절차
@@ -16,8 +17,23 @@
 - `workflows/handoff.md`: 세션 종료와 재개 절차
 - `workflows/token-budget.md`: 토큰 예산에 따른 탐색·검증 범위 선택
 - `workflows/evaluation.md`: 하네스·루프 변경의 Eval 설계와 판정
+- `workflows/skill-evolution.md`: bounded skill patch의 격리 Eval·승인·release 절차
 - `workflows/change-mode.md`: upstream 유지보수와 downstream 도입 경계
 - `workflows/human-in-the-loop.md`: upstream 질문 조건과 downstream 승인 처리
+- `workflows/production-readiness.md`: 웹서비스 보안·운영·법률 적용성과 Production 승인 gate
+
+역할은 성격형 persona가 아니라 책임·권한·산출물·검증 계약으로 정의한다. 선택 기준은
+`docs/persona-and-role-guidelines.md`를 따른다.
+
+## 도구별 진입점
+
+- `AGENTS.md`: Codex와 AGENTS 규약을 읽는 도구의 얇은 adapter
+- `CLAUDE.md`: Claude Code의 얇은 adapter
+- 그 밖의 AI 도구: 이 README에서 시작해 `standards/engineering.md`, `standards/security.md`와
+  `HANDOFF.md`를 같은 순서로 읽는다.
+
+도구별 파일에는 공통 정책을 복제하지 않는다. 도구 고유 권한·hook·명령 매핑만 adapter에 두고
+공통 outcome과 gate는 `.ai/`에서 관리한다.
 
 보안 정책의 배경과 공개 사례는 `docs/ai-security-guardrails.md`와
 `docs/ai-security-incidents.md`를 참고한다.

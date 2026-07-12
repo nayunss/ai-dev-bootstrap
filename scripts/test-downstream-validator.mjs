@@ -1,14 +1,26 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const root = process.cwd();
 assert.equal(readFileSync(join(root, "scripts/validate-downstream.mjs"), "utf8").includes(".env.example"), false);
 const fixture = mkdtempSync(join(tmpdir(), "downstream-validator-"));
-for (const path of [".ai", ".claude", ".codex", "security", "scripts", ".editorconfig", ".gitleaks.toml", "HANDOFF.md"]) {
+mkdirSync(join(fixture, "docs"), { recursive: true });
+for (const path of [
+  ".ai",
+  ".claude",
+  ".codex",
+  "security",
+  "scripts",
+  ".editorconfig",
+  ".gitleaks.toml",
+  "AGENTS.md",
+  "CLAUDE.md",
+  "HANDOFF.md",
+]) {
   cpSync(join(root, path), join(fixture, path), { recursive: true });
 }
 
@@ -38,6 +50,13 @@ function validate() {
 }
 
 assert.equal(validate().status, 0);
+const validAgents = readFileSync(join(fixture, "AGENTS.md"), "utf8");
+writeFileSync(join(fixture, "AGENTS.md"), "# incomplete adapter\n");
+const invalidAdapter = validate();
+assert.notEqual(invalidAdapter.status, 0);
+assert.match(invalidAdapter.stderr, /AGENTS\.md must reference \.ai\/standards\/engineering\.md/);
+writeFileSync(join(fixture, "AGENTS.md"), validAgents);
+
 const incompatible = JSON.parse(readFileSync(join(fixture, "package.json"), "utf8"));
 incompatible.devDependencies = { eslint: "^10.0.0" };
 incompatible.pnpm = { overrides: { postcss: "8.5.10" } };

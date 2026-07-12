@@ -88,3 +88,12 @@
 - 모호한 표현 대신 실행 가능한 명령이나 체크리스트를 제공한다.
 - 예시 프로젝트에서 성공 경로와 실패 경로를 모두 시험한다.
 - 중복 스킬은 통합하고, 특화 스킬은 기반 스킬을 참조한다.
+
+## 스킬 변경과 최적화
+
+스킬을 trajectory에 따라 개선할 때도 downstream runtime에서 스스로 다시 쓰게 하지 않는다.
+변경은 bounded atomic patch, 격리된 train/selection/test, 필수 보안·회귀 gate와 사람 승인을 거쳐
+versioned release로 제공한다. 다른 모델이나 하네스에서 효과가 유지된다고 가정하지 않는다.
+
+구체적인 근거와 제한은 [SkillOpt 논문 검토](skillopt-paper-review.md), 실행 절차는
+[Skill evolution workflow](../.ai/workflows/skill-evolution.md)를 따른다.

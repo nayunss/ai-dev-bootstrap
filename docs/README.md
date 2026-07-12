@@ -8,11 +8,16 @@
 |---|---|---|
 | [요구사항](requirements.md) | 사용자가 원하는 기능과 제약을 지속적으로 수집 | 작성 중 |
 | [권장 아키텍처](architecture.md) | 도구 중립 코어와 도구별 어댑터 구조 정의 | 제안 |
+| [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md) | 공개 규약·저장소와 제공 이미지 기반 canonical 구조·adapter 비교 | 검토 완료 |
+| [AI 생성 코드 라이선스·출처](ai-generated-code-license-provenance.md) | public-code reference, dependency license와 source snippet provenance gate | 검토 완료 |
+| [API 계약과 문서화](api-contract-documentation.md) | FastAPI·OpenAPI·Swagger 역할, stack adapter와 production docs gate | 제안 |
 | [하네스 구성](harness.md) | 최소 공통 하네스와 프로젝트별 구성 방식 정의 | 제안 |
 | [프로젝트 개발환경 정의](project-environment-definition.md) | 기술 스택 자동 감지·질문·버전 확정 절차 | 제안 |
+| [프로젝트 유지관리 기록](project-maintenance.md) | 반복 문제·환경 함정의 원인·탐지·예방 기록 | 운영 메모 |
 | [토큰 예산별 프로파일](token-budget-profiles.md) | 토큰 절약형과 충분한 분석형 실행 방식 | 제안 |
 | [프롬프트 템플릿](prompt-templates.md) | 프롬프트가 필요한 조건과 최소 공통 템플릿 | 제안 |
 | [Eval 전략](evaluation-strategy.md) | 하네스·루프·모델 변경의 outcome 기반 평가 | 제안 |
+| [SkillOpt 논문 검토](skillopt-paper-review.md) | 제한적 skill evolution의 근거·한계·차용 범위 | 검토 완료 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 제안 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 제안 |
 | [MCP 보안과 승인 절차](mcp-security.md) | MCP 공급망·권한 심사와 미승인 server 기본 차단 | 기본 차단 |
@@ -28,8 +33,10 @@
 | [세션 Handoff](handoff.md) | 작업 종료 기록과 새 세션의 안전한 재개 절차 | 제안 |
 | [CodeSight](codesight.md) | AI 도구가 공유하는 프로젝트 코드 컨텍스트 | 적용 |
 | [에이전트 체계](agents.md) | 역할, 권한, 위임 및 산출물 규칙 정의 | 제안 |
+| [페르소나와 작업 역할](persona-and-role-guidelines.md) | 전역 persona와 검증 가능한 role contract의 선택 기준 | 제안 |
 | [SDLC](sdlc.md) | 요구사항부터 운영까지의 AI 협업 절차 정의 | 제안 |
 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md) | 프로젝트별 CI와 Preview·Production 배포 계약 | 제안 |
+| [웹서비스 Production 준비](web-service-production-readiness.md) | 보안·운영·개인정보·DB·법적 적용성 팩트체크와 출시 gate | 제안 |
 | [v0.2.0-pilot Release](releases/v0.2.0-pilot.md) | Pilot 자동화·보안 변경과 migration·rollback | 발행 준비 |
 | [v0.2.2-pilot Release](releases/v0.2.2-pilot.md) | Dependency version 승인 계약과 validator lint 수정 | 발행 준비 |
 
