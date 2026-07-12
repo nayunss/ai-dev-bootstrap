@@ -34,8 +34,8 @@
 | REQ-041 | 설계 완료 | bounded-patch pilot과 격리 grader Eval 미착수 |
 | REQ-042 | 부분 구현 | canonical `.ai/`와 Codex·Claude adapter 적용, generator hash·uninstall Eval 미완료 |
 | REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
-| REQ-044 | 설계 완료 | Spring Boot/OpenAPI contract·drift·exposure fixture 미착수 |
-| REQ-045 | 설계 완료 | 증분 stack 문서화 완료, 재귀 inventory·drift validator와 fixture 미구현 |
+| REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure fixture PASS. undocumented endpoint·frontend BFF와 다른 stack 미검증 |
+| REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
 
 ### REQ-001: 독립 저장소
 
@@ -719,6 +719,10 @@
   노출은 Human-in-the-loop 대상이며 필요하지 않으면 docs UI를 비활성화한다.
 - generator·template·generated source도 AI 생성 code와 동일한 license·snippet·security gate를 거친다.
 - 세부 질문과 Eval은 `docs/api-contract-documentation.md`를 따른다.
+- Spring Boot 4 pilot은 승인된 SpringDoc `3.0.3` API-only starter로 생성한 OpenAPI 3 JSON을 필수
+  operation·response·schema baseline과 비교하고, 필수 path 제거 fixture가 breaking change를 탐지했다.
+  contract integration에서만 schema를 활성화하고 기본 runtime에서는 인증 요청도 `/v3/api-docs` 404로
+  닫았다. 이는 해당 조합의 검증 근거이며 다른 stack의 기본 dependency가 아니다.
 
 ### REQ-045: 점진적 Stack 확장과 최초 Full-stack 구성
 
@@ -732,6 +736,9 @@
 - bootstrap과 validator는 저장소 root만 보지 않고 승인된 탐색 경계 안에서 하위 manifest, lockfile,
   build file과 application root를 재귀적으로 발견한다. 각 application의 경로·역할·명령·소유 배포를
   개발환경 문서에 기록하고 같은 package 이름만으로 경계를 추정하지 않는다.
+- application 명령은 선언된 application root를 process working directory로 실행하고 그 manifest의 exact
+  runtime·package manager를 해석한다. root에 `packageManager`가 없을 때 `pnpm --dir frontend` 또는 root
+  fallback으로 Corepack `latest` lookup을 유발하면 실패한다.
 - stack 추가 시 root EditorConfig, CodeSight, AI adapter, security-check, HANDOFF, shared schema·contract,
   Git hook, CI job, Preview·Production 배포와 rollback 조합의 영향을 다시 계산한다. 새 frontend를 감지한
   뒤에도 CodeSight·Husky·lint-staged·frontend lint profile을 누락한 채 기존 backend 검증 성공만으로
@@ -745,6 +752,9 @@
 - CI는 application별 독립 job과 필요한 contract·E2E 통합 job을 제공한다. 한 job 성공으로 다른
   application을 검증했다고 추론하지 않으며, deployment provider에서도 application별 root directory,
   environment variable, private/public network와 healthcheck를 검증한다.
+- full-stack Preview는 frontend·backend·database가 같은 임시 environment ID에 속하고 Production과
+  secret·data가 격리되는지 CRUD와 Production negative login으로 검증한다. application healthcheck 실패의
+  revert rollback과 migration·database restore rollback은 별도 경계로 기록한다.
 - token-aware는 새 application과 직접 영향받는 공통 계층을 우선 검사하고, full은 전체 application
   조합·rollback·운영 경계를 추가 평가한다. 두 프로파일 모두 필수 CodeSight·hook·CI·보안 drift 검사를
   생략하지 않는다.

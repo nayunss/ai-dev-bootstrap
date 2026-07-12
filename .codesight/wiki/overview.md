@@ -6,7 +6,13 @@
 
 ## Scale
 
-3 middleware layers
+1 library files · 3 middleware layers
+
+## High-Impact Files
+
+Changes to these files have the widest blast radius across the codebase:
+
+- `scripts/application-inventory.mjs` — imported by **2** files
 
 ---
 _Back to [index.md](./index.md) · Generated from the repository_

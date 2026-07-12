@@ -139,12 +139,20 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-045의 token-aware·full 영향과 필수 drift gate를 토큰 프로파일·workflow에 동기화했다. upstream
   Git hook은 dependency·환경 승인이 끝나지 않아 `pending-environment-definition`이며 CI와 명시적
   security-check만 현재 적용된 gate임을 기록했다.
+- REQ-045 우선순위 1의 첫 자동화를 구현했다. root·하위 `package.json`·Maven·Gradle·Python manifest를
+  재귀 발견하고, 다중 application이면 개발환경 문서의 JSON inventory와 application별 root·manifest·
+  quality·CI·deploy·hook, 공통 CodeSight·EditorConfig를 대조한다. 하위 Node application도 exact
+  package manager·lockfile·dependency·telemetry·pnpm build policy를 독립 검증한다.
+- `scripts/bootstrap preview <target>`이 manifest와 선언 drift를 읽기 전용으로 출력하도록 했고,
+  backend-only → full-stack fixture에서 inventory·hook·EditorConfig·nested dependency의 positive·negative
+  regression을 추가했다. 실제 `../env-be`에서 최초 preview가 `pom.xml`·`frontend/package.json`과 누락
+  inventory·공통 asset을 탐지했고, 이후 증분 remediation과 전체 gate를 통과했다.
 
 ## 현재 상태
 
-- branch: `main`
-- remote: `git@github.com:nayunss/ai-dev-bootstrap.git`, `main` 추적
-- 최신 기능 commit: `d7a50b1 docs: define incremental full-stack adoption`
+- branch: `governance/upstream-compliance-audit`
+- remote: `git@github.com:nayunss/ai-dev-bootstrap.git`, 동명 원격 branch 추적
+- 현재 branch 최신 commit: `f6ffc56 feat(governance): enforce upstream compliance tracking`
 - 최근 보안·품질 변경:
   - `7514549`: AI의 `.env*` 접근 차단
   - `2140c25`: 미승인 MCP default-deny
@@ -157,8 +165,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   Preview·Production 검증을 완료했으며 upstream 변경은 자동 반영되지 않는다.
 - backend→full-stack downstream pilot `../env-be`는 Spring Boot·PostgreSQL·JWT backend와 Next.js BFF
   frontend의 unit·integration·BOLA·3-browser E2E, GitHub Actions, Railway Preview·Production을
-  검증했다. 다만 frontend를 포함한 PR Environment 자동 복제, contract drift, rollback·restore와
-  REQ-045의 증분 stack 자동화는 아직 미검증 또는 미구현이다.
+  검증했다. 같은 PR Environment의 frontend·backend·PostgreSQL 격리, API contract·production docs,
+  application revert rollback과 REQ-045 증분 stack 자동화도 검증했다. DB restore·migration rollback은 남았다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
 - 이번 감사 반영은 working tree에 있으며 아직 commit·push하지 않았다. 기존 미추적 사진 파일은
   작업 범위에서 제외해 보존한다.
@@ -229,35 +237,36 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - CodeSight `1.18.0` context 재생성·변경 source 반영: PASS
 - AI sensitive-file hook·dependency approval·MCP manifest regression 재실행: PASS
 - 변경 파일 Gitleaks·Opengrep 검사: PASS, finding 0
+- REQ-045 application discovery·inventory preview positive·missing inventory negative fixture: PASS
+- 하위 Node application exact dependency·hook·EditorConfig·CI·deploy·CodeSight drift fixture: PASS
+- 실제 `../env-be` 증분 remediation: application inventory·공통 asset·hook·CodeSight·security gate PASS
+- PR #4 동일 Railway environment의 frontend·backend·PostgreSQL 복제, Preview CRUD와 Production DB 격리: PASS
+- frontend healthcheck intentional failure 후 Git revert application rollback, Preview·Production health: PASS
+- Spring Boot 4/SpringDoc 3 OpenAPI syntax·필수 contract·path 제거 breaking fixture·production docs 404: PASS
+- 전체 저장소 Gitleaks·Opengrep full scan: PASS, finding 0
+- 신규 untracked inventory·preview 모듈 `--no-git-ignore` Opengrep 직접 scan: PASS, finding 0
 
 ## 남은 작업
 
 ### 우선순위 1: 실제 pilot에서 발견된 누락 자동화
 
-1. REQ-045의 재귀 application inventory를 bootstrap·validator에 구현하고 root·하위 manifest,
-   CodeSight·EditorConfig·AI adapter·Husky·lint-staged·application별 CI·배포 drift의 positive·negative
-   fixture를 추가한다.
-2. `../env-be`에서 frontend가 포함된 PR Environment의 frontend·backend·PostgreSQL 자동 복제,
-   API contract test, secret negative fixture와 배포 rollback 호환성을 검증한다. backend·full-stack
-   pilot 자체를 처음부터 다시 만들지는 않는다.
-3. REQ-040 잔여 범위인 rate limit·retention·restore·log와 법률 applicability Eval을 격리된 test·Preview
+1. REQ-040 잔여 범위인 rate limit·retention·restore·log와 법률 applicability Eval을 격리된 test·Preview
    환경에서 구현한다. BOLA integration은 이미 PASS이므로 회귀 검사만 유지한다.
-4. REQ-044의 Spring Boot/OpenAPI contract adapter와 syntax·implementation drift·breaking-change·
-   frontend BFF contract·Production docs exposure fixture를 기존 pilot에서 검증한다.
+2. REQ-044의 남은 undocumented endpoint·frontend BFF contract fixture를 기존 pilot에서 검증한다.
 
 ### 우선순위 2: 검증된 변경의 release
 
-5. REQ-036 build-policy validator, REQ-038 engineering·AI adapter와 검증을 마친 REQ-045 범위를 다음
+3. REQ-036 build-policy validator, REQ-038 engineering·AI adapter와 검증을 마친 REQ-045 범위를 다음
    pilot release로 묶어 clean clone·upgrade preview·migration·rollback·archive checksum을 검증하고
    발행한다. 미완료인 REQ를 release에 완료로 포함하지 않는다.
 
 ### 우선순위 3: 독립 보안·호환성 확장
 
-6. REQ-043의 dependency license·source snippet scanner 후보를 먼저 공급망 심사하고, 승인 후 exact·
+4. REQ-043의 dependency license·source snippet scanner 후보를 먼저 공급망 심사하고, 승인 후 exact·
    near match, scanner outage, suppression expiry와 GPL·unknown positive·negative fixture를 구현한다.
-7. REQ-042의 Codex·Claude Code 선택형 adapter preview·source hash·drift·uninstall 보존 Eval을 구현한다.
+5. REQ-042의 Codex·Claude Code 선택형 adapter preview·source hash·drift·uninstall 보존 Eval을 구현한다.
    다른 도구는 실제 지원 요청이 있을 때 순차 검증한다.
-8. 필수 bootstrap·security·deployment gate가 안정된 뒤 REQ-041의 수동 bounded-patch pilot을 수행하고,
+6. 필수 bootstrap·security·deployment gate가 안정된 뒤 REQ-041의 수동 bounded-patch pilot을 수행하고,
    selection 재사용 편향·prompt injection·grader tampering negative Eval과 비용을 기록한다.
 
 ## 위험·주의
@@ -268,9 +277,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   validator가 CodeSight·Husky·lint-staged와 frontend profile drift를 놓쳤다. REQ-045로 최초 full-stack
   일괄 구성과 backend/frontend에서 full-stack으로 전환하는 증분 lifecycle, 재귀 application inventory,
   공통 계층 재계산과 application별 CI·배포 검증 요구사항을 추가했다.
-- README 검증 범위를 실제 pilot 상태에 맞춰 갱신했다. Spring Boot backend와 Next.js full-stack의
-  CI·Railway Preview·Production 실증은 완료됐지만, REQ-045의 재귀 inventory와 application별 drift
-  자동 검사는 아직 bootstrap·validator에 구현되지 않았음을 분리해 기록했다.
+- REQ-045 재귀 inventory·application drift 자동 검사는 구현됐지만 기존 downstream은 자동 수정하지
+  않는다. `../env-be`가 새 gate를 통과하려면 inventory와 누락된 공통 asset·adapter·hook을 별도 preview·
+  dependency 승인 후 remediation해야 한다.
 - upstream local Git hook은 아직 활성화되지 않았다. `.husky/_`만으로 적용됐다고 판단하지 않으며,
   정확한 Husky·lint-staged version과 lifecycle·제거 절차를 별도 승인하기 전에는 dependency와 hook을
   추가하지 않는다.
@@ -280,7 +289,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 다음 시작점
 
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
-- REQ-045의 재귀 application inventory와 drift validator를 첫 구현 단위로 삼고, 기존 fixture가 보존된
-  상태에서 backend-only → full-stack 증분 전환의 실패 fixture부터 작성한다.
-- 이후 `../env-be`의 contract·PR Environment·rollback 검증을 진행한다. production DB 파괴 작업 대신
-  격리된 test DB와 Preview 환경을 사용하며 dependency·외부 도구·배포 변경은 별도 승인을 받는다.
+- `../env-be`의 application inventory와 validator FAIL을 먼저 검토하고, dependency 설치가 없는 공통
+  asset·adapter remediation과 Husky·lint-staged처럼 별도 승인이 필요한 변경을 분리한다.
+- 다음은 REQ-044의 frontend BFF·undocumented endpoint 또는 REQ-040의 restore·retention을 진행한다.
+  production DB 파괴 작업 대신 격리된 test DB와 Preview 환경을 사용한다.

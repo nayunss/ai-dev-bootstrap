@@ -18,6 +18,8 @@ Bootstrap preview
 - Security binaries: exact versions and checksums from .ai/manifests/security-tools.yaml
 - Playwright browser binaries: excluded; separate preview and Human-in-the-loop approval required
 - Husky: excluded until the downstream environment and quality commands pass
+- Application inventory: recursively detect root and nested manifests; multi-application repositories must declare docs/development-environment.md JSON inventory
+- Stack evolution: preserve existing applications and preview only new application plus shared CodeSight, EditorConfig, adapter, hook, CI and deployment drift
 
 Apply reviewed security tools only: scripts/bootstrap security-tools
 Install locked dependencies with scripts disabled and strict peers:
@@ -25,6 +27,10 @@ Install locked dependencies with scripts disabled and strict peers:
 Validate a downstream project: scripts/validate /absolute/path/to/project
 Online vulnerability audit: scripts/validate /absolute/path/to/project --online-audit
 EOF
+    if [ -n "${2:-}" ]; then
+      TARGET=$(CDPATH= cd -- "$2" && pwd)
+      node "$ROOT/scripts/preview-applications.mjs" "$TARGET"
+    fi
     ;;
   security-tools)
     "$ROOT/scripts/bootstrap-security-tools"
@@ -65,7 +71,7 @@ EOF
     node "$ROOT/scripts/validate-downstream.mjs" "$TARGET"
     ;;
   *)
-    echo "Usage: scripts/bootstrap [preview|security-tools|dependencies TARGET --allow-network]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools|dependencies TARGET --allow-network]" >&2
     exit 2
     ;;
 esac

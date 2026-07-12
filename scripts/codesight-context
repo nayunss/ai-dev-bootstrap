@@ -24,6 +24,8 @@ const replacements = new Map([
     [/ · Generated \d{4}-\d{2}-\d{2}_$/m, " · Generated from the repository_"],
   ]],
 ]);
+const log = path.join(root, ".codesight/wiki/log.md");
+fs.writeFileSync(log, "# CodeSight Scan Log\n\nScan history is normalized — Git diff is the freshness authority.\n");
 for (const [relative, rules] of replacements) {
   const file = path.join(root, relative);
   let content = fs.readFileSync(file, "utf8");
