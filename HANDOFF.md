@@ -173,6 +173,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - Railway Preview 점검에서 backend `Retry-After`·correlation ID를 Next.js BFF가 버리는 실제 누락을
   발견했다. 두 header만 allowlist로 전달하고 Authorization은 차단하는 Vitest를 추가해 재배포했다.
   synthetic login은 1~5회 401, 6회 429·`Retry-After: 44`·UUID correlation ID를 반환했다.
+- env-be 후속 CI에서 Playwright `install --with-deps`가 Azure apt mirror의 181 package·114MB 다운로드 중
+  20분 timeout됨을 확인했다. package와 같은 `v1.61.1-noble` 공식 image를 MCR manifest digest로 고정하고
+  runtime alignment gate를 추가했다. 보완 run은 frontend 3-browser E2E 1분 42초, 최종 문서 run은
+  1분 50초에 PASS했으며 backend·security도 모두 PASS했다.
 
 ## 현재 상태
 
@@ -279,6 +283,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - readiness ready positive·invalid applicability·missing disposal·false approval negative fixture: PASS
 - 실제 env-be applicability·retention·logging·Production restore profile: 의도된 `BLOCKED`, Production 미승인
 - Railway PR Preview BFF rate-limit 회귀: 401 5회 후 429, Retry-After·correlation ID 전달 PASS
+- Playwright fresh-runner apt timeout 재현과 digest-pinned 공식 runtime image 전환: 3-browser E2E PASS
 - 전체 저장소 Gitleaks·Opengrep full scan: PASS, finding 0
 - 신규 untracked inventory·preview 모듈 `--no-git-ignore` Opengrep 직접 scan: PASS, finding 0
 

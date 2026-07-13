@@ -511,6 +511,10 @@
   audit, format·lint·typecheck·test·build와 필요한 E2E의 기본 CI를 구성한다.
 - workflow event·branch, cache·artifact·network·timeout·비용과 fork PR secret 경계를 preview하고 승인
   전에는 remote에 push하거나 required check를 변경하지 않는다.
+- browser E2E는 fresh runner의 browser binary·OS dependency provisioning 경계를 기록한다. 매 run
+  `install --with-deps`가 외부 OS mirror에 의존해 timeout되면 무제한 retry·timeout 확대나 browser cache로
+  숨기지 않는다. 공식 runtime image를 사용하는 경우 project test package와 exact version을 맞추고
+  immutable manifest digest, runtime 존재와 실제 multi-browser E2E를 검증한다.
 - Vercel을 선택하면 framework 공식 Git integration을 우선하고 불필요한 CLI·token·`vercel.json`을
   추가하지 않는다.
 - Vercel account·team·private repository access, Preview·Production branch, deployment URL 공개·보호,
@@ -759,6 +763,9 @@
 - 새 application dependency·hook·browser binary·외부 service 설치와 기존 version 변경은 각각 공급망
   preview와 Human-in-the-loop 승인을 받는다. 기존 application의 승인 범위를 새 application 설치 승인으로
   확대하지 않는다.
+- browser가 필요한 application CI는 package version, runner image 또는 설치 방식, OS dependency source,
+  timeout과 network failure를 application inventory evidence로 남긴다. prebuilt image는 mutable tag만
+  사용하지 않고 package/image version alignment와 digest drift를 검증한다.
 - validator는 `docs/development-environment.md`의 선언된 application 목록과 실제 manifest·CI·hook·
   CodeSight·EditorConfig profile을 대조하고, 새 application이 감지됐지만 문서·gate가 갱신되지 않으면
   drift로 실패한다.
