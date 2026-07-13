@@ -1,6 +1,6 @@
 # Handoff
 
-갱신: 2026-07-12 Asia/Seoul
+갱신: 2026-07-13 Asia/Seoul
 상태: 진행 중
 
 ## 목표
@@ -12,6 +12,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 완료
 
+- 다른 노트북에서 작성한 downstream 시작·검증, upstream/downstream 아키텍처와 feedback 계약 문서를
+  검토·보완했다. 목표 아키텍처와 현재 부분 구현을 분리하고, target이 있는 preview·Node 한정 dependency·
+  upstream-local security tool 경계를 명시했다. 단독·blind tester, AI provenance, 전원 PASS, synthetic
+  negative fixture와 확장된 finding evidence schema를 REQ-046 계약에 맞췄다.
 - 여러 참여자가 upstream commit을 고정하고 frontend·backend·full-stack 독립 downstream을 생성해
   검증하는 가이드를 추가했다. 역할·matrix·AI 입력·공통/유형별 gate·증거 schema·환류·중단 조건과
   설계 검증 완료 판정을 REQ-046으로 연결했다.

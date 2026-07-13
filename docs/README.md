@@ -20,6 +20,10 @@
 | [SkillOpt 논문 검토](skillopt-paper-review.md) | 제한적 skill evolution의 근거·한계·차용 범위 | 검토 완료 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 제안 |
 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md) | 단독·다중 tester의 frontend·backend·full-stack 생성, AI provenance·증거·환류 절차 | 제안 |
+| [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | 제안 |
+| [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 제안 |
+| [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 제안 |
+| [Upstream 피드백 기록 계약](upstream-feedback-log.md) | downstream 저장소에 남기는 upstream 수정 필요 사항 기록 형식 | 제안 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 제안 |
 | [MCP 보안과 승인 절차](mcp-security.md) | MCP 공급망·권한 심사와 미승인 server 기본 차단 | 기본 차단 |
 | [Human-in-the-loop](human-in-the-loop.md) | Upstream 질문과 Downstream 응답·승인 계약 | 제안 |

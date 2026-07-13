@@ -40,7 +40,7 @@
 | REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure fixture PASS. undocumented endpoint·frontend BFF와 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
-| REQ-046 | 설계 완료 | 다중 참여자 downstream pilot 가이드 작성. 독립 tester 간 재현·결과 취합 운영은 미검증 |
+| REQ-046 | 설계 완료 | 단독·다중 pilot, downstream 시작·blind 검증·feedback schema와 AI provenance·전원 PASS 계약 작성. 독립 tester 간 실제 재현·결과 취합 운영은 미검증 |
 
 ### REQ-001: 독립 저장소
 
