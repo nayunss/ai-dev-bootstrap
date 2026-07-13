@@ -88,8 +88,8 @@ full-stack 한 건**이다. full-stack pilot은 backend-only로 시작한 뒤 fr
 | 범위 | 현재 검증 수준 |
 |---|---|
 | 프론트엔드 | Next.js·TypeScript·pnpm·Zustand·SCSS Modules·Vitest·Playwright·GitHub Actions·Vercel로 bootstrap, 보안·품질·E2E, Preview와 Production 검증 완료 |
-| 백엔드 | Spring Boot 4.1.0·Java 21·Maven·PostgreSQL·Flyway·JWT·Testcontainers·SpringDoc 3·GitHub Actions·Railway 조합에서 compile, unit·integration, BOLA, OpenAPI contract·breaking fixture·production docs 404, CI와 배포 검증 완료. 다른 backend stack adapter는 미검증 |
-| 풀스택 | Spring Boot backend에 Next.js frontend와 BFF를 증분 추가해 application별 CI, 3-browser·mobile E2E, Railway private network, 같은 PR environment의 frontend·backend·PostgreSQL 격리 CRUD와 application revert rollback을 검증. 최초 full-stack 일괄 materialize와 DB migration rollback은 미완료 |
+| 백엔드 | Spring Boot 4.1.0·Java 21·Maven·PostgreSQL·Flyway·JWT·Testcontainers·SpringDoc 3·GitHub Actions·Railway 조합에서 compile, unit·integration, BOLA 회귀, 단일-instance rate limit, 보안 log redaction·correlation, 격리 logical restore, readiness fixture와 OpenAPI contract·breaking fixture·production docs 404를 검증. 실제 retention·법률 검토·Production provider restore와 다른 backend stack adapter는 미검증 |
+| 풀스택 | Spring Boot backend에 Next.js frontend와 BFF를 증분 추가해 application별 CI, 3-browser·mobile E2E, Railway private network, 같은 PR environment의 frontend·backend·PostgreSQL 격리 CRUD, BFF rate-limit·correlation header 계약과 application revert rollback을 검증. 최초 full-stack 일괄 materialize, 다중-instance rate limit과 DB migration/provider restore rollback은 미완료 |
 
 요구사항은 대부분 공통·언어 중립으로 작성됐지만 검증 근거는 위 두 조합에 한정된다. frontend
 pilot의 발견 사항은 `REQ-033`~`REQ-036`에, backend→full-stack pilot의 발견 사항은 `REQ-045`와 관련

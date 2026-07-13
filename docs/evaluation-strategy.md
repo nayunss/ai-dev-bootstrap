@@ -39,6 +39,25 @@ evals/
 - **Capability eval**: 아직 안정적으로 못 푸는 유용한 과제로 개선 여지를 측정한다.
 - **운영 eval**: 장애·리뷰 지적을 익명화된 synthetic fixture로 재현한다.
 
+REQ-040 운영 Eval은 구현 통제와 실제 Production 결정을 별도 outcome으로 판정한다. backend·full-stack
+pilot에서는 기존 BOLA negative test를 회귀로 유지하고, rate limit의 초과 응답·재시도 정보, 보안 log의
+correlation과 민감정보 비노출, 격리 DB restore의 record 정합성·pilot RPO/RTO를 검사한다. 동시에
+applicability·retention·log ownership·Production restore profile의 미결정을 승인 실패로 판정한다.
+
+다음 세 evidence level을 결과에 반드시 기록한다.
+
+1. `isolated-logical`: ephemeral DB 내부의 logical dump·restore와 synthetic data 정합성
+2. `provider-rehearsal`: provider backup에서 독립 복구 대상으로 restore하고 RPO·RTO 측정
+3. `disaster-boundary`: 계정·region·credential 장애 경계를 분리한 복구와 접근권한 검증
+
+낮은 level의 PASS를 높은 level의 완료로 승격하지 않는다. 단일 process memory rate limit도
+`pilot-local`로 표시하고 다중 instance에서는 shared store·gateway/WAF 또는 provider control과 분산
+우회 negative fixture가 없으면 Production rate-limit PASS로 판정하지 않는다.
+
+full-stack 경로에서는 backend 단독 assertion으로 끝내지 않는다. browser-facing BFF·gateway까지 같은
+synthetic subject로 제한 이전 응답과 초과 응답을 순서대로 호출해 status, `Retry-After`, correlation ID를
+검사하고, Authorization 등 allowlist 밖 header가 노출되지 않는지 별도 negative fixture로 판정한다.
+
 Capability task가 안정되면 regression suite로 승격한다. 버그나 보안 사고 수정은 재현 task와
 함께 완료하며, 같은 실패가 다시 발생하지 않는지 CI에서 확인한다.
 

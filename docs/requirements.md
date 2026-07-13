@@ -34,7 +34,7 @@
 | REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
 | REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
-| REQ-040 | 부분 검증 | BOLA pilot PASS, rate limit·retention·restore·법률 applicability Eval 미완료 |
+| REQ-040 | 부분 검증 | env-be의 BOLA 회귀, 단일-instance rate limit, log redaction·correlation, 격리 logical restore와 readiness positive·negative Eval PASS. 실제 retention·법률 검토·Production provider restore는 차단 상태 |
 | REQ-041 | 설계 완료 | bounded-patch pilot과 격리 grader Eval 미착수 |
 | REQ-042 | 부분 구현 | canonical `.ai/`와 Codex·Claude adapter 적용, generator hash·uninstall Eval 미완료 |
 | REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
@@ -634,6 +634,14 @@
   검증 우회로 처리하지 않는다.
 - token-aware와 full 모두 authorization, secret, 개인정보·법률 applicability, backup restore,
   rate-limit·비용과 Production approval gate를 생략하지 않는다.
+- pilot Eval은 구현 여부와 Production 승인 여부를 분리한다. 단일-instance limiter와 격리 logical
+  restore는 각각 다중-instance control, provider backup·별도 장애 경계 restore를 증명하지 않는다.
+- readiness grader는 모든 applicability에 `yes | no | TBD`와 근거, data category별 retention·파기,
+  log 보존·접근, restore RPO·RTO·provider 상태를 요구한다. synthetic ready positive와 invalid·누락·
+  false approval negative fixture를 통과하더라도 실제 profile의 `TBD`는 Production을 차단한다.
+- BFF·gateway가 있으면 rate-limit status·body뿐 아니라 `Retry-After`와 correlation ID 같은 승인된
+  operational response header의 end-to-end 보존을 검증한다. Authorization·credential·임의 upstream
+  header는 allowlist 밖에서 전달하지 않는 negative fixture를 둔다.
 
 ### REQ-041: Eval로 통제되는 제한적 Skill Evolution
 

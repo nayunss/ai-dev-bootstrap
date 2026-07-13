@@ -162,12 +162,23 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   backend-only → full-stack fixture에서 inventory·hook·EditorConfig·nested dependency의 positive·negative
   regression을 추가했다. 실제 `../env-be`에서 최초 preview가 `pom.xml`·`frontend/package.json`과 누락
   inventory·공통 asset을 탐지했고, 이후 증분 remediation과 전체 gate를 통과했다.
+- REQ-040 잔여 pilot Eval을 `../env-be`에 구현했다. 기존 BOLA integration은 회귀로 유지하고,
+  가입·로그인 rate limit 429·`Retry-After`, correlation ID 기반 보안 event log와 email·password·token
+  redaction, 격리 PostgreSQL logical dump·restore 정합성·pilot RPO/RTO를 검증했다.
+- readiness profile과 결정론적 grader를 추가해 synthetic ready positive, invalid applicability·missing
+  disposal·false approval negative fixture를 통과했다. 실제 profile의 아동·국외이전·위탁 applicability,
+  retention·파기·log 책임자와 Production backup provider·RPO/RTO는 TBD라 승인을 계속 차단한다.
+- pilot 경계를 upstream에 환류했다. 인메모리 limiter는 다중 instance 방어가 아니며 같은 ephemeral
+  container의 별도 DB logical restore는 provider backup·계정/region 장애 복구 완료로 승격하지 않는다.
+- Railway Preview 점검에서 backend `Retry-After`·correlation ID를 Next.js BFF가 버리는 실제 누락을
+  발견했다. 두 header만 allowlist로 전달하고 Authorization은 차단하는 Vitest를 추가해 재배포했다.
+  synthetic login은 1~5회 401, 6회 429·`Retry-After: 44`·UUID correlation ID를 반환했다.
 
 ## 현재 상태
 
 - branch: `governance/upstream-compliance-audit`
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`, 동명 원격 branch 추적
-- 현재 branch 최신 commit: `f6ffc56 feat(governance): enforce upstream compliance tracking`
+- 현재 branch 최신 commit: `83d7141 docs: align downstream adoption and validation contracts`
 - 최근 보안·품질 변경:
   - `7514549`: AI의 `.env*` 접근 차단
   - `2140c25`: 미승인 MCP default-deny
@@ -181,7 +192,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - backend→full-stack downstream pilot `../env-be`는 Spring Boot·PostgreSQL·JWT backend와 Next.js BFF
   frontend의 unit·integration·BOLA·3-browser E2E, GitHub Actions, Railway Preview·Production을
   검증했다. 같은 PR Environment의 frontend·backend·PostgreSQL 격리, API contract·production docs,
-  application revert rollback과 REQ-045 증분 stack 자동화도 검증했다. DB restore·migration rollback은 남았다.
+  application revert rollback, REQ-045 증분 stack 자동화와 REQ-040 격리 rate-limit·log·logical restore·
+  applicability Eval도 검증했다. Production provider restore·migration rollback과 실제 운영 정책은 남았다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
 - 이번 감사 반영은 working tree에 있으며 아직 commit·push하지 않았다. 기존 미추적 사진 파일은
   작업 범위에서 제외해 보존한다.
@@ -262,6 +274,11 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - PR #4 동일 Railway environment의 frontend·backend·PostgreSQL 복제, Preview CRUD와 Production DB 격리: PASS
 - frontend healthcheck intentional failure 후 Git revert application rollback, Preview·Production health: PASS
 - Spring Boot 4/SpringDoc 3 OpenAPI syntax·필수 contract·path 제거 breaking fixture·production docs 404: PASS
+- REQ-040 env-be BOLA 회귀·rate limit 429/Retry-After·security log redaction/correlation integration: PASS
+- 격리 PostgreSQL logical dump·restore record 정합성·pilot RPO 0/RTO 30초 이내: PASS
+- readiness ready positive·invalid applicability·missing disposal·false approval negative fixture: PASS
+- 실제 env-be applicability·retention·logging·Production restore profile: 의도된 `BLOCKED`, Production 미승인
+- Railway PR Preview BFF rate-limit 회귀: 401 5회 후 429, Retry-After·correlation ID 전달 PASS
 - 전체 저장소 Gitleaks·Opengrep full scan: PASS, finding 0
 - 신규 untracked inventory·preview 모듈 `--no-git-ignore` Opengrep 직접 scan: PASS, finding 0
 
@@ -269,9 +286,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ### 우선순위 1: 실제 pilot에서 발견된 누락 자동화
 
-1. REQ-040 잔여 범위인 rate limit·retention·restore·log와 법률 applicability Eval을 격리된 test·Preview
-   환경에서 구현한다. BOLA integration은 이미 PASS이므로 회귀 검사만 유지한다.
-2. REQ-044의 남은 undocumented endpoint·frontend BFF contract fixture를 기존 pilot에서 검증한다.
+1. REQ-044의 남은 undocumented endpoint·frontend BFF contract fixture를 기존 pilot에서 검증한다.
+2. REQ-040의 Preview rate-limit 회귀와 향후 승인된 provider backup restore를 분리해 검증한다. 실제
+   retention·법률 applicability·log 책임자는 소유자·전문가 evidence 전까지 Production 차단을 유지한다.
 
 ### 우선순위 2: 검증된 변경의 release
 
@@ -310,5 +327,5 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
 - `../env-be`의 application inventory와 validator FAIL을 먼저 검토하고, dependency 설치가 없는 공통
   asset·adapter remediation과 Husky·lint-staged처럼 별도 승인이 필요한 변경을 분리한다.
-- 다음은 REQ-044의 frontend BFF·undocumented endpoint 또는 REQ-040의 restore·retention을 진행한다.
-  production DB 파괴 작업 대신 격리된 test DB와 Preview 환경을 사용한다.
+- 다음은 REQ-044의 frontend BFF·undocumented endpoint를 기존 env-be pilot에서 진행한다.
+- REQ-040은 PR #4 CI·Railway Preview의 rate-limit 회귀 결과를 추가하되 Production DB에는 접근하지 않는다.
