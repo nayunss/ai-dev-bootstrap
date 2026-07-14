@@ -19,6 +19,11 @@
 | [Eval 전략](evaluation-strategy.md) | 하네스·루프·모델 변경의 outcome 기반 평가 | 제안 |
 | [SkillOpt 논문 검토](skillopt-paper-review.md) | 제한적 skill evolution의 근거·한계·차용 범위 | 검토 완료 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 제안 |
+| [Downstream Pilot 검증](distributed-pilot-testing-guide.md) | 단독·다중 tester의 frontend·backend·full-stack 생성, AI provenance·증거·환류 절차 | 제안 |
+| [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | 제안 |
+| [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 제안 |
+| [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 제안 |
+| [Upstream 피드백 기록 계약](upstream-feedback-log.md) | downstream 저장소에 남기는 upstream 수정 필요 사항 기록 형식 | 제안 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 제안 |
 | [MCP 보안과 승인 절차](mcp-security.md) | MCP 공급망·권한 심사와 미승인 server 기본 차단 | 기본 차단 |
 | [Human-in-the-loop](human-in-the-loop.md) | Upstream 질문과 Downstream 응답·승인 계약 | 제안 |
@@ -37,8 +42,10 @@
 | [SDLC](sdlc.md) | 요구사항부터 운영까지의 AI 협업 절차 정의 | 제안 |
 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md) | 프로젝트별 CI와 Preview·Production 배포 계약 | 제안 |
 | [웹서비스 Production 준비](web-service-production-readiness.md) | 보안·운영·개인정보·DB·법적 적용성 팩트체크와 출시 gate | 제안 |
-| [v0.2.0-pilot Release](releases/v0.2.0-pilot.md) | Pilot 자동화·보안 변경과 migration·rollback | 발행 준비 |
-| [v0.2.2-pilot Release](releases/v0.2.2-pilot.md) | Dependency version 승인 계약과 validator lint 수정 | 발행 준비 |
+| [v0.2.0-pilot Release](releases/v0.2.0-pilot.md) | Pilot 자동화·보안 변경과 migration·rollback | 발행 완료 |
+| [v0.2.1-pilot Release](releases/v0.2.1-pilot.md) | `.env*` 비접근 hotfix | 발행 완료 |
+| [v0.2.2-pilot Release](releases/v0.2.2-pilot.md) | Dependency version 승인 계약과 validator lint 수정 | 발행 완료 |
+| [v0.2.3-pilot Release](releases/v0.2.3-pilot.md) | CI·engineering·Production readiness·API contract·점진적 full-stack gate | 발행 준비 중 |
 
 ## 문서 상태
 
@@ -46,6 +53,15 @@
 - `제안`: 검토가 필요한 권장안
 - `승인`: 팀의 표준으로 채택된 내용
 - `폐기`: 더 이상 사용하지 않으며 대체 문서를 명시한 내용
+- `검토 완료`: 조사·비교가 끝났지만 구현·적용 완료를 뜻하지 않는 근거 문서
+- `적용`: 현재 upstream 실행 경로에 연결되어 검증되는 문서·기능
+- `기본 차단`: 승인 전 사용하지 않는 default-deny 정책
+- `운영 메모`: 반복되는 실제 운영 경험을 누적하는 문서
+- `발행 완료`: tag·release·checksum 게시와 재검증까지 끝난 release 문서
+
+문서의 상태와 요구사항 구현 상태는 별개다. `제안` 문서의 일부 gate가 CI에 적용될 수 있고,
+`검토 완료` 문서도 자동화는 미구현일 수 있다. 요구사항별 구현·검증 상태는
+[`requirements.md`](requirements.md)의 상태 추적 절을 기준으로 한다.
 
 중요한 설계 선택은 추후 `docs/decisions/` 아래 ADR(Architecture Decision Record)로 남깁니다.
 

@@ -109,4 +109,8 @@ unapproved breaking change를 실패 처리한다.
 - production profile에서 docs exposure policy와 `Try it out` 제한 검사
 - generated SDK/server code의 deterministic regeneration, license·snippet·security scan
 
+Spring Boot + Next.js pilot은 Spring MVC의 실제 project REST operation과 생성 OpenAPI를 대조해
+undocumented endpoint를 탐지하고, BFF route handler를 호출해 backend method·path 매핑 drift를 검사한다.
+이 fixture는 해당 조합의 근거이며 다른 framework adapter 검증을 대신하지 않는다.
+
 contract diff tool과 generator도 plugin·dependency이므로 공급망 심사와 exact version 승인을 거친다.

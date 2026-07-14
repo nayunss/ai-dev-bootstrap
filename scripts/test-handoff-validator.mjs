@@ -62,6 +62,12 @@ const missing = validate("staged");
 assert.notEqual(missing.status, 0);
 assert.match(missing.stderr, /HANDOFF\.md is not included/);
 
+writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("2026-07-11", "2026-07-12"));
+git("add", "HANDOFF.md");
+const cosmetic = validate("staged");
+assert.notEqual(cosmetic.status, 0);
+assert.match(cosmetic.stderr, /non-semantic content/);
+
 writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("- 초기화", "- 변경 완료"));
 git("add", "HANDOFF.md");
 assert.equal(validate("staged").status, 0);

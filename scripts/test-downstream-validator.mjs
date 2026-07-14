@@ -50,6 +50,80 @@ function validate() {
 }
 
 assert.equal(validate().status, 0);
+
+mkdirSync(join(fixture, "frontend"), { recursive: true });
+writeFileSync(join(fixture, "frontend/package.json"), `${JSON.stringify({
+  name: "frontend",
+  private: true,
+  packageManager: "pnpm@11.11.0",
+  engines: { node: "24.17.0", pnpm: "11.11.0" },
+  devDependencies: { husky: "9.1.7", "lint-staged": "16.2.7" },
+}, null, 2)}\n`);
+writeFileSync(join(fixture, "frontend/pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
+const missingInventory = validate();
+assert.notEqual(missingInventory.status, 0);
+assert.match(missingInventory.stderr, /machine-readable JSON application inventory/);
+const preview = spawnSync(process.execPath, [join(root, "scripts/preview-applications.mjs"), fixture], { encoding: "utf8" });
+assert.equal(preview.status, 0);
+assert.match(preview.stdout, /frontend\/package\.json .*undeclared/);
+assert.match(preview.stdout, /multi-application repository requires/);
+
+mkdirSync(join(fixture, ".github/workflows"), { recursive: true });
+mkdirSync(join(fixture, ".codesight/wiki"), { recursive: true });
+mkdirSync(join(fixture, "frontend/.husky"), { recursive: true });
+writeFileSync(join(fixture, ".github/workflows/ci.yml"), "name: fixture\n");
+writeFileSync(join(fixture, ".codesight/wiki/index.md"), "# fixture\n");
+writeFileSync(join(fixture, "railway.json"), "{}\n");
+writeFileSync(join(fixture, "frontend/railway.json"), "{}\n");
+writeFileSync(join(fixture, "frontend/.husky/pre-commit"), "exit 0\n");
+writeFileSync(join(fixture, ".editorconfig"), `${readFileSync(join(fixture, ".editorconfig"), "utf8")}
+[*.{js,jsx,ts,tsx,css,scss}]
+indent_style = space
+indent_size = 2
+`);
+writeFileSync(join(fixture, "docs/development-environment.md"), `# Development environment
+
+\`\`\`json
+{
+  "applications": [
+    {
+      "id": "root",
+      "root": ".",
+      "type": "frontend",
+      "manifest": "package.json",
+      "quality": ["verify"],
+      "ci": ".github/workflows/ci.yml",
+      "deploy": "railway.json",
+      "hook": "not-applicable"
+    },
+    {
+      "id": "frontend",
+      "root": "frontend",
+      "type": "frontend",
+      "manifest": "frontend/package.json",
+      "quality": ["verify"],
+      "ci": ".github/workflows/ci.yml",
+      "deploy": "frontend/railway.json",
+      "hook": "required"
+    }
+  ],
+  "shared": { "codeSight": "required" }
+}
+\`\`\`
+`);
+assert.equal(validate().status, 0);
+
+const nestedFloating = JSON.parse(readFileSync(join(fixture, "frontend/package.json"), "utf8"));
+nestedFloating.devDependencies.husky = "^9.1.7";
+writeFileSync(join(fixture, "frontend/package.json"), `${JSON.stringify(nestedFloating, null, 2)}\n`);
+const rejectedNestedDependency = validate();
+assert.notEqual(rejectedNestedDependency.status, 0);
+assert.match(rejectedNestedDependency.stderr, /frontend husky must use an exact version/);
+writeFileSync(join(fixture, "frontend/package.json"), `${JSON.stringify({
+  ...nestedFloating,
+  devDependencies: { husky: "9.1.7", "lint-staged": "16.2.7" },
+}, null, 2)}\n`);
+
 const validAgents = readFileSync(join(fixture, "AGENTS.md"), "utf8");
 writeFileSync(join(fixture, "AGENTS.md"), "# incomplete adapter\n");
 const invalidAdapter = validate();

@@ -1,4 +1,24 @@
 {
   "schemaVersion": 1,
-  "entries": []
+  "entries": [
+    {
+      "id": "REL-LOCK-2026-07-14-001",
+      "package": "__lockfile__",
+      "manifest": "package-lock.json",
+      "from": "sha256:bbe92de827f201f6d5b7ba8583e064eeb0706c5746e7d76f4dcf6e14385f429e",
+      "to": "sha256:5226f1ec417628ba721c721b619b7f6dfdcce241cd703daee91618bf0790922e",
+      "reason": "Synchronize root release metadata from 0.2.2 to 0.2.3; dependency graph, resolved URLs and integrity values are unchanged",
+      "migration": "No dependency migration; downstream release adoption remains explicit and version-pinned",
+      "validation": [
+        "package and lock root versions match 0.2.3",
+        "npm audit reports zero vulnerabilities",
+        "dependency approval and full regression suites pass"
+      ],
+      "rollback": "Revert the v0.2.3-pilot release preparation commit and return to v0.2.2-pilot",
+      "approvedBy": "repository owner via v0.2.3-pilot release request",
+      "approvedAt": "2026-07-14",
+      "expiresAt": "2026-07-15",
+      "status": "approved"
+    }
+  ]
 }

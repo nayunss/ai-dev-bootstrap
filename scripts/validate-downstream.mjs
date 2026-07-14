@@ -2,11 +2,14 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
+import { discoverApplications, readDeclaredInventory } from "./application-inventory.mjs";
 
 const root = resolve(process.argv[2] ?? ".");
 const online = process.argv.includes("--online-audit");
 const errors = [];
 const notes = [];
+const discoveredApplications = discoverApplications(root);
+const declaredInventory = readDeclaredInventory(root);
 const requiredSecurity = [
   ".ai/standards/engineering.md",
   ".ai/standards/security.md",
@@ -40,8 +43,78 @@ function exactBuildMatcher(value) {
   return /^(?:@[^/]+\/[^@]+|[^@]+)@\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(value);
 }
 
-function validatePnpmBuildPolicy() {
-  const relative = "pnpm-workspace.yaml";
+function validateApplicationInventory() {
+  if (discoveredApplications.length < 2) return;
+  if (!declaredInventory) {
+    errors.push("multiple application manifests detected; docs/development-environment.md requires a machine-readable JSON application inventory");
+    return;
+  }
+
+  const declared = declaredInventory.applications;
+  const seen = new Set();
+  let hasFrontend = false;
+  for (const application of declared) {
+    const id = String(application?.id ?? "");
+    const appRoot = String(application?.root ?? "");
+    const manifest = String(application?.manifest ?? "");
+    if (!id || !appRoot || !manifest || !application?.type) {
+      errors.push("each application inventory entry requires id, root, type, and manifest");
+      continue;
+    }
+    if (application.type === "frontend") hasFrontend = true;
+    if (seen.has(manifest)) errors.push(`duplicate application manifest in inventory: ${manifest}`);
+    seen.add(manifest);
+    const discovered = discoveredApplications.find((candidate) => candidate.manifest === manifest);
+    if (!discovered) errors.push(`declared application manifest does not exist or is outside discovery: ${manifest}`);
+    else if (discovered.root !== appRoot) errors.push(`application root mismatch for ${manifest}: expected ${discovered.root}, received ${appRoot}`);
+
+    if (!Array.isArray(application.quality) || application.quality.length === 0) {
+      errors.push(`application ${id} requires at least one quality command in inventory`);
+    }
+    for (const field of ["ci", "deploy"]) {
+      const evidence = application[field];
+      if (typeof evidence !== "string" || !evidence || !existsSync(join(root, evidence))) {
+        errors.push(`application ${id} requires existing ${field} evidence path`);
+      }
+    }
+    const hook = application.hook;
+    if (!new Set(["required", "not-approved", "not-applicable"]).has(hook)) {
+      errors.push(`application ${id} hook must be required, not-approved, or not-applicable`);
+    }
+    if (hook === "required") {
+      const hookPath = appRoot === "." ? ".husky/pre-commit" : join(appRoot, ".husky/pre-commit");
+      if (!existsSync(join(root, hookPath))) errors.push(`application ${id} requires hook evidence: ${hookPath}`);
+      if (manifest.endsWith("package.json") && existsSync(join(root, manifest))) {
+        const pkg = JSON.parse(readFileSync(join(root, manifest), "utf8"));
+        const dependencies = { ...pkg.dependencies, ...pkg.devDependencies };
+        for (const dependency of ["husky", "lint-staged"]) {
+          if (!exactVersion(dependencies[dependency])) {
+            errors.push(`application ${id} required hook profile must pin exact ${dependency}`);
+          }
+        }
+      }
+    }
+  }
+
+  for (const application of discoveredApplications) {
+    if (!seen.has(application.manifest)) errors.push(`discovered manifest is missing from application inventory: ${application.manifest}`);
+  }
+
+  if (declaredInventory.shared?.codeSight !== "required") {
+    errors.push("multi-application inventory must declare shared.codeSight as required");
+  }
+  requireFile(".codesight/wiki/index.md");
+  if (hasFrontend && existsSync(join(root, ".editorconfig"))) {
+    const editorConfig = read(".editorconfig");
+    const frontendProfile = /^\[\*\.\{[^\]]*(?:js|jsx|ts|tsx|css|scss)[^\]]*\}\]/m;
+    if (!frontendProfile.test(editorConfig)) {
+      errors.push("multi-application frontend requires an explicit JavaScript/TypeScript/CSS EditorConfig profile");
+    }
+  }
+}
+
+function validatePnpmBuildPolicy(appRoot = ".") {
+  const relative = appRoot === "." ? "pnpm-workspace.yaml" : join(appRoot, "pnpm-workspace.yaml");
   if (!existsSync(join(root, relative))) return;
   const workspace = read(relative);
   if (/^\s*dangerouslyAllowAllBuilds\s*:\s*true\s*(?:#.*)?$/m.test(workspace)) {
@@ -68,15 +141,57 @@ function validatePnpmBuildPolicy() {
   }
 }
 
+function validateNodeApplication(manifest, appRoot) {
+  const pkg = JSON.parse(readFileSync(join(root, manifest), "utf8"));
+  const label = appRoot === "." ? "root" : appRoot;
+  const manager = String(pkg.packageManager ?? "");
+  const managerMatch = manager.match(/^(npm|pnpm|yarn)@(\d+\.\d+\.\d+)$/);
+  if (!managerMatch) errors.push(`${label} packageManager must pin an exact npm, pnpm, or yarn version`);
+  const managerName = managerMatch?.[1];
+  const managerMajor = Number(managerMatch?.[2].split(".")[0]);
+  const lockfiles = { npm: "package-lock.json", pnpm: "pnpm-lock.yaml", yarn: "yarn.lock" };
+  const lockfile = managerName ? join(appRoot, lockfiles[managerName]) : null;
+  if (lockfile && !existsSync(join(root, lockfile))) errors.push(`${label} missing ${lockfiles[managerName]} for ${managerName}`);
+  for (const [name, version] of Object.entries(pkg.engines ?? {})) {
+    if (!exactVersion(version)) errors.push(`${label} engines.${name} must be an exact version, received '${version}'`);
+  }
+  if (managerName === "pnpm" && managerMajor >= 11 && pkg.pnpm?.overrides) {
+    errors.push(`${label} pnpm 11+ overrides must be declared in pnpm-workspace.yaml, not package.json#pnpm.overrides`);
+  }
+  const workspace = join(appRoot, "pnpm-workspace.yaml");
+  if (managerName === "pnpm" && managerMajor >= 11 && !existsSync(join(root, workspace))) {
+    notes.push(`${label} pnpm 11 project has no pnpm-workspace.yaml; create it when overrides or workspace policy is needed`);
+  }
+  if (managerName === "pnpm" && managerMajor >= 11) validatePnpmBuildPolicy(appRoot);
+  const allDependencies = { ...pkg.dependencies, ...pkg.devDependencies };
+  for (const [name, version] of Object.entries(allDependencies)) {
+    if (!exactVersion(version)) errors.push(`${label} ${name} must use an exact version, received '${version}'`);
+  }
+  if (allDependencies.next) {
+    const candidates = [manifest, join(appRoot, "scripts/run-next.mjs"), ".github/workflows/security.yml", ".github/workflows/ci.yml"];
+    const telemetryEvidence = candidates
+      .filter((file) => existsSync(join(root, file)))
+      .some((file) => read(file).includes("NEXT_TELEMETRY_DISABLED"));
+    if (!telemetryEvidence) errors.push(`${label} Next.js requires project-controlled NEXT_TELEMETRY_DISABLED=1 evidence`);
+  }
+  if (allDependencies["@playwright/test"]) {
+    notes.push(`${label} Playwright browser binaries require a separate preview and Human-in-the-loop approval; validate never downloads them`);
+  }
+}
+
 requireFile("HANDOFF.md");
 requireFile(".editorconfig");
 for (const file of requiredSecurity) requireFile(file);
+validateApplicationInventory();
 
 for (const adapter of ["AGENTS.md", "CLAUDE.md"]) {
   if (!existsSync(join(root, adapter))) continue;
   const content = read(adapter);
   for (const reference of [".ai/standards/engineering.md", ".ai/standards/security.md", "HANDOFF.md"]) {
     if (!content.includes(reference)) errors.push(`${adapter} must reference ${reference}`);
+  }
+  if (existsSync(join(root, ".codesight/wiki/index.md")) && !content.includes(".codesight/wiki/index.md")) {
+    errors.push(`${adapter} must reference .codesight/wiki/index.md when CodeSight context is present`);
   }
 }
 
@@ -144,6 +259,11 @@ if (existsSync(packageFile)) {
       if (audit.status !== 0) errors.push(`${managerName} vulnerability audit failed`);
     }
   }
+}
+
+for (const application of discoveredApplications) {
+  if (application.manifest === "package.json" || !application.manifest.endsWith("package.json")) continue;
+  validateNodeApplication(application.manifest, application.root);
 }
 
 if (existsSync(join(root, "scripts/validate-handoff.mjs"))) {

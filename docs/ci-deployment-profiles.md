@@ -104,4 +104,9 @@ allowBuilds:
 - [Vercel의 Next.js Git 배포](https://vercel.com/kb/guide/nextjs-on-vercel-vs-netlify)
 - [Playwright CI](https://playwright.dev/docs/ci)
 - [Playwright browser 관리](https://playwright.dev/docs/browsers)
+
+Playwright 같은 browser E2E runtime은 fresh runner에서 매번 browser와 OS dependency를 내려받는 비용·
+mirror 장애를 별도 provisioning 경계로 본다. cache는 OS package를 보장하지 않으므로 기본 해결책으로
+간주하지 않는다. 공식 CI image를 선택하면 project package와 image의 exact version, immutable manifest
+digest, browser runtime 경로와 실제 대상 browser 전체 실행을 검증한다.
 - [GitHub setup-node](https://github.com/actions/setup-node)

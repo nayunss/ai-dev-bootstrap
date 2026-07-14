@@ -12,6 +12,36 @@
 
 ## 확정 요구사항
 
+이 절의 `REQ-001`~`REQ-046`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
+구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
+`HANDOFF.md`를 같은 작업에서 갱신한다.
+
+현재 프로젝트 단계는 요구사항·설계와 downstream pilot 검증이다. 이 단계의 validator·fixture 구현은
+설계를 검증하는 수단이며 최종 실제 공통 환경의 구현 완료를 의미하지 않는다. 핵심 설계·검증이 끝난
+뒤 이 문서와 `docs/`의 현행 설계를 입력 계약으로 사용해 실제 환경 구현 단계를 별도로 시작한다.
+
+| 요구사항 | 구현·검증 상태 | 근거 또는 남은 gate |
+|---|---|---|
+| REQ-001~004 | 적용 | 독립 저장소·요구사항 목록·Git 이력. 개별 상태 추적은 이 표로 적용 |
+| REQ-005~008 | 부분 검증 | 선호 도구·외부 자산 검토 완료, 선택 설치 adapter는 계속 확장 |
+| REQ-009~014 | 부분 검증 | 공통 정책과 frontend pilot 검증. stack별 자동 lint·접근성 Eval은 제한적 |
+| REQ-015~016 | 부분 검증 | 보안 hook·SAST fixture 적용, 실제 IAM·복구 이중 통제는 downstream별 검증 필요 |
+| REQ-017 | 적용 | staged·PR HANDOFF gate와 semantic-change regression 적용 |
+| REQ-018 | 적용 | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
+| REQ-019~024 | 부분 검증 | 문서·workflow 적용. 요구사항 변경의 자동 추적성 검사는 제한적 |
+| REQ-025 | 부분 검증 | 결정론적 fixture 존재, 전체 capability suite·비결정 trial 계측은 미완료 |
+| REQ-026~028 | 부분 검증 | bootstrap·validate와 downstream 적용 검증. upstream hook은 환경 승인 대기 |
+| REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
+| REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
+| REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
+| REQ-040 | 부분 검증 | 초기 owner·retention·multi-instance 질문 template/validator와 env-be의 BOLA, 단일-instance rate limit, log redaction·correlation, 격리 logical restore, readiness Eval·BFF fixture PASS. 실제 운영 결정·Production provider restore는 차단 상태 |
+| REQ-041 | 설계 완료 | bounded-patch pilot과 격리 grader Eval 미착수 |
+| REQ-042 | 부분 구현 | canonical `.ai/`와 Codex·Claude adapter 적용, generator hash·uninstall Eval 미완료 |
+| REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
+| REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
+| REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
+| REQ-046 | 설계 완료 | 단독·다중 pilot, downstream 시작·blind 검증·feedback schema와 AI provenance·전원 PASS 계약 작성. 독립 tester 간 실제 재현·결과 취합 운영은 미검증 |
+
 ### REQ-001: 독립 저장소
 
 - 관련 작업은 `common-project` 저장소에서 진행한다.
@@ -481,6 +511,10 @@
   audit, format·lint·typecheck·test·build와 필요한 E2E의 기본 CI를 구성한다.
 - workflow event·branch, cache·artifact·network·timeout·비용과 fork PR secret 경계를 preview하고 승인
   전에는 remote에 push하거나 required check를 변경하지 않는다.
+- browser E2E는 fresh runner의 browser binary·OS dependency provisioning 경계를 기록한다. 매 run
+  `install --with-deps`가 외부 OS mirror에 의존해 timeout되면 무제한 retry·timeout 확대나 browser cache로
+  숨기지 않는다. 공식 runtime image를 사용하는 경우 project test package와 exact version을 맞추고
+  immutable manifest digest, runtime 존재와 실제 multi-browser E2E를 검증한다.
 - Vercel을 선택하면 framework 공식 Git integration을 우선하고 불필요한 CLI·token·`vercel.json`을
   추가하지 않는다.
 - Vercel account·team·private repository access, Preview·Production branch, deployment URL 공개·보호,
@@ -604,6 +638,20 @@
   검증 우회로 처리하지 않는다.
 - token-aware와 full 모두 authorization, secret, 개인정보·법률 applicability, backup restore,
   rate-limit·비용과 Production approval gate를 생략하지 않는다.
+- pilot Eval은 구현 여부와 Production 승인 여부를 분리한다. 단일-instance limiter와 격리 logical
+  restore는 각각 다중-instance control, provider backup·별도 장애 경계 restore를 증명하지 않는다.
+- readiness grader는 모든 applicability에 `yes | no | TBD`와 근거, data category별 retention·파기,
+  log 보존·접근, restore RPO·RTO·provider 상태를 요구한다. synthetic ready positive와 invalid·누락·
+  false approval negative fixture를 통과하더라도 실제 profile의 `TBD`는 Production을 차단한다.
+- BFF·gateway가 있으면 rate-limit status·body뿐 아니라 `Retry-After`와 correlation ID 같은 승인된
+  operational response header의 end-to-end 보존을 검증한다. Authorization·credential·임의 upstream
+  header는 allowlist 밖에서 전달하지 않는 negative fixture를 둔다.
+- project 초기 onboarding은 법률·개인정보 검토 책임자, data category별 retention·파기 정책 책임자와
+  다중 인스턴스 rate-limit 방식·책임자·결정 기한을 질문하고 구조화된 readiness 문서로 남긴다. 답이
+  없으면 `TBD`를 유지하되 owner와 `before-production` 기한을 기록하며 validator가 Production을 차단한다.
+- 운영 중인 기존 project에서 readiness 문서가 누락되면 preview가 이를 표시하고 명시적 retrofit
+  명령으로 blocked template을 최초 생성할 수 있어야 한다. 기존 정책 파일은 자동 덮어쓰기·병합하지
+  않고, 생성 직후 validator가 `TBD`를 Production blocker로 확인한다.
 
 ### REQ-041: Eval로 통제되는 제한적 Skill Evolution
 
@@ -694,6 +742,12 @@
   노출은 Human-in-the-loop 대상이며 필요하지 않으면 docs UI를 비활성화한다.
 - generator·template·generated source도 AI 생성 code와 동일한 license·snippet·security gate를 거친다.
 - 세부 질문과 Eval은 `docs/api-contract-documentation.md`를 따른다.
+- Spring Boot 4 pilot은 승인된 SpringDoc `3.0.3` API-only starter로 생성한 OpenAPI 3 JSON을 필수
+  operation·response·schema baseline과 비교하고, 필수 path 제거 fixture가 breaking change를 탐지했다.
+  contract integration에서만 schema를 활성화하고 기본 runtime에서는 인증 요청도 `/v3/api-docs` 404로
+  닫았다. 이는 해당 조합의 검증 근거이며 다른 stack의 기본 dependency가 아니다.
+- 같은 pilot에서 실제 project `@RestController` operation이 생성 contract에 모두 존재하는지 대조하고,
+  frontend BFF route handler 6개의 backend method·path 매핑을 positive·negative fixture로 검증했다.
 
 ### REQ-045: 점진적 Stack 확장과 최초 Full-stack 구성
 
@@ -707,6 +761,9 @@
 - bootstrap과 validator는 저장소 root만 보지 않고 승인된 탐색 경계 안에서 하위 manifest, lockfile,
   build file과 application root를 재귀적으로 발견한다. 각 application의 경로·역할·명령·소유 배포를
   개발환경 문서에 기록하고 같은 package 이름만으로 경계를 추정하지 않는다.
+- application 명령은 선언된 application root를 process working directory로 실행하고 그 manifest의 exact
+  runtime·package manager를 해석한다. root에 `packageManager`가 없을 때 `pnpm --dir frontend` 또는 root
+  fallback으로 Corepack `latest` lookup을 유발하면 실패한다.
 - stack 추가 시 root EditorConfig, CodeSight, AI adapter, security-check, HANDOFF, shared schema·contract,
   Git hook, CI job, Preview·Production 배포와 rollback 조합의 영향을 다시 계산한다. 새 frontend를 감지한
   뒤에도 CodeSight·Husky·lint-staged·frontend lint profile을 누락한 채 기존 backend 검증 성공만으로
@@ -714,15 +771,45 @@
 - 새 application dependency·hook·browser binary·외부 service 설치와 기존 version 변경은 각각 공급망
   preview와 Human-in-the-loop 승인을 받는다. 기존 application의 승인 범위를 새 application 설치 승인으로
   확대하지 않는다.
+- browser가 필요한 application CI는 package version, runner image 또는 설치 방식, OS dependency source,
+  timeout과 network failure를 application inventory evidence로 남긴다. prebuilt image는 mutable tag만
+  사용하지 않고 package/image version alignment와 digest drift를 검증한다.
 - validator는 `docs/development-environment.md`의 선언된 application 목록과 실제 manifest·CI·hook·
   CodeSight·EditorConfig profile을 대조하고, 새 application이 감지됐지만 문서·gate가 갱신되지 않으면
   drift로 실패한다.
 - CI는 application별 독립 job과 필요한 contract·E2E 통합 job을 제공한다. 한 job 성공으로 다른
   application을 검증했다고 추론하지 않으며, deployment provider에서도 application별 root directory,
   environment variable, private/public network와 healthcheck를 검증한다.
+- full-stack Preview는 frontend·backend·database가 같은 임시 environment ID에 속하고 Production과
+  secret·data가 격리되는지 CRUD와 Production negative login으로 검증한다. application healthcheck 실패의
+  revert rollback과 migration·database restore rollback은 별도 경계로 기록한다.
 - token-aware는 새 application과 직접 영향받는 공통 계층을 우선 검사하고, full은 전체 application
   조합·rollback·운영 경계를 추가 평가한다. 두 프로파일 모두 필수 CodeSight·hook·CI·보안 drift 검사를
   생략하지 않는다.
+
+### REQ-046: 다중 참여자 Downstream Pilot 검증
+
+- 실제 환경 구축 전에 여러 tester가 고정된 upstream commit을 기준으로 frontend·backend·full-stack
+  downstream pilot을 독립 폴더·독립 Git 저장소·격리 자원에서 검증할 수 있어야 한다.
+- tester는 upstream과 downstream 경계를 유지하고 선택 stack·OS·AI provider·tool/surface·tool version·
+  model 표시명과 노출된 정확한 ID·mode/profile·adapter·권한·확인 수준, 요구사항 ID,
+  명령·exit status, positive·negative·rollback 결과, 비용과 미검증 범위를 공통 형식으로 기록한다.
+- AI model 정보가 UI 별칭·자동 선택·비노출이면 보이는 값을 그대로 기록하고 공식 ID를 추정하지 않는다.
+  `undisclosed` 결과는 기능 결과로 보존할 수 있지만 AI 도구별 호환성 근거에는 포함하지 않는다.
+- pilot PASS는 기록된 조합과 범위에만 유효하며 하나의 tester·stack 성공을 공통 지원 완료로 확대하지
+  않는다. 참여 maintainer를 포함해 시작 시 등록한 모든 tester의 배정된 필수 테스트·검증 항목이 전부
+  PASS이고 clean 재현·필수 증거가 갖춰진 경우에만 설계 완료와 지원 상태 승격을 판정한다.
+- 참여자별 필수 matrix에 `FAIL`, `BLOCKED`, `NOT-RUN`, 증거 누락이나 미검증 항목이 하나라도 있으면
+  설계는 진행 중이다. 다수결이나 일부 tester 성공으로 대체하지 않으며, 중도 이탈·재배정은 사유와
+  matrix 변경 이력을 기록한다.
+- 일반화 가능한 실패는 비밀·내부 정보·proprietary source를 제거한 synthetic fixture로 upstream의
+  요구사항·docs·Eval·validator·HANDOFF에 환류한다. downstream 고유 오류와 공통 결함을 구분한다.
+- dependency·외부 도구·배포·파괴적 작업은 preview와 Human-in-the-loop 승인 범위를 유지하며 tester
+  참여가 권한을 확대하지 않는다.
+- 역할, matrix, 실행 단계, 결과 schema와 중단 조건은
+  `docs/distributed-pilot-testing-guide.md`를 따른다.
+- 한 사람이 전 역할을 수행할 수 있으며, 이 경우 배정된 모든 필수 항목과 별도 clean self-review가
+  전부 PASS해야 설계 완료로 판정한다.
 
 ## 비기능 요구사항
 
@@ -771,6 +858,7 @@
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-07-12 | 여러 tester의 frontend·backend·full-stack 독립 downstream pilot·증거·환류 요구사항 추가 |
 | 2026-07-11 | 초기 목표와 확정 요구사항 작성 |
 | 2026-07-12 | 최초 full-stack 구성과 backend→full-stack 점진 확장 lifecycle 요구사항 추가 |
 | 2026-07-11 | 선호 도구, 도구 중립 대체와 공급망 보안 요구사항 추가 |
