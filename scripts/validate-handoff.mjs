@@ -56,8 +56,8 @@ const updated = content.match(/^갱신:\s*(\d{4}-\d{2}-\d{2})/m)?.[1];
 if ((mode === "staged" || mode === "range") && updated !== seoulDate()) {
   throw new Error(`HANDOFF.md 갱신 date must match the current Asia/Seoul date (${seoulDate()}).`);
 }
-if (!/^Git 기준:\s*실제 Git 상태가 단일 진실 원천이며 branch와 commit은 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다\.$/m.test(content)) {
-  throw new Error("HANDOFF.md must declare Git as the live authority instead of caching branch or commit snapshots.");
+if (!/^Git 기준:\s*현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다\. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다\.$/m.test(content)) {
+  throw new Error("HANDOFF.md must distinguish the local Git work state from separately fetched remote synchronization state.");
 }
 if (/^-\s*(?:현재\s+)?branch\s*:|^-\s*(?:현재\s+branch\s+)?(?:최신\s+)?commit\s*:/mi.test(content)) {
   throw new Error("HANDOFF.md must not cache volatile branch or commit snapshots; use the Git authority declaration.");

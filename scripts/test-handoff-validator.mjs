@@ -18,7 +18,7 @@ const validHandoff = `# Handoff
 
 갱신: ${today} Asia/Seoul
 상태: 진행 중
-Git 기준: 실제 Git 상태가 단일 진실 원천이며 branch와 commit은 \`git status --short --branch\`와 \`git rev-parse HEAD\`로 확인한다.
+Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 \`git status --short --branch\`와 \`git rev-parse HEAD\`로 확인한다. 원격 동기화 상태는 \`git fetch\` 후 remote-tracking reference와 대조한다.
 완료 작업: bootstrap
 다음 작업: validator
 

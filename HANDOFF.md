@@ -2,8 +2,8 @@
 
 갱신: 2026-07-14 Asia/Seoul
 상태: 진행 중
-Git 기준: 실제 Git 상태가 단일 진실 원천이며 branch와 commit은 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다.
-완료 작업: release:v0.2.3-pilot
+Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
+완료 작업: release:v0.2.3-pilot, handoff-currentness
 다음 작업: REQ-043, REQ-042, REQ-041
 
 ## 목표
@@ -173,6 +173,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   다음 시작점의 semantic change를 staged·range에서 요구하고 negative regression을 추가했다.
 - HANDOFF 작업 종료 계약을 강화해 Asia/Seoul 당일 갱신, Git 실상태 authority, 완료·다음 작업 ID
   분리와 stale branch·commit snapshot 금지를 staged·PR validator와 회귀 테스트에 적용했다.
+- Git authority 문구를 로컬 작업 상태와 원격 동기화 상태로 분리했다. fetch 전 remote-tracking
+  reference를 최신 원격 상태로 표현하지 않도록 workflow·요구사항·validator fixture를 동기화했다.
 - CodeSight index를 AGENTS·Claude·기타 AI의 공통 세션 시작 순서에 연결하고, index가 있는 저장소의
   adapter reference를 downstream validator가 검사하도록 했다. AI security hook과 HANDOFF validator
   regression도 GitHub Actions 필수 단계에 추가했다.
@@ -205,7 +207,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 현재 상태
 
-- Git branch·commit은 이 문서에 snapshot으로 복제하지 않고 상단의 read-only 명령으로 확인한다.
+- 로컬 branch·HEAD는 이 문서에 snapshot으로 복제하지 않고 상단의 read-only 명령으로 확인한다.
+  원격 상태가 필요한 작업만 fetch 후 remote-tracking reference와 대조한다.
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`
 - 최근 보안·품질 변경:
   - `7514549`: AI의 `.env*` 접근 차단
