@@ -7,11 +7,20 @@ import { join } from "node:path";
 
 const fixture = mkdtempSync(join(tmpdir(), "handoff-validator-"));
 copyFileSync("scripts/validate-handoff.mjs", join(fixture, "validate-handoff.mjs"));
+const today = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Seoul",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date());
 
 const validHandoff = `# Handoff
 
-갱신: 2026-07-11 Asia/Seoul
+갱신: ${today} Asia/Seoul
 상태: 진행 중
+Git 기준: 실제 Git 상태가 단일 진실 원천이며 branch와 commit은 \`git status --short --branch\`와 \`git rev-parse HEAD\`로 확인한다.
+완료 작업: bootstrap
+다음 작업: validator
 
 ## 목표
 
@@ -62,11 +71,29 @@ const missing = validate("staged");
 assert.notEqual(missing.status, 0);
 assert.match(missing.stderr, /HANDOFF\.md is not included/);
 
-writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("2026-07-11", "2026-07-12"));
+writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("상태: 진행 중", "상태: 검토 중"));
 git("add", "HANDOFF.md");
 const cosmetic = validate("staged");
 assert.notEqual(cosmetic.status, 0);
 assert.match(cosmetic.stderr, /non-semantic content/);
+
+writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace(`갱신: ${today}`, "갱신: 2000-01-01"));
+git("add", "HANDOFF.md");
+const staleDate = validate("staged");
+assert.notEqual(staleDate.status, 0);
+assert.match(staleDate.stderr, /current Asia\/Seoul date/);
+
+writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("- fixture", "- branch: stale-branch"));
+git("add", "HANDOFF.md");
+const staleGit = validate("staged");
+assert.notEqual(staleGit.status, 0);
+assert.match(staleGit.stderr, /must not cache volatile branch or commit/);
+
+writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("다음 작업: validator", "다음 작업: bootstrap"));
+git("add", "HANDOFF.md");
+const completedAsNext = validate("staged");
+assert.notEqual(completedAsNext.status, 0);
+assert.match(completedAsNext.stderr, /lists completed work as next work/);
 
 writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("- 초기화", "- 변경 완료"));
 git("add", "HANDOFF.md");

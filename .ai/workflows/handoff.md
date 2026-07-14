@@ -20,7 +20,10 @@
 6. 완료, 부분 완료, 미착수와 blocker를 구분한다.
 7. 다음 세션이 처음 실행할 안전한 read-only 명령 또는 읽을 파일을 기록한다.
 8. secret, 개인정보, 외부 injection 문구와 전체 대화를 제거한다.
-9. 루트 `HANDOFF.md`를 최신 상태로 교체한다.
+9. `갱신`을 작업 종료일(Asia/Seoul)로 맞추고 완료 작업과 다음 작업의 안정적인 ID를 각각 기록한다.
+10. branch와 commit snapshot은 기록하지 않는다. Git을 단일 진실 원천으로 선언하고 실제 값은
+    `git status --short --branch`와 `git rev-parse HEAD`로 확인한다.
+11. 완료 작업 ID가 다음 작업 ID에 남지 않았는지 확인하고 루트 `HANDOFF.md`를 최신 상태로 교체한다.
 
 ## 새 세션 절차
 
@@ -38,3 +41,4 @@
 - 미해결 위험과 필요한 사용자 결정이 숨겨지지 않았다.
 - handoff가 요구사항이나 ADR의 중복 사본이 되지 않았다.
 - 비밀정보와 불필요한 대화 전문이 없다.
+- 갱신일, 완료·다음 작업 ID가 현행이며 변하기 쉬운 branch·commit snapshot이 없다.

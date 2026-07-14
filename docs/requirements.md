@@ -26,7 +26,7 @@
 | REQ-005~008 | 부분 검증 | 선호 도구·외부 자산 검토 완료, 선택 설치 adapter는 계속 확장 |
 | REQ-009~014 | 부분 검증 | 공통 정책과 frontend pilot 검증. stack별 자동 lint·접근성 Eval은 제한적 |
 | REQ-015~016 | 부분 검증 | 보안 hook·SAST fixture 적용, 실제 IAM·복구 이중 통제는 downstream별 검증 필요 |
-| REQ-017 | 적용 | staged·PR HANDOFF gate와 semantic-change regression 적용 |
+| REQ-017 | 적용 | staged·PR HANDOFF gate, 종료일·Git authority·완료/다음 작업 drift regression 적용 |
 | REQ-018 | 적용 | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
 | REQ-019~024 | 부분 검증 | 문서·workflow 적용. 요구사항 변경의 자동 추적성 검사는 제한적 |
 | REQ-025 | 부분 검증 | 결정론적 fixture 존재, 전체 capability suite·비결정 trial 계측은 미완료 |
@@ -214,6 +214,10 @@
   공통 security-check를 호출한다.
 - 단순히 검사를 통과하려는 공백 변경은 허용하지 않고 완료·검증·남은 작업 등 실제 변경된
   맥락을 기록한다.
+- 작업 종료 시 `갱신`은 Asia/Seoul 현재 날짜와 일치해야 한다. branch·commit snapshot은 빠르게
+  낡으므로 handoff에 복제하지 않고 실제 Git 상태를 단일 진실 원천으로 선언한다.
+- 완료 작업과 다음 작업은 안정적인 ID로 구분해 기록하며 같은 ID가 양쪽에 존재하면 CI가 실패한다.
+  validator는 stale 날짜, 정적인 branch·commit 주장과 완료된 작업의 다음 시작점 잔존을 차단한다.
 
 ### REQ-018: 공통 CodeSight 컨텍스트
 
@@ -858,6 +862,7 @@
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-07-14 | 작업 종료 HANDOFF의 날짜·Git authority·완료/다음 작업 drift 검증 강화 |
 | 2026-07-12 | 여러 tester의 frontend·backend·full-stack 독립 downstream pilot·증거·환류 요구사항 추가 |
 | 2026-07-11 | 초기 목표와 확정 요구사항 작성 |
 | 2026-07-12 | 최초 full-stack 구성과 backend→full-stack 점진 확장 lifecycle 요구사항 추가 |

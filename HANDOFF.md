@@ -1,7 +1,10 @@
 # Handoff
 
-갱신: 2026-07-13 Asia/Seoul
+갱신: 2026-07-14 Asia/Seoul
 상태: 진행 중
+Git 기준: 실제 Git 상태가 단일 진실 원천이며 branch와 commit은 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다.
+완료 작업: release:v0.2.3-pilot
+다음 작업: REQ-043, REQ-042, REQ-041
 
 ## 목표
 
@@ -168,6 +171,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   v0.2.1 항목을 현행화했다.
 - HANDOFF validator가 날짜 metadata 변경만으로 통과하지 못하도록 완료·현재 상태·검증·남은 작업·
   다음 시작점의 semantic change를 staged·range에서 요구하고 negative regression을 추가했다.
+- HANDOFF 작업 종료 계약을 강화해 Asia/Seoul 당일 갱신, Git 실상태 authority, 완료·다음 작업 ID
+  분리와 stale branch·commit snapshot 금지를 staged·PR validator와 회귀 테스트에 적용했다.
 - CodeSight index를 AGENTS·Claude·기타 AI의 공통 세션 시작 순서에 연결하고, index가 있는 저장소의
   adapter reference를 downstream validator가 검사하도록 했다. AI security hook과 HANDOFF validator
   regression도 GitHub Actions 필수 단계에 추가했다.
@@ -200,9 +205,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 현재 상태
 
-- branch: `governance/upstream-compliance-audit`
-- remote: `git@github.com:nayunss/ai-dev-bootstrap.git`, 동명 원격 branch 추적
-- 현재 branch 최신 commit: `83d7141 docs: align downstream adoption and validation contracts`
+- Git branch·commit은 이 문서에 snapshot으로 복제하지 않고 상단의 read-only 명령으로 확인한다.
+- remote: `git@github.com:nayunss/ai-dev-bootstrap.git`
 - 최근 보안·품질 변경:
   - `7514549`: AI의 `.env*` 접근 차단
   - `2140c25`: 미승인 MCP default-deny
@@ -219,8 +223,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   application revert rollback, REQ-045 증분 stack 자동화와 REQ-040 격리 rate-limit·log·logical restore·
   applicability Eval도 검증했다. Production provider restore·migration rollback과 실제 운영 정책은 남았다.
 - 문서와 정책은 대부분 `제안` 또는 `작성 중` 상태다.
-- 이번 감사 반영은 working tree에 있으며 아직 commit·push하지 않았다. 기존 미추적 사진 파일은
-  작업 범위에서 제외해 보존한다.
+- `v0.2.3-pilot` 발행과 증적 PR #2 병합이 완료됐다. HANDOFF 현행화 강화 변경은 현재 작업 diff다.
 
 ## 주요 결정
 
@@ -319,11 +322,6 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-### 완료: 검증된 변경의 release
-
-`v0.2.3-pilot`은 clean clone·migration·rollback·archive checksum, PR·CI·사람 review와 게시 asset
-재다운로드 검증을 거쳐 발행했다. 미완료인 REQ는 release 완료 범위에 포함하지 않았다.
-
 ### 우선순위 2: 독립 보안·호환성 확장
 
 2. REQ-043의 dependency license·source snippet scanner 후보를 먼저 공급망 심사하고, 승인 후 exact·
@@ -353,6 +351,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 다음 시작점
 
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
-- 다음은 검증된 REQ-044 범위를 다음 pilot release 후보에 포함하되 다른 stack은 미검증으로 유지한다.
+- 다음은 REQ-043 scanner 후보의 공급망·전송·비용 심사와 승인 경계를 정의한다.
+- 이어서 REQ-042 선택형 adapter Eval과 REQ-041 bounded-patch pilot을 순서대로 수행한다.
 - REQ-040의 다중 instance limiter·provider restore·법률·retention은 정확한 대상과 책임자 evidence가
   준비될 때까지 Production 차단 상태를 유지한다.
