@@ -34,11 +34,11 @@
 | REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
 | REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
-| REQ-040 | 부분 검증 | env-be의 BOLA 회귀, 단일-instance rate limit, log redaction·correlation, 격리 logical restore와 readiness positive·negative Eval PASS. 실제 retention·법률 검토·Production provider restore는 차단 상태 |
+| REQ-040 | 부분 검증 | 초기 owner·retention·multi-instance 질문 template/validator와 env-be의 BOLA, 단일-instance rate limit, log redaction·correlation, 격리 logical restore, readiness Eval·BFF fixture PASS. 실제 운영 결정·Production provider restore는 차단 상태 |
 | REQ-041 | 설계 완료 | bounded-patch pilot과 격리 grader Eval 미착수 |
 | REQ-042 | 부분 구현 | canonical `.ai/`와 Codex·Claude adapter 적용, generator hash·uninstall Eval 미완료 |
 | REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
-| REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure fixture PASS. undocumented endpoint·frontend BFF와 다른 stack 미검증 |
+| REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
 | REQ-046 | 설계 완료 | 단독·다중 pilot, downstream 시작·blind 검증·feedback schema와 AI provenance·전원 PASS 계약 작성. 독립 tester 간 실제 재현·결과 취합 운영은 미검증 |
 
@@ -646,6 +646,12 @@
 - BFF·gateway가 있으면 rate-limit status·body뿐 아니라 `Retry-After`와 correlation ID 같은 승인된
   operational response header의 end-to-end 보존을 검증한다. Authorization·credential·임의 upstream
   header는 allowlist 밖에서 전달하지 않는 negative fixture를 둔다.
+- project 초기 onboarding은 법률·개인정보 검토 책임자, data category별 retention·파기 정책 책임자와
+  다중 인스턴스 rate-limit 방식·책임자·결정 기한을 질문하고 구조화된 readiness 문서로 남긴다. 답이
+  없으면 `TBD`를 유지하되 owner와 `before-production` 기한을 기록하며 validator가 Production을 차단한다.
+- 운영 중인 기존 project에서 readiness 문서가 누락되면 preview가 이를 표시하고 명시적 retrofit
+  명령으로 blocked template을 최초 생성할 수 있어야 한다. 기존 정책 파일은 자동 덮어쓰기·병합하지
+  않고, 생성 직후 validator가 `TBD`를 Production blocker로 확인한다.
 
 ### REQ-041: Eval로 통제되는 제한적 Skill Evolution
 
@@ -740,6 +746,8 @@
   operation·response·schema baseline과 비교하고, 필수 path 제거 fixture가 breaking change를 탐지했다.
   contract integration에서만 schema를 활성화하고 기본 runtime에서는 인증 요청도 `/v3/api-docs` 404로
   닫았다. 이는 해당 조합의 검증 근거이며 다른 stack의 기본 dependency가 아니다.
+- 같은 pilot에서 실제 project `@RestController` operation이 생성 contract에 모두 존재하는지 대조하고,
+  frontend BFF route handler 6개의 backend method·path 매핑을 positive·negative fixture로 검증했다.
 
 ### REQ-045: 점진적 Stack 확장과 최초 Full-stack 구성
 

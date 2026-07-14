@@ -143,6 +143,21 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - FastAPI는 Python framework이고 OpenAPI·Swagger는 contract·tooling이라는 경계를 확인해 REQ-044와
   `docs/api-contract-documentation.md`를 추가했다. backend onboarding에서 framework, protocol contract,
   docs UI·SDK와 production exposure를 분리해 질문하고 generator output도 license gate를 적용한다.
+- REQ-044의 남은 env-be pilot 회귀로 실제 Spring MVC REST operation의 OpenAPI 누락 탐지와 Next.js
+  BFF 6개 route의 backend method·path 매핑 positive·negative fixture를 구현하고 통과시켰다.
+- REQ-040의 수동 Railway Preview login limit 결과를 동일 synthetic subject의 제한 전 응답→429 BFF
+  순차 fixture로 CI에 고정했다. operational header는 보존하고 Authorization·Set-Cookie·내부 topology
+  header는 차단하며, 다중 instance·Production provider restore와 법률·retention TBD는 계속 차단한다.
+- REQ-040 초기 onboarding에 법률·개인정보 검토 책임자, retention·파기 정책 책임자와 다중 인스턴스
+  rate-limit 방식·책임자·결정 기한 질문을 연결했다. blocked JSON template, validator와 ready·false
+  approval·missing owner·missing strategy fixture를 CI에 추가했다.
+- 운영 중인 기존 project도 preview에서 readiness profile 누락을 확인하고 `scripts/bootstrap readiness
+  <target>`으로 blocked template을 최초 생성할 수 있게 했다. 기존 profile overwrite 거부와 생성 직후
+  BLOCKED 판정을 regression으로 고정했다.
+- `v0.2.3-pilot` package version, release note·migration·rollback과 문서 색인을 준비했다. REQ-036·038·
+  040·044·045의 검증 범위만 완료 변경으로 묶고 REQ-041~043·046과 Production 미검증 범위는 제외했다.
+- root package release metadata `0.2.2 → 0.2.3`은 dependency graph·resolved·integrity 불변을 확인하고,
+  사용자의 release 요청에 묶인 lockfile SHA 승인 record로 staged gate를 통과시킨다.
 - upstream 자체 요구사항 준수 감사를 수행해 문서와 gate의 불일치를 정리했다. REQ-001~045의 승인
   상태와 구현·검증 상태를 분리한 추적 표를 추가하고, release 색인의 v0.2.0~0.2.2 발행 상태와 누락된
   v0.2.1 항목을 현행화했다.
@@ -278,36 +293,38 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - PR #4 동일 Railway environment의 frontend·backend·PostgreSQL 복제, Preview CRUD와 Production DB 격리: PASS
 - frontend healthcheck intentional failure 후 Git revert application rollback, Preview·Production health: PASS
 - Spring Boot 4/SpringDoc 3 OpenAPI syntax·필수 contract·path 제거 breaking fixture·production docs 404: PASS
+- Spring MVC actual operation→OpenAPI undocumented endpoint positive·negative 4건: PASS
+- Next.js BFF backend method·path mapping positive·stale negative Vitest 7건, Prettier·ESLint: PASS
 - REQ-040 env-be BOLA 회귀·rate limit 429/Retry-After·security log redaction/correlation integration: PASS
 - 격리 PostgreSQL logical dump·restore record 정합성·pilot RPO 0/RTO 30초 이내: PASS
 - readiness ready positive·invalid applicability·missing disposal·false approval negative fixture: PASS
 - 실제 env-be applicability·retention·logging·Production restore profile: 의도된 `BLOCKED`, Production 미승인
 - Railway PR Preview BFF rate-limit 회귀: 401 5회 후 429, Retry-After·correlation ID 전달 PASS
+- 결정론적 BFF rate-limit 순차·header allowlist fixture 포함 frontend 11건: PASS
+- Production readiness onboarding template `BLOCKED`, synthetic ready·false approval·missing owner·missing
+  strategy positive·negative fixture: PASS
+- 기존 project readiness missing preview·최초 materialize·기존 파일 보존·BLOCKED regression: PASS
 - Playwright fresh-runner apt timeout 재현과 digest-pinned 공식 runtime image 전환: 3-browser E2E PASS
 - 전체 저장소 Gitleaks·Opengrep full scan: PASS, finding 0
 - 신규 untracked inventory·preview 모듈 `--no-git-ignore` Opengrep 직접 scan: PASS, finding 0
+- 신규 untracked BFF contract fixture `--no-git-ignore` Opengrep 직접 scan: PASS, finding 0
+- 신규 untracked Production readiness onboarding validator·materializer·fixture `--no-git-ignore` Opengrep
+  직접 scan: PASS, finding 0
 
 ## 남은 작업
 
-### 우선순위 1: 실제 pilot에서 발견된 누락 자동화
+### 우선순위 1: 검증된 변경의 release
 
-1. REQ-044의 남은 undocumented endpoint·frontend BFF contract fixture를 기존 pilot에서 검증한다.
-2. REQ-040의 Preview rate-limit 회귀와 향후 승인된 provider backup restore를 분리해 검증한다. 실제
-   retention·법률 applicability·log 책임자는 소유자·전문가 evidence 전까지 Production 차단을 유지한다.
+1. `v0.2.3-pilot` clean clone·upgrade preview·migration·rollback·archive checksum을 검증하고 PR·CI·사람
+   review를 거쳐 발행한다. 미완료인 REQ를 release 완료 범위에 포함하지 않는다.
 
-### 우선순위 2: 검증된 변경의 release
+### 우선순위 2: 독립 보안·호환성 확장
 
-3. REQ-036 build-policy validator, REQ-038 engineering·AI adapter와 검증을 마친 REQ-045 범위를 다음
-   pilot release로 묶어 clean clone·upgrade preview·migration·rollback·archive checksum을 검증하고
-   발행한다. 미완료인 REQ를 release에 완료로 포함하지 않는다.
-
-### 우선순위 3: 독립 보안·호환성 확장
-
-4. REQ-043의 dependency license·source snippet scanner 후보를 먼저 공급망 심사하고, 승인 후 exact·
+2. REQ-043의 dependency license·source snippet scanner 후보를 먼저 공급망 심사하고, 승인 후 exact·
    near match, scanner outage, suppression expiry와 GPL·unknown positive·negative fixture를 구현한다.
-5. REQ-042의 Codex·Claude Code 선택형 adapter preview·source hash·drift·uninstall 보존 Eval을 구현한다.
+3. REQ-042의 Codex·Claude Code 선택형 adapter preview·source hash·drift·uninstall 보존 Eval을 구현한다.
    다른 도구는 실제 지원 요청이 있을 때 순차 검증한다.
-6. 필수 bootstrap·security·deployment gate가 안정된 뒤 REQ-041의 수동 bounded-patch pilot을 수행하고,
+4. 필수 bootstrap·security·deployment gate가 안정된 뒤 REQ-041의 수동 bounded-patch pilot을 수행하고,
    selection 재사용 편향·prompt injection·grader tampering negative Eval과 비용을 기록한다.
 
 ## 위험·주의
@@ -330,7 +347,6 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 ## 다음 시작점
 
 - 먼저 `docs/requirements.md`, `.ai/standards/security.md`와 현재 `git status`를 확인한다.
-- `../env-be`의 application inventory와 validator FAIL을 먼저 검토하고, dependency 설치가 없는 공통
-  asset·adapter remediation과 Husky·lint-staged처럼 별도 승인이 필요한 변경을 분리한다.
-- 다음은 REQ-044의 frontend BFF·undocumented endpoint를 기존 env-be pilot에서 진행한다.
-- REQ-040은 PR #4 CI·Railway Preview의 rate-limit 회귀 결과를 추가하되 Production DB에는 접근하지 않는다.
+- 다음은 검증된 REQ-044 범위를 다음 pilot release 후보에 포함하되 다른 stack은 미검증으로 유지한다.
+- REQ-040의 다중 instance limiter·provider restore·법률·retention은 정확한 대상과 책임자 evidence가
+  준비될 때까지 Production 차단 상태를 유지한다.

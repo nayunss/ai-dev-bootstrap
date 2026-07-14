@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "TBD",
+  "scope": "TBD",
+  "onboardingDecisions": {
+    "legalPrivacyReview": {
+      "status": "TBD",
+      "owner": "TBD",
+      "decisionDue": "before-production",
+      "evidence": "TBD"
+    },
+    "retentionDisposalPolicy": {
+      "status": "TBD",
+      "owner": "TBD",
+      "decisionDue": "before-production",
+      "evidence": "TBD",
+      "dataCategories": [
+        {
+          "category": "TBD",
+          "purpose": "TBD",
+          "retentionPeriod": "TBD",
+          "disposal": "TBD",
+          "legalHold": "TBD",
+          "owner": "TBD",
+          "status": "TBD",
+          "decisionDue": "before-production",
+          "evidence": "TBD"
+        }
+      ]
+    },
+    "multiInstanceRateLimit": {
+      "status": "TBD",
+      "owner": "TBD",
+      "decisionDue": "before-production",
+      "strategy": "TBD",
+      "evidence": "TBD"
+    }
+  },
+  "productionDecision": "blocked",
+  "decisionReason": "Initial onboarding decisions are unresolved"
+}

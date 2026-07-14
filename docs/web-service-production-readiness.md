@@ -89,6 +89,14 @@ Soft delete는 복구·감사 편의 기능이지 법적 보존 근거가 아니
 
 ## 프로젝트 적용 프로파일
 
+프로젝트 초기 설정에서 최소한 법률·개인정보 검토, retention·파기 정책과 다중 인스턴스 rate-limit의
+책임자·결정 기한·evidence를 질문한다. 즉시 확정할 수 없으면
+[`docs/templates/production-readiness.json`](templates/production-readiness.json)을 기반으로 `TBD`를
+기록한다. `TBD`는 누락이 아니라 추적되는 blocker이며 Production 전에 반드시 해소한다.
+기존 운영 project에 profile이 없으면 `scripts/bootstrap preview <target>`으로 적용성을 확인하고
+`scripts/bootstrap readiness <target>`으로 blocked profile을 최초 생성한다. 기존 파일은 보존하며
+자동 merge나 overwrite를 하지 않는다.
+
 개발환경 확정 시 다음 feature flag를 `yes | no | TBD`로 분류한다.
 
 ```yaml
@@ -124,6 +132,12 @@ region 장애 복구의 증거가 아니다. 각 단계는 별도 PASS/미검증
 BFF·API gateway를 사용하면 backend의 초과 응답이 최종 client 경계에서도 유지되는지 확인한다.
 `429`, 오류 계약, `Retry-After`와 correlation ID는 명시적 allowlist로 전달하고 Authorization·cookie·
 내부 topology header는 전달하지 않는다.
+
+Spring Boot + Next.js pilot은 실제 backend limiter·보안 log integration과 별도로, 동일 synthetic login
+subject의 제한 전 응답부터 429까지를 BFF route handler에 순서대로 주입하는 CI fixture를 둔다. 이
+fixture는 `Retry-After`·correlation ID 보존과 Authorization·Set-Cookie·내부 topology header 비전파를
+검사한다. 단일 process와 synthetic upstream을 사용하므로 다중 instance Production rate limit을
+증명하지 않는다.
 
 ## SDLC Gate
 

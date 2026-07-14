@@ -20,11 +20,16 @@ Bootstrap preview
 - Husky: excluded until the downstream environment and quality commands pass
 - Application inventory: recursively detect root and nested manifests; multi-application repositories must declare docs/development-environment.md JSON inventory
 - Stack evolution: preserve existing applications and preview only new application plus shared CodeSight, EditorConfig, adapter, hook, CI and deployment drift
+- Production readiness onboarding: review legal/privacy owner, retention/disposal policy owner, and multi-instance rate-limit strategy
+- Readiness retrofit: after reviewing applicability, use scripts/bootstrap readiness TARGET; existing policy is never overwritten and unresolved values block Production
 
 Apply reviewed security tools only: scripts/bootstrap security-tools
 Install locked dependencies with scripts disabled and strict peers:
   scripts/bootstrap dependencies /absolute/path/to/project --allow-network
 Validate a downstream project: scripts/validate /absolute/path/to/project
+Validate a readiness profile: node scripts/validate-production-readiness.mjs PROFILE --expect-blocked
+Add a missing readiness profile without overwriting existing policy:
+  scripts/bootstrap readiness /absolute/path/to/project
 Online vulnerability audit: scripts/validate /absolute/path/to/project --online-audit
 EOF
     if [ -n "${2:-}" ]; then
@@ -70,8 +75,17 @@ EOF
     esac
     node "$ROOT/scripts/validate-downstream.mjs" "$TARGET"
     ;;
+  readiness)
+    TARGET=${2:-}
+    if [ -z "$TARGET" ]; then
+      echo "Readiness materialization requires a target project." >&2
+      exit 2
+    fi
+    TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
+    node "$ROOT/scripts/materialize-production-readiness.mjs" "$TARGET"
+    ;;
   *)
-    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools|dependencies TARGET --allow-network]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools|dependencies TARGET --allow-network|readiness TARGET]" >&2
     exit 2
     ;;
 esac

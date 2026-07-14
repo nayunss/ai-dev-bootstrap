@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 0 models | 0 components | 1 lib files | 0 env vars | 3 middleware
-> **Token savings:** this file is ~400 tokens. Without it, AI exploration would cost ~6,400 tokens. **Saves ~6,100 tokens per conversation.**
+> 0 routes | 0 models | 0 components | 2 lib files | 0 env vars | 3 middleware
+> **Token savings:** this file is ~500 tokens. Without it, AI exploration would cost ~6,900 tokens. **Saves ~6,400 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -11,6 +11,7 @@
 # Libraries
 
 - `scripts/application-inventory.mjs` — function discoverApplications: (root) => void, function readDeclaredInventory: (root) => void
+- `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
 
 ---
 
@@ -28,10 +29,12 @@
 ## Most Imported Files (change these carefully)
 
 - `scripts/application-inventory.mjs` — imported by **2** files
+- `scripts/validate-production-readiness.mjs` — imported by **1** files
 
 ## Import Map (who imports what)
 
 - `scripts/application-inventory.mjs` ← `scripts/preview-applications.mjs`, `scripts/validate-downstream.mjs`
+- `scripts/validate-production-readiness.mjs` ← `scripts/test-production-readiness.mjs`
 
 ---
 

@@ -15,7 +15,7 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 
 | 항목 | 현재 상태 |
 |---|---|
-| release tag·archive checksum | v0.2.0~v0.2.2 pilot 발행·기록 완료 |
+| release tag·archive checksum | v0.2.0~v0.2.2 pilot 발행 완료, v0.2.3 발행 준비 중 |
 | application preview·validator | reference automation 적용, 지원 stack·profile 제한 존재 |
 | `upstream.lock` schema·생성·parser | 목표 설계, 미구현 |
 | 공통 코어·선택 adapter materialization | env-be 수동 pilot 근거만 존재, 범용 명령 미구현 |
