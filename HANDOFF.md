@@ -158,6 +158,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   040·044·045의 검증 범위만 완료 변경으로 묶고 REQ-041~043·046과 Production 미검증 범위는 제외했다.
 - root package release metadata `0.2.2 → 0.2.3`은 dependency graph·resolved·integrity 불변을 확인하고,
   사용자의 release 요청에 묶인 lockfile SHA 승인 record로 staged gate를 통과시킨다.
+- `v0.2.3-pilot` 준비 commit `23762f2`를 원격 clean clone해 scripts-off install, 전체 fixture, validate,
+  security tool checksum bootstrap, CodeSight stale와 full Gitleaks·Opengrep을 통과했다. PR #1 CI도 PASS했다.
 - upstream 자체 요구사항 준수 감사를 수행해 문서와 gate의 불일치를 정리했다. REQ-001~045의 승인
   상태와 구현·검증 상태를 분리한 추적 표를 추가하고, release 색인의 v0.2.0~0.2.2 발행 상태와 누락된
   v0.2.1 항목을 현행화했다.
@@ -304,6 +306,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - Production readiness onboarding template `BLOCKED`, synthetic ready·false approval·missing owner·missing
   strategy positive·negative fixture: PASS
 - 기존 project readiness missing preview·최초 materialize·기존 파일 보존·BLOCKED regression: PASS
+- v0.2.3 원격 branch clean clone install·bootstrap·전체 fixture·validate·CodeSight·security: PASS
 - Playwright fresh-runner apt timeout 재현과 digest-pinned 공식 runtime image 전환: 3-browser E2E PASS
 - 전체 저장소 Gitleaks·Opengrep full scan: PASS, finding 0
 - 신규 untracked inventory·preview 모듈 `--no-git-ignore` Opengrep 직접 scan: PASS, finding 0
