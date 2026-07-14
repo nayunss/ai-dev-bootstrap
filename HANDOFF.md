@@ -160,6 +160,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   사용자의 release 요청에 묶인 lockfile SHA 승인 record로 staged gate를 통과시킨다.
 - `v0.2.3-pilot` 준비 commit `23762f2`를 원격 clean clone해 scripts-off install, 전체 fixture, validate,
   security tool checksum bootstrap, CodeSight stale와 full Gitleaks·Opengrep을 통과했다. PR #1 CI도 PASS했다.
+- `v0.2.3-pilot` tag를 merge commit `74dd20b8be4e67b6153f6d05651fd1569711e1d3`에 발행했다. archive
+  SHA-256은 `430138a58a2dc47b2c7b615b4c4511e8c0c161c4af30cc017e5d5bf6ae382083`이며 최종 main clean clone과
+  게시 asset 재다운로드 checksum을 모두 검증했다.
 - upstream 자체 요구사항 준수 감사를 수행해 문서와 gate의 불일치를 정리했다. REQ-001~045의 승인
   상태와 구현·검증 상태를 분리한 추적 표를 추가하고, release 색인의 v0.2.0~0.2.2 발행 상태와 누락된
   v0.2.1 항목을 현행화했다.
@@ -316,10 +319,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ## 남은 작업
 
-### 우선순위 1: 검증된 변경의 release
+### 완료: 검증된 변경의 release
 
-1. `v0.2.3-pilot` clean clone·upgrade preview·migration·rollback·archive checksum을 검증하고 PR·CI·사람
-   review를 거쳐 발행한다. 미완료인 REQ를 release 완료 범위에 포함하지 않는다.
+`v0.2.3-pilot`은 clean clone·migration·rollback·archive checksum, PR·CI·사람 review와 게시 asset
+재다운로드 검증을 거쳐 발행했다. 미완료인 REQ는 release 완료 범위에 포함하지 않았다.
 
 ### 우선순위 2: 독립 보안·호환성 확장
 
