@@ -53,6 +53,47 @@ function validate() {
 
 assert.equal(validate().status, 0);
 
+const toolPlatform = process.platform === "darwin" && process.arch === "arm64"
+  ? "darwin-arm64"
+  : process.platform === "linux" && process.arch === "x64"
+    ? "linux-x64"
+    : null;
+assert.ok(toolPlatform, "fixture requires a supported security tool platform");
+const toolCatalogBytes = readFileSync(join(fixture, ".ai/manifests/security-tool-assets.json"));
+const toolCatalog = JSON.parse(toolCatalogBytes);
+mkdirSync(join(fixture, ".tools/security/bin"), { recursive: true });
+const installedTools = toolCatalog.tools.map((tool) => {
+  const bytes = Buffer.from(`fixture ${tool.id}\n`);
+  const installedPath = `.tools/security/bin/${tool.id}`;
+  writeFileSync(join(fixture, installedPath), bytes);
+  const asset = tool.assets[toolPlatform];
+  return {
+    id: tool.id,
+    version: tool.version,
+    sourceUrl: asset.url,
+    artifactSha256: `sha256:${asset.sha256}`,
+    installedPath,
+    installedSha256: sha256(bytes),
+    managed: true,
+    runtimeNetwork: tool.runtimeNetwork,
+    telemetry: tool.telemetry,
+  };
+});
+writeFileSync(join(fixture, ".ai/manifests/security-tools.lock.json"), `${JSON.stringify({
+  schemaVersion: 1,
+  catalogSha256: sha256(toolCatalogBytes),
+  platform: toolPlatform,
+  networkDuringInstall: "deny",
+  tools: installedTools,
+}, null, 2)}\n`);
+assert.equal(validate().status, 0);
+writeFileSync(join(fixture, ".tools/security/bin/gitleaks"), "drift\n");
+const securityToolDrift = validate();
+assert.notEqual(securityToolDrift.status, 0);
+assert.match(securityToolDrift.stderr, /security tool drift: gitleaks/);
+writeFileSync(join(fixture, ".tools/security/bin/gitleaks"), "fixture gitleaks\n");
+assert.equal(validate().status, 0);
+
 const lockedHandoff = readFileSync(join(fixture, "HANDOFF.md"));
 const upstreamLock = {
   schemaVersion: 1,
