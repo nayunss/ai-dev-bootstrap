@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 1 models | 0 components | 15 lib files | 2 env vars | 5 middleware
-> **Token savings:** this file is ~1,900 tokens. Without it, AI exploration would cost ~13,600 tokens. **Saves ~11,700 tokens per conversation.**
+> 0 routes | 1 models | 0 components | 15 lib files | 2 env vars | 6 middleware
+> **Token savings:** this file is ~1,900 tokens. Without it, AI exploration would cost ~13,800 tokens. **Saves ~12,000 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -74,6 +74,7 @@
 ## custom
 - ai-generated-code-license-provenance — `docs/ai-generated-code-license-provenance.md`
 - ai-security-guardrails — `docs/ai-security-guardrails.md`
+- branch-and-review-strategy — `docs/branch-and-review-strategy.md`
 - evaluation-strategy — `docs/evaluation-strategy.md`
 - generate-release-manifest — `scripts/generate-release-manifest.mjs`
 

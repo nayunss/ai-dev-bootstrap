@@ -6,7 +6,7 @@
 
 | 문서 | 목적 | 상태 |
 |---|---|---|
-| [요구사항](requirements.md) | 승인된 REQ-001~046와 구현·검증 상태를 추적 | 설계 승인 |
+| [요구사항](requirements.md) | 승인된 REQ-001–REQ-048과 구현·검증 상태를 추적 | 설계 승인 |
 | [설계 완료 감사](design-completion-audit.md) | 설계 명세 완료 범위, 실제 구현 경계와 감사 finding | 설계 승인 |
 | [권장 아키텍처](architecture.md) | 도구 중립 코어와 도구별 어댑터 구조 정의 | 설계 승인 |
 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md) | 공개 규약·저장소와 제공 이미지 기반 canonical 구조·adapter 비교 | 검토 완료 |
@@ -14,15 +14,22 @@
 | [API 계약과 문서화](api-contract-documentation.md) | FastAPI·OpenAPI·Swagger 역할, stack adapter와 production docs gate | 설계 승인 |
 | [하네스 구성](harness.md) | 최소 공통 하네스와 프로젝트별 구성 방식 정의 | 설계 승인 |
 | [프로젝트 개발환경 정의](project-environment-definition.md) | 기술 스택 자동 감지·질문·버전 확정 절차 | 설계 승인 |
+| [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md) | canonical YAML·JSON Schema·drift·readiness validator 구현 범위 | 설계 승인 |
+| [2026년 기준 최초 검증 Stack과 Adapter 우선순위](stack-adapter-priority-review.md) | 기준일 현재 최신 공개 사용량 기반 frontend·backend·full-stack P0~P3 순서 | 검토 완료 |
+| [저장소 구조와 Project Template 우선순위](repository-topology-and-template-priority.md) | 단일 starter·retrofit·workspace monorepo·전문 orchestrator 제공 순서 | 설계 승인 |
+| [개인·팀·프로젝트 설정 경계](personal-team-settings-boundary.md) | 팀 필수·project 필수·개인 선택·사전 심사·금지 범위 | 설계 승인 |
 | [프로젝트 유지관리 기록](project-maintenance.md) | 반복 문제·환경 함정의 원인·탐지·예방 기록 | 운영 메모 |
 | [토큰 예산별 프로파일](token-budget-profiles.md) | 토큰 절약형과 충분한 분석형 실행 방식 | 설계 승인 |
 | [프롬프트 템플릿](prompt-templates.md) | 프롬프트가 필요한 조건과 최소 공통 템플릿 | 설계 승인 |
 | [Eval 전략](evaluation-strategy.md) | 하네스·루프·모델 변경의 outcome 기반 평가 | 설계 승인 |
 | [SkillOpt 논문 검토](skillopt-paper-review.md) | 제한적 skill evolution의 근거·한계·차용 범위 | 검토 완료 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 설계 승인 |
+| [Git Hosting·Namespace·Remote 계약](git-hosting-and-remote-review.md) | GitHub·GitLab·enterprise·self-hosted provider-neutral 원격 계약 | 설계 승인 |
+| [Branch 전략과 Review 승인 계약](branch-and-review-strategy.md) | project별 branch·merge·위험별 reviewer·self-review 경계 | 설계 승인 |
 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md) | 단독·다중 tester의 frontend·backend·full-stack 생성, AI provenance·증거·환류 절차 | 설계 승인 |
 | [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | 설계 승인 |
 | [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 설계 승인 |
+| [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md) | GUI 설치 버튼·공통 adoption core·release bundle과 rollback 검토 | 검토 완료 |
 | [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 설계 승인 |
 | [Upstream 피드백 기록 계약](upstream-feedback-log.md) | downstream 저장소에 남기는 upstream 수정 필요 사항 기록 형식 | 설계 승인 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 설계 승인 |
@@ -31,6 +38,7 @@
 | [코드 품질 표준](code-quality-standards.md) | 언어 중립 클린 코드와 시멘틱 웹 접근성 기준 | 설계 승인 |
 | [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md) | Prettier·ESLint·Husky 및 AI·Git 훅 정책 | 설계 승인 |
 | [스킬 체계](skills.md) | 공통 스킬의 분류, 계약, 설치 및 검증 방식 정의 | 설계 승인 |
+| [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md) | core·optional·private skill과 adapter·plugin·MCP 배포 경계 | 설계 승인 |
 | [도구 호환성](tool-compatibility.md) | 선호 플러그인의 도구별 지원과 공통 대체 경로 | 설계 승인 |
 | [외부 도구 평가](external-tools-review.md) | GitHub Spec Kit과 Agent Skills의 도입·차용 가능성 평가 | 설계 승인 |
 | [공급망 보안](supply-chain-security.md) | 텔레메트리 없는 설치와 보안 검토 게이트 | 설계 승인 |
@@ -42,6 +50,7 @@
 | [페르소나와 작업 역할](persona-and-role-guidelines.md) | 전역 persona와 검증 가능한 role contract의 선택 기준 | 설계 승인 |
 | [SDLC](sdlc.md) | 요구사항부터 운영까지의 AI 협업 절차 정의 | 설계 승인 |
 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md) | 프로젝트별 CI와 Preview·Production 배포 계약 | 설계 승인 |
+| [CI Provider·배포 대상 선택](ci-deployment-provider-selection.md) | Git host와 독립된 CI·artifact·deployment project profile | 설계 승인 |
 | [웹서비스 Production 준비](web-service-production-readiness.md) | 보안·운영·개인정보·DB·법적 적용성 팩트체크와 출시 gate | 설계 승인 |
 | [Capability task schema](schemas/capability-task.schema.json) | deterministic Eval task·권한·grader·trial·자원 한도 계약 | 적용 |
 | [Adapter parity schema](schemas/adapter-parity.schema.json) | 지원 AI adapter의 공통 policy·role·permission 계약 | 적용 |
@@ -63,6 +72,7 @@
 | [v0.2.3-pilot Release](releases/v0.2.3-pilot.md) | CI·engineering·Production readiness·API contract·점진적 full-stack gate | 발행 완료 |
 | [v0.2.4-pilot Release](releases/v0.2.4-pilot.md) | 공통 installer·adapter·canonical lock·upgrade rollback automation | 발행 완료 |
 | [v0.2.5-pilot Release](releases/v0.2.5-pilot.md) | deterministic capability·quality·adapter·FastAPI·full-stack materializer | 발행 완료 |
+| [v0.2.6-pilot Release](releases/v0.2.6-pilot.md) | REQ-047·048와 project별 profile·배포·저장소 구조 설계 baseline | 발행 준비 |
 
 ## 문서 상태
 

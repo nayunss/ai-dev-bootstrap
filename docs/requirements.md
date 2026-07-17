@@ -12,36 +12,38 @@
 
 ## 확정 요구사항
 
-이 절의 `REQ-001`~`REQ-046`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
+이 절의 `REQ-001`~`REQ-048`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
 구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
 `HANDOFF.md`를 같은 작업에서 갱신한다.
 
-`DESIGN-BASELINE-2026-07-17` 감사에서 REQ-001~046의 **설계 명세 baseline은 완료**로 판정했다.
+`DESIGN-BASELINE-2026-07-17` 감사에서 REQ-001–REQ-046의 **설계 명세 baseline은 완료**로 판정했다.
 이 단계의 validator·fixture는 설계를 검증한 reference automation이며 최종 실제 공통 환경 구현 완료를
 의미하지 않는다. 실제 구현은 이 문서와 `docs/design-completion-audit.md`의 경계·acceptance criteria를
 입력 계약으로 사용한다.
 
 | 요구사항 | 구현 상태 | 검증 상태 | 근거 또는 남은 gate |
 |---|---|---|---|
-| REQ-001~004 | 적용 | PASS | 독립 저장소·요구사항 목록·Git 이력과 설계 baseline 감사 적용 |
-| REQ-005~008 | 부분 구현 | 부분 검증 | 선호 도구·외부 자산 심사와 선택 adapter 기반은 적용. 추가 선택 도구 adapter는 미구현 |
-| REQ-009~014 | reference 구현 | deterministic PASS | JavaScript·Java·Python formatter·linter·typecheck와 web accessibility adapter 계약, project-local exact tool/version, application cwd·check-only drift·network-none 실행 경계와 synthetic failure fixture PASS. 실제 project 도구 선택·설치·브라우저 접근성 검증은 미수행 |
-| REQ-015~016 | 부분 구현 | 부분 검증 | 보안 hook·secret scan·SAST regression은 PASS. 실제 IAM·운영 복구 이중 통제는 downstream 증거 대기 |
+| REQ-001–REQ-004 | 적용 | PASS | 독립 저장소·요구사항 목록·Git 이력과 설계 baseline 감사 적용 |
+| REQ-005–REQ-008 | 부분 구현 | 부분 검증 | 선호 도구·외부 자산 심사와 선택 adapter 기반은 적용. core·optional·private skill bundle과 plugin catalog release 자동화는 미구현 |
+| REQ-009–REQ-014 | reference 구현 | deterministic PASS | JavaScript·Java·Python formatter·linter·typecheck와 web accessibility adapter 계약, project-local exact tool/version, application cwd·check-only drift·network-none 실행 경계와 synthetic failure fixture PASS. 실제 project 도구 선택·설치·브라우저 접근성 검증은 미수행 |
+| REQ-015–REQ-016 | 부분 구현 | 부분 검증 | 보안 hook·secret scan·SAST regression은 PASS. 실제 IAM·운영 복구 이중 통제는 downstream 증거 대기 |
 | REQ-017 | 적용 | PASS | staged·PR HANDOFF 동기화, 날짜·Git authority·작업 ID·실행 가능성 분류 regression 적용 |
 | REQ-018 | 적용 | PASS | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
-| REQ-019~024 | 부분 구현 | reference PASS | machine-readable traceability manifest·validator·CI 동기화 gate PASS. project profile·token profile·prompt의 범용 materializer와 실제 대화 충돌·project별 결정은 추가 구현 또는 사람 입력 사항 |
+| REQ-019–REQ-024 | 부분 구현 | reference PASS | machine-readable traceability manifest·validator·CI 동기화 gate PASS. REQ-048 canonical project profile과 설정 경계 materializer·retrofit validator는 미구현 |
 | REQ-025 | reference 구현 | deterministic PASS | 공통 task schema·격리 runner와 비용·latency·tool-call·diff aggregator, 정상·negative fixture와 CI gate PASS. 실제 model·비결정 trial과 token·비용 계측은 별도 승인 전 NOT-RUN |
-| REQ-026~028 | 부분 구현 | reference PASS | 6종 application dependency adapter, security-tool offline installer와 downstream drift Eval PASS. 실제 stack artifact 승인·project hook 적용은 환경 입력 대기 |
-| REQ-029~030 | 설계 구현 | downstream 미검증 | BaaS·HITL 질문·승인 계약은 작성. provider별 IAM·Rules·복구 Eval은 실제 project 대기 |
-| REQ-031~036 | 부분 구현 | 부분 검증 | 민감 파일·MCP 기본 차단, bootstrap·dependency·build policy·CI gate가 `v0.2.4-pilot`에 발행됨. provider별 IAM·deploy·build lifecycle은 실제 환경 대기 |
-| REQ-037~039 | reference 구현 | deterministic PASS | Codex·Claude Code·GitHub Copilot의 공통 policy·role·permission manifest와 source/materialized parity Eval PASS. Codex·Claude hook outcome과 Copilot의 명시적 공통 fallback을 구분하며 native 기능의 권한 확대·전역 persona를 차단. 실제 model별 outcome 비교는 미수행 |
+| REQ-026–REQ-028 | 부분 구현 | reference PASS | 6종 application dependency adapter, security-tool offline installer와 downstream drift Eval PASS. 우선순위별 starter·DB·workspace profile fixture와 실제 stack artifact 승인은 미구현 또는 환경 입력 대기 |
+| REQ-029–REQ-030 | 설계 구현 | downstream 미검증 | BaaS·HITL 질문·승인 계약은 작성. provider별 IAM·Rules·복구 Eval은 실제 project 대기 |
+| REQ-031–REQ-036 | 부분 구현 | 부분 검증 | 민감 파일·MCP 기본 차단, bootstrap·dependency·build policy와 GitHub CI gate가 발행됨. provider-neutral Git·branch/review·CI/deployment profile schema와 adapter fixture는 미구현이며 실제 IAM·deploy는 환경 대기 |
+| REQ-037–REQ-039 | reference 구현 | deterministic PASS | Codex·Claude Code·GitHub Copilot의 공통 policy·role·permission manifest와 source/materialized parity Eval PASS. Codex·Claude hook outcome과 Copilot의 명시적 공통 fallback을 구분하며 native 기능의 권한 확대·전역 persona를 차단. 실제 model별 outcome 비교는 미수행 |
 | REQ-040 | reference 구현 | synthetic PASS | schema v2 hard gate, onboarding 질문·blocked template·보존 retrofit Eval PASS. 법률·retention owner, 다중-instance limiter와 provider restore의 실제 운영 증거는 미제공 |
 | REQ-041 | reference 구현 | synthetic PASS | bounded patch와 offline trial gate·project별 model/harness 설정 template PASS. 실제 model 비결정 trial·held-out 사람 검토·release는 NOT-RUN |
-| REQ-042 | 부분 구현 | reference PASS | Codex·Claude Code·GitHub Copilot adapter, canonical YAML lock·manifest/core materializer와 transaction upgrade·rollback이 `v0.2.4-pilot`에 발행됨. real downstream upgrade·rollback은 NOT-RUN |
+| REQ-042 | 부분 구현 | reference PASS | Codex·Claude Code·GitHub Copilot adapter, canonical YAML lock·manifest/core materializer와 transaction upgrade·rollback이 발행됨. skill bundle·plugin catalog 배포 연계와 real downstream upgrade·rollback은 NOT-RUN |
 | REQ-043 | 조건부 구현 | 부분 검증 | ScanCode 공급망 심사, network-none synthetic·read-only project pilot과 hosted CI PASS. true public-corpus source snippet provenance는 미검증 |
 | REQ-044 | reference 구현 | deterministic·pilot PASS | 기존 Spring Boot 4/SpringDoc 3·Next.js BFF pilot에 더해 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift, route inventory의 undocumented/stale operation과 Production `/openapi.json`·`/docs`·`/redoc` exposure synthetic Eval PASS. 실제 FastAPI runtime·authorization E2E는 미수행 |
-| REQ-045 | reference 구현 | deterministic·pilot PASS | 기존 재귀 inventory·backend→full-stack 증분 pilot에 더해 최초 frontend·backend·shared·paired migration artifact 일괄 materializer, 충돌 사전 차단, transaction 부분 실패 원복과 보존 rollback fixture PASS. DB execution은 `NOT-RUN`; 실제 DB migration·restore는 미수행 |
+| REQ-045 | reference 구현 | deterministic·pilot PASS | 재귀 inventory와 최초 full-stack materializer·transaction rollback fixture PASS. 우선순위 stack starter·single/workspace monorepo profile matrix와 실제 DB execution·restore는 NOT-RUN |
 | REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator와 2-tester synthetic regression PASS. 실제 독립 tester campaign·결과 취합은 NOT-RUN |
+| REQ-047 | 설계 승인 | 구현·검증 NOT-RUN | 비개발자용 signed desktop app과 전문가용 CLI가 동일 adoption core를 사용하는 one-button 도입, release bundle·checksum·preview·transaction rollback·릴리즈별 자동 갱신 계약을 검토 완료. app·release automation·사용성 Eval은 미구현 |
+| REQ-048 | 설계 승인 | 구현·검증 NOT-RUN | canonical YAML 개발환경 profile, JSON Schema 구조 검증과 의미·repository drift·단계별 readiness validator 범위를 확정. schema·validator·migration·fixture는 미구현 |
 
 ### 요구사항별 문서·산출물 추적
 
@@ -52,20 +54,20 @@
 
 | 요구사항 | 관련 문서·산출물 |
 |---|---|
-| REQ-001~004 | [권장 아키텍처](architecture.md), [하네스 구성](harness.md), [AI 협업 SDLC](sdlc.md), [설계 완료 감사](design-completion-audit.md) |
-| REQ-005~008 | [선호 도구 호환성](tool-compatibility.md), [외부 도구 평가](external-tools-review.md), [스킬 체계](skills.md), [공급망 보안](supply-chain-security.md) |
-| REQ-009~014 | [코드 품질 표준](code-quality-standards.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [stack quality adapter schema](schemas/stack-quality-adapters.schema.json), [stack quality adapter template](templates/stack-quality-adapters.json) |
-| REQ-015~016 | [AI 보안 가드레일](ai-security-guardrails.md), [AI 보안 사고 조사](ai-security-incidents.md), [Human-in-the-loop](human-in-the-loop.md), [공급망 보안](supply-chain-security.md) |
+| REQ-001–REQ-004 | [권장 아키텍처](architecture.md), [하네스 구성](harness.md), [AI 협업 SDLC](sdlc.md), [설계 완료 감사](design-completion-audit.md) |
+| REQ-005–REQ-008 | [선호 도구 호환성](tool-compatibility.md), [외부 도구 평가](external-tools-review.md), [스킬 체계](skills.md), [공급망 보안](supply-chain-security.md) |
+| REQ-009–REQ-014 | [코드 품질 표준](code-quality-standards.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [stack quality adapter schema](schemas/stack-quality-adapters.schema.json), [stack quality adapter template](templates/stack-quality-adapters.json) |
+| REQ-015–REQ-016 | [AI 보안 가드레일](ai-security-guardrails.md), [AI 보안 사고 조사](ai-security-incidents.md), [Human-in-the-loop](human-in-the-loop.md), [공급망 보안](supply-chain-security.md) |
 | REQ-017 | [세션 Handoff](handoff.md) |
 | REQ-018 | [CodeSight](codesight.md) |
-| REQ-019~024 | [프로젝트 개발환경 정의](project-environment-definition.md), [토큰 예산별 프로파일](token-budget-profiles.md), [프롬프트 템플릿](prompt-templates.md), [유지보수와 도입 모델](adoption-and-maintenance-model.md) |
+| REQ-019–REQ-024 | [프로젝트 개발환경 정의](project-environment-definition.md), [토큰 예산별 프로파일](token-budget-profiles.md), [프롬프트 템플릿](prompt-templates.md), [유지보수와 도입 모델](adoption-and-maintenance-model.md) |
 | REQ-025 | [Eval 전략](evaluation-strategy.md), [SkillOpt 논문 검토](skillopt-paper-review.md), [capability task schema](schemas/capability-task.schema.json) |
-| REQ-026~028 | [Downstream 시작 가이드](downstream-getting-started.md), [Downstream 검증 가이드](downstream-validation-guide.md), [dependency bootstrap schema](schemas/dependency-bootstrap.schema.json), [dependency bootstrap template](templates/dependency-bootstrap.json) |
-| REQ-029~030 | [Supabase·Firebase 보안](backend-as-a-service-security.md), [Human-in-the-loop](human-in-the-loop.md) |
+| REQ-026–REQ-028 | [Downstream 시작 가이드](downstream-getting-started.md), [Downstream 검증 가이드](downstream-validation-guide.md), [dependency bootstrap schema](schemas/dependency-bootstrap.schema.json), [dependency bootstrap template](templates/dependency-bootstrap.json) |
+| REQ-029–REQ-030 | [Supabase·Firebase 보안](backend-as-a-service-security.md), [Human-in-the-loop](human-in-the-loop.md) |
 | REQ-031 | [AI 보안 가드레일](ai-security-guardrails.md), [프로젝트 개발환경 정의](project-environment-definition.md) |
 | REQ-032 | [MCP 보안과 승인 절차](mcp-security.md) |
-| REQ-033~036 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md), [프로젝트 유지관리 기록](project-maintenance.md), [Downstream 시작 가이드](downstream-getting-started.md), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
-| REQ-037~039 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [에이전트 체계](agents.md), [페르소나와 작업 역할](persona-and-role-guidelines.md), [Upstream 피드백 기록 계약](upstream-feedback-log.md), [adapter parity schema](schemas/adapter-parity.schema.json) |
+| REQ-033–REQ-036 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md), [프로젝트 유지관리 기록](project-maintenance.md), [Downstream 시작 가이드](downstream-getting-started.md), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
+| REQ-037–REQ-039 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [에이전트 체계](agents.md), [페르소나와 작업 역할](persona-and-role-guidelines.md), [Upstream 피드백 기록 계약](upstream-feedback-log.md), [adapter parity schema](schemas/adapter-parity.schema.json) |
 | REQ-040 | [웹서비스 Production 준비](web-service-production-readiness.md), [Production readiness template](templates/production-readiness.json) |
 | REQ-041 | [Eval 전략](evaluation-strategy.md), [SkillOpt 논문 검토](skillopt-paper-review.md), [skill evolution trial template](templates/skill-evolution-trial.json) |
 | REQ-042 | [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [upstream lock schema](schemas/upstream-lock.schema.json), [upstream adoption template](templates/upstream-adoption.json), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
@@ -73,6 +75,25 @@
 | REQ-044 | [API 계약과 문서화](api-contract-documentation.md), [FastAPI contract adapter schema](schemas/fastapi-contract-adapter.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 시작 가이드](downstream-getting-started.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-046 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [pilot result schema](schemas/distributed-pilot-result.schema.json), [pilot campaign template](templates/distributed-pilot-campaign.json) |
+| REQ-047 | [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
+| REQ-048 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md), [프로젝트 개발환경 정의](project-environment-definition.md), [설정 경계](personal-team-settings-boundary.md), [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
+
+### 승인된 횡단 검토 기준
+
+최근 검토의 상세 근거·선택지·표·질문·완료 fixture는 각 독립 문서에서 관리한다. 이 문서는 요구사항과
+불변 조건만 유지하며 상세 내용을 복제하지 않는다.
+
+| 검토 주제 | 반영 REQ | 구현 상태 | 검증 상태 | 후속 task | 상세 문서 |
+|---|---|---|---|---|---|
+| 최초 Stack·DB adapter 우선순위 | REQ-009–REQ-014, REQ-026–REQ-028, REQ-033–REQ-036, REQ-044–REQ-045 | 기존 adapter 부분 구현, 우선순위 starter·DB profile 미구현 | 기존 synthetic 부분 PASS, 우선순위 matrix NOT-RUN | `REQ-026-045-stack-profile-fixtures` | [Stack·DB 우선순위](stack-adapter-priority-review.md) |
+| 개인·팀·프로젝트 설정 경계 | REQ-003, REQ-007, REQ-019–REQ-024, REQ-031, REQ-037–REQ-042, REQ-047–REQ-048 | 기존 onboarding 부분 구현, canonical 경계 profile 미구현 | 기존 retrofit 일부 PASS, 전체 경계 matrix NOT-RUN | `REQ-020-021-project-profile-materializer` | [설정 경계](personal-team-settings-boundary.md) |
+| Skill·Plugin 배포 | REQ-005–REQ-008, REQ-026–REQ-028, REQ-032, REQ-037–REQ-043, REQ-047 | adapter manager 부분 구현, release bundle·catalog 미구현 | adapter synthetic PASS, 배포·설치·제거 matrix NOT-RUN | `REQ-005-008-skill-distribution` | [Skill·Plugin 배포](skill-plugin-distribution-review.md) |
+| Git hosting·remote | REQ-001, REQ-003, REQ-019–REQ-024, REQ-033–REQ-038, REQ-042, REQ-046–REQ-048 | Git core 존재, provider-neutral profile·adapter 미구현 | local Git/release 검증 일부 PASS, provider matrix NOT-RUN | `REQ-033-035-provider-profile-adapters` | [Git hosting·remote](git-hosting-and-remote-review.md) |
+| Branch·review | REQ-016, REQ-019–REQ-021, REQ-033, REQ-035, REQ-046, REQ-048 | 설계만 승인 | NOT-RUN | `REQ-033-035-provider-profile-adapters` | [Branch·Review 계약](branch-and-review-strategy.md) |
+| CI·artifact·deployment | REQ-019–REQ-024, REQ-033–REQ-036, REQ-040, REQ-044–REQ-047 | GitHub hosted profile 부분 구현, 공통 provider profile 미구현 | GitHub pilot PASS, 다른 provider·`none` matrix NOT-RUN | `REQ-033-035-provider-profile-adapters` | [CI·배포 Provider](ci-deployment-provider-selection.md) |
+| 저장소 구조·Template | REQ-020, REQ-026, REQ-033, REQ-045, REQ-047–REQ-048 | application inventory·full-stack materializer 부분 구현, starter profile 미구현 | 기존 full-stack fixture PASS, single/workspace matrix NOT-RUN | `REQ-026-045-stack-profile-fixtures` | [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
+| 비개발자 도입 | REQ-047 | 설계만 승인 | NOT-RUN | `REQ-047-one-click-adoption` | [원클릭 도입](one-click-project-adoption-review.md) |
+| 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | 설계만 승인 | NOT-RUN | `REQ-048-development-profile-schema` | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
 
 ### REQ-001: 독립 저장소
 
@@ -849,6 +870,70 @@
 - 한 사람이 전 역할을 수행할 수 있으며, 이 경우 배정된 모든 필수 항목과 별도 clean self-review가
   전부 PASS해야 설계 검증 완료로 판정한다.
 
+### REQ-047: 비개발자용 원클릭 프로젝트 도입과 Release Bundle
+
+- terminal과 script 사용에 익숙하지 않은 사용자는 공식 release page 또는 README의
+  **프로젝트에 적용** 버튼에서 OS에 맞는 local desktop app을 내려받을 수 있어야 한다.
+- 기본 사용자 흐름은 `앱 실행 → 프로젝트 폴더 선택 → 프로젝트에 적용`으로 제공한다. 무확인 자동
+  설치가 아니라 manifest 검증, read-only preview, 충돌 차단, transaction apply·validate·rollback을
+  UI 뒤에서 항상 수행한다.
+- GUI와 전문가·CI용 CLI는 서로 다른 설치 로직을 구현하지 않고 release pin, checksum·서명 검증,
+  target inventory, plan, lock, transaction과 rollback을 담당하는 동일한 headless adoption core를
+  사용해야 한다.
+- 앱은 생성·변경·보존·차단 건수와 위험 요약을 쉬운 문장으로 표시하고, 상세 file diff와 release·
+  commit·checksum은 선택 가능한 고급 정보로 제공한다.
+- 기존 사용자 파일이 release source와 다르거나 project 밖 경로, `.env*`, manifest/archive 변조,
+  target drift가 발견되면 어떤 파일도 쓰기 전에 전체 적용을 차단한다.
+- dependency install, lifecycle script, 외부 model 호출, credential 접근, DB migration과 Production
+  write는 원클릭 적용 범위에 포함하지 않는다. 해당 작업은 기존 project별 질문과 Human-in-the-loop
+  승인 계약을 유지한다.
+- 프로젝트별 AI 도구, stack, model·harness·비용, 법률·개인정보 책임자, retention, provider와
+  rollback 값은 공통 기본값으로 추정하지 않는다. 미응답 `TBD`·`pending`은 실행 승인이 아니다.
+- update는 자동 적용하지 않는다. 새 release 알림, 현재/새 manifest diff preview, 사용자 승인,
+  apply·validate 순서로 진행하고 실패하면 이전 lock·target snapshot으로 원복한다.
+- 모든 release는 supported OS app 또는 명시적 미지원 상태, CLI entrypoint, tracked source archive,
+  canonical `release-manifest.json`, `SHA256SUMS`와 migration·rollback release note를 함께 게시한다.
+- release workflow는 신규 설치, 기존 retrofit, 이전 release upgrade·rollback, 충돌·변조·부분 실패,
+  GUI·CLI parity와 게시 asset 재다운로드를 clean fixture에서 검증한다. 필수 bundle이나 지원 OS의
+  서명·검증 증거가 누락되면 release를 발행하지 않는다.
+- desktop app의 telemetry와 crash upload는 기본 비활성화한다. 수집을 추가하려면 field·목적·보존·
+  수신자 심사와 사용자의 명시적 opt-in이 필요하다.
+- 지원 OS별 code signing·notarization, permission·quarantine, keyboard·screen reader·오류 복구와
+  비개발자 사용성 Eval을 별도로 통과한 경우에만 해당 OS를 지원 완료로 표시한다.
+- 세부 검토, 단계적 구현과 완료 기준은 `docs/one-click-project-adoption-review.md`를 따른다.
+
+### REQ-048: 기계 판독 가능한 개발환경 Profile과 Validator
+
+- 프로젝트별 개발환경의 canonical machine-readable source는 YAML profile로 제공하고, YAML parse
+  결과는 JSON Schema Draft 2020-12 schema로 구조 검증한다. 사람이 읽는
+  `docs/development-environment.md`는 선택 이유와 운영 안내를 제공하되 runtime·version·application
+  root·provider·승인 상태를 중복된 단일 진실 원천으로 유지하지 않는다.
+- Profile은 schema version·상태·검토 시각, repository topology, application inventory, runtime·
+  framework·manifest·lockfile, cwd·argv 명령, 품질 gate, DB·migration, Git collaboration, CI·artifact·
+  deployment, AI adapter, security·decision·evidence reference와 namespaced extension을 표현한다.
+- Secret·token·connection string·개인정보를 profile에 기록하지 않는다. Credential은 reference와
+  최소 scope·owner만 기록하며 `.env*`, absolute path, parent traversal과 repository 밖 symlink는
+  source·evidence path로 허용하지 않는다.
+- 실행 명령은 shell 문자열이 아니라 `cwd`, `executable`, `argv`, network·timeout 계약으로
+  표현한다. Validator는 이를 임의 실행하거나 dependency·browser를 설치하지 않는다.
+- Validator는 구조, 의미·cross-reference, 실제 repository manifest·lockfile·config drift,
+  `local | ci | production` 단계별 readiness를 분리한다. `TBD`, `pending`, 만료 승인과 증거 없는
+  `approved`를 성공으로 처리하지 않는다.
+- Profile 상태는 `draft | blocked | approved | superseded`를 사용한다. Profile `approved`는 dependency
+  설치, 외부 network, DB migration, Production 배포나 법률 승인을 포괄하지 않으며 각 별도
+  Human-in-the-loop gate를 유지한다.
+- 신규 project는 질문 결과로 draft/blocked profile을 만들고 기존 project는 read-only discovery와
+  retrofit diff를 먼저 제시한다. Schema migration은 before/after diff, 명시 승인, backup·rollback과
+  unknown future version fail-closed를 제공한다.
+- P0 구현은 schema, read-only validator, machine-readable blocker report와 single frontend·backend·
+  full-stack·workspace monorepo positive/negative fixture까지다. Materializer·migration·Markdown
+  참조 검사는 P1, provider별 schema fragment·evidence collector와 GUI·CLI parity는 P2로 확장한다.
+- 구현 완료는 deterministic fixture, source 무변경 drift 검사, path·secret·false approval·downgrade
+  차단, release manifest·checksum·upgrade·rollback과 clean/retrofit 검증을 모두 통과한 경우에만
+  판정한다. 문서 작성만으로 구현 완료 또는 downstream 지원 완료로 표시하지 않는다.
+- 상세 schema field, 상태 모델, 단계별 구현 범위와 완료 조건은
+  `docs/development-environment-profile-schema-review.md`를 따른다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -883,19 +968,23 @@
 
 ## 검토가 필요한 항목
 
-- 최초 검증용 기술 스택과 추가 stack adapter 우선순위
-- 개인용 설정과 팀 필수 설정의 경계
-- 스킬 및 플러그인의 배포 방식
-- GitHub 조직과 원격 저장소 이름
-- 브랜치 전략과 리뷰 승인 인원
-- CI 제공자 및 배포 대상
-- 모노레포와 프로젝트 템플릿 중 우선 제공 형태
-- 개발환경 프로파일의 기계 판독용 스키마와 검증기 구현 범위
+현재 승인 대기 중인 공통 설계 검토 항목은 없다. 실제 project·사람·provider·release 입력이 필요한
+검증은 구현 상태 표와 `HANDOFF.md`의 외부 대기 작업으로 구분한다.
 
 ## 변경 기록
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-07-17 | REQ-048 canonical YAML 개발환경 profile·JSON Schema·read-only validator·migration·fixture 구현 범위 확정 |
+| 2026-07-17 | 최근 횡단 검토 상세를 주제별 문서로 분리하고 requirements에는 불변 조건과 링크만 유지 |
+| 2026-07-17 | 저장소 구조와 생성 방식을 분리하고 단일 starter·retrofit P0, workspace monorepo P1, 전문 orchestrator·조직 template P2 우선순위 확정 |
+| 2026-07-17 | CI·artifact·deployment provider를 Git host와 분리한 project별 profile·adapter 계약 확정 |
+| 2026-07-17 | branch 전략·merge method·위험별 reviewer 수와 역할을 개인·팀 project별 질문 profile로 확정 |
+| 2026-07-17 | GitHub 개인·조직·Enterprise, GitLab·기타 host를 provider-neutral hosting profile과 provider adapter로 분리 |
+| 2026-07-17 | core·optional·private·personal skill과 tool adapter·plugin·MCP의 배포·승인 경계 확정 |
+| 2026-07-17 | 개인·팀·프로젝트 필수 설정, 선택 adapter·사전 심사·금지 범위를 표로 확정 |
+| 2026-07-17 | 2026-07-17 현재 최신 공식 공개본을 바탕으로 frontend·backend·full-stack과 PostgreSQL 우선 database adapter P0~P3 확정 |
+| 2026-07-17 | REQ-047 비개발자용 one-button GUI·공통 CLI adoption core와 릴리즈별 검증 bundle 요구사항 추가 |
 | 2026-07-14 | REQ-043 scanner 후보의 공급망·외부 전송·비용과 suppression 계약 1차 심사 |
 | 2026-07-14 | REQ-043 ScanCode 32.5.0 고정 digest·network-none Podman synthetic security pilot PASS |
 | 2026-07-14 | REQ-043 ScanCode read-only tracked-project pilot PASS, documentation·metadata finding은 MANUAL_REVIEW |
@@ -946,16 +1035,16 @@
 | 2026-07-17 | REQ-041 offline live-call gate와 REQ-042 GitHub Copilot adapter·release core materializer reference Eval 구현 |
 | 2026-07-17 | REQ-040·041·042 프로젝트별 결정을 초기 설정과 기존 project retrofit에서 질문하는 공통 onboarding 구현 |
 | 2026-07-17 | HANDOFF 남은 작업을 공통 저장소 진행 가능과 프로젝트·사람·실제 환경·외부 승인 대기로 분류하는 계약 추가 |
-| 2026-07-17 | REQ-001~046 설계 완료 감사와 실제 구현 입력 baseline 확정 |
+| 2026-07-17 | REQ-001–REQ-046 설계 완료 감사와 실제 구현 입력 baseline 확정 |
 | 2026-07-17 | REQ-042 canonical YAML upstream lock·JSON migration·release manifest generator와 downstream drift enforcement 구현 |
 | 2026-07-17 | REQ-026·033 downstream project-local security tool offline installer·lock validation·보존 uninstall 구현 |
 | 2026-07-17 | REQ-026·033 npm·pnpm·Yarn·Maven·Gradle·Python dependency bootstrap 계약과 clean install·drift·보존 uninstall Eval 구현 |
 | 2026-07-17 | HANDOFF 상단 다음 작업과 하단 남은 작업의 안정적 ID 일치 검증 및 완료된 dependency bootstrap 잔존 제거 |
 | 2026-07-17 | REQ-042 release manifest union diff·transaction restore·명시 rollback/finalize 자동화와 failure fixture 구현 |
-| 2026-07-17 | REQ-019~024 machine-readable source·구현·검증·token 영향 traceability manifest와 staged·PR 동기화 gate 구현 |
+| 2026-07-17 | REQ-019–REQ-024 machine-readable source·구현·검증·token 영향 traceability manifest와 staged·PR 동기화 gate 구현 |
 | 2026-07-17 | docs 문서·schema·template의 요구사항 역참조 감사와 구현·검증 상태 분리 현행화 |
 | 2026-07-17 | REQ-025 deterministic capability task schema·격리 runner와 비용·latency·tool-call·diff aggregator 구현 |
-| 2026-07-17 | REQ-009~014 JavaScript·Java·Python stack quality adapter 계약과 synthetic failure fixture 구현 |
-| 2026-07-17 | REQ-037~039 Codex·Claude Code·GitHub Copilot 공통 policy·role·permission source/materialized parity Eval 구현 |
+| 2026-07-17 | REQ-009–REQ-014 JavaScript·Java·Python stack quality adapter 계약과 synthetic failure fixture 구현 |
+| 2026-07-17 | REQ-037–REQ-039 Codex·Claude Code·GitHub Copilot 공통 policy·role·permission source/materialized parity Eval 구현 |
 | 2026-07-17 | REQ-044 FastAPI/OpenAPI contract drift·route inventory·Production docs exposure synthetic adapter 구현 |
 | 2026-07-17 | REQ-045 최초 frontend·backend·shared materialization, transaction 원복과 DB rollback artifact 계약 구현 |

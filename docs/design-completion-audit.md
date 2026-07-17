@@ -6,7 +6,7 @@ baseline ID: `DESIGN-BASELINE-2026-07-17`
 
 ## 결론
 
-REQ-001~046의 승인된 요구사항에 대해 공통 정책, architecture, workflow, project-local 질문,
+REQ-001–REQ-046의 승인된 요구사항에 대해 공통 정책, architecture, workflow, project-local 질문,
 Human-in-the-loop 경계, 검증 outcome과 rollback 계약이 문서화되어 **설계 명세 baseline은 완료**다.
 
 이 판정은 실제 공통 환경 구현, 모든 stack 지원, Production readiness, 유료 model trial, 외부 scanner
@@ -39,15 +39,15 @@ REQ-046의 “설계 완료”라는 기존 표현은 이 감사의 **설계 명
 
 | 요구사항 묶음 | 설계 source | 설계 판정 | 실제 구현의 대표 남은 gate |
 |---|---|---|---|
-| REQ-001~008 | repository·architecture·tool review·supply chain | 완료 | 추가 선택 도구 adapter 확대 |
-| REQ-009~018 | engineering·quality·security·HITL·HANDOFF·CodeSight | 완료 | 실제 stack 품질 도구·browser accessibility와 downstream IAM 검증 |
-| REQ-019~028 | requirement intake·project profile·token·Eval·bootstrap·hook | 완료 | 실제 model capability trial과 stack 품질·hook adapter |
-| REQ-029~039 | BaaS·MCP·CI/deploy·dependency·extension·role | 완료 | provider별 실제 IAM·deploy·build lifecycle과 model별 adapter outcome |
+| REQ-001–REQ-008 | repository·architecture·tool review·supply chain | 완료 | 추가 선택 도구 adapter 확대 |
+| REQ-009–REQ-018 | engineering·quality·security·HITL·HANDOFF·CodeSight | 완료 | 실제 stack 품질 도구·browser accessibility와 downstream IAM 검증 |
+| REQ-019–REQ-028 | requirement intake·project profile·token·Eval·bootstrap·hook | 완료 | 실제 model capability trial과 stack 품질·hook adapter |
+| REQ-029–REQ-039 | BaaS·MCP·CI/deploy·dependency·extension·role | 완료 | provider별 실제 IAM·deploy·build lifecycle과 model별 adapter outcome |
 | REQ-040 | Production readiness schema·workflow·onboarding | 완료 | owner evidence, multi-instance와 provider restore |
 | REQ-041 | bounded patch·offline/live trial·held-out 승인 계약 | 완료 | 실제 model/harness trial과 사람 release 승인 |
 | REQ-042 | canonical 구조·선택 adapter·core adoption 계약 | 완료 | real downstream release adoption·rollback rehearsal |
 | REQ-043 | provenance·scanner 공급망·조건부 CI 계약 | 완료 | true public-corpus source snippet provenance |
-| REQ-044~045 | API contract·점진 stack·rollback 계약 | 완료 | 실제 FastAPI runtime·authorization과 실제 DB migration·restore |
+| REQ-044–REQ-045 | API contract·점진 stack·rollback 계약 | 완료 | 실제 FastAPI runtime·authorization과 실제 DB migration·restore |
 | REQ-046 | campaign/result schema·독립성·전원 PASS 계약 | 완료 | 독립 tester 최소 2명의 실제 결과 취합 |
 
 ## 발견 사항과 처리
@@ -85,15 +85,15 @@ record, 영향받는 acceptance criteria, migration·rollback, 관련 Eval과 HA
 - 2026-07-17: project-local security installer, npm·pnpm·Yarn·Maven·Gradle·Python dependency
   bootstrap, canonical core materializer와 atomic upgrade·rollback/finalize를 구현해
   `v0.2.4-pilot`으로 발행했다. real downstream 적용은 별도 승인 대기다.
-- 2026-07-17: REQ-019~024 source·구현·검증·token-profile 영향과 외부 gate를
+- 2026-07-17: REQ-019–REQ-024 source·구현·검증·token-profile 영향과 외부 gate를
   `.ai/manifests/requirement-traceability.json`으로 연결하고 requirements 변경의 staged·PR 동기화를
   fail-closed했다.
 - 2026-07-17: REQ-025 공통 deterministic capability task schema·격리 runner와
   비용·latency·tool-call·diff aggregator를 구현했다. 실제 model trial은 별도 승인 범위로 유지한다.
-- 2026-07-17: REQ-009~014 JavaScript·Java·Python stack quality adapter 계약, project-local
+- 2026-07-17: REQ-009–REQ-014 JavaScript·Java·Python stack quality adapter 계약, project-local
   exact-version runner와 synthetic 실패·source drift fixture를 구현했다. 실제 도구 선택·설치는
   downstream 승인 범위로 유지한다.
-- 2026-07-17: REQ-037~039 Codex·Claude Code·GitHub Copilot 공통 policy·role·permission manifest와
+- 2026-07-17: REQ-037–REQ-039 Codex·Claude Code·GitHub Copilot 공통 policy·role·permission manifest와
   generator source·materialized downstream parity Eval을 구현했다. 실제 model outcome 비교는
   별도 승인 범위로 유지한다.
 - 2026-07-17: REQ-044 FastAPI/OpenAPI syntax·breaking drift·route inventory·Production docs exposure

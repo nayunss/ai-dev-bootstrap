@@ -208,6 +208,6 @@ materialization mapping을 `adapters/`라는 명시적 계층으로 관리하고
 
 ## 추적성
 
-- 요구사항: REQ-002, REQ-003, REQ-026~028, REQ-031~032, REQ-038, REQ-042
+- 요구사항: REQ-002, REQ-003, REQ-026–REQ-028, REQ-031–REQ-032, REQ-038, REQ-042
 - 관련 문서: [권장 아키텍처](architecture.md), [스킬 체계](skills.md),
   [도구 호환성](tool-compatibility.md), [공급망 보안](supply-chain-security.md)

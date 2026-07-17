@@ -15,6 +15,10 @@ AI가 질문을 통해 `docs/development-environment.md` 초안을 만들고 사
 설정 상속을 막기 위해 `root = true`를 사용하고, formatter·linter와 들여쓰기·줄바꿈 규칙이
 충돌하면 hook 활성화 전에 하나의 프로젝트 기준으로 정리한다.
 
+기계 판독 가능한 canonical YAML, JSON Schema, repository drift와 단계별 readiness validator의
+구현 범위는 [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md)를
+따른다. 이 문서의 JSON·YAML 예시는 질문과 field 의미를 설명하며 독립된 schema 정의가 아니다.
+
 ## 결정 흐름
 
 1. root와 승인된 하위 경계의 `package.json`, lockfile, 빌드 파일, 컨테이너, CI와 배포 설정을 읽어
