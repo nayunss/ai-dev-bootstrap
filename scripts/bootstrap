@@ -21,7 +21,7 @@ Bootstrap preview
 - Husky: excluded until the downstream environment and quality commands pass
 - Application inventory: recursively detect root and nested manifests; multi-application repositories must declare docs/development-environment.md JSON inventory
 - Stack evolution: preserve existing applications and preview only new application plus shared CodeSight, EditorConfig, adapter, hook, CI and deployment drift
-- Production readiness onboarding: review legal/privacy owner, retention/disposal policy owner, and multi-instance rate-limit strategy
+- Production readiness onboarding: require legal/privacy and retention owners, multi-instance limiter evidence, and provider restore RPO/RTO evidence
 - Readiness retrofit: after reviewing applicability, use scripts/bootstrap readiness TARGET; existing policy is never overwritten and unresolved values block Production
 
 Apply reviewed security tools only: scripts/bootstrap security-tools
@@ -29,6 +29,7 @@ Install locked dependencies with scripts disabled and strict peers:
   scripts/bootstrap dependencies /absolute/path/to/project --allow-network
 Validate a downstream project: scripts/validate /absolute/path/to/project
 Validate a readiness profile: node scripts/validate-production-readiness.mjs PROFILE --expect-blocked
+Production approval hard gate: node scripts/validate-production-readiness.mjs PROFILE --expect-ready
 Add a missing readiness profile without overwriting existing policy:
   scripts/bootstrap readiness /absolute/path/to/project
 Preview selected AI adapters without changing the target:

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "reviewedAt": "TBD",
   "scope": "TBD",
   "onboardingDecisions": {
@@ -7,13 +7,21 @@
       "status": "TBD",
       "owner": "TBD",
       "decisionDue": "before-production",
-      "evidence": "TBD"
+      "evidence": {
+        "reference": "TBD",
+        "reviewer": "TBD",
+        "reviewedAt": "TBD"
+      }
     },
     "retentionDisposalPolicy": {
       "status": "TBD",
       "owner": "TBD",
       "decisionDue": "before-production",
-      "evidence": "TBD",
+      "evidence": {
+        "reference": "TBD",
+        "reviewer": "TBD",
+        "reviewedAt": "TBD"
+      },
       "dataCategories": [
         {
           "category": "TBD",
@@ -24,7 +32,11 @@
           "owner": "TBD",
           "status": "TBD",
           "decisionDue": "before-production",
-          "evidence": "TBD"
+          "evidence": {
+            "reference": "TBD",
+            "reviewer": "TBD",
+            "reviewedAt": "TBD"
+          }
         }
       ]
     },
@@ -32,10 +44,48 @@
       "status": "TBD",
       "owner": "TBD",
       "decisionDue": "before-production",
+      "deploymentMode": "TBD",
       "strategy": "TBD",
-      "evidence": "TBD"
+      "enforcementLayer": "TBD",
+      "instanceCount": null,
+      "distributedBypassTest": {
+        "status": "TBD",
+        "testedAt": "TBD",
+        "evidenceReference": "TBD"
+      },
+      "evidence": {
+        "reference": "TBD",
+        "reviewer": "TBD",
+        "reviewedAt": "TBD"
+      }
+    },
+    "productionProviderRestore": {
+      "status": "TBD",
+      "owner": "TBD",
+      "decisionDue": "before-production",
+      "provider": "TBD",
+      "backupSource": "TBD",
+      "restoreTarget": "TBD",
+      "isolationBoundary": "TBD",
+      "rehearsalAt": "TBD",
+      "rpoTargetMinutes": null,
+      "rpoObservedMinutes": null,
+      "rtoTargetMinutes": null,
+      "rtoObservedMinutes": null,
+      "integrityCheck": "TBD",
+      "evidence": {
+        "reference": "TBD",
+        "reviewer": "TBD",
+        "reviewedAt": "TBD"
+      }
     }
   },
+  "productionApproval": {
+    "status": "pending",
+    "approver": "TBD",
+    "approvedAt": "TBD",
+    "evidenceReference": "TBD"
+  },
   "productionDecision": "blocked",
-  "decisionReason": "Initial onboarding decisions are unresolved"
+  "decisionReason": "Production evidence is unresolved"
 }

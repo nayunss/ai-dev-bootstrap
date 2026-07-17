@@ -3,7 +3,7 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation
 다음 작업: REQ-046
 
 ## 목표
@@ -78,6 +78,12 @@ pilot 검증 단계다.
 - REQ-041 synthetic review skill에 단일 `add` patch를 적용하는 reference pilot을 구현했다. 고정 hash,
   edit·token budget, selection strict improvement, 비상쇄 hard gate, locked test·candidate-bound 승인
   순서와 tie·injection·grader tamper·test leakage 거절을 외부 model·network 없이 검증했다.
+- REQ-040 readiness schema v2를 구현했다. 법률·retention reviewer evidence, 2개 이상 instance의 분산
+  rate-limit bypass PASS, provider backup의 별도 장애 경계 restore RPO/RTO·무결성 PASS와 별도 사람
+  Production 승인 증적이 모두 없으면 `--expect-ready`를 fail-closed한다.
+- REQ-046 준비 범위로 campaign/result JSON schema, 독립성·증거 validator와 전원 PASS aggregator를
+  구현했다. synthetic tester 2명의 결과는 `SYNTHETIC_COMPLETE`로 재현했지만 실제 지원 결정 자격은
+  false로 유지한다.
 
 ## 현재 상태
 
@@ -110,6 +116,8 @@ pilot 검증 단계다.
 - 실제 프로젝트의 기존 사용자 파일과 변경을 보존하며 Git stage는 대상 파일을 명시해서 수행한다.
 - 선택 adapter 적용 증적은 `.ai/manifests/adapters.lock.json`이며 release-level
   `.ai/manifests/upstream.lock.yaml`의 구현을 대신하지 않는다.
+- 현재 공통 저장소에는 실제 서비스의 법률·retention·provider restore 증적이 없다. synthetic gate
+  PASS를 실제 Production 승인으로 해석하지 않으며 downstream profile은 owner가 직접 작성한다.
 
 ## 변경 파일
 
@@ -138,6 +146,18 @@ pilot 검증 단계다.
 - `scripts/evaluate-skill-evolution.mjs`, `scripts/test-skill-evolution.mjs`: bounded atomic patch,
   hash·budget·split·hard gate·승인 순서 evaluator와 positive/negative regression
 - `docs/evaluation-strategy.md`, `evals/README.md`, `docs/requirements.md`: REQ-041 pilot 범위·한계 현행화
+- `docs/templates/production-readiness.json`, `scripts/validate-production-readiness.mjs`: schema v2
+  법률·retention·multi-instance limiter·provider restore·사람 승인 hard gate
+- `scripts/test-production-readiness.mjs`, `scripts/test-readiness-materialization.mjs`,
+  `scripts/test-downstream-validator.mjs`: ready/blocked·위조·RPO/RTO·retrofit·구버전 negative regression
+- `.ai/workflows/production-readiness.md`, `docs/web-service-production-readiness.md`,
+  `docs/requirements.md`, `scripts/bootstrap`: Production evidence·migration·실행 계약 현행화
+- `docs/schemas/distributed-pilot-result.schema.json`,
+  `docs/templates/distributed-pilot-campaign.json`: REQ-046 machine-readable 제출·모집단 계약
+- `scripts/pilot-results.mjs`, `scripts/validate-pilot-result.mjs`,
+  `scripts/aggregate-pilot-results.mjs`, `scripts/test-pilot-results.mjs`: 결과 검증·취합과 synthetic regression
+- `evals/fixtures/distributed-pilot/`, `evals/baselines/distributed-pilot-synthetic-aggregate.json`:
+  2-tester synthetic 입력과 고정 `SYNTHETIC_COMPLETE` 증적
 
 ## 검증
 
@@ -180,15 +200,24 @@ pilot 검증 단계다.
 - selection 3회 minimum improvement·4개 hard gate와 sanitized selected result: PASS
 - tie·security gate·prompt injection·grader tamper·test 조기 노출·test 재학습 negative: PASS
 - candidate-bound synthetic approval 뒤 locked-test runner positive: PASS, 실제 release 승인 아님
+- readiness schema v2 blocked template·synthetic complete evidence positive: PASS
+- 법률 owner/evidence·retention category evidence 누락과 사람 승인 누락 negative: PASS
+- single/1-instance limiter·분산 bypass 실패 negative: PASS
+- 동일 restore target·무결성 실패·RPO/RTO 초과·schema v1 false approval negative: PASS
+- 기존 profile 무덮어쓰기 retrofit과 downstream BLOCKED note·schema consistency gate: PASS
+- REQ-046 synthetic tester 2명·독립 workspace/repository/resource·전원 PASS 집계: SYNTHETIC_COMPLETE
+- synthetic 결과의 실제 supportDecisionEligible 승격 차단: PASS
+- missing·FAIL·NOT-RUN·false PASS·증거 누락·grader tamper·이전 결과 접근 negative: PASS
+- duplicate pilot·upstream drift·workspace/resource 재사용 invalid aggregation: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
-   준비될 때까지 Production 승인을 차단한다.
-2. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+1. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+2. 실제 downstream owner가 REQ-040 법률·retention·multi-instance·provider restore evidence를 제공할
+   때만 schema v2 profile을 READY로 승인한다.
 3. REQ-041 실제 model·harness의 비결정 trial과 사람이 승인한 held-out test·release를 별도 수행한다.
 4. REQ-042의 다른 AI 도구 adapter와 release-level 공통 core materializer는 별도 preview·Eval 후 확장한다.
 

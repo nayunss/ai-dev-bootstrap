@@ -19,5 +19,9 @@ atomic patch budget, 고정 hash, selection strict improvement, hard gate, locke
 `baselines/skill-evolution-*`에는 이 reference pilot의 고정 record, sanitized selection 집계와 거절
 reason buffer만 보존한다. trajectory 원문, test fixture 내용과 모델 출력은 포함하지 않는다.
 
+REQ-046 준비 automation은 `fixtures/distributed-pilot/`의 synthetic campaign·두 result와
+`scripts/validate-pilot-result.mjs`, `scripts/aggregate-pilot-results.mjs`를 사용한다. 고정 baseline은
+`SYNTHETIC_COMPLETE`이지만 `supportDecisionEligible: false`다. 실제 tester의 독립 실행을 대체하지 않는다.
+
 외부 Eval 도구 선정 전 공급망, 텔레메트리, 권한, 네트워크, 비용과 데이터 처리를 심사한다. 상세
 정책은 `docs/evaluation-strategy.md`와 `.ai/workflows/evaluation.md`를 따른다.

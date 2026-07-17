@@ -18,10 +18,16 @@ public 웹·앱 출시, Production 배포, 인증·개인정보·DB·결제·광
 6. 개인정보처리방침·동의·위탁·국외이전·보존·파기·사업자 표시와 실제 data flow의 일치를 확인한다.
 7. 법령 시행일과 공식 지침을 배포 시점에 다시 확인한다. 제재 숫자는 gate의 근거로 사용하지 않는다.
 8. 미검증 고위험 항목과 적용되는 법률의 `TBD`가 있으면 Production을 default-deny한다.
-9. 사람 승인 후 Preview·Production·rollback을 검증하고 evidence와 재검토 날짜를 HANDOFF에 기록한다.
+9. provider backup을 Production과 다른 장애 경계에 restore하고 RPO·RTO·무결성 evidence를 기록한다.
+   logical restore나 backup 생성 성공만으로 이 gate를 통과시키지 않는다.
+10. 사람이 evidence를 검토해 `productionApproval`을 기록한 뒤
+    `node scripts/validate-production-readiness.mjs PROFILE --expect-ready`를 통과해야
+    Preview·Production·rollback을 진행하고 evidence와 재검토 날짜를 HANDOFF에 기록한다.
 
 기존 운영 project의 문서가 누락된 경우 `scripts/bootstrap readiness <target>`은 blocked template만
 최초 생성한다. 기존 profile이 있으면 실패하며, 기존 정책을 자동 덮어쓰거나 `TBD`를 추측해 채우지 않는다.
+schema v1 profile도 자동 migration하지 않는다. schema v2 diff를 사람이 검토해 기존 결정을 보존하면서
+구조화된 evidence를 추가해야 하며, 그 전에는 Production gate가 실패한다.
 
 ## 금지
 

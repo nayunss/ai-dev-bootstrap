@@ -34,13 +34,13 @@
 | REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
 | REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
-| REQ-040 | 부분 검증 | 초기 owner·retention·multi-instance 질문 template/validator와 env-be의 BOLA, 단일-instance rate limit, log redaction·correlation, 격리 logical restore, readiness Eval·BFF fixture PASS. 실제 운영 결정·Production provider restore는 차단 상태 |
+| REQ-040 | 부분 검증 | schema v2가 법률·retention reviewer evidence, 2+ instance 분산 limiter bypass PASS, provider restore RPO/RTO·무결성 evidence를 Production hard gate로 차단. synthetic positive/negative·retrofit·downstream consistency Eval PASS. 실제 운영 evidence와 provider rehearsal은 미완료 |
 | REQ-041 | 부분 검증 | synthetic 단일 add patch의 hash·budget·selection strict improvement·hard gate·locked test·승인 순서와 tie/injection/grader tamper/test leakage negative Eval PASS. 실제 모델·비결정 trial·release는 미검증 |
 | REQ-042 | 부분 검증 | Codex·Claude Code 선택형 adapter preview·승인 apply, generator/source/target hash drift와 기존·변경 파일 보존 uninstall Eval PASS. 다른 AI 도구와 release-level core materializer는 미검증 |
 | REQ-043 | 부분 검증 | 후보 심사, ScanCode synthetic·project pilot, 조건부 hosted CI PASS. true public-corpus snippet provenance는 미검증 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
-| REQ-046 | 설계 완료 | 단독·다중 pilot, downstream 시작·blind 검증·feedback schema와 AI provenance·전원 PASS 계약 작성. 독립 tester 간 실제 재현·결과 취합 운영은 미검증 |
+| REQ-046 | 부분 검증 | campaign/result schema, validator·aggregator와 2-tester synthetic complete, 누락·FAIL·false PASS·증거·tamper·격리 재사용 negative Eval PASS. 실제 독립 tester 실행·취합 운영은 미검증 |
 
 ### REQ-001: 독립 저장소
 
@@ -909,3 +909,5 @@
 | 2026-07-12 | FastAPI와 OpenAPI·Swagger 역할을 분리한 backend API 계약·문서화 요구사항 추가 |
 | 2026-07-17 | Codex·Claude Code 선택형 adapter의 preview·승인 apply, source/target hash drift와 보존 uninstall reference Eval 구현 |
 | 2026-07-17 | REQ-041 synthetic bounded-patch, 격리 grader·locked test·거절 buffer reference pilot 구현 |
+| 2026-07-17 | REQ-040 법률·retention·다중-instance limiter·Production provider restore evidence schema v2 hard gate 구현 |
+| 2026-07-17 | REQ-046 campaign/result schema, validator·aggregator와 synthetic 다중 tester Eval 구현 |

@@ -38,6 +38,7 @@ jobs:
           npm run test:downstream-validator
           npm run test:adapter-manager
           npm run test:skill-evolution
+          npm run test:pilot-results
           npm run test:production-readiness
           npm run test:readiness-materialization
           npm run test:dependency-upgrade-validator

@@ -222,6 +222,29 @@ AI가 기술 stack이나 dependency를 임의 선택하지 않게 한다. 설치
 결과는 `PASS | FAIL | BLOCKED | NOT-RUN`으로 구분한다. `PASS`는 명시된 upstream SHA·stack·환경·범위에만
 유효하다. 미실행 항목을 PASS에 포함하거나 AI의 완료 문장만 증거로 사용하지 않는다.
 
+### 기계 판독 결과와 취합
+
+campaign 시작 전에 [`distributed-pilot-campaign.json`](templates/distributed-pilot-campaign.json)을
+복사해 고정 upstream, 최소 독립 tester 수, 전체 참여자와 배정 matrix revision을 기록한다. 각 tester는
+[`distributed-pilot-result.schema.json`](schemas/distributed-pilot-result.schema.json)의 JSON 결과를
+제출한다. Markdown 보고서는 사람이 읽는 설명이며 JSON이 집계 입력의 단일 계약이다.
+
+```sh
+node scripts/validate-pilot-result.mjs RESULT.json CAMPAIGN.json
+node scripts/aggregate-pilot-results.mjs CAMPAIGN.json RESULT... --expect-complete
+```
+
+validator는 배정된 requirement·gate, upstream pin, 독립 Git·clean start, OS·stack과 AI provenance,
+명령·exit·evidence reference와 SHA-256, negative·rollback cleanup, 비용·미검증, grader·이전 결과 접근
+금지 attestation과 다른 reviewer의 검토를 검사한다. reported PASS와 계산 결과가 다르면 위조된
+PASS로 거부한다.
+
+aggregator는 시작 시 등록된 assignment 전체를 모집단으로 사용한다. 누락·FAIL·BLOCKED·NOT-RUN은
+`INCOMPLETE`, 중복 pilot·증거 불일치·workspace/repository/resource 재사용은 `INVALID`다. 모든 assignment
+PASS와 최소 독립 tester 수를 충족한 실제 campaign만 `COMPLETE`다. synthetic campaign은 같은 조건을
+통과해도 `SYNTHETIC_COMPLETE`이며 `supportDecisionEligible`은 항상 false다. `undisclosed` AI provenance는
+기능 결과에는 남지만 tool compatibility 근거에서는 제외된다.
+
 ## Upstream 환류와 중복 처리
 
 1. 기존 `docs/requirements.md`, issue·finding 목록에서 같은 실패를 검색한다.
