@@ -310,6 +310,18 @@ if (existsSync(join(root, ".ai/manifests/upstream.lock.yaml"))) {
     if (upstream.status !== 0) errors.push(upstream.stderr.trim() || "upstream lock validation failed");
   }
 }
+if (existsSync(join(root, ".ai/manifests/upstream-upgrade.rollback.json"))) {
+  if (!existsSync(join(root, "scripts/validate-core-upgrade-record.mjs"))) {
+    errors.push("core upgrade rollback record requires scripts/validate-core-upgrade-record.mjs");
+  } else {
+    const upgrade = spawnSync(process.execPath, ["scripts/validate-core-upgrade-record.mjs", root], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    if (upgrade.status !== 0) errors.push(upgrade.stderr.trim() || "core upgrade rollback record validation failed");
+    else notes.push("core upgrade rollback remains available until explicitly finalized");
+  }
+}
 if (existsSync(join(root, ".ai/manifests/security-tools.lock.json"))) {
   if (!existsSync(join(root, "scripts/manage-security-tools.mjs"))) {
     errors.push("security tool lock requires scripts/manage-security-tools.mjs");

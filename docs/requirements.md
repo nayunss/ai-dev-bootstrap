@@ -27,7 +27,7 @@
 | REQ-005~008 | 부분 검증 | 선호 도구·외부 자산 검토 완료, 선택 설치 adapter는 계속 확장 |
 | REQ-009~014 | 부분 검증 | 공통 정책과 frontend pilot 검증. stack별 자동 lint·접근성 Eval은 제한적 |
 | REQ-015~016 | 부분 검증 | 보안 hook·SAST fixture 적용, 실제 IAM·복구 이중 통제는 downstream별 검증 필요 |
-| REQ-017 | 적용 | staged·PR HANDOFF gate, 종료일·Git authority·완료/다음 작업 drift와 공통 진행 가능/외부 입력 대기 분류 regression 적용 |
+| REQ-017 | 적용 | staged·PR HANDOFF gate, 종료일·Git authority·상단 다음 작업과 하단 남은 작업의 안정적 ID 일치, 완료 작업 잔존과 실행 가능/외부 입력 대기 분류 regression 적용 |
 | REQ-018 | 적용 | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
 | REQ-019~024 | 부분 검증 | 문서·workflow 적용. 요구사항 변경의 자동 추적성 검사는 제한적 |
 | REQ-025 | 부분 검증 | 결정론적 fixture 존재, 전체 capability suite·비결정 trial 계측은 미완료 |
@@ -37,7 +37,7 @@
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
 | REQ-040 | 부분 검증 | schema v2 hard gate와 초기/기존 project 공용 onboarding 질문·blocked template·보존 retrofit Eval PASS. 실제 운영 evidence와 provider rehearsal은 미완료 |
 | REQ-041 | 부분 검증 | synthetic bounded patch, offline trial gate와 project별 model/harness·비용·network·reviewer onboarding template Eval PASS. 실제 모델·비결정 trial·release는 미검증 |
-| REQ-042 | 부분 검증 | 3종 adapter, canonical YAML lock schema/parser/validator, JSON migration, inventory 기반 release manifest generator와 core materializer Eval PASS. 실제 release 발행·downstream upgrade/rollback은 미검증 |
+| REQ-042 | 부분 검증 | 3종 adapter, canonical YAML lock·manifest/core materializer와 transaction upgrade·rollback/finalize Eval PASS. 실제 release 발행·real downstream 적용은 미검증 |
 | REQ-043 | 부분 검증 | 후보 심사, ScanCode synthetic·project pilot, 조건부 hosted CI PASS. true public-corpus snippet provenance는 미검증 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
@@ -919,3 +919,5 @@
 | 2026-07-17 | REQ-042 canonical YAML upstream lock·JSON migration·release manifest generator와 downstream drift enforcement 구현 |
 | 2026-07-17 | REQ-026·033 downstream project-local security tool offline installer·lock validation·보존 uninstall 구현 |
 | 2026-07-17 | REQ-026·033 npm·pnpm·Yarn·Maven·Gradle·Python dependency bootstrap 계약과 clean install·drift·보존 uninstall Eval 구현 |
+| 2026-07-17 | HANDOFF 상단 다음 작업과 하단 남은 작업의 안정적 ID 일치 검증 및 완료된 dependency bootstrap 잔존 제거 |
+| 2026-07-17 | REQ-042 release manifest union diff·transaction restore·명시 rollback/finalize 자동화와 failure fixture 구현 |

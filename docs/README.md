@@ -47,6 +47,7 @@
 | [v0.2.1-pilot Release](releases/v0.2.1-pilot.md) | `.env*` 비접근 hotfix | 발행 완료 |
 | [v0.2.2-pilot Release](releases/v0.2.2-pilot.md) | Dependency version 승인 계약과 validator lint 수정 | 발행 완료 |
 | [v0.2.3-pilot Release](releases/v0.2.3-pilot.md) | CI·engineering·Production readiness·API contract·점진적 full-stack gate | 발행 완료 |
+| [v0.2.4-pilot Release](releases/v0.2.4-pilot.md) | 공통 installer·adapter·canonical lock·upgrade rollback automation | 발행 준비 |
 
 ## 문서 상태
 
