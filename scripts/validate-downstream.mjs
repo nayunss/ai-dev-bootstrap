@@ -310,6 +310,17 @@ if (existsSync(join(root, ".ai/manifests/upstream.lock.yaml"))) {
     if (upstream.status !== 0) errors.push(upstream.stderr.trim() || "upstream lock validation failed");
   }
 }
+if (existsSync(join(root, ".ai/manifests/security-tools.lock.json"))) {
+  if (!existsSync(join(root, "scripts/manage-security-tools.mjs"))) {
+    errors.push("security tool lock requires scripts/manage-security-tools.mjs");
+  } else {
+    const securityTools = spawnSync(process.execPath, ["scripts/manage-security-tools.mjs", "validate", root], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    if (securityTools.status !== 0) errors.push(securityTools.stderr.trim() || "security tool hash validation failed");
+  }
+}
 
 for (const note of notes) process.stdout.write(`NOTE: ${note}\n`);
 if (errors.length) {

@@ -21,7 +21,7 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 | release manifest | 명시적 inventory·repository·release·commit·archive SHA-256 기반 결정론적 generator 구현 |
 | 공통 코어 materialization | canonical YAML lock을 생성하는 preview·승인 apply·충돌·source/target drift 구현 |
 | Codex·Claude Code·GitHub Copilot 선택 adapter | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
-| downstream security tool 설치 | 미구현; 현재 `security-tools`는 upstream `.tools/`에 설치 |
+| downstream security tool 설치 | offline artifact·exact checksum·승인 apply·lock drift·보존 uninstall 구현 |
 | stack별 dependency bootstrap | npm·pnpm root 경로만 부분 구현 |
 | upgrade diff·migration·rollback 자동화 | 목표 설계, 미구현 |
 

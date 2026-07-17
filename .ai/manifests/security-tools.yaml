@@ -1,4 +1,5 @@
 schemaVersion: 1
+runtimeAssetCatalog: security-tool-assets.json
 policy:
   source: ../standards/security.md
   networkDefault: deny

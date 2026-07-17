@@ -31,7 +31,7 @@
 | REQ-018 | 적용 | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
 | REQ-019~024 | 부분 검증 | 문서·workflow 적용. 요구사항 변경의 자동 추적성 검사는 제한적 |
 | REQ-025 | 부분 검증 | 결정론적 fixture 존재, 전체 capability suite·비결정 trial 계측은 미완료 |
-| REQ-026~028 | 부분 검증 | bootstrap·validate와 downstream 적용 검증. upstream hook은 환경 승인 대기 |
+| REQ-026~028 | 부분 검증 | bootstrap·validate, project-local security tool offline installer와 downstream lock drift Eval PASS. stack hook은 환경 승인 대기 |
 | REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
 | REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
@@ -917,3 +917,4 @@
 | 2026-07-17 | HANDOFF 남은 작업을 공통 저장소 진행 가능과 프로젝트·사람·실제 환경·외부 승인 대기로 분류하는 계약 추가 |
 | 2026-07-17 | REQ-001~046 설계 완료 감사와 실제 구현 입력 baseline 확정 |
 | 2026-07-17 | REQ-042 canonical YAML upstream lock·JSON migration·release manifest generator와 downstream drift enforcement 구현 |
+| 2026-07-17 | REQ-026·033 downstream project-local security tool offline installer·lock validation·보존 uninstall 구현 |

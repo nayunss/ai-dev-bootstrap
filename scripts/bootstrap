@@ -25,7 +25,10 @@ Bootstrap preview
 - Readiness retrofit: after reviewing applicability, use scripts/bootstrap readiness TARGET; existing policy is never overwritten and unresolved values block Production
 - Project-specific decisions: use scripts/bootstrap onboarding TARGET for initial setup or retrofit; existing profiles are preserved and questions remain TBD
 
-Apply reviewed security tools only: scripts/bootstrap security-tools
+Apply reviewed security tools to this upstream clone only: scripts/bootstrap security-tools
+Preview/apply/validate/uninstall project-local tools without installer network:
+  scripts/bootstrap security-tools preview /absolute/path/to/project
+  scripts/bootstrap security-tools apply /absolute/path/to/project /approved/artifacts --approve
 Install locked dependencies with scripts disabled and strict peers:
   scripts/bootstrap dependencies /absolute/path/to/project --allow-network
 Validate a downstream project: scripts/validate /absolute/path/to/project
@@ -50,7 +53,26 @@ EOF
     fi
     ;;
   security-tools)
-    "$ROOT/scripts/bootstrap-security-tools"
+    ACTION=${2:-}
+    if [ -z "$ACTION" ]; then
+      "$ROOT/scripts/bootstrap-security-tools"
+    else
+      TARGET=${3:-}
+      ARTIFACTS=${4:-}
+      APPROVAL=${5:-}
+      if [ -z "$TARGET" ]; then
+        echo "Project security tool management requires an action and target project." >&2
+        exit 2
+      fi
+      TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
+      if [ "$ACTION" = "apply" ]; then
+        node "$ROOT/scripts/manage-security-tools.mjs" apply "$TARGET" "$ARTIFACTS" "$APPROVAL"
+      elif [ "$ACTION" = "uninstall" ]; then
+        node "$ROOT/scripts/manage-security-tools.mjs" uninstall "$TARGET" "$ARTIFACTS"
+      else
+        node "$ROOT/scripts/manage-security-tools.mjs" "$ACTION" "$TARGET"
+      fi
+    fi
     ;;
   dependencies)
     TARGET=${2:-}
@@ -122,7 +144,7 @@ EOF
     fi
     ;;
   *)
-    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
     exit 2
     ;;
 esac
