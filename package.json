@@ -21,6 +21,7 @@
     "test:core-materializer": "node scripts/test-core-materializer.mjs",
     "test:upstream-lock": "node scripts/test-upstream-lock.mjs",
     "test:security-tool-manager": "node scripts/test-security-tool-manager.mjs",
+    "test:dependency-bootstrap": "node scripts/test-dependency-bootstrap.mjs",
     "test:skill-evolution": "node scripts/test-skill-evolution.mjs",
     "test:skill-evolution-trial": "node scripts/test-skill-evolution-trial.mjs",
     "test:pilot-results": "node scripts/test-pilot-results.mjs",

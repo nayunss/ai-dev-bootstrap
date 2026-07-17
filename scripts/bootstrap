@@ -31,6 +31,10 @@ Preview/apply/validate/uninstall project-local tools without installer network:
   scripts/bootstrap security-tools apply /absolute/path/to/project /approved/artifacts --approve
 Install locked dependencies with scripts disabled and strict peers:
   scripts/bootstrap dependencies /absolute/path/to/project --allow-network
+Preview/apply/validate/uninstall stack-specific project dependencies:
+  scripts/bootstrap dependencies preview /absolute/path/to/project
+  scripts/bootstrap dependencies apply /absolute/path/to/project --offline --approve
+  scripts/bootstrap dependencies uninstall /absolute/path/to/project --approve
 Validate a downstream project: scripts/validate /absolute/path/to/project
 Validate a readiness profile: node scripts/validate-production-readiness.mjs PROFILE --expect-blocked
 Production approval hard gate: node scripts/validate-production-readiness.mjs PROFILE --expect-ready
@@ -75,6 +79,13 @@ EOF
     fi
     ;;
   dependencies)
+    ACTION=${2:-}
+    if [ "$ACTION" = "preview" ] || [ "$ACTION" = "apply" ] || [ "$ACTION" = "validate" ] || [ "$ACTION" = "uninstall" ]; then
+      TARGET=${3:-}
+      shift 3
+      node "$ROOT/scripts/manage-dependencies.mjs" "$ACTION" "$TARGET" "$@"
+      exit $?
+    fi
     TARGET=${2:-}
     NETWORK=${3:-}
     if [ -z "$TARGET" ] || [ "$NETWORK" != "--allow-network" ]; then

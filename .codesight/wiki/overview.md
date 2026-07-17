@@ -6,7 +6,7 @@
 
 ## Scale
 
-6 library files · 5 middleware layers
+6 library files · 5 middleware layers · 1 environment variables
 
 ## High-Impact Files
 
@@ -18,6 +18,10 @@ Changes to these files have the widest blast radius across the codebase:
 - `scripts/validate-production-readiness.mjs` — imported by **1** files
 - `scripts/validate-skill-evolution-trial.mjs` — imported by **1** files
 - `scripts/evaluate-skill-evolution.mjs` — imported by **1** files
+
+## Required Environment Variables
+
+- `PATH` — `scripts/manage-dependencies.mjs`
 
 ---
 _Back to [index.md](./index.md) · Generated from the repository_

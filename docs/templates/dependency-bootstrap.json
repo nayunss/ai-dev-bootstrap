@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "applications": [
+    {
+      "id": "frontend",
+      "root": "frontend",
+      "adapter": "pnpm",
+      "version": "11.11.0",
+      "manifest": "package.json",
+      "lockfile": "pnpm-lock.yaml"
+    },
+    {
+      "id": "backend",
+      "root": "backend",
+      "adapter": "maven",
+      "version": "3.9.11",
+      "manifest": "pom.xml",
+      "lockfile": ".mvn/dependency-lock.json"
+    }
+  ]
+}

@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 0 models | 0 components | 6 lib files | 0 env vars | 5 middleware
-> **Token savings:** this file is ~1,000 tokens. Without it, AI exploration would cost ~9,200 tokens. **Saves ~8,200 tokens per conversation.**
+> 0 routes | 0 models | 0 components | 6 lib files | 1 env vars | 5 middleware
+> **Token savings:** this file is ~1,100 tokens. Without it, AI exploration would cost ~9,400 tokens. **Saves ~8,300 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -27,6 +27,14 @@
   - _...2 more_
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
+
+---
+
+# Config
+
+## Environment Variables
+
+- `PATH` **required** — scripts/manage-dependencies.mjs
 
 ---
 
