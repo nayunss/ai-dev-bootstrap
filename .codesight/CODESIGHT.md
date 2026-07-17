@@ -3,7 +3,7 @@
 > **Stack:** raw-http | none | unknown | javascript
 
 > 0 routes | 0 models | 0 components | 2 lib files | 0 env vars | 3 middleware
-> **Token savings:** this file is ~500 tokens. Without it, AI exploration would cost ~6,900 tokens. **Saves ~6,400 tokens per conversation.**
+> **Token savings:** this file is ~600 tokens. Without it, AI exploration would cost ~6,900 tokens. **Saves ~6,300 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -44,7 +44,19 @@
 
 | Workflow | Triggers | Jobs | Deploy | Environments |
 |---|---|---|---|---|
-| Security | pull_request, push | 1 | — | — |
+| Security | pull_request, push | 2 | — | — |
+
+### Security
+
+> `.github/workflows/security.yml`
+
+- **security** on `ubuntu-latest` — 10 steps
+  - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
+  - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
+- **license-provenance** on `ubuntu-24.04` — 6 steps
+  - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
+  - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
+  - `actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02`
 
 ---
 _Source: .github/workflows/security.yml_

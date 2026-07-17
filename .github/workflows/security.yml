@@ -58,3 +58,41 @@ jobs:
 
       - name: Run security checks
         run: scripts/security-check full
+
+  license-provenance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22.23.1
+
+      - name: Test ScanCode report fail-closed policy
+        run: node scripts/test-scancode-report-evaluator.mjs
+
+      - name: Run network-isolated ScanCode license gate
+        run: scripts/scancode-license-gate
+
+      - name: Add sanitized ScanCode result to job summary
+        if: always()
+        run: |
+          if test -f "${{ runner.temp }}/scancode-ci/output/summary.json"; then
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat "${{ runner.temp }}/scancode-ci/output/summary.json" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload ScanCode evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: scancode-license-evidence
+          path: ${{ runner.temp }}/scancode-ci/output/summary.json
+          if-no-files-found: error
+          retention-days: 14

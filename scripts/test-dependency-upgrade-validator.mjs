@@ -84,4 +84,17 @@ writeApprovals([
 git("add", ".ai/approvals/dependency-upgrades.json");
 assert.equal(validate().status, 0);
 
+git("-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qam", "approved lock");
+writeApprovals([approval({ expiresAt: "2026-01-01" })]);
+git("add", ".ai/approvals/dependency-upgrades.json");
+assert.equal(validate().status, 0, "expired historical approval must not block unrelated changes");
+git("reset", "-q", "HEAD", ".ai/approvals/dependency-upgrades.json");
+
+writePackage("3.0.0");
+writeApprovals([approval({ from: "2.0.0", to: "3.0.0", expiresAt: "2026-01-01" })]);
+git("add", "package.json", ".ai/approvals/dependency-upgrades.json");
+const expiredVersion = validate();
+assert.notEqual(expiredVersion.status, 0);
+assert.match(expiredVersion.stderr, /Unapproved dependency version change/);
+
 process.stdout.write("Dependency upgrade approval regression tests: PASS\n");
