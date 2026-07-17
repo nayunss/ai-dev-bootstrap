@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "requiredAdapters": ["claude-code", "codex", "github-copilot"],
+  "commonContracts": {
+    "engineering": ".ai/standards/engineering.md",
+    "security": ".ai/standards/security.md",
+    "roles": "docs/agents.md",
+    "persona": "docs/persona-and-role-guidelines.md",
+    "handoff": "HANDOFF.md",
+    "context": ".codesight/wiki/index.md",
+    "changeMode": ".ai/workflows/change-mode.md"
+  },
+  "adapters": [
+    {
+      "id": "claude-code",
+      "entrypoint": "CLAUDE.md",
+      "roleExecution": "sequential-baseline",
+      "permissionExpansion": "forbidden",
+      "hookCoverage": "session-pre-post",
+      "fallbackCommands": []
+    },
+    {
+      "id": "codex",
+      "entrypoint": "AGENTS.md",
+      "roleExecution": "sequential-baseline",
+      "permissionExpansion": "forbidden",
+      "hookCoverage": "session-pre-post",
+      "fallbackCommands": []
+    },
+    {
+      "id": "github-copilot",
+      "entrypoint": ".github/copilot-instructions.md",
+      "roleExecution": "sequential-baseline",
+      "permissionExpansion": "forbidden",
+      "hookCoverage": "none-use-common-fallback",
+      "fallbackCommands": ["scripts/validate .", "scripts/security-check changed"]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "status": "safe",
+  "checks": {
+    "correctness": true,
+    "security": true,
+    "permission": true
+  }
+}

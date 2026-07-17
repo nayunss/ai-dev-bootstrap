@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "network": "deny",
+  "applications": [
+    {
+      "id": "web",
+      "root": "frontend",
+      "language": "javascript",
+      "web": true,
+      "gates": {
+        "formatter": {
+          "mode": "required",
+          "tool": "project-formatter",
+          "version": "0.0.0",
+          "executable": ".tools/quality/bin/formatter",
+          "versionArgs": ["--version"],
+          "args": ["--check", "."],
+          "timeoutMs": 30000
+        },
+        "linter": {
+          "mode": "required",
+          "tool": "project-linter",
+          "version": "0.0.0",
+          "executable": ".tools/quality/bin/linter",
+          "versionArgs": ["--version"],
+          "args": ["."],
+          "timeoutMs": 30000
+        },
+        "typecheck": {
+          "mode": "required",
+          "tool": "project-typechecker",
+          "version": "0.0.0",
+          "executable": ".tools/quality/bin/typecheck",
+          "versionArgs": ["--version"],
+          "args": ["--no-emit"],
+          "timeoutMs": 60000
+        },
+        "accessibility": {
+          "mode": "required",
+          "tool": "project-accessibility",
+          "version": "0.0.0",
+          "executable": ".tools/quality/bin/accessibility",
+          "versionArgs": ["--version"],
+          "args": ["--check", "."],
+          "timeoutMs": 60000
+        }
+      }
+    }
+  ]
+}

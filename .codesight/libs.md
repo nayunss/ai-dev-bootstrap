@@ -1,12 +1,33 @@
 # Libraries
 
+- `evals/fixtures/stack-quality/javascript/source.js` — function greet: (name) => void
+- `evals/fixtures/stack-quality/python/app.py` — function greet: (name) -> str
+- `scripts/adapter-parity.mjs` — function validateAdapterParity: (manifest, options) => void, function readParityManifest: (path) => void
 - `scripts/application-inventory.mjs` — function discoverApplications: (root) => void, function readDeclaredInventory: (root) => void
+- `scripts/capability-suite.mjs`
+  - function hashFixture: (path) => void
+  - function validateCapabilityTask: (task, root) => void
+  - function runCapabilityTask: (task, root) => void
+  - function aggregateCapabilityResults: (results) => void
+  - function loadTask: (path) => void
 - `scripts/evaluate-skill-evolution.mjs` — function sha256: (value) => void, function evaluateSkillEvolution: (record, options) => void
+- `scripts/fastapi-contract-adapter.mjs` — function evaluateFastApiContract: ({...}, current, routes, profile }) => void, function readJson: (path) => void
+- `scripts/fullstack-materializer.mjs`
+  - function sha256: (value) => void
+  - function validateFullStackProfile: (profile, sourceValue, targetValue) => void
+  - function applyFullStackTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
+  - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
+  - function readProfile: (path) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
   - function validatePilotCampaign: (campaign) => void
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
+- `scripts/stack-quality-adapters.mjs`
+  - function validateQualityProfile: (profile, targetValue) => void
+  - function runQualityProfile: (profile, targetValue, options) => void
+  - function previewQualityProfile: (profile, targetValue) => void
+  - function readQualityProfile: (path) => void
 - `scripts/upgrade-core.mjs` — function applyFileTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
 - `scripts/upstream-lock.mjs`
   - function sha256: (value) => void
@@ -17,4 +38,5 @@
   - function serializeUpstreamLock: (lock) => void
   - _...2 more_
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
+- `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void

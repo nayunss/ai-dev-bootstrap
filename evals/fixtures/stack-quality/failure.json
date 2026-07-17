@@ -1,0 +1,8 @@
+{
+  "fixture": "synthetic-linter-failure",
+  "applicationId": "python",
+  "gate": "linter",
+  "expectedStatus": "FAIL",
+  "expectedExitStatus": 1,
+  "expectedBehavior": "Stop the application quality run and do not report later gates as PASS"
+}

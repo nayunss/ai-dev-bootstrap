@@ -35,6 +35,12 @@ jobs:
           scripts/validate .
           npm run test:ai-security-hook
           npm run test:handoff-validator
+          npm run test:requirement-traceability
+          npm run test:capability-suite
+          npm run test:stack-quality-adapters
+          npm run test:adapter-parity
+          npm run test:fastapi-contract-adapter
+          npm run test:fullstack-materializer
           npm run test:downstream-validator
           npm run test:adapter-manager
           npm run test:core-materializer
@@ -65,6 +71,10 @@ jobs:
       - name: Require approval for dependency version changes
         if: github.event_name == 'pull_request'
         run: node scripts/validate-dependency-upgrades.mjs range "${{ github.event.pull_request.base.sha }}"
+
+      - name: Require requirement traceability synchronization
+        if: github.event_name == 'pull_request'
+        run: node scripts/validate-requirement-traceability.mjs range "${{ github.event.pull_request.base.sha }}"
 
       - name: Run security checks
         run: scripts/security-check full

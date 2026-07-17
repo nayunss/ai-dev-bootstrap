@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "CAPABILITY-HARNESS-001",
+  "kind": "capability",
+  "requirementIds": ["REQ-025"],
+  "purpose": "Verify deterministic outcome grading and efficiency measurement without a model call",
+  "input": "Evaluate the synthetic safe outcome with repository-owned deterministic graders.",
+  "fixture": {
+    "path": "evals/fixtures/capability-suite",
+    "sha256": "sha256:a8dde488e0db20661c14738122988f549bf317d97ae49ecfb304b2322b37f47c"
+  },
+  "permissions": {
+    "allowedTools": ["read", "test"],
+    "network": "deny",
+    "filesystem": "isolated-fixture"
+  },
+  "expectedOutcome": {
+    "allGradersPass": true,
+    "fixtureUnchanged": true
+  },
+  "graders": [
+    {
+      "id": "safe-outcome",
+      "command": ["node", "evals/graders/check-capability-outcome.mjs", "{fixture}"],
+      "expectedExitStatus": 0,
+      "timeoutMs": 5000
+    }
+  ],
+  "trials": 2,
+  "limits": {
+    "maxDurationMs": 10000,
+    "maxToolCalls": 2,
+    "maxDiffBytes": 0,
+    "maxTokens": 0,
+    "maxCostUsd": 0
+  },
+  "stopConditions": ["grader-failure", "timeout", "limit-exceeded", "fixture-drift"]
+}

@@ -3,7 +3,7 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 설계 baseline 완료·공통 구현 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer
 다음 작업: REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
@@ -115,6 +115,25 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   발행했다. tracked archive SHA-256
   `fa9b369444f4408eb04944a20ed25d12c79edbb68def5025c98da0ce72cba723`과 게시 asset 재다운로드를
   검증했다.
+- REQ-019~024의 normative source·구현·검증·token-profile 영향과 외부 gate를 machine-readable
+  manifest로 연결했다. requirements 변경에 manifest 동기화가 없거나 evidence 경로·ID·token 영향이
+  drift하면 staged·PR gate가 실패한다.
+- `docs/`의 설계·운영 문서 36개를 요구사항 묶음에 역참조하고 schema 3개·template 5개를 문서
+  index에 추가했다. 요구사항 상태는 구현과 검증을 분리해 synthetic·reference·pilot PASS가 실제
+  downstream 검증으로 오해되지 않게 현행화했다.
+- REQ-025 공통 deterministic capability task schema·trial별 임시 fixture runner와
+  비용·latency·tool-call·diff aggregator를 구현했다. 저장소 내부 Node grader만 허용하고
+  network·token·비용은 0으로 고정했으며 실제 model trial은 수행하지 않았다.
+- REQ-009~014 JavaScript·Java·Python formatter·linter·typecheck와 web accessibility adapter 계약을
+  구현했다. project-local exact tool/version·application cwd·check-only source 보존을 강제하고,
+  외부 sandbox의 network-none 증거가 없으면 실행을 차단한다.
+- REQ-037~039 세 AI adapter의 공통 policy·role·permission parity manifest와 validator를 구현했다.
+  Codex·Claude Code hook outcome과 GitHub Copilot fallback을 구분하고 source·materialized target에서
+  동일한 공통 계약과 권한 비확대를 검증한다.
+- REQ-044 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift,
+  implementation route inventory와 Production docs exposure synthetic adapter를 구현했다.
+- REQ-045 최초 frontend·backend·shared·paired migration artifact 일괄 materializer와 transaction
+  부분 실패 원복·보존 rollback을 구현했다. DB SQL은 실행하지 않고 `NOT-RUN`으로 유지한다.
 
 ## 현재 상태
 
@@ -220,6 +239,34 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   downstream record drift 검증
 - `.ai/approvals/dependency-upgrades.json`, `package.json`, `package-lock.json`,
   `docs/releases/v0.2.4-pilot.md`: 0.2.4 release metadata lock 승인과 migration·rollback·artifact 증적 준비
+- `.ai/manifests/requirement-traceability.json`, `scripts/validate-requirement-traceability.mjs`,
+  `scripts/test-requirement-traceability.mjs`: REQ-019~024 source·구현·검증·token 영향 추적과
+  requirements staged·PR 동기화 gate
+- `docs/requirements.md`, `docs/README.md`, `docs/ai-generated-code-license-provenance.md`: 요구사항별
+  문서·산출물 역참조, 구현/검증 상태 분리, 누락 schema·template와 REQ-043 문서 상태 현행화
+- `docs/schemas/capability-task.schema.json`, `scripts/capability-suite.mjs`,
+  `scripts/{run-capability-task,aggregate-capability-results,test-capability-suite}.mjs`: REQ-025
+  deterministic task 검증·격리 실행·효율 집계와 regression
+- `evals/tasks/deterministic-capability-smoke.json`, `evals/fixtures/capability-suite/`,
+  `evals/graders/check-capability-outcome.mjs`: 고정 task·fixture·grader
+- `docs/evaluation-strategy.md`, `evals/README.md`, `docs/design-completion-audit.md`,
+  `docs/requirements.md`, `docs/README.md`, `package.json`, `.github/workflows/security.yml`:
+  실행 계약·상태·CI 연결
+- `docs/schemas/stack-quality-adapters.schema.json`, `docs/templates/stack-quality-adapters.json`,
+  `scripts/{stack-quality-adapters,run-stack-quality,test-stack-quality-adapters}.mjs`: REQ-009~014
+  품질 adapter profile·preview·승인 실행·regression
+- `evals/fixtures/stack-quality/`: JavaScript·Java·Python source와 linter failure 기대 결과
+- `.ai/manifests/adapter-parity.json`, `docs/schemas/adapter-parity.schema.json`,
+  `scripts/{adapter-parity,validate-adapter-parity,test-adapter-parity}.mjs`: REQ-037~039 공통
+  policy·role·permission과 source/materialized parity Eval
+- `adapters/{codex,claude-code,github-copilot}/`, `AGENTS.md`, `CLAUDE.md`: 공통 role·persona·permission
+  reference와 native 권한 비확대 명시
+- `docs/schemas/fastapi-contract-adapter.schema.json`,
+  `scripts/{fastapi-contract-adapter,evaluate-fastapi-contract,test-fastapi-contract-adapter}.mjs`,
+  `evals/fixtures/fastapi-contract/`: REQ-044 OpenAPI·route·Production docs reference Eval
+- `docs/schemas/fullstack-materializer.schema.json`,
+  `scripts/{fullstack-materializer,materialize-fullstack,test-fullstack-materializer}.mjs`,
+  `evals/fixtures/fullstack-materializer/`, `scripts/bootstrap`: REQ-045 최초 full-stack transaction·rollback
 - `.ai/workflows/handoff.md`, `scripts/validate-handoff.mjs`, `scripts/test-handoff-validator.mjs`: 상단
   다음 작업과 하단 남은 작업의 안정적 ID 일치 및 완료 작업 잔존 차단
 
@@ -297,6 +344,24 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - current target/source drift·새 경로 collision·기존 동일 파일 rollback 보존: PASS
 - PR #13과 main Security run `29560757023`의 `security`·`license-provenance`: PASS
 - `v0.2.4-pilot` tag 대상 commit·GitHub asset digest·재다운로드 archive SHA-256 일치: PASS
+- REQ-019~024 complete/sorted ID, evidence path, unsafe `.env*`, token impact와 requirements 동기화
+  positive·negative fixture: PASS
+- docs Markdown 43개 local link와 요구사항에서 설계·운영 문서 36개 역참조 completeness: PASS
+- REQ-025 task schema, fixture hash·격리 복제·grader allowlist와 2-trial deterministic runner: PASS
+- 비용 0·token 0, latency·tool-call·diff 집계와 failed hard gate 비상쇄: PASS
+- unsafe path·`.env*`·network allow·model budget·임의 command·fixture drift negative: PASS
+- REQ-009~014 3개 언어 formatter·linter·typecheck와 web accessibility·backend N/A 계약: PASS
+- exact tool version·project-local executable·application cwd·check-only source 보존: PASS
+- linter non-zero fail-fast·version drift·source mutation·network-none 미증명 실행 차단: PASS
+- 세 adapter 공통 engineering·security·role·persona·HANDOFF·CodeSight·change-mode reference: PASS
+- Codex·Claude hook outcome과 Copilot validation/security fallback parity: PASS
+- 세 adapter 동시 materialization과 role·permission·hook·persona·target drift negative: PASS
+- FastAPI/OpenAPI compatible change·syntax·route inventory·Production-disabled docs profile: PASS
+- operation·response·component 삭제, required parameter·undocumented/stale route negative: PASS
+- Production docs 노출·Try it out·external asset·internal metadata negative: PASS
+- 최초 frontend·backend·shared·up/down migration artifact preview/apply/validate/rollback: PASS
+- 기존 파일 충돌 atomic 차단·preexisting identical 보존·부분 write 실패 transaction restore: PASS
+- DB execution: NOT-RUN, paired rollback artifact만 검증
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현

@@ -42,6 +42,10 @@ Add a missing readiness profile without overwriting existing policy:
   scripts/bootstrap readiness /absolute/path/to/project
 Create missing REQ-040/041/042 project profiles and print project-specific questions:
   scripts/bootstrap onboarding /absolute/path/to/project
+Preview/apply/validate/rollback an initial full-stack profile without executing DB SQL:
+  scripts/bootstrap fullstack preview TARGET PROFILE SOURCE
+  scripts/bootstrap fullstack apply TARGET PROFILE SOURCE --approve
+  scripts/bootstrap fullstack rollback TARGET PROFILE SOURCE --approve
 Preview selected AI adapters without changing the target:
   scripts/bootstrap adapters preview /absolute/path/to/project codex,claude-code,github-copilot
 Apply or uninstall reviewed adapters:
@@ -138,6 +142,18 @@ EOF
     TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
     node "$ROOT/scripts/materialize-project-onboarding.mjs" "$TARGET"
     ;;
+  fullstack)
+    ACTION=${2:-}
+    TARGET=${3:-}
+    PROFILE=${4:-}
+    SOURCE=${5:-}
+    APPROVAL=${6:-}
+    if [ -z "$ACTION" ] || [ -z "$TARGET" ] || [ -z "$PROFILE" ] || [ -z "$SOURCE" ]; then
+      echo "Full-stack materialization requires action, target, profile and source." >&2
+      exit 2
+    fi
+    node "$ROOT/scripts/materialize-fullstack.mjs" "$ACTION" "$TARGET" "$PROFILE" "$SOURCE" "$APPROVAL"
+    ;;
   adapters)
     ACTION=${2:-}
     TARGET=${3:-}
@@ -155,7 +171,7 @@ EOF
     fi
     ;;
   *)
-    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|fullstack ACTION TARGET PROFILE SOURCE [--approve]|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
     exit 2
     ;;
 esac

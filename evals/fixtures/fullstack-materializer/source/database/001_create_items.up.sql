@@ -1,0 +1,1 @@
+CREATE TABLE synthetic_items (id INTEGER PRIMARY KEY);

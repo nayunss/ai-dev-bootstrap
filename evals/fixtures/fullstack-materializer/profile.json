@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "mode": "initial-full-stack",
+  "roots": {
+    "frontend": "apps/frontend",
+    "backend": "apps/backend",
+    "shared": "shared",
+    "migrations": "database/migrations"
+  },
+  "files": [
+    {
+      "layer": "frontend",
+      "source": "frontend/app.txt",
+      "target": "apps/frontend/app.txt",
+      "sha256": "sha256:ca665002e9f37348ab74cf454af245ba4fe4b1e1c5b7c491da6ffedefab5cbbd"
+    },
+    {
+      "layer": "backend",
+      "source": "backend/app.txt",
+      "target": "apps/backend/app.txt",
+      "sha256": "sha256:2b4a6f398a423346033f5803b0d9a86b2fe5a0d71ee099a1041de822781736b1"
+    },
+    {
+      "layer": "shared",
+      "source": "shared/api.json",
+      "target": "shared/api.json",
+      "sha256": "sha256:623fb559218b9c23fe066bb6fe67bbb54e7a6b0ffdf90a9f04816e67f19d5d59"
+    },
+    {
+      "layer": "migration",
+      "source": "database/001_create_items.up.sql",
+      "target": "database/migrations/001_create_items.up.sql",
+      "sha256": "sha256:ccb7ae5e53c0544759fdded082ee0d0423c59f69ed582bdbd7a1b1bb176d88b8"
+    },
+    {
+      "layer": "migration",
+      "source": "database/001_create_items.down.sql",
+      "target": "database/migrations/001_create_items.down.sql",
+      "sha256": "sha256:3834faca63cdc73ce369b317890751879f5bbae8d6bce28be7c80d15a81c2013"
+    }
+  ],
+  "databaseMigrations": [
+    {
+      "id": "001_create_items",
+      "upTarget": "database/migrations/001_create_items.up.sql",
+      "rollbackTarget": "database/migrations/001_create_items.down.sql",
+      "execution": "artifact-only-not-authorized"
+    }
+  ],
+  "rollback": {
+    "applicationFiles": "transaction-record",
+    "database": "paired-artifact-no-execution"
+  }
+}

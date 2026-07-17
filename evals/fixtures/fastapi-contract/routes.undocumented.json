@@ -1,0 +1,10 @@
+{
+  "framework": "fastapi",
+  "routes": [
+    { "method": "GET", "path": "/health" },
+    { "method": "GET", "path": "/items" },
+    { "method": "POST", "path": "/items" },
+    { "method": "GET", "path": "/items/{item_id}" },
+    { "method": "DELETE", "path": "/admin/items/{item_id}" }
+  ]
+}

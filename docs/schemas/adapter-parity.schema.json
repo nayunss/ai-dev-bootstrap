@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/common-ai-development-harness/adapter-parity.schema.json",
+  "title": "Multi-tool adapter parity contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requiredAdapters", "commonContracts", "adapters"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "requiredAdapters": {
+      "const": ["claude-code", "codex", "github-copilot"]
+    },
+    "commonContracts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engineering", "security", "roles", "persona", "handoff", "context", "changeMode"],
+      "properties": {
+        "engineering": { "const": ".ai/standards/engineering.md" },
+        "security": { "const": ".ai/standards/security.md" },
+        "roles": { "const": "docs/agents.md" },
+        "persona": { "const": "docs/persona-and-role-guidelines.md" },
+        "handoff": { "const": "HANDOFF.md" },
+        "context": { "const": ".codesight/wiki/index.md" },
+        "changeMode": { "const": ".ai/workflows/change-mode.md" }
+      }
+    },
+    "adapters": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "entrypoint",
+          "roleExecution",
+          "permissionExpansion",
+          "hookCoverage",
+          "fallbackCommands"
+        ],
+        "properties": {
+          "id": { "enum": ["claude-code", "codex", "github-copilot"] },
+          "entrypoint": { "type": "string", "minLength": 1 },
+          "roleExecution": { "const": "sequential-baseline" },
+          "permissionExpansion": { "const": "forbidden" },
+          "hookCoverage": {
+            "enum": ["session-pre-post", "none-use-common-fallback"]
+          },
+          "fallbackCommands": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": ["scripts/validate .", "scripts/security-check changed"]
+            }
+          }
+        }
+      }
+    }
+  }
+}
