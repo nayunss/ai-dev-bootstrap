@@ -42,11 +42,11 @@ Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 \`g
 
 ### 공통 저장소에서 진행 가능
 
-1. 없음
+1. [작업:validator] 구현
 
 ### 외부 입력·실제 환경 대기
 
-1. [프로젝트 입력 대기] 없음
+번호 항목 없음
 
 ## 다음 시작점
 
@@ -103,7 +103,25 @@ assert.match(completedAsNext.stderr, /lists completed work as next work/);
 
 writeFileSync(
   join(fixture, "HANDOFF.md"),
-  validHandoff.replace("### 외부 입력·실제 환경 대기\n\n1. [프로젝트 입력 대기] 없음\n\n", ""),
+  validHandoff.replace("[작업:validator] 구현", "[작업:bootstrap] 구현"),
+);
+git("add", "HANDOFF.md");
+const completedInRemaining = validate("staged");
+assert.notEqual(completedInRemaining.status, 0);
+assert.match(completedInRemaining.stderr, /next-work metadata and remaining-work IDs differ|retains completed work/);
+
+writeFileSync(
+  join(fixture, "HANDOFF.md"),
+  validHandoff.replace("[작업:validator] 구현", "ID 없는 구현"),
+);
+git("add", "HANDOFF.md");
+const missingRemainingId = validate("staged");
+assert.notEqual(missingRemainingId.status, 0);
+assert.match(missingRemainingId.stderr, /must start with \[작업:<stable-ID>\]/);
+
+writeFileSync(
+  join(fixture, "HANDOFF.md"),
+  validHandoff.replace("### 외부 입력·실제 환경 대기\n\n번호 항목 없음\n\n", ""),
 );
 git("add", "HANDOFF.md");
 const unclassified = validate("staged");

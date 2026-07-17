@@ -23,7 +23,7 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 | Codex·Claude Code·GitHub Copilot 선택 adapter | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
 | downstream security tool 설치 | offline artifact·exact checksum·승인 apply·lock drift·보존 uninstall 구현 |
 | stack별 dependency bootstrap | npm·pnpm·Yarn·Maven·Gradle·Python application별 exact-version·고정 argv·lock drift·보존 uninstall reference 구현 |
-| upgrade diff·migration·rollback 자동화 | 목표 설계, 미구현 |
+| upgrade diff·migration·rollback 자동화 | manifest union diff·승인 apply·transaction restore·명시 rollback/finalize reference 구현 |
 
 미구현 항목은 실행 가능한 기능으로 완료 표시하지 않는다. 실제 환경 구축 단계에서 schema·generator·
 validator·migration과 clean clone Eval을 함께 구현한다.
@@ -72,6 +72,24 @@ node scripts/validate-upstream-lock.mjs .ai/manifests/upstream.lock.yaml TARGET
 
 generator는 명시적 inventory만 읽고 절대 경로·`..`·`.env*`를 차단한다. 실제 release 발행과 real
 downstream upgrade·rollback은 별도 외부 변경 승인 작업이다.
+
+### release upgrade·rollback 명령
+
+현재 target의 canonical lock과 이전·다음 release manifest/source를 모두 검증한 뒤 file inventory
+union으로 create·update·delete·preserve migration을 계산한다. 임의 migration shell은 실행하지 않는다.
+
+```sh
+node scripts/upgrade-core.mjs preview TARGET OLD_MANIFEST OLD_SOURCE NEW_MANIFEST NEW_SOURCE
+node scripts/upgrade-core.mjs apply TARGET OLD_MANIFEST OLD_SOURCE NEW_MANIFEST NEW_SOURCE --approve
+node scripts/upgrade-core.mjs rollback TARGET OLD_MANIFEST OLD_SOURCE NEW_MANIFEST NEW_SOURCE --approve
+node scripts/upgrade-core.mjs finalize TARGET OLD_MANIFEST OLD_SOURCE NEW_MANIFEST NEW_SOURCE --approve
+```
+
+apply는 현재 lock·target drift, 두 release source hash, repository 일치와 downstream-owned 새 경로
+충돌을 쓰기 전에 검사한다. transaction 쓰기 실패는 변경 파일과 lock을 이전 snapshot으로 복구한다.
+성공하면 `.ai/manifests/upstream-upgrade.rollback.json`을 남긴다. rollback은 이전 source를 다시 검증해
+update·delete를 복구하고 installer가 생성한 새 파일만 제거하며, 새 release 검증이 끝나면 finalize로
+record를 제거한다. 실제 downstream 실행과 upgrade commit은 별도 승인 대상이다.
 
 ## upstream.lock의 역할
 

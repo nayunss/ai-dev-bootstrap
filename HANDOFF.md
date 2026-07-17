@@ -1,10 +1,10 @@
 # Handoff
 
 갱신: 2026-07-17 Asia/Seoul
-상태: 설계 baseline 완료·실제 구현 전환
+상태: 설계 baseline 완료·공통 구현 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap
-다음 작업: release-upgrade-rollback-automation, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation
+다음 작업: release:v0.2.4-pilot, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
 
@@ -106,6 +106,11 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   npm·pnpm·Yarn·Maven·Gradle·Python으로 확장했다. exact adapter version·manifest·lockfile, 고정 argv,
   offline/network 승인 분리, output 충돌·ownership drift와 변경 output 보존 uninstall을 synthetic
   clean fixture로 검증했다.
+- downstream security installer는 PR #11, stack별 dependency bootstrap은 PR #12로 required
+  `security`·`license-provenance` checks를 통과해 `main`에 병합됐다.
+- REQ-042 release upgrade reference automation을 구현했다. 이전·다음 manifest union diff, 승인 apply,
+  transaction failure 원복, rollback record 무결성·소유권 보존 복구와 명시 finalize를 실제 downstream
+  write 없이 OS 임시 fixture에서 검증했다.
 
 ## 현재 상태
 
@@ -206,6 +211,13 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   adapter 계약, exact version·고정 argv·clean install·lock drift·보존 uninstall
 - `scripts/bootstrap`, `scripts/validate-downstream.mjs`, `scripts/test-downstream-validator.mjs`: project
   security tool preview/apply/validate/uninstall 진입점과 lock drift gate
+- `scripts/upgrade-core.mjs`, `scripts/validate-core-upgrade-record.mjs`,
+  `scripts/test-core-upgrade.mjs`: manifest union migration, atomic transaction restore, rollback/finalize와
+  downstream record drift 검증
+- `.ai/approvals/dependency-upgrades.json`, `package.json`, `package-lock.json`,
+  `docs/releases/v0.2.4-pilot.md`: 0.2.4 release metadata lock 승인과 migration·rollback·artifact 증적 준비
+- `.ai/workflows/handoff.md`, `scripts/validate-handoff.mjs`, `scripts/test-handoff-validator.mjs`: 상단
+  다음 작업과 하단 남은 작업의 안정적 ID 일치 및 완료 작업 잔존 차단
 
 ## 검증
 
@@ -273,6 +285,12 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - security tool preview 무변경·network deny·exact version/URL/checksum 공개: PASS
 - offline apply checksum·기존 binary atomic 충돌·미승인 apply/uninstall negative: PASS
 - installed/catalog/platform drift·변경 binary 보존 uninstall·downstream enforcement: PASS
+- npm·pnpm·Yarn·Maven·Gradle·Python application별 exact version·고정 cwd/argv clean install: PASS
+- dependency profile·lock·ownership drift, 미승인 apply와 기존·변경 output 보존 uninstall: PASS
+- PR #11·#12 hosted `security`·`license-provenance` required checks와 main 병합: PASS
+- core upgrade create·update·delete·unchanged·preexisting-identical union diff와 미승인 apply: PASS
+- apply·rollback·finalize, transaction write failure 원복과 rollback record 변조 차단: PASS
+- current target/source drift·새 경로 collision·기존 동일 파일 rollback 보존: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
@@ -281,18 +299,19 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ### 공통 저장소에서 진행 가능
 
-1. REQ-026·033 stack별 dependency bootstrap을 npm·pnpm root 제한에서 확장할 adapter 계약과
-   clean install·uninstall fixture로 구현한다.
+1. [작업:release:v0.2.4-pilot] 구현 PR의 required checks와 병합을 확인한 뒤 merge commit의 tracked
+   archive checksum을 검증하고 prerelease를 발행한다. 게시 asset 재다운로드와 증적 문서 현행화까지
+   완료 조건이다.
 
 ### 외부 입력·실제 환경 대기
 
-1. [사람 참여 대기] REQ-046은 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
+1. [작업:REQ-046] [사람 참여 대기] 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
    결과가 제출되면 취합한다. synthetic 결과만으로 완료하지 않는다.
-2. [프로젝트 입력·실제 환경 대기] REQ-040은 downstream owner의 법률·retention evidence, 실제
+2. [작업:REQ-040-owner-evidence] [프로젝트 입력·실제 환경 대기] downstream owner의 법률·retention evidence, 실제
    multi-instance bypass test와 provider restore rehearsal이 제공될 때만 schema v2를 READY로 승인한다.
-3. [프로젝트 입력·외부 변경 승인 대기] REQ-041은 project별 exact model·harness·비용·network·reviewer와
+3. [작업:REQ-041-live-trial-release] [프로젝트 입력·외부 변경 승인 대기] project별 exact model·harness·비용·network·reviewer와
    candidate가 정해지고 호출 승인을 받은 뒤 비결정 trial·사람 승인 held-out test·release를 수행한다.
-4. [외부 변경 승인·실제 환경 대기] REQ-042는 release version과 manifest 발행 승인, 실제 downstream
+4. [작업:REQ-042-release-core-adoption] [외부 변경 승인·실제 환경 대기] release version과 manifest 발행 승인, 실제 downstream
    대상이 정해진 뒤 upgrade·rollback을 수행한다.
 
 ## 위험·주의
@@ -312,5 +331,6 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 2. 실제 프로젝트 경로에서 `git status --short --branch`와 `git rev-parse HEAD`를 확인한다.
 3. 사용자 JPEG가 untracked 상태로 보존되는지 확인하고, 원격 비교가 필요하면 `git fetch` 후
    remote-tracking reference와 대조한다.
-4. `docs/ai-generated-code-license-provenance.md`의 조건부 CI 계약과 hosted PASS를 읽고 GitHub API에서
-   `main`의 두 required checks와 strict·관리자 적용 상태가 유지되는지 확인한다.
+4. 다음 요청이 외부 대기 작업 중 하나라면 해당 작업 ID의 필요한 project·사람·release 입력과 승인
+   범위를 먼저 확인한다. 새 공통 작업은 요구사항·설계와 실제 구현 상태를 대조한 뒤 안정적 작업 ID로
+   HANDOFF에 추가한다.

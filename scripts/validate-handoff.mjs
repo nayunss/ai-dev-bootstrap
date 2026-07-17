@@ -73,6 +73,23 @@ const staleNextTasks = [...completedTasks].filter((task) => nextTasks.has(task))
 if (staleNextTasks.length > 0) {
   throw new Error(`HANDOFF.md lists completed work as next work: ${staleNextTasks.join(", ")}`);
 }
+const remainingStart = content.indexOf("## 남은 작업\n");
+const remainingEnd = content.indexOf("\n## ", remainingStart + 1);
+const remaining = content.slice(remainingStart, remainingEnd < 0 ? content.length : remainingEnd);
+const remainingTaskIds = new Set([...remaining.matchAll(/^\d+\.\s+\[작업:([A-Za-z0-9:._-]+)\]/gm)].map((match) => match[1]));
+const numberedRemaining = [...remaining.matchAll(/^\d+\.\s+/gm)].length;
+if (remainingTaskIds.size !== numberedRemaining) {
+  throw new Error("Every numbered HANDOFF.md remaining-work item must start with [작업:<stable-ID>].");
+}
+const missingRemaining = [...nextTasks].filter((task) => !remainingTaskIds.has(task));
+const unexpectedRemaining = [...remainingTaskIds].filter((task) => !nextTasks.has(task));
+if (missingRemaining.length || unexpectedRemaining.length) {
+  throw new Error(`HANDOFF.md next-work metadata and remaining-work IDs differ: missing=${missingRemaining.join(",") || "none"} unexpected=${unexpectedRemaining.join(",") || "none"}`);
+}
+const completedRemaining = [...completedTasks].filter((task) => remainingTaskIds.has(task));
+if (completedRemaining.length) {
+  throw new Error(`HANDOFF.md retains completed work in remaining work: ${completedRemaining.join(", ")}`);
+}
 
 const files = changedFiles();
 const taskChanged = files.some((file) => !ignored(file));

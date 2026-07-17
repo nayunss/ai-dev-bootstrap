@@ -1,6 +1,6 @@
 {
   "name": "common-ai-development-harness",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "packageManager": "npm@10.9.8",
   "engines": {
@@ -19,6 +19,7 @@
     "test:downstream-validator": "node scripts/test-downstream-validator.mjs",
     "test:adapter-manager": "node scripts/test-adapter-manager.mjs",
     "test:core-materializer": "node scripts/test-core-materializer.mjs",
+    "test:core-upgrade": "node scripts/test-core-upgrade.mjs",
     "test:upstream-lock": "node scripts/test-upstream-lock.mjs",
     "test:security-tool-manager": "node scripts/test-security-tool-manager.mjs",
     "test:dependency-bootstrap": "node scripts/test-dependency-bootstrap.mjs",

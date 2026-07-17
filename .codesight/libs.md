@@ -7,6 +7,7 @@
   - function validatePilotCampaign: (campaign) => void
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
+- `scripts/upgrade-core.mjs` — function applyFileTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
 - `scripts/upstream-lock.mjs`
   - function sha256: (value) => void
   - function safeRelativePath: (path) => void
