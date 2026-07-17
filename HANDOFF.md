@@ -1,7 +1,7 @@
 # Handoff
 
 갱신: 2026-07-17 Asia/Seoul
-상태: 설계 baseline 완료·공통 구현 진행 중
+상태: v0.2.5-pilot 발행 준비·공통 구현 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
 완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer
 다음 작업: REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
@@ -136,6 +136,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   부분 실패 원복·보존 rollback을 구현했다. DB SQL은 실행하지 않고 `NOT-RUN`으로 유지한다.
 - 위 공통 구현 묶음의 요구사항 추적 표·설계 감사·운영 및 Eval 문서를 구현 증거와 일치하도록
   현행화했다. reference·synthetic PASS와 실제 downstream·model·DB 검증 상태는 계속 분리한다.
+- 위 변경을 `v0.2.5-pilot` 후보로 묶고 package·lock root version `0.2.5`, 만료가 있는 lock metadata
+  승인과 migration·rollback release note를 준비했다. tag·archive checksum·게시 재검증 전에는
+  `발행 완료`로 해석하지 않는다.
 
 ## 현재 상태
 
@@ -144,7 +147,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 로컬 branch·HEAD는 상단 명령으로 확인한다. 원격 상태가 필요한 작업만 fetch 후 remote-tracking
   reference와 대조하며 fetch 전 `origin/*`을 최신 원격 상태로 간주하지 않는다.
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`
-- 최신 발행 baseline은 `v0.2.4-pilot`이며 발행·checksum 증적은
+- 최신 발행 baseline은 아직 `v0.2.4-pilot`이며 발행·checksum 증적은
   `docs/releases/v0.2.4-pilot.md`에 기록돼 있다.
 - `KakaoTalk_Photo_2026-07-12-11-38-40.jpeg`는 사용자가 Git에 올리지 않는 로컬 파일이다. 수정·이동·
   삭제·stage하지 않고 untracked 상태로 보존한다.

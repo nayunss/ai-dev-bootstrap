@@ -38,6 +38,25 @@
       "approvedAt": "2026-07-17",
       "expiresAt": "2026-07-18",
       "status": "approved"
+    },
+    {
+      "id": "REL-LOCK-2026-07-17-002",
+      "package": "__lockfile__",
+      "manifest": "package-lock.json",
+      "from": "sha256:69178c1620c6018d74ca822dce093e9c89e5f91262362c577c25193b6b7e82fb",
+      "to": "sha256:b679ed5298f8c15684a31e8ee3ae0f8b9aa09d2f78e41c0bf96cae35f16b4dc4",
+      "reason": "Synchronize root release metadata from 0.2.4 to 0.2.5; dependency graph, resolved URLs and integrity values are unchanged",
+      "migration": "No dependency migration; downstream v0.2.5-pilot adoption remains explicit and checksum-pinned",
+      "validation": [
+        "package and lock root versions match 0.2.5",
+        "npm audit reports zero vulnerabilities",
+        "dependency approval, deterministic regressions and hosted required checks pass"
+      ],
+      "rollback": "Revert the v0.2.5-pilot release preparation commit and return to v0.2.4-pilot",
+      "approvedBy": "repository owner via explicit release request",
+      "approvedAt": "2026-07-17",
+      "expiresAt": "2026-07-18",
+      "status": "approved"
     }
   ]
 }

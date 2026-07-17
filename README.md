@@ -70,9 +70,12 @@ REQ-001~046의 **설계 명세 baseline은 완료**됐으며
 script·validator·fixture는 설계의 실행 가능성과 누락을 검증한 reference automation이며, 최종 실제
 환경 구현이나 모든 stack 지원이 완료됐다는 뜻은 아니다.
 
-현재 단계는 검증된 design/reference baseline에서 실제 공통 환경 구현으로 전환하는 시점이다.
-구현 중 발견한 실패는 요구사항·설계·Eval에 환류하고 검증하지 않은 범위를 완료나 지원으로 표시하지
-않는다. 특정 pilot 기술 조합도 실제 환경의 공통 기본값으로 확정하지 않는다.
+현재 단계는 검증된 design/reference baseline을 공통 환경 구현으로 확장하는 단계다.
+`v0.2.5-pilot` 후보에는 deterministic capability runner, JavaScript·Java·Python 품질 adapter,
+Codex·Claude Code·GitHub Copilot parity Eval, FastAPI contract adapter와 최초 full-stack
+materializer reference가 포함된다. 구현 중 발견한 실패는 요구사항·설계·Eval에 환류하고 검증하지
+않은 범위를 완료나 지원으로 표시하지 않는다. 특정 pilot 기술 조합도 실제 환경의 공통 기본값으로
+확정하지 않는다.
 한 명 또는 여러 사람이 검증에 참여할 때는
 [Downstream Pilot 검증 가이드](docs/distributed-pilot-testing-guide.md)에 따라 upstream SHA, 독립 downstream,
 격리 자원, AI provider·tool·model·mode provenance와 공통 결과 형식을 사용한다.
@@ -90,20 +93,22 @@ full-stack 한 건**이다. full-stack pilot은 backend-only로 시작한 뒤 fr
 |---|---|
 | 프론트엔드 | Next.js·TypeScript·pnpm·Zustand·SCSS Modules·Vitest·Playwright·GitHub Actions·Vercel로 bootstrap, 보안·품질·E2E, Preview와 Production 검증 완료 |
 | 백엔드 | Spring Boot 4.1.0·Java 21·Maven·PostgreSQL·Flyway·JWT·Testcontainers·SpringDoc 3·GitHub Actions·Railway 조합에서 compile, unit·integration, BOLA 회귀, 단일-instance rate limit, 보안 log redaction·correlation, 격리 logical restore, readiness fixture와 OpenAPI contract·breaking fixture·production docs 404를 검증. 실제 retention·법률 검토·Production provider restore와 다른 backend stack adapter는 미검증 |
-| 풀스택 | Spring Boot backend에 Next.js frontend와 BFF를 증분 추가해 application별 CI, 3-browser·mobile E2E, Railway private network, 같은 PR environment의 frontend·backend·PostgreSQL 격리 CRUD, BFF rate-limit·correlation header 계약과 application revert rollback을 검증. 최초 full-stack 일괄 materialize, 다중-instance rate limit과 DB migration/provider restore rollback은 미완료 |
+| 풀스택 | Spring Boot backend에 Next.js frontend와 BFF를 증분 추가해 application별 CI, 3-browser·mobile E2E, Railway private network, 같은 PR environment의 frontend·backend·PostgreSQL 격리 CRUD, BFF rate-limit·correlation header 계약과 application revert rollback을 검증. 최초 frontend·backend·shared 일괄 materialize와 부분 filesystem 실패 원복·paired DB rollback artifact 계약은 synthetic reference Eval을 통과했지만 실제 DB migration write·rollback, 다중-instance rate limit과 provider restore는 미검증 |
 
 요구사항은 대부분 공통·언어 중립으로 작성됐지만 검증 근거는 위 두 조합에 한정된다. frontend
 pilot의 발견 사항은 `REQ-033`~`REQ-036`에, backend→full-stack pilot의 발견 사항은 `REQ-045`와 관련
 문서에 환류했다. pilot 성공은 공통 bootstrap·validator가 모든 stack과 전환 경로를 지원한다는 뜻이
-아니다. 지원 완료로 표시하려면 최초 full-stack 일괄 구성, 재귀 application inventory,
-CodeSight·hook·CI drift의 positive·negative Eval과 추가 stack 호환성 검증이 필요하다.
+아니다. 최초 full-stack 일괄 구성과 재귀 application inventory의 reference Eval은 구현됐지만,
+지원 완료로 표시하려면 실제 downstream에서 CodeSight·hook·CI drift, DB migration rollback과 추가
+stack 호환성을 검증해야 한다.
 
 Frontend·backend·fullstack 스펙은 프로젝트마다 사용자가 정의한다. 기본 질문에 없는 언어,
 framework, database, infrastructure와 품질 도구도 개발환경 프로파일에 추가할 수 있으며, upstream은
 감지·질문·공급망 심사·설치 승인·검증 adapter를 통해 적용한다. 문서의 특정 기술 조합은 검증 사례나
 예시일 뿐 자동 설치 기본값이 아니다.
 
-설계 문서와 요구사항은 [`docs/`](docs/README.md)에서 관리합니다.
+설계 문서와 요구사항은 [`docs/`](docs/README.md)에서 관리하며, 현재 release 후보의 migration·rollback
+범위는 [`v0.2.5-pilot release note`](docs/releases/v0.2.5-pilot.md)에 기록합니다.
 
 ## 문서 원칙
 
