@@ -321,6 +321,17 @@ if (existsSync(join(root, ".ai/manifests/security-tools.lock.json"))) {
     if (securityTools.status !== 0) errors.push(securityTools.stderr.trim() || "security tool hash validation failed");
   }
 }
+if (existsSync(join(root, ".ai/manifests/dependency-bootstrap.lock.json"))) {
+  if (!existsSync(join(root, "scripts/manage-dependencies.mjs"))) {
+    errors.push("dependency bootstrap lock requires scripts/manage-dependencies.mjs");
+  } else {
+    const dependencies = spawnSync(process.execPath, ["scripts/manage-dependencies.mjs", "validate", root], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    if (dependencies.status !== 0) errors.push(dependencies.stderr.trim() || "dependency bootstrap validation failed");
+  }
+}
 
 for (const note of notes) process.stdout.write(`NOTE: ${note}\n`);
 if (errors.length) {

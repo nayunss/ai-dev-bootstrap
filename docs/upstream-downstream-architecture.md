@@ -22,7 +22,7 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 | 공통 코어 materialization | canonical YAML lock을 생성하는 preview·승인 apply·충돌·source/target drift 구현 |
 | Codex·Claude Code·GitHub Copilot 선택 adapter | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
 | downstream security tool 설치 | offline artifact·exact checksum·승인 apply·lock drift·보존 uninstall 구현 |
-| stack별 dependency bootstrap | npm·pnpm root 경로만 부분 구현 |
+| stack별 dependency bootstrap | npm·pnpm·Yarn·Maven·Gradle·Python application별 exact-version·고정 argv·lock drift·보존 uninstall reference 구현 |
 | upgrade diff·migration·rollback 자동화 | 목표 설계, 미구현 |
 
 미구현 항목은 실행 가능한 기능으로 완료 표시하지 않는다. 실제 환경 구축 단계에서 schema·generator·

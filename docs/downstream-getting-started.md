@@ -73,18 +73,24 @@ installer는 구현돼 있다.
 scripts/bootstrap security-tools preview /absolute/path/to/project
 scripts/bootstrap security-tools apply /absolute/path/to/project /approved/artifacts --approve
 scripts/bootstrap security-tools validate /absolute/path/to/project
-scripts/bootstrap dependencies /absolute/path/to/project --allow-network
+scripts/bootstrap dependencies preview /absolute/path/to/project
+scripts/bootstrap dependencies apply /absolute/path/to/project --offline --approve
+scripts/bootstrap dependencies validate /absolute/path/to/project
+scripts/bootstrap dependencies uninstall /absolute/path/to/project --approve
 ```
 
 - target 없는 `scripts/bootstrap security-tools`는 backward-compatible upstream 설치 명령이다.
   target을 지정한 preview/apply/validate/uninstall은 downstream `.tools/security/`만 사용한다.
   installer network는 deny이며 별도 승인으로 확보한 artifact만 exact checksum 검증 후 적용한다.
-- `dependencies`는 현재 root `package.json`의 exact npm 또는 pnpm 경로만 지원한다. Maven·Gradle·Python
-  등 backend stack은 개발환경 문서에 승인한 stack-native wrapper·lock·verification 명령을 별도로
-  사용하며, 이 명령이 지원하는 것처럼 기록하지 않는다.
-- dependency 설치는 network가 필요하므로 preview 후 명시적 `--allow-network` 승인이 필요하다.
-- 설치는 정확한 package manager 버전, lockfile, `--ignore-scripts`, strict peer mode를 강제한다.
-  pnpm은 project-local Node·pnpm(`.tools/`)이 있어야 하며 Corepack fallback은 금지다.
+- project의 `.ai/manifests/dependency-bootstrap.json`은 application별 root, npm·pnpm·Yarn·Maven·
+  Gradle·Python adapter, exact version, manifest와 lockfile을 선언한다. 임의 shell command는 계약에
+  넣을 수 없다.
+- apply는 `--offline` 또는 별도 network 승인인 `--allow-network` 중 하나와 `--approve`를 모두
+  요구한다. npm 외 adapter runtime은 심사를 마친 project-local `.tools/` 경로만 사용한다.
+- Node adapter는 lifecycle/build script를 차단한다. Python은 hash lock·no-deps·binary-only를
+  강제하고, Maven·Gradle은 daemon·대화형 동작을 제한한 고정 argv만 실행한다.
+- apply 전에 모든 adapter version과 기존 output 충돌을 일괄 검사한다. 결과 lock과 ownership marker가
+  drift하면 validate가 실패하며 uninstall은 marker가 변경된 output을 보존한다.
 - 새 skill·plugin·scanner는 설치 전 [공급망 보안](supply-chain-security.md) 심사를 거친다.
 
 ### 5. 검증
@@ -161,7 +167,7 @@ inventory drift와 별도 승인이
 ```text
 bootstrap preview 결과를 검토했습니다. 다음을 승인합니다.
 - upstream clone에 scripts/bootstrap security-tools 실행
-- 대상이 npm/pnpm root application인 경우에만 scripts/bootstrap dependencies <절대 경로> --allow-network 실행
+- 검토한 dependency bootstrap profile에 대해 scripts/bootstrap dependencies apply <절대 경로> --offline --approve 실행
 lockfile에 없는 package 추가나 버전 변경은 별도 승인 전에 하지 마.
 ```
 

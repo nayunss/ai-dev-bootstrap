@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { serializeUpstreamLock, sha256 } from "./upstream-lock.mjs";
@@ -51,6 +51,41 @@ function validate() {
   });
 }
 
+const dependencyValid = validate();
+assert.equal(dependencyValid.status, 0, dependencyValid.stderr);
+
+const dependencyProfile = {
+  schemaVersion: 1,
+  applications: [
+    { id: "root", root: ".", adapter: "pnpm", version: "11.11.0", manifest: "package.json", lockfile: "pnpm-lock.yaml" },
+  ],
+};
+const dependencyProfileBytes = Buffer.from(`${JSON.stringify(dependencyProfile, null, 2)}\n`);
+const dependencyProfileSha = sha256(dependencyProfileBytes).replace("sha256:", "");
+writeFileSync(join(fixture, ".ai/manifests/dependency-bootstrap.json"), dependencyProfileBytes);
+mkdirSync(join(fixture, ".tools/node/bin"), { recursive: true });
+mkdirSync(join(fixture, ".tools/pnpm/package/bin"), { recursive: true });
+writeFileSync(join(fixture, ".tools/node/bin/node"), "#!/bin/sh\nif [ \"$2\" = \"--version\" ]; then echo 11.11.0; fi\n");
+chmodSync(join(fixture, ".tools/node/bin/node"), 0o755);
+writeFileSync(join(fixture, ".tools/pnpm/package/bin/pnpm.cjs"), "fixture\n");
+mkdirSync(join(fixture, "node_modules"), { recursive: true });
+const dependencyMarkerSha = sha256(Buffer.from(`root\n${dependencyProfileSha}\n`)).replace("sha256:", "");
+writeFileSync(join(fixture, "node_modules/.dependency-bootstrap-owner.json"), `${dependencyMarkerSha}\n`);
+writeFileSync(join(fixture, ".ai/manifests/dependency-bootstrap.lock.json"), `${JSON.stringify({
+  schemaVersion: 1,
+  profileSha256: dependencyProfileSha,
+  network: "denied-offline",
+  applications: [
+    { id: "root", root: ".", adapter: "pnpm", output: "node_modules", created: true, markerSha256: dependencyMarkerSha },
+  ],
+}, null, 2)}\n`);
+const dependencyRestored = validate();
+assert.equal(dependencyRestored.status, 0, dependencyRestored.stderr);
+writeFileSync(join(fixture, "node_modules/.dependency-bootstrap-owner.json"), "drift\n");
+const dependencyDrift = validate();
+assert.notEqual(dependencyDrift.status, 0);
+assert.match(dependencyDrift.stderr, /Dependency bootstrap output ownership drift/);
+writeFileSync(join(fixture, "node_modules/.dependency-bootstrap-owner.json"), `${dependencyMarkerSha}\n`);
 assert.equal(validate().status, 0);
 
 const toolPlatform = process.platform === "darwin" && process.arch === "arm64"

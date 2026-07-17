@@ -3,8 +3,8 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 설계 baseline 완료·실제 구현 전환
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer
-다음 작업: stack-dependency-bootstrap, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap
+다음 작업: release-upgrade-rollback-automation, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
 
@@ -102,6 +102,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-026·033 actual implementation으로 Gitleaks·Opengrep 승인 artifact의 downstream project-local
   offline installer를 구현했다. preview는 exact URL/version/checksum을 공개하고 apply/uninstall은
   `--approve`, checksum·collision·lock drift와 생성 소유권을 fail-closed한다.
+- REQ-026·033 stack별 dependency bootstrap 계약을 npm·pnpm root 제한에서 application별
+  npm·pnpm·Yarn·Maven·Gradle·Python으로 확장했다. exact adapter version·manifest·lockfile, 고정 argv,
+  offline/network 승인 분리, output 충돌·ownership drift와 변경 output 보존 uninstall을 synthetic
+  clean fixture로 검증했다.
 
 ## 현재 상태
 
@@ -197,6 +201,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   deterministic·unsafe inventory·manifest mismatch·target drift regression
 - `.ai/manifests/security-tool-assets.json`, `scripts/manage-security-tools.mjs`,
   `scripts/test-security-tool-manager.mjs`: reviewed catalog 연결, offline artifact install·lock·보존 제거
+- `docs/schemas/dependency-bootstrap.schema.json`, `docs/templates/dependency-bootstrap.json`,
+  `scripts/manage-dependencies.mjs`, `scripts/test-dependency-bootstrap.mjs`: application별 6종 dependency
+  adapter 계약, exact version·고정 argv·clean install·lock drift·보존 uninstall
 - `scripts/bootstrap`, `scripts/validate-downstream.mjs`, `scripts/test-downstream-validator.mjs`: project
   security tool preview/apply/validate/uninstall 진입점과 lock drift gate
 
