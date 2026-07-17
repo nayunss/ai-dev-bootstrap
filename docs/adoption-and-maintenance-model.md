@@ -1,6 +1,6 @@
 # 유지보수와 도입 모델
 
-상태: 제안
+상태: 설계 승인
 
 ## 두 가지 사용 경로
 
@@ -20,14 +20,13 @@ platform owner/adopter → application developer + AI tools
 
 ## 현재 프로젝트 단계와 실제 구현 전환
 
-현재 common-project는 공통 환경의 요구사항·설계를 작성하고 downstream pilot으로 반증하는 단계다.
-저장소의 bootstrap·validator·fixture는 이 단계에서 설계 누락과 호환성 문제를 발견하는 reference
+REQ-001~046 설계 명세는 `DESIGN-BASELINE-2026-07-17`로 완료됐고 실제 공통 환경 구현 단계로
+전환한다. 저장소의 기존 bootstrap·validator·fixture는 설계 누락과 호환성 문제를 발견한 reference
 automation이며, 목표 환경 전체가 실제로 구현됐다는 표시는 아니다.
 
-실제 공통 환경 구현은 핵심 요구사항과 pilot gate가 합의된 뒤 별도 단계로 시작한다. 구현 시점에는
-`docs/requirements.md`와 `docs/`의 현행 문서를 입력 계약이자 source of truth로 사용한다. 전환 전에는
-pilot 결과를 요구사항·설계·Eval·HANDOFF에 환류하고, 미검증 항목을 구현 완료나 지원 완료로 승격하지
-않는다. pilot의 특정 stack은 검증 사례이며 사용자 선택 전 공통 기본값이 아니다.
+구현은 `docs/requirements.md`와 `docs/design-completion-audit.md`를 입력 계약으로 사용한다. 구현 중
+pilot 결과를 요구사항·설계·Eval·HANDOFF에 계속 환류하고, 미검증 항목을 구현 완료나 지원 완료로
+승격하지 않는다. pilot의 특정 stack은 검증 사례이며 사용자 선택 전 공통 기본값이 아니다.
 
 ## 1. Upstream maintenance
 

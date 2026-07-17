@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "status": "TBD",
+  "projectScope": "TBD",
+  "upstream": {
+    "repository": "TBD",
+    "release": "TBD",
+    "commit": "TBD",
+    "archiveSha256": "TBD",
+    "manifestReference": "TBD"
+  },
+  "target": {
+    "repository": "TBD",
+    "profile": "TBD",
+    "coreLockPath": ".ai/manifests/upstream.lock.yaml"
+  },
+  "migration": {
+    "fromSchemaVersion": "TBD",
+    "toSchemaVersion": "TBD",
+    "previewReference": "TBD",
+    "compatibilityEvidenceReference": "TBD"
+  },
+  "rollback": {
+    "strategy": "revert-adoption-commit",
+    "previousLockReference": "TBD",
+    "validationCommand": "TBD"
+  },
+  "approval": {
+    "status": "pending",
+    "approver": "TBD",
+    "approvedAt": "TBD",
+    "evidenceReference": "TBD"
+  }
+}

@@ -10,7 +10,7 @@ import {
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const generatorVersion = "1.0.0";
+const generatorVersion = "1.1.0";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceRootArgument = process.argv.find((argument) => argument.startsWith("--source-root="));
 const sourceRoot = resolve(sourceRootArgument?.slice("--source-root=".length) || join(root, "adapters"));
@@ -18,6 +18,7 @@ const lockPath = ".ai/manifests/adapters.lock.json";
 const definitions = {
   codex: ["AGENTS.md", ".codex/hooks.json"],
   "claude-code": ["CLAUDE.md", ".claude/settings.json"],
+  "github-copilot": [".github/copilot-instructions.md"],
 };
 
 function fail(message, code = 1) {
@@ -46,7 +47,7 @@ function content(path) {
 
 function selected(value) {
   const names = [...new Set(String(value || "").split(",").map((item) => item.trim()).filter(Boolean))].sort();
-  if (names.length === 0) fail("At least one adapter is required: codex,claude-code", 2);
+  if (names.length === 0) fail("At least one adapter is required: codex,claude-code,github-copilot", 2);
   for (const name of names) if (!definitions[name]) fail(`Unsupported adapter: ${name}`, 2);
   return names;
 }
@@ -189,7 +190,7 @@ function uninstall(target, names, approved) {
 }
 
 const [mode = "preview", targetValue, selectionValue, approval] = process.argv.slice(2);
-if (!targetValue) fail("Usage: manage-adapters.mjs <preview|apply|validate|uninstall> TARGET [codex,claude-code] [--approve]", 2);
+if (!targetValue) fail("Usage: manage-adapters.mjs <preview|apply|validate|uninstall> TARGET [codex,claude-code,github-copilot] [--approve]", 2);
 const target = resolve(targetValue);
 if (!existsSync(target)) fail(`Target does not exist: ${target}`);
 

@@ -1,11 +1,11 @@
 # Downstream 시작 가이드
 
-상태: 제안
+상태: 설계 승인
 
 이 저장소를 clone한 뒤 회사·팀·개인 프로젝트에 공통 환경을 적용하는 **목표 절차**다. 현재
-common-project는 설계·downstream pilot 검증 단계이며, 범용 materialization·`upstream.lock`
-validator·stack별 bootstrap은 아직 완성되지 않았다. 따라서 지금은 이 문서를 pilot 검증 순서로
-사용하고, 실제 환경 구축 단계에서는 구현 완료된 명령만 실행 가이드로 승격한다.
+common-project의 설계 명세 baseline은 완료됐고 실제 구현 단계로 전환했다. 범용 materialization·
+`upstream.lock` validator·stack별 bootstrap은 아직 완성되지 않았으므로 구현 완료된 명령만 실행
+가이드로 사용한다.
 
 역할·책임과 업데이트 흐름의 상세는 [유지보수와 도입 모델](adoption-and-maintenance-model.md)을,
 단계별 세부 규칙은 각 단계에 연결된 문서를 따른다. 이 가이드는 순서만 정의하고 규칙을
@@ -52,6 +52,17 @@ downstream 진단 증거가 되지 않는다.
 - 언어·framework·database·배포 provider는 고정 기본값이 없다. 문서의 Next.js·Spring Boot
   조합은 검증된 pilot 사례일 뿐이다. 실제 검증 범위는 README의 현재 상태 절을 본다.
 - 모든 버전은 `latest`가 아니라 정확한 버전으로 고정한다. peer 호환 범위를 함께 계산한다.
+- 초기 설정과 기존 project retrofit 모두 다음 명령으로 REQ-040·041·042의 누락 profile과
+  프로젝트별 질문을 준비한다. 기존 profile은 덮어쓰지 않는다.
+
+```sh
+scripts/bootstrap onboarding /absolute/path/to/downstream
+```
+
+생성되는 `docs/production-readiness.json`, `docs/skill-evolution-trial.json`,
+`docs/upstream-adoption.json`의 `TBD`·`pending`은 의도적인 blocker다. 각 project owner가 실제
+책임자·evidence·model/harness·비용/network·reviewer·release/checksum·rollback을 결정하기 전에는
+Production, 외부 model 호출이나 upstream release 적용을 승인하지 않는다.
 
 ### 4. 보안 도구와 dependency 설치
 
@@ -186,7 +197,7 @@ Downstream adoption 완료 조건을 그대로 적용한다. 요약하면: clean
 더해 [피드백 기록 계약](upstream-feedback-log.md)에 따른 upstream 수정 필요 사항 기록이
 있어야 한다(발견 0건 완주 제외).
 
-Pilot의 설계 완료 판정은 별도다. 참여 maintainer를 포함해 등록된 모든 tester의 배정 필수 항목이
+Pilot의 설계 검증 완료 판정은 별도다. 참여 maintainer를 포함해 등록된 모든 tester의 배정 필수 항목이
 전부 `PASS`여야 하며 `FAIL`, `BLOCKED`, `NOT-RUN`, 증거 누락 또는 미검증이 하나라도 있으면 진행 중이다.
 
 ## 자주 하는 실수

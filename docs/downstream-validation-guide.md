@@ -1,6 +1,6 @@
 # Downstream 검증 가이드
 
-상태: 제안
+상태: 설계 승인
 
 단독 maintainer 또는 독립 tester가 downstream 도입을 처음부터 수행해, 공통 환경이 저장소의 문서와
 승인된 자동화만으로 동작하는지 검증하는 절차다. upstream을 만들지 않은 tester의 blind onboarding은
@@ -90,7 +90,7 @@ gate는 통과가 아니라 **차단**이 정상 동작인 경우가 있다. 실
 finding은 gate 결과와 별도로 기록한다. 문서 격차가 있어도 필수 outcome과 증거가 충족되면 해당 gate는
 PASS일 수 있지만, 필수 동작을 우회했거나 증거가 없으면 PASS로 낮추지 않는다.
 
-설계 완료는 참여 maintainer를 포함한 등록된 모든 tester의 배정 필수 항목이 전부 PASS인 경우뿐이다.
+설계 검증 완료는 참여 maintainer를 포함한 등록된 모든 tester의 배정 필수 항목이 전부 PASS인 경우뿐이다.
 FAIL·BLOCKED·NOT-RUN·증거 누락·미검증이 하나라도 있으면 진행 중이며 일부 성공이나 다수결로 대체하지
 않는다. 발견 0건을 포함해 `docs/upstream-feedback.md`에 결과를 명시한다.
 

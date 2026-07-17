@@ -36,7 +36,7 @@ assert.equal(existsSync(join(selectedTarget, "AGENTS.md")), true);
 assert.equal(existsSync(join(selectedTarget, ".codex/hooks.json")), true);
 assert.equal(existsSync(join(selectedTarget, "CLAUDE.md")), false);
 const lock = JSON.parse(readFileSync(join(selectedTarget, ".ai/manifests/adapters.lock.json"), "utf8"));
-assert.equal(lock.generatorVersion, "1.0.0");
+assert.equal(lock.generatorVersion, "1.1.0");
 assert.deepEqual(lock.adapters.map((adapter) => adapter.name), ["codex"]);
 assert.match(lock.adapters[0].sourceHash, /^sha256:[a-f0-9]{64}$/);
 assert.equal(lock.adapters[0].files.every((file) => /^sha256:[a-f0-9]{64}$/.test(file.targetSha256)), true);
@@ -89,5 +89,18 @@ result = spawnSync(process.execPath, [manager, "validate", sourceDriftTarget, `-
 });
 assert.equal(result.status, 1);
 assert.match(result.stderr, /source drift: codex/);
+
+const copilotTarget = fixture("github-copilot");
+result = run(copilotTarget, "preview", copilotTarget, "github-copilot");
+assert.equal(result.status, 0);
+assert.match(result.stdout, /create: \.github\/copilot-instructions\.md/);
+assert.equal(existsSync(join(copilotTarget, ".github/copilot-instructions.md")), false);
+result = run(copilotTarget, "apply", copilotTarget, "github-copilot", "--approve");
+assert.equal(result.status, 0);
+assert.equal(run(copilotTarget, "validate", copilotTarget).status, 0);
+writeFileSync(join(copilotTarget, ".github/copilot-instructions.md"), "# owner changed\n");
+result = run(copilotTarget, "uninstall", copilotTarget, "github-copilot", "--approve");
+assert.equal(result.status, 0);
+assert.equal(readFileSync(join(copilotTarget, ".github/copilot-instructions.md"), "utf8"), "# owner changed\n");
 
 console.log("Adapter manager preview/hash/drift/uninstall Eval: PASS");

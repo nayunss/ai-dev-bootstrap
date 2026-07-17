@@ -16,9 +16,10 @@
 구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
 `HANDOFF.md`를 같은 작업에서 갱신한다.
 
-현재 프로젝트 단계는 요구사항·설계와 downstream pilot 검증이다. 이 단계의 validator·fixture 구현은
-설계를 검증하는 수단이며 최종 실제 공통 환경의 구현 완료를 의미하지 않는다. 핵심 설계·검증이 끝난
-뒤 이 문서와 `docs/`의 현행 설계를 입력 계약으로 사용해 실제 환경 구현 단계를 별도로 시작한다.
+`DESIGN-BASELINE-2026-07-17` 감사에서 REQ-001~046의 **설계 명세 baseline은 완료**로 판정했다.
+이 단계의 validator·fixture는 설계를 검증한 reference automation이며 최종 실제 공통 환경 구현 완료를
+의미하지 않는다. 실제 구현은 이 문서와 `docs/design-completion-audit.md`의 경계·acceptance criteria를
+입력 계약으로 사용한다.
 
 | 요구사항 | 구현·검증 상태 | 근거 또는 남은 gate |
 |---|---|---|
@@ -26,7 +27,7 @@
 | REQ-005~008 | 부분 검증 | 선호 도구·외부 자산 검토 완료, 선택 설치 adapter는 계속 확장 |
 | REQ-009~014 | 부분 검증 | 공통 정책과 frontend pilot 검증. stack별 자동 lint·접근성 Eval은 제한적 |
 | REQ-015~016 | 부분 검증 | 보안 hook·SAST fixture 적용, 실제 IAM·복구 이중 통제는 downstream별 검증 필요 |
-| REQ-017 | 적용 | staged·PR HANDOFF gate, 종료일·Git authority·완료/다음 작업 drift regression 적용 |
+| REQ-017 | 적용 | staged·PR HANDOFF gate, 종료일·Git authority·완료/다음 작업 drift와 공통 진행 가능/외부 입력 대기 분류 regression 적용 |
 | REQ-018 | 적용 | CodeSight 생성·CI stale 검사와 공통 세션 진입점 연결 |
 | REQ-019~024 | 부분 검증 | 문서·workflow 적용. 요구사항 변경의 자동 추적성 검사는 제한적 |
 | REQ-025 | 부분 검증 | 결정론적 fixture 존재, 전체 capability suite·비결정 trial 계측은 미완료 |
@@ -34,9 +35,9 @@
 | REQ-029~030 | 설계 완료 | BaaS·HITL 계약 작성, provider별 downstream Eval 필요 |
 | REQ-031~036 | 부분 검증 | 민감 파일·MCP·bootstrap·dependency·build policy·CI 배포 fixture 적용, 다음 release 대기 |
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
-| REQ-040 | 부분 검증 | schema v2가 법률·retention reviewer evidence, 2+ instance 분산 limiter bypass PASS, provider restore RPO/RTO·무결성 evidence를 Production hard gate로 차단. synthetic positive/negative·retrofit·downstream consistency Eval PASS. 실제 운영 evidence와 provider rehearsal은 미완료 |
-| REQ-041 | 부분 검증 | synthetic 단일 add patch의 hash·budget·selection strict improvement·hard gate·locked test·승인 순서와 tie/injection/grader tamper/test leakage negative Eval PASS. 실제 모델·비결정 trial·release는 미검증 |
-| REQ-042 | 부분 검증 | Codex·Claude Code 선택형 adapter preview·승인 apply, generator/source/target hash drift와 기존·변경 파일 보존 uninstall Eval PASS. 다른 AI 도구와 release-level core materializer는 미검증 |
+| REQ-040 | 부분 검증 | schema v2 hard gate와 초기/기존 project 공용 onboarding 질문·blocked template·보존 retrofit Eval PASS. 실제 운영 evidence와 provider rehearsal은 미완료 |
+| REQ-041 | 부분 검증 | synthetic bounded patch, offline trial gate와 project별 model/harness·비용·network·reviewer onboarding template Eval PASS. 실제 모델·비결정 trial·release는 미검증 |
+| REQ-042 | 부분 검증 | 3종 선택 adapter, core reference materializer와 project별 release/checksum·target·rollback onboarding template Eval PASS. 실제 release manifest 발행·downstream upgrade는 미검증 |
 | REQ-043 | 부분 검증 | 후보 심사, ScanCode synthetic·project pilot, 조건부 hosted CI PASS. true public-corpus snippet provenance는 미검증 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
@@ -804,7 +805,7 @@
   `undisclosed` 결과는 기능 결과로 보존할 수 있지만 AI 도구별 호환성 근거에는 포함하지 않는다.
 - pilot PASS는 기록된 조합과 범위에만 유효하며 하나의 tester·stack 성공을 공통 지원 완료로 확대하지
   않는다. 참여 maintainer를 포함해 시작 시 등록한 모든 tester의 배정된 필수 테스트·검증 항목이 전부
-  PASS이고 clean 재현·필수 증거가 갖춰진 경우에만 설계 완료와 지원 상태 승격을 판정한다.
+  PASS이고 clean 재현·필수 증거가 갖춰진 경우에만 설계 검증 완료와 지원 상태 승격을 판정한다.
 - 참여자별 필수 matrix에 `FAIL`, `BLOCKED`, `NOT-RUN`, 증거 누락이나 미검증 항목이 하나라도 있으면
   설계는 진행 중이다. 다수결이나 일부 tester 성공으로 대체하지 않으며, 중도 이탈·재배정은 사유와
   matrix 변경 이력을 기록한다.
@@ -815,7 +816,7 @@
 - 역할, matrix, 실행 단계, 결과 schema와 중단 조건은
   `docs/distributed-pilot-testing-guide.md`를 따른다.
 - 한 사람이 전 역할을 수행할 수 있으며, 이 경우 배정된 모든 필수 항목과 별도 clean self-review가
-  전부 PASS해야 설계 완료로 판정한다.
+  전부 PASS해야 설계 검증 완료로 판정한다.
 
 ## 비기능 요구사항
 
@@ -911,3 +912,7 @@
 | 2026-07-17 | REQ-041 synthetic bounded-patch, 격리 grader·locked test·거절 buffer reference pilot 구현 |
 | 2026-07-17 | REQ-040 법률·retention·다중-instance limiter·Production provider restore evidence schema v2 hard gate 구현 |
 | 2026-07-17 | REQ-046 campaign/result schema, validator·aggregator와 synthetic 다중 tester Eval 구현 |
+| 2026-07-17 | REQ-041 offline live-call gate와 REQ-042 GitHub Copilot adapter·release core materializer reference Eval 구현 |
+| 2026-07-17 | REQ-040·041·042 프로젝트별 결정을 초기 설정과 기존 project retrofit에서 질문하는 공통 onboarding 구현 |
+| 2026-07-17 | HANDOFF 남은 작업을 공통 저장소 진행 가능과 프로젝트·사람·실제 환경·외부 승인 대기로 분류하는 계약 추가 |
+| 2026-07-17 | REQ-001~046 설계 완료 감사와 실제 구현 입력 baseline 확정 |

@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 0 models | 0 components | 4 lib files | 0 env vars | 3 middleware
-> **Token savings:** this file is ~800 tokens. Without it, AI exploration would cost ~7,800 tokens. **Saves ~7,000 tokens per conversation.**
+> 0 routes | 0 models | 0 components | 5 lib files | 0 env vars | 3 middleware
+> **Token savings:** this file is ~900 tokens. Without it, AI exploration would cost ~8,300 tokens. **Saves ~7,400 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -18,6 +18,7 @@
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
+- `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
 
 ---
 
@@ -37,6 +38,7 @@
 - `scripts/pilot-results.mjs` — imported by **2** files
 - `scripts/application-inventory.mjs` — imported by **2** files
 - `scripts/validate-production-readiness.mjs` — imported by **1** files
+- `scripts/validate-skill-evolution-trial.mjs` — imported by **1** files
 - `scripts/evaluate-skill-evolution.mjs` — imported by **1** files
 
 ## Import Map (who imports what)
@@ -44,6 +46,7 @@
 - `scripts/pilot-results.mjs` ← `scripts/aggregate-pilot-results.mjs`, `scripts/validate-pilot-result.mjs`
 - `scripts/application-inventory.mjs` ← `scripts/preview-applications.mjs`, `scripts/validate-downstream.mjs`
 - `scripts/validate-production-readiness.mjs` ← `scripts/test-production-readiness.mjs`
+- `scripts/validate-skill-evolution-trial.mjs` ← `scripts/test-skill-evolution-trial.mjs`
 - `scripts/evaluate-skill-evolution.mjs` ← `scripts/test-skill-evolution.mjs`
 
 ---

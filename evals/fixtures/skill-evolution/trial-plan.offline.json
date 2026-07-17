@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "SKILL-EVOLUTION-OFFLINE-001",
+  "mode": "offline-dry-run",
+  "target": {
+    "model": "offline-stub@1.0.0",
+    "harness": "skill-evolution-harness@1.0.0",
+    "adapter": "local-process@1.0.0"
+  },
+  "execution": {
+    "network": "deny",
+    "credentialAccess": "deny",
+    "customerData": "deny",
+    "maxTrials": 3,
+    "maxTokensPerTrial": 2000,
+    "maxTotalCostUsd": 0,
+    "timeoutSeconds": 120,
+    "seeds": [104729, 130363, 155921]
+  },
+  "datasets": {
+    "train": {
+      "path": "evals/fixtures/skill-evolution/train.json",
+      "accessibleDuringTrial": true
+    },
+    "selection": {
+      "path": "evals/fixtures/skill-evolution/selection.json",
+      "accessibleDuringTrial": true
+    },
+    "test": {
+      "path": "evals/fixtures/skill-evolution/test.locked.json",
+      "accessibleDuringTrial": false,
+      "lockedUntilHumanApproval": true
+    }
+  },
+  "approval": {
+    "status": "pending",
+    "candidateSha256": "TBD",
+    "approver": "TBD",
+    "approvedAt": "TBD",
+    "evidenceReference": "TBD"
+  }
+}

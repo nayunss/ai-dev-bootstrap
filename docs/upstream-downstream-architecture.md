@@ -1,6 +1,6 @@
 # Upstream–Downstream 아키텍처와 upstream.lock
 
-상태: 제안
+상태: 설계 승인
 
 이 문서는 세 가지 질문에 답한다. `upstream.lock`이 무슨 역할을 하는가, upstream에서 정의한
 정책·설정이 downstream 프로젝트에 어떤 원리로 적용되는가, 두 계층 사이의 전체 아키텍처는
@@ -15,11 +15,11 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 
 | 항목 | 현재 상태 |
 |---|---|
-| release tag·archive checksum | v0.2.0~v0.2.2 pilot 발행 완료, v0.2.3 발행 준비 중 |
+| release tag·archive checksum | v0.2.0~v0.2.3 pilot 발행 완료 |
 | application preview·validator | reference automation 적용, 지원 stack·profile 제한 존재 |
-| `upstream.lock` schema·생성·parser | 목표 설계, 미구현 |
-| 공통 코어 materialization | env-be 수동 pilot 근거만 존재, 범용 명령 미구현 |
-| Codex·Claude Code 선택 adapter materialization | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
+| `upstream.lock` schema·생성·parser | JSON reference lock과 hash validator Eval 구현, release manifest 발행 automation은 미구현 |
+| 공통 코어 materialization | release manifest 기반 preview·승인 apply·충돌·source/target drift reference Eval 구현 |
+| Codex·Claude Code·GitHub Copilot 선택 adapter | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
 | downstream security tool 설치 | 미구현; 현재 `security-tools`는 upstream `.tools/`에 설치 |
 | stack별 dependency bootstrap | npm·pnpm root 경로만 부분 구현 |
 | upgrade diff·migration·rollback 자동화 | 목표 설계, 미구현 |
@@ -29,8 +29,8 @@ validator·migration과 clean clone Eval을 함께 구현한다.
 
 ### 현재 선택형 adapter 명령
 
-REQ-042 범위의 reference materializer는 논리적 source를 `adapters/codex/`와
-`adapters/claude-code/`에 두고, 선택한 adapter만 target에 적용한다. 기본 동작은 read-only
+REQ-042 범위의 reference materializer는 논리적 source를 `adapters/codex/`,
+`adapters/claude-code/`, `adapters/github-copilot/`에 두고 선택한 adapter만 target에 적용한다. 기본 동작은 read-only
 preview이며 apply와 uninstall은 `--approve`가 없으면 종료 코드 2로 차단한다.
 
 ```sh
@@ -44,13 +44,30 @@ scripts/bootstrap adapters uninstall /absolute/path/to/project codex --approve
 SHA-256과 생성 소유권을 기록한다. validator와 CI는 source·target·generator drift를 fail-closed한다.
 uninstall은 이 작업이 생성했고 이후 수정되지 않은 파일만 제거한다. 적용 전에 존재했던 동일 파일과
 적용 후 변경된 파일은 보존하며, 기존 파일이 source와 다르면 apply 전체를 쓰기 전에 차단한다.
-이 lock은 선택 adapter의 생성 증적이며 아직 미구현인 release-level `upstream.lock`을 대신하지 않는다.
+이 lock은 선택 adapter의 생성 증적이며 release-level upstream lock을 대신하지 않는다.
+
+### release-level 공통 core reference 명령
+
+release publisher가 만든 manifest는 release·commit·archive SHA-256과 파일별 SHA-256 및 canonical
+content hash를 포함한다. materializer는 source snapshot과 manifest가 일치할 때만 preview하며, 기존
+downstream 파일이 다르면 파일을 하나도 쓰기 전에 차단한다.
+
+```sh
+node scripts/materialize-core.mjs preview TARGET RELEASE_MANIFEST RELEASE_SOURCE
+node scripts/materialize-core.mjs apply TARGET RELEASE_MANIFEST RELEASE_SOURCE --approve
+node scripts/materialize-core.mjs validate TARGET RELEASE_MANIFEST RELEASE_SOURCE
+```
+
+적용 결과는 reference 구현의 `.ai/manifests/upstream.lock.json`에 기록한다. reference Eval은 생성·동일 파일 보존,
+기존 파일 충돌의 atomic 차단, manifest/source/target drift를 검증한다. 실제 v0.2.3 이후 release
+manifest 발행, 목표 canonical YAML lock으로의 migration과 real downstream upgrade·rollback은 별도
+release 작업이다.
 
 ## upstream.lock의 역할
 
-`upstream.lock`은 **downstream 저장소에 둘 목표 manifest**다. canonical 위치는
-`.ai/manifests/upstream.lock.yaml` 하나로 정한다. 현재 generator·parser가 없으므로 pilot에서는 사람이
-초안을 기록하고 `implementationStatus: proposed`로 표시한다.
+`upstream.lock`은 **downstream 저장소에 둘 목표 manifest**다. 목표 canonical 위치는 기존 설계대로
+`.ai/manifests/upstream.lock.yaml`이다. 이번 reference materializer의 JSON lock은 release manifest의
+고정값과 materialize된 파일 hash 검증을 재현하는 pilot 증적이며 YAML schema·migration을 대신하지 않는다.
 
 | 필드 | 내용 | 출처 |
 |---|---|---|

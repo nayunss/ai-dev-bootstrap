@@ -6,7 +6,7 @@
 
 ## Scale
 
-4 library files · 3 middleware layers
+5 library files · 3 middleware layers
 
 ## High-Impact Files
 
@@ -15,6 +15,7 @@ Changes to these files have the widest blast radius across the codebase:
 - `scripts/pilot-results.mjs` — imported by **2** files
 - `scripts/application-inventory.mjs` — imported by **2** files
 - `scripts/validate-production-readiness.mjs` — imported by **1** files
+- `scripts/validate-skill-evolution-trial.mjs` — imported by **1** files
 - `scripts/evaluate-skill-evolution.mjs` — imported by **1** files
 
 ---

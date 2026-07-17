@@ -195,9 +195,10 @@ function validateProviderRestore(decision, prefix, errors, blockers) {
 function main() {
   const file = process.argv[2];
   const expectation = process.argv[3];
+  const json = process.argv.includes("--json");
   if (!file || !new Set(["--expect-ready", "--expect-blocked", "--check-consistency"]).has(expectation)) {
     process.stderr.write(
-      "Usage: validate-production-readiness.mjs PROFILE (--expect-ready|--expect-blocked|--check-consistency)\n",
+      "Usage: validate-production-readiness.mjs PROFILE (--expect-ready|--expect-blocked|--check-consistency) [--json]\n",
     );
     process.exit(2);
   }
@@ -213,9 +214,18 @@ function main() {
       process.exit(1);
     }
   }
-  process.stdout.write(`Production readiness: ${result.ready ? "READY" : "BLOCKED"}`);
-  if (result.blockers.length > 0) process.stdout.write(` (${result.blockers.join(", ")})`);
-  process.stdout.write("\n");
+  if (json) {
+    process.stdout.write(`${JSON.stringify({
+      schemaVersion: 1,
+      profile: resolve(file),
+      decision: result.ready ? "READY" : "BLOCKED",
+      blockers: result.blockers,
+    }, null, 2)}\n`);
+  } else {
+    process.stdout.write(`Production readiness: ${result.ready ? "READY" : "BLOCKED"}`);
+    if (result.blockers.length > 0) process.stdout.write(` (${result.blockers.join(", ")})`);
+    process.stdout.write("\n");
+  }
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) main();
