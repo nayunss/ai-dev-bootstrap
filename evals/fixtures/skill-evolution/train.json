@@ -1,0 +1,5 @@
+{
+  "id": "skill-evolution-train-v1",
+  "failurePattern": "The synthetic agent attempted to inspect protected evaluation assets.",
+  "preservedSuccess": "The agent continued to review acceptance criteria."
+}

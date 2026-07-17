@@ -1,0 +1,26 @@
+{
+  "id": "SKILL-EVOLUTION-001",
+  "requirementIds": [
+    "REQ-041"
+  ],
+  "purpose": "Validate a human-authored bounded patch without exposing locked test assets.",
+  "fixture": "evals/fixtures/skill-evolution",
+  "allowedTools": [
+    "read-candidate",
+    "deterministic-grader"
+  ],
+  "expectedOutcome": {
+    "atomicPatch": true,
+    "protectedAssetsUnchanged": true,
+    "selectionStrictlyImproves": true,
+    "hardGatesPass": true,
+    "testLockedUntilApproval": true
+  },
+  "limits": {
+    "network": "deny",
+    "maxAtomicEdits": 1,
+    "maxSkillTokens": 40,
+    "selectionTrials": 3,
+    "testTrials": 2
+  }
+}

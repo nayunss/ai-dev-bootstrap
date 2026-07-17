@@ -12,6 +12,12 @@ evals/
 └── results/
 ```
 
-현재는 계약 설계 단계이며 runner나 외부 Eval 의존성을 설치하지 않았다. 도구 선정 전 공급망,
-텔레메트리, 권한, 네트워크, 비용과 데이터 처리를 심사한다. 상세 정책은
-`docs/evaluation-strategy.md`와 `.ai/workflows/evaluation.md`를 따른다.
+REQ-041 reference pilot은 `tasks/skill-evolution-bounded-patch.json`과 synthetic fixture,
+`scripts/evaluate-skill-evolution.mjs`의 결정론적 grader를 사용한다. 외부 optimizer·모델·네트워크 없이
+atomic patch budget, 고정 hash, selection strict improvement, hard gate, locked test와 승인 순서를
+검증한다. 이는 범용 Eval runner 구현 완료를 뜻하지 않는다.
+`baselines/skill-evolution-*`에는 이 reference pilot의 고정 record, sanitized selection 집계와 거절
+reason buffer만 보존한다. trajectory 원문, test fixture 내용과 모델 출력은 포함하지 않는다.
+
+외부 Eval 도구 선정 전 공급망, 텔레메트리, 권한, 네트워크, 비용과 데이터 처리를 심사한다. 상세
+정책은 `docs/evaluation-strategy.md`와 `.ai/workflows/evaluation.md`를 따른다.

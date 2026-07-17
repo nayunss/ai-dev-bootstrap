@@ -3,8 +3,8 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager
-다음 작업: REQ-041
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot
+다음 작업: REQ-046
 
 ## 목표
 
@@ -75,6 +75,9 @@ pilot 검증 단계다.
 - REQ-042 Codex·Claude Code 선택형 adapter manager를 구현했다. 기본 preview, 선택 adapter만 적용,
   `--approve` 승인 경계, generator/source/target SHA-256 lock, downstream drift 차단과 생성 전 존재한
   파일·사용자가 변경한 파일을 보존하는 uninstall 계약을 임시 fixture에서 검증했다.
+- REQ-041 synthetic review skill에 단일 `add` patch를 적용하는 reference pilot을 구현했다. 고정 hash,
+  edit·token budget, selection strict improvement, 비상쇄 hard gate, locked test·candidate-bound 승인
+  순서와 tie·injection·grader tamper·test leakage 거절을 외부 model·network 없이 검증했다.
 
 ## 현재 상태
 
@@ -130,6 +133,11 @@ pilot 검증 단계다.
   adapter 명령 진입점과 lock 존재 시 downstream drift gate
 - `.github/workflows/security.yml`, `package.json`: adapter Eval의 hosted security job 실행
 - `docs/upstream-downstream-architecture.md`, `docs/requirements.md`: 구현 범위와 REQ-042 상태 현행화
+- `evals/{tasks,fixtures,graders,baselines}/skill-evolution*`: REQ-041 synthetic task, 보호
+  fixture, 고정 selection record와 sanitized 결과·거절 buffer
+- `scripts/evaluate-skill-evolution.mjs`, `scripts/test-skill-evolution.mjs`: bounded atomic patch,
+  hash·budget·split·hard gate·승인 순서 evaluator와 positive/negative regression
+- `docs/evaluation-strategy.md`, `evals/README.md`, `docs/requirements.md`: REQ-041 pilot 범위·한계 현행화
 
 ## 검증
 
@@ -168,16 +176,20 @@ pilot 검증 단계다.
 - 미승인 apply/uninstall 차단·기존 파일 충돌 atomic 차단 Eval: PASS
 - 생성 전 동일 파일·적용 후 drift 파일 보존과 관리 파일 제거 uninstall Eval: PASS
 - adapter lock을 통한 downstream target drift negative fixture: PASS
+- REQ-041 single-add patch exact reproduction·hash·edit/token budget: PASS
+- selection 3회 minimum improvement·4개 hard gate와 sanitized selected result: PASS
+- tie·security gate·prompt injection·grader tamper·test 조기 노출·test 재학습 negative: PASS
+- candidate-bound synthetic approval 뒤 locked-test runner positive: PASS, 실제 release 승인 아님
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. 필수 gate가 안정된 뒤 REQ-041 bounded-patch pilot을 수행한다.
-2. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
+1. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
    준비될 때까지 Production 승인을 차단한다.
-3. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+2. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+3. REQ-041 실제 model·harness의 비결정 trial과 사람이 승인한 held-out test·release를 별도 수행한다.
 4. REQ-042의 다른 AI 도구 adapter와 release-level 공통 core materializer는 별도 preview·Eval 후 확장한다.
 
 ## 위험·주의

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "skill-evolution-pilot-20260717",
+  "candidateId": "review-skill-20260717-01",
+  "phase": "selection",
+  "decision": "selected",
+  "hashes": {
+    "baseline": "sha256:0b3a46a38a187a86100300238200ec4add5060e90238fc75098a96cd953e931b",
+    "candidate": "sha256:ddc1483b3d19b66ca825a1687010c8d37a7fe23782914e100a3ab853f30e3cba",
+    "evaluator": "sha256:09ab51e6fc1df13e75f27e388f577a96d2767ee4f2acab51fe75b0f1900612f8"
+  },
+  "aggregate": {
+    "selection": {
+      "baselineMean": 0.4666666666666666,
+      "candidateMean": 0.7666666666666666,
+      "improvement": 0.3,
+      "trials": 3
+    },
+    "test": null
+  },
+  "rejectionReasons": []
+}

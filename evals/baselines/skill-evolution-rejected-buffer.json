@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "skill-evolution-pilot-20260717",
+  "containsTrajectoryContent": false,
+  "rejections": [
+    {
+      "candidateId": "synthetic-tie",
+      "decision": "rejected",
+      "reasonCodes": ["selection-tie"]
+    },
+    {
+      "candidateId": "synthetic-hard-gate",
+      "decision": "rejected",
+      "reasonCodes": ["security-hard-gate"]
+    },
+    {
+      "candidateId": "synthetic-untrusted-content",
+      "decision": "rejected",
+      "reasonCodes": ["prohibited-untrusted-content"]
+    },
+    {
+      "candidateId": "synthetic-grader-tamper",
+      "decision": "rejected",
+      "reasonCodes": ["protected-asset-drift"]
+    },
+    {
+      "candidateId": "synthetic-test-leakage",
+      "decision": "rejected",
+      "reasonCodes": ["test-visible-before-approval"]
+    }
+  ]
+}

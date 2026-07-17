@@ -143,6 +143,22 @@ outcome을 수정하지 못하게 한다.
 [SkillOpt 논문 검토](skillopt-paper-review.md)와
 [Skill evolution workflow](../.ai/workflows/skill-evolution.md)를 따른다.
 
+### REQ-041 reference pilot
+
+`SKILL-EVOLUTION-001`은 외부 optimizer나 모델 호출 없이 사람이 작성한 synthetic 단일 `add` patch로
+통제 계약을 검증한다. `scripts/evaluate-skill-evolution.mjs`는 다음을 결정론적으로 검사한다.
+
+- baseline·candidate·evaluator·tool manifest·split·grader·fixture·expected outcome·승인 기록 SHA-256
+- 선언한 `add | delete | replace` 연산으로 candidate가 정확히 재현되는지와 edit·lexical token budget
+- 고정된 model·AI tool·harness exact identifier, 서로 다른 train·selection·test ID
+- selection 3회 평균의 strict minimum improvement와 correctness·security·permission·regression hard gate
+- selection 단계 test 결과 포함 금지, candidate hash에 묶인 사람 승인 전 test 단계 금지
+- prompt injection 원문 승격, `.env*`·private key 내용과 grader tampering의 fail-closed 거절
+
+현재 checked result는 selection `selected`까지만 의미한다. synthetic approval을 사용하는 test positive는
+runner 계약의 regression일 뿐 실제 후보 승인·release 증적이 아니다. 실제 model/harness capability와
+transfer, 비결정 trial, 비용·latency와 downstream release는 미검증이다.
+
 ## CI와 실행 빈도
 
 | 시점 | 범위 |
