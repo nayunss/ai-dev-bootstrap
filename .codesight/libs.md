@@ -7,5 +7,13 @@
   - function validatePilotCampaign: (campaign) => void
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
+- `scripts/upstream-lock.mjs`
+  - function sha256: (value) => void
+  - function safeRelativePath: (path) => void
+  - function targetPath: (root, path) => void
+  - function canonicalContentHash: (files) => void
+  - function validateUpstreamLock: (lock) => void
+  - function serializeUpstreamLock: (lock) => void
+  - _...2 more_
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void

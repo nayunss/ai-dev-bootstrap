@@ -1,18 +1,21 @@
 #!/usr/bin/env node
-import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve, sep } from "node:path";
+import {
+  canonicalContentHash,
+  parseUpstreamLockYaml,
+  serializeUpstreamLock,
+  sha256,
+  validateLockedTarget,
+  validateUpstreamLock,
+} from "./upstream-lock.mjs";
 
-const lockRelative = ".ai/manifests/upstream.lock.json";
+const lockRelative = ".ai/manifests/upstream.lock.yaml";
 const modes = new Set(["preview", "apply", "validate"]);
 
 function fail(message, code = 1) {
   process.stderr.write(`${message}\n`);
   process.exit(code);
-}
-
-function sha256(value) {
-  return `sha256:${createHash("sha256").update(value).digest("hex")}`;
 }
 
 function safe(root, relative) {
@@ -29,11 +32,14 @@ function safe(root, relative) {
 }
 
 function readManifest(path) {
-  const manifest = JSON.parse(readFileSync(path, "utf8"));
+  const bytes = readFileSync(path);
+  const manifest = JSON.parse(bytes);
   if (manifest.schemaVersion !== 1) fail("Release manifest schemaVersion must be 1");
-  for (const field of ["release", "commit", "archiveSha256", "contentSha256"]) {
+  for (const field of ["repository", "release", "commit", "archiveSha256", "contentSha256"]) {
     if (typeof manifest[field] !== "string" || !manifest[field]) fail(`Release manifest requires ${field}`);
   }
+  if (!/^[a-f0-9]{40}$/u.test(manifest.commit)) fail("Release manifest commit must be a 40-character lowercase SHA");
+  if (!/^sha256:[a-f0-9]{64}$/u.test(manifest.archiveSha256)) fail("Release manifest archiveSha256 must be SHA-256");
   if (!Array.isArray(manifest.files) || manifest.files.length === 0) fail("Release manifest requires files");
   const paths = new Set();
   for (const file of manifest.files) {
@@ -41,12 +47,9 @@ function readManifest(path) {
     paths.add(file.path);
     if (!/^sha256:[a-f0-9]{64}$/u.test(file.sha256 ?? "")) fail(`Invalid file hash: ${file.path}`);
   }
-  const canonical = manifest.files
-    .map(({ path: file, sha256: digest }) => `${file}\0${digest}\n`)
-    .sort()
-    .join("");
-  if (sha256(canonical) !== manifest.contentSha256) fail("Release manifest content hash drift");
-  return manifest;
+  manifest.files = [...manifest.files].sort((left, right) => left.path.localeCompare(right.path));
+  if (canonicalContentHash(manifest.files) !== manifest.contentSha256) fail("Release manifest content hash drift");
+  return { manifest, manifestSha256: sha256(bytes) };
 }
 
 function sourceFiles(source, manifest) {
@@ -68,12 +71,17 @@ function plan(target, files) {
   });
 }
 
-function lockFor(manifest) {
+function lockFor(manifest, manifestSha256) {
   return {
     schemaVersion: 1,
-    release: manifest.release,
-    commit: manifest.commit,
-    archiveSha256: manifest.archiveSha256,
+    kind: "upstream-lock",
+    source: {
+      repository: manifest.repository,
+      release: manifest.release,
+      commit: manifest.commit,
+      archiveSha256: manifest.archiveSha256,
+    },
+    manifestSha256,
     contentSha256: manifest.contentSha256,
     files: manifest.files,
   };
@@ -86,20 +94,24 @@ if (!modes.has(mode) || !targetValue || !manifestValue || !sourceValue) {
 const target = resolve(targetValue);
 const source = resolve(sourceValue);
 if (!existsSync(target) || !existsSync(source)) fail("Target and source must exist");
-const manifest = readManifest(resolve(manifestValue));
+const { manifest, manifestSha256 } = readManifest(resolve(manifestValue));
 const files = sourceFiles(source, manifest);
+const expectedLock = lockFor(manifest, manifestSha256);
+const lockErrors = validateUpstreamLock(expectedLock);
+if (lockErrors.length) fail(lockErrors.join("\n"));
 
 if (mode === "validate") {
   const lockPath = safe(target, lockRelative);
   if (!existsSync(lockPath)) fail(`Missing core lock: ${lockRelative}`);
-  const lock = JSON.parse(readFileSync(lockPath, "utf8"));
-  if (JSON.stringify(lock) !== JSON.stringify(lockFor(manifest))) fail("Core lock drift");
-  for (const file of files) {
-    const destination = safe(target, file.path);
-    if (!existsSync(destination) || sha256(readFileSync(destination)) !== file.sha256) {
-      fail(`Core target drift: ${file.path}`);
-    }
+  let lock;
+  try {
+    lock = parseUpstreamLockYaml(readFileSync(lockPath, "utf8"));
+  } catch (error) {
+    fail(`Core lock invalid: ${error.message}`);
   }
+  if (serializeUpstreamLock(lock) !== serializeUpstreamLock(expectedLock)) fail("Core lock drift");
+  const targetErrors = validateLockedTarget(lock, target);
+  if (targetErrors.length) fail(targetErrors.join("\n"));
   process.stdout.write(`Core validation: PASS (${manifest.release})\n`);
   process.exit(0);
 }
@@ -120,5 +132,5 @@ for (const file of changes) {
 }
 const lockPath = safe(target, lockRelative);
 mkdirSync(dirname(lockPath), { recursive: true });
-writeFileSync(lockPath, `${JSON.stringify(lockFor(manifest), null, 2)}\n`);
+writeFileSync(lockPath, serializeUpstreamLock(expectedLock));
 process.stdout.write("Core materialization: PASS\n");

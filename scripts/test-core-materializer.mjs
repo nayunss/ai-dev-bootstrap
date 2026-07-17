@@ -19,6 +19,7 @@ const files = [".ai/standards/engineering.md", "HANDOFF.md"].map((path) => ({
 }));
 const manifest = {
   schemaVersion: 1,
+  repository: "https://example.invalid/upstream.git",
   release: "v9.9.9-fixture",
   commit: "a".repeat(40),
   archiveSha256: sha256("fixture archive"),
@@ -36,12 +37,14 @@ assert.match(result.stdout, /create: HANDOFF\.md/);
 assert.equal(existsSync(join(target, "HANDOFF.md")), false);
 assert.equal(run("apply", target, manifestPath, source).status, 2);
 assert.equal(run("apply", target, manifestPath, source, "--approve").status, 0);
+assert.equal(existsSync(join(target, ".ai/manifests/upstream.lock.yaml")), true);
+assert.equal(existsSync(join(target, ".ai/manifests/upstream.lock.json")), false);
 assert.equal(run("validate", target, manifestPath, source).status, 0);
 
 writeFileSync(join(target, "HANDOFF.md"), "# downstream drift\n");
 result = run("validate", target, manifestPath, source);
 assert.equal(result.status, 1);
-assert.match(result.stderr, /Core target drift: HANDOFF\.md/);
+assert.match(result.stderr, /locked target drift: HANDOFF\.md/);
 
 const collision = mkdtempSync(join(tmpdir(), "core-collision-"));
 writeFileSync(join(collision, "HANDOFF.md"), "# existing owner file\n");

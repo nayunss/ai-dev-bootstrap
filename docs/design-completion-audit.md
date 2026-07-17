@@ -76,3 +76,9 @@ REQ-046의 “설계 완료”라는 기존 표현은 이 감사의 **설계 명
 baseline 이후 새 요구사항이나 설계 변경은 기존 문서를 조용히 덮어쓰지 않는다. 고유 REQ 또는 change
 record, 영향받는 acceptance criteria, migration·rollback, 관련 Eval과 HANDOFF를 같은 변경에서
 갱신한다. 실제 구현에서 발견한 공통 결함은 익명화된 regression으로 설계에 환류한다.
+
+## Baseline 이후 구현 기록
+
+- 2026-07-17: 첫 increment인 REQ-042 canonical YAML lock schema·parser/serializer·validator,
+  JSON reference migration과 명시적 inventory 기반 release manifest generator를 구현했다. 실제 release
+  발행과 downstream upgrade·rollback은 외부 변경 승인 대기로 유지한다.

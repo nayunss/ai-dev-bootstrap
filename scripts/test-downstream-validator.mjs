@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { serializeUpstreamLock, sha256 } from "./upstream-lock.mjs";
 
 const root = process.cwd();
 assert.equal(readFileSync(join(root, "scripts/validate-downstream.mjs"), "utf8").includes(".env.example"), false);
@@ -50,6 +51,32 @@ function validate() {
   });
 }
 
+assert.equal(validate().status, 0);
+
+const lockedHandoff = readFileSync(join(fixture, "HANDOFF.md"));
+const upstreamLock = {
+  schemaVersion: 1,
+  kind: "upstream-lock",
+  source: {
+    repository: "https://example.invalid/common-project.git",
+    release: "v1.0.0-fixture",
+    commit: "c".repeat(40),
+    archiveSha256: sha256("archive"),
+  },
+  manifestSha256: sha256("manifest"),
+  contentSha256: sha256(`HANDOFF.md\0${sha256(lockedHandoff)}\n`),
+  files: [{ path: "HANDOFF.md", sha256: sha256(lockedHandoff) }],
+};
+writeFileSync(
+  join(fixture, ".ai/manifests/upstream.lock.yaml"),
+  serializeUpstreamLock(upstreamLock),
+);
+assert.equal(validate().status, 0);
+writeFileSync(join(fixture, "HANDOFF.md"), "# upstream target drift\n");
+const upstreamDrift = validate();
+assert.notEqual(upstreamDrift.status, 0);
+assert.match(upstreamDrift.stderr, /locked target drift: HANDOFF\.md/);
+writeFileSync(join(fixture, "HANDOFF.md"), lockedHandoff);
 assert.equal(validate().status, 0);
 
 cpSync(

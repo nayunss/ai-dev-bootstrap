@@ -3,9 +3,9 @@
 상태: 설계 승인
 
 이 저장소를 clone한 뒤 회사·팀·개인 프로젝트에 공통 환경을 적용하는 **목표 절차**다. 현재
-common-project의 설계 명세 baseline은 완료됐고 실제 구현 단계로 전환했다. 범용 materialization·
-`upstream.lock` validator·stack별 bootstrap은 아직 완성되지 않았으므로 구현 완료된 명령만 실행
-가이드로 사용한다.
+common-project의 설계 명세 baseline은 완료됐고 실제 구현 단계로 전환했다. canonical
+`upstream.lock.yaml` validator와 core materializer는 구현됐지만 범용 installer·stack별 bootstrap은
+아직 완성되지 않았으므로 구현 완료된 명령만 실행 가이드로 사용한다.
 
 역할·책임과 업데이트 흐름의 상세는 [유지보수와 도입 모델](adoption-and-maintenance-model.md)을,
 단계별 세부 규칙은 각 단계에 연결된 문서를 따른다. 이 가이드는 순서만 정의하고 규칙을
