@@ -1,0 +1,12 @@
+{
+  "id": "skill-evolution-policy-v1",
+  "type": "deterministic-state-policy",
+  "hardGates": [
+    "correctness",
+    "security",
+    "permission",
+    "regression"
+  ],
+  "tieDecision": "reject",
+  "minimumTrials": 2
+}
