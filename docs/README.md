@@ -74,7 +74,7 @@
 | [v0.2.4-pilot Release](releases/v0.2.4-pilot.md) | 공통 installer·adapter·canonical lock·upgrade rollback automation | 발행 완료 |
 | [v0.2.5-pilot Release](releases/v0.2.5-pilot.md) | deterministic capability·quality·adapter·FastAPI·full-stack materializer | 발행 완료 |
 | [v0.2.6-pilot Release](releases/v0.2.6-pilot.md) | REQ-047·048와 project별 profile·배포·저장소 구조 설계 baseline | 발행 완료 |
-| [v0.2.7-pilot Release](releases/v0.2.7-pilot.md) | UF-001–UF-013 일반화·REQ 매핑과 tool-neutral 추적 자동화 우선순위 baseline | 발행 준비 |
+| [v0.2.7-pilot Release](releases/v0.2.7-pilot.md) | UF-001–UF-013 일반화·REQ 매핑과 tool-neutral 추적 자동화 우선순위 baseline | 발행 완료 |
 
 ## 문서 상태
 
