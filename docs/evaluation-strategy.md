@@ -1,6 +1,6 @@
 # Eval 전략
 
-상태: 제안
+상태: 설계 승인
 
 ## 결론
 
@@ -158,6 +158,19 @@ outcome을 수정하지 못하게 한다.
 현재 checked result는 selection `selected`까지만 의미한다. synthetic approval을 사용하는 test positive는
 runner 계약의 regression일 뿐 실제 후보 승인·release 증적이 아니다. 실제 model/harness capability와
 transfer, 비결정 trial, 비용·latency와 downstream release는 미검증이다.
+
+실제 호출 전에는 `evals/fixtures/skill-evolution/trial-plan.offline.json` 계약으로 model·harness·adapter의
+정확한 버전, 서로 다른 trial seed, token·비용·timeout 상한, network·credential·고객 데이터 차단과
+held-out test 비노출을 검증한다.
+
+```sh
+node scripts/validate-skill-evolution-trial.mjs \
+  evals/fixtures/skill-evolution/trial-plan.offline.json --expect-dry-run
+```
+
+offline plan은 비용 0과 network deny만 허용하며 모델을 호출하지 않는다. live trial과 release는
+`live-trial` plan, 승인된 network·비용 범위, candidate SHA-256에 묶인 사람 승인과 별도 evidence가
+없으면 `--expect-release-approved`를 통과할 수 없다.
 
 ## CI와 실행 빈도
 

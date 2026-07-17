@@ -8,3 +8,4 @@
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
+- `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void

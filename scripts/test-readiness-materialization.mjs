@@ -12,7 +12,7 @@ const preview = spawnSync(process.execPath, [resolve("scripts/preview-applicatio
 });
 assert.equal(preview.status, 0);
 assert.match(preview.stdout, /docs\/production-readiness\.json is missing/);
-assert.match(preview.stdout, /scripts\/bootstrap readiness/);
+assert.match(preview.stdout, /scripts\/bootstrap onboarding/);
 
 const materialize = spawnSync(process.execPath, [resolve("scripts/materialize-production-readiness.mjs"), target], {
   encoding: "utf8",

@@ -1,17 +1,17 @@
 # Handoff
 
 갱신: 2026-07-17 Asia/Seoul
-상태: 진행 중
+상태: 설계 baseline 완료·실제 구현 전환
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation
-다음 작업: REQ-046
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit
+다음 작업: REQ-042-yaml-lock-schema, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통 하네스를
-설계하고 downstream pilot으로 검증한다. 현재까지 승인된 REQ-001~046의 구현·검증 상태는
-`docs/requirements.md`의 추적 표를 기준으로 한다. 현재는 최종 제품 환경 구현이 아니라 공통 설계와
-pilot 검증 단계다.
+설계하고 downstream pilot으로 검증한다. REQ-001~046 설계 명세는
+`DESIGN-BASELINE-2026-07-17` 감사로 완료됐고 실제 공통 환경 구현 단계로 전환한다. 구현·검증 상태는
+`docs/requirements.md`의 추적 표를 기준으로 하며 설계 완료를 실제 지원 완료로 해석하지 않는다.
 
 ## 완료
 
@@ -84,6 +84,18 @@ pilot 검증 단계다.
 - REQ-046 준비 범위로 campaign/result JSON schema, 독립성·증거 validator와 전원 PASS aggregator를
   구현했다. synthetic tester 2명의 결과는 `SYNTHETIC_COMPLETE`로 재현했지만 실제 지원 결정 자격은
   false로 유지한다.
+- REQ-042 release manifest 기반 공통 core reference materializer와 GitHub Copilot 선택 adapter를
+  구현했다. preview·명시 승인, manifest/source/target hash drift, 기존 파일 충돌의 atomic 차단과
+  변경된 adapter 보존 uninstall을 OS 임시 fixture에서 검증했다.
+- REQ-041 실제 호출 전 offline trial-plan gate를 구현했다. exact model·harness·adapter, 반복 seed,
+  token·비용·timeout, network·credential·고객 데이터 차단과 held-out test 비노출을 검증하며 실제
+  model 호출이나 release 승인은 수행하지 않았다.
+- REQ-040·041·042의 프로젝트별 값을 공통 하네스에 고정하지 않고 초기 설정과 기존 project retrofit에서
+  질문하는 onboarding materializer를 구현했다. 세 blocked template 중 기존 파일은 보존하고 누락된
+  파일만 생성하며 `TBD`·`pending`은 어떤 실행 승인도 뜻하지 않는다.
+- REQ-001~046의 requirement·architecture·workflow·project profile·HITL·Eval 경계를 감사해
+  `DESIGN-BASELINE-2026-07-17` 설계 명세 완료로 판정했다. 실제 구현·지원·실제 환경 검증은 별도
+  상태로 유지하고 첫 구현 increment를 canonical YAML lock으로 확정했다.
 
 ## 현재 상태
 
@@ -114,8 +126,9 @@ pilot 검증 단계다.
 - downstream은 upstream을 symlink·submodule·실시간 참조하지 않고 승인된 release를 고정 적용한다.
 - pilot PASS는 해당 stack·환경의 증거이며 모든 stack이나 Production readiness 완료를 뜻하지 않는다.
 - 실제 프로젝트의 기존 사용자 파일과 변경을 보존하며 Git stage는 대상 파일을 명시해서 수행한다.
-- 선택 adapter 적용 증적은 `.ai/manifests/adapters.lock.json`이며 release-level
-  `.ai/manifests/upstream.lock.yaml`의 구현을 대신하지 않는다.
+- 선택 adapter 적용 증적은 `.ai/manifests/adapters.lock.json`이며 release-level 목표 canonical
+  `.ai/manifests/upstream.lock.yaml`을 대신하지 않는다. core reference Eval의
+  `.ai/manifests/upstream.lock.json`도 YAML schema·migration 완료를 뜻하지 않는다.
 - 현재 공통 저장소에는 실제 서비스의 법률·retention·provider restore 증적이 없다. synthetic gate
   PASS를 실제 Production 승인으로 해석하지 않으며 downstream profile은 owner가 직접 작성한다.
 
@@ -158,6 +171,18 @@ pilot 검증 단계다.
   `scripts/aggregate-pilot-results.mjs`, `scripts/test-pilot-results.mjs`: 결과 검증·취합과 synthetic regression
 - `evals/fixtures/distributed-pilot/`, `evals/baselines/distributed-pilot-synthetic-aggregate.json`:
   2-tester synthetic 입력과 고정 `SYNTHETIC_COMPLETE` 증적
+- `scripts/materialize-core.mjs`, `scripts/test-core-materializer.mjs`: release manifest·file hash 기반
+  core preview·승인 apply·lock·collision/source/target drift reference Eval
+- `adapters/github-copilot/`, `scripts/manage-adapters.mjs`, `scripts/test-adapter-manager.mjs`:
+  GitHub Copilot 선택 adapter와 preview·hash·보존 uninstall Eval 확장
+- `evals/fixtures/skill-evolution/trial-plan.offline.json`,
+  `scripts/validate-skill-evolution-trial.mjs`, `scripts/test-skill-evolution-trial.mjs`: 실제 호출 전
+  non-network trial plan과 live release 승인 차단 Eval
+- `docs/templates/skill-evolution-trial.json`, `docs/templates/upstream-adoption.json`,
+  `scripts/materialize-project-onboarding.mjs`, `scripts/test-project-onboarding.mjs`: project별
+  REQ-040·041·042 질문 template과 초기/retrofit 보존 Eval
+- `docs/design-completion-audit.md`, `README.md`, `docs/README.md`, `docs/requirements.md`: 설계 명세
+  baseline 완료, 실제 구현·지원 검증 분리와 감사 finding
 
 ## 검증
 
@@ -209,17 +234,36 @@ pilot 검증 단계다.
 - synthetic 결과의 실제 supportDecisionEligible 승격 차단: PASS
 - missing·FAIL·NOT-RUN·false PASS·증거 누락·grader tamper·이전 결과 접근 negative: PASS
 - duplicate pilot·upstream drift·workspace/resource 재사용 invalid aggregation: PASS
+- REQ-040 blocked template의 기계 판독 blocker JSON report: PASS, 실제 owner evidence 없음
+- release core preview 무변경·승인 apply·manifest/source/target hash와 기존 파일 충돌 차단: PASS
+- GitHub Copilot adapter preview·apply·drift 파일 보존 uninstall: PASS
+- REQ-041 offline 3-seed·비용 0·network/credential/customer-data deny·held-out 잠금: PASS
+- live trial plan·candidate-bound 사람 승인 없는 release gate: BLOCKED
+- 초기 project의 세 blocked decision profile 생성·질문 출력: PASS
+- 기존 project의 일부 profile·owner 파일 보존과 누락 profile만 retrofit: PASS
+- REQ-001~046 설계 source·상태·경계·남은 gate coverage audit: PASS
+- 설계 명세 완료와 REQ-046 설계 검증 완료 용어 분리: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
-2. 실제 downstream owner가 REQ-040 법률·retention·multi-instance·provider restore evidence를 제공할
-   때만 schema v2 profile을 READY로 승인한다.
-3. REQ-041 실제 model·harness의 비결정 trial과 사람이 승인한 held-out test·release를 별도 수행한다.
-4. REQ-042의 다른 AI 도구 adapter와 release-level 공통 core materializer는 별도 preview·Eval 후 확장한다.
+### 공통 저장소에서 진행 가능
+
+1. REQ-042 canonical YAML lock schema·JSON reference lock migration과 release manifest 생성
+   automation을 fixture로 구현한다. 이 단계는 release 발행이나 downstream 적용을 수행하지 않는다.
+
+### 외부 입력·실제 환경 대기
+
+1. [사람 참여 대기] REQ-046은 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
+   결과가 제출되면 취합한다. synthetic 결과만으로 완료하지 않는다.
+2. [프로젝트 입력·실제 환경 대기] REQ-040은 downstream owner의 법률·retention evidence, 실제
+   multi-instance bypass test와 provider restore rehearsal이 제공될 때만 schema v2를 READY로 승인한다.
+3. [프로젝트 입력·외부 변경 승인 대기] REQ-041은 project별 exact model·harness·비용·network·reviewer와
+   candidate가 정해지고 호출 승인을 받은 뒤 비결정 trial·사람 승인 held-out test·release를 수행한다.
+4. [외부 변경 승인·실제 환경 대기] REQ-042는 release version과 manifest 발행 승인, 실제 downstream
+   대상이 정해진 뒤 upgrade·rollback을 수행한다.
 
 ## 위험·주의
 

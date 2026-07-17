@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "status": "TBD",
+  "projectScope": "TBD",
+  "target": {
+    "model": "TBD",
+    "harness": "TBD",
+    "adapter": "TBD"
+  },
+  "execution": {
+    "trialCount": null,
+    "maxTokensPerTrial": null,
+    "maxTotalCostUsd": null,
+    "timeoutSeconds": null,
+    "network": "TBD",
+    "allowedHosts": [],
+    "credentialAccess": "deny",
+    "customerData": "deny"
+  },
+  "heldOutTest": {
+    "owner": "TBD",
+    "reviewer": "TBD",
+    "path": "TBD",
+    "lockedUntilCandidateApproval": true,
+    "releaseCriteriaReference": "TBD"
+  },
+  "approval": {
+    "status": "pending",
+    "candidateSha256": "TBD",
+    "approver": "TBD",
+    "approvedAt": "TBD",
+    "evidenceReference": "TBD"
+  }
+}

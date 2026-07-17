@@ -37,10 +37,13 @@ jobs:
           npm run test:handoff-validator
           npm run test:downstream-validator
           npm run test:adapter-manager
+          npm run test:core-materializer
           npm run test:skill-evolution
+          npm run test:skill-evolution-trial
           npm run test:pilot-results
           npm run test:production-readiness
           npm run test:readiness-materialization
+          npm run test:project-onboarding
           npm run test:dependency-upgrade-validator
 
       - name: Install locked security tools

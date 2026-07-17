@@ -40,7 +40,13 @@ Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 \`g
 
 ## 남은 작업
 
+### 공통 저장소에서 진행 가능
+
 1. 없음
+
+### 외부 입력·실제 환경 대기
+
+1. [프로젝트 입력 대기] 없음
 
 ## 다음 시작점
 
@@ -94,6 +100,15 @@ git("add", "HANDOFF.md");
 const completedAsNext = validate("staged");
 assert.notEqual(completedAsNext.status, 0);
 assert.match(completedAsNext.stderr, /lists completed work as next work/);
+
+writeFileSync(
+  join(fixture, "HANDOFF.md"),
+  validHandoff.replace("### 외부 입력·실제 환경 대기\n\n1. [프로젝트 입력 대기] 없음\n\n", ""),
+);
+git("add", "HANDOFF.md");
+const unclassified = validate("staged");
+assert.notEqual(unclassified.status, 0);
+assert.match(unclassified.stderr, /must classify remaining work/);
 
 writeFileSync(join(fixture, "HANDOFF.md"), validHandoff.replace("- 초기화", "- 변경 완료"));
 git("add", "HANDOFF.md");

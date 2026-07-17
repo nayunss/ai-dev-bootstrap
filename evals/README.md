@@ -18,6 +18,9 @@ atomic patch budget, 고정 hash, selection strict improvement, hard gate, locke
 검증한다. 이는 범용 Eval runner 구현 완료를 뜻하지 않는다.
 `baselines/skill-evolution-*`에는 이 reference pilot의 고정 record, sanitized selection 집계와 거절
 reason buffer만 보존한다. trajectory 원문, test fixture 내용과 모델 출력은 포함하지 않는다.
+`fixtures/skill-evolution/trial-plan.offline.json`과
+`scripts/validate-skill-evolution-trial.mjs`는 실제 호출 전 dry-run 계약을 검증한다. 이 PASS는 실제
+모델 실행, 비결정 성능 개선이나 release 승인이 아니다.
 
 REQ-046 준비 automation은 `fixtures/distributed-pilot/`의 synthetic campaign·두 result와
 `scripts/validate-pilot-result.mjs`, `scripts/aggregate-pilot-results.mjs`를 사용한다. 고정 baseline은

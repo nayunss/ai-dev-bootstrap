@@ -1,6 +1,6 @@
 # 다중 참여자 Downstream Pilot 검증 가이드
 
-상태: 제안
+상태: 설계 승인
 
 ## 목적
 
@@ -47,7 +47,7 @@ pilot-workspace/
 한 사람이 여러 역할을 맡을 수 있다. 혼자 검증할 때는 tester·coordinator·maintainer 역할을 명시하고,
 구현 직후가 아닌 깨끗한 별도 trial에서 self-review한다. 여러 사람이 참여하면 최소한 다른 reviewer가
 증거와 upstream 반영 범위를 확인한다. 참여자 수와 관계없이 시작 시 확정한 maintainer·tester 명단과
-필수 검증 matrix가 설계 완료 판정의 모집단이다.
+필수 검증 matrix가 설계 검증 완료 판정의 모집단이다.
 
 ## AI 도구 Provenance
 
@@ -270,7 +270,7 @@ PASS와 최소 독립 tester 수를 충족한 실제 campaign만 `COMPLETE`다. 
 
 ## 설계 단계 완료 판정
 
-설계 완료는 시작 시 등록한 **참여 maintainer를 포함한 모든 tester**가 자신에게 배정된 frontend·backend·
+설계 검증 완료는 시작 시 등록한 **참여 maintainer를 포함한 모든 tester**가 자신에게 배정된 frontend·backend·
 full-stack 테스트·검증 항목을 전부 `PASS`한 경우에만 판정한다. 한 사람이라면 그 사람이 맡은 maintainer·
 tester 항목과 clean self-review가 모두 PASS해야 한다. 여러 사람이라면 일부 참여자의 성공이나 다수결로
 대체하지 않는다.

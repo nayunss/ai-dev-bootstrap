@@ -47,6 +47,11 @@ const required = ["# Handoff", "갱신:", "상태:", "## 목표", "## 완료", "
 for (const marker of required) {
   if (!content.includes(marker)) throw new Error(`HANDOFF.md is missing required marker: ${marker}`);
 }
+for (const classification of ["### 공통 저장소에서 진행 가능", "### 외부 입력·실제 환경 대기"]) {
+  if (!content.includes(classification)) {
+    throw new Error(`HANDOFF.md must classify remaining work with: ${classification}`);
+  }
+}
 if (!content.endsWith("\n")) throw new Error("HANDOFF.md must end with a newline.");
 if (/^(?:<{7}|={7}|>{7})/m.test(content)) throw new Error("HANDOFF.md contains an unresolved conflict marker.");
 if (!/^갱신:\s*\d{4}-\d{2}-\d{2}(?:\s+.+)?$/m.test(content)) {

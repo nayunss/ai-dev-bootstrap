@@ -1,6 +1,6 @@
 # 프로젝트 개발환경 정의
 
-상태: 제안
+상태: 설계 승인
 
 ## 결론
 
@@ -164,6 +164,11 @@ project의 `docs/production-readiness.json`으로 검토·materialize하고 `TBD
 운영 중인 기존 project는 `scripts/bootstrap preview <target>`에서 누락을 확인한 뒤
 `scripts/bootstrap readiness <target>`으로 같은 template을 추가할 수 있다. 명령은 기존 profile을
 덮어쓰지 않으므로 기존 정책이 있으면 사람이 schema·근거를 비교해 migration한다.
+REQ-041 model trial과 REQ-042 upstream adoption까지 함께 초기화하거나 retrofit할 때는
+`scripts/bootstrap onboarding <target>`을 사용한다. 이 명령은 프로젝트마다 달라지는 model·harness·
+비용·network·reviewer와 release·checksum·target·rollback을 질문하고, 답을 추측하지 않은 blocked
+template을 생성한다. 기존 세 profile 중 일부만 존재하면 존재하는 파일은 byte 단위로 보존하고
+누락된 파일만 추가한다.
 API project는 [API 계약과 문서화 프로파일](api-contract-documentation.md)의 framework·contract·
 문서 UI 분리 질문과 production exposure gate를 함께 적용한다.
 

@@ -7,7 +7,11 @@ const root = resolve(process.argv[2] ?? ".");
 const discovered = discoverApplications(root);
 const inventory = readDeclaredInventory(root);
 const declared = new Set((inventory?.applications ?? []).map((application) => application.manifest));
-const readinessProfile = "docs/production-readiness.json";
+const decisionProfiles = [
+  ["Production readiness", "docs/production-readiness.json"],
+  ["Skill evolution trial", "docs/skill-evolution-trial.json"],
+  ["Upstream adoption", "docs/upstream-adoption.json"],
+];
 
 process.stdout.write("Application inventory preview\n");
 for (const application of discovered) {
@@ -21,9 +25,13 @@ else {
   process.stdout.write(`- Drift: ${missing.length === 0 ? "no undeclared manifests" : `${missing.length} undeclared manifest(s)`}\n`);
   process.stdout.write("- Shared review: CodeSight, EditorConfig, adapters, hook, CI and deploy evidence\n");
 }
-if (existsSync(join(root, readinessProfile))) {
-  process.stdout.write(`- Production readiness: ${readinessProfile} exists; preserve and validate it\n`);
-} else {
-  process.stdout.write(`- Production readiness: ${readinessProfile} is missing; review web/Production applicability\n`);
-  process.stdout.write(`- Applicable-project remediation: scripts/bootstrap readiness ${root}\n`);
+let missingDecisionProfile = false;
+for (const [label, profile] of decisionProfiles) {
+  if (existsSync(join(root, profile))) {
+    process.stdout.write(`- ${label}: ${profile} exists; preserve and validate it\n`);
+  } else {
+    missingDecisionProfile = true;
+    process.stdout.write(`- ${label}: ${profile} is missing; project-specific decisions remain unresolved\n`);
+  }
 }
+if (missingDecisionProfile) process.stdout.write(`- Initial/retrofit remediation: scripts/bootstrap onboarding ${root}\n`);

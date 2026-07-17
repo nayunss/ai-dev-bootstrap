@@ -1,6 +1,6 @@
 # GitHub Actions CI와 Vercel 배포 프로파일
 
-상태: 제안
+상태: 설계 승인
 
 ## 원칙
 
