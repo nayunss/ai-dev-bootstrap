@@ -3,8 +3,8 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks
-다음 작업: REQ-042, REQ-041
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager
+다음 작업: REQ-041
 
 ## 목표
 
@@ -72,6 +72,9 @@ pilot 검증 단계다.
   `summary.json`만 포함해 2026-07-31까지 정확히 14일 보존된다.
 - PR #4 병합 후 main run `29552778527`도 두 job이 PASS했다. 사람 검토 후 `main` branch protection에
   `security`와 `license-provenance`를 strict required checks로 지정하고 관리자에게도 적용했다.
+- REQ-042 Codex·Claude Code 선택형 adapter manager를 구현했다. 기본 preview, 선택 adapter만 적용,
+  `--approve` 승인 경계, generator/source/target SHA-256 lock, downstream drift 차단과 생성 전 존재한
+  파일·사용자가 변경한 파일을 보존하는 uninstall 계약을 임시 fixture에서 검증했다.
 
 ## 현재 상태
 
@@ -102,6 +105,8 @@ pilot 검증 단계다.
 - downstream은 upstream을 symlink·submodule·실시간 참조하지 않고 승인된 release를 고정 적용한다.
 - pilot PASS는 해당 stack·환경의 증거이며 모든 stack이나 Production readiness 완료를 뜻하지 않는다.
 - 실제 프로젝트의 기존 사용자 파일과 변경을 보존하며 Git stage는 대상 파일을 명시해서 수행한다.
+- 선택 adapter 적용 증적은 `.ai/manifests/adapters.lock.json`이며 release-level
+  `.ai/manifests/upstream.lock.yaml`의 구현을 대신하지 않는다.
 
 ## 변경 파일
 
@@ -118,6 +123,13 @@ pilot 검증 단계다.
 - `.ai/workflows/handoff.md`, `docs/requirements.md`, `scripts/validate-handoff.mjs`,
   `scripts/test-handoff-validator.mjs`: 원격 PR #3에서 병합된 HANDOFF 현행화 계약
 - `docs/README.md`, `docs/releases/v0.2.3-pilot.md`: 원격 PR #2에서 병합된 release 증적
+- `adapters/codex/`, `adapters/claude-code/`: 선택적으로 materialize할 Codex·Claude Code 파일 source
+- `scripts/manage-adapters.mjs`, `scripts/test-adapter-manager.mjs`: preview·승인 apply, hash drift,
+  기존·변경 파일 보존 uninstall과 결정론적 Eval
+- `scripts/bootstrap`, `scripts/validate-downstream.mjs`, `scripts/test-downstream-validator.mjs`:
+  adapter 명령 진입점과 lock 존재 시 downstream drift gate
+- `.github/workflows/security.yml`, `package.json`: adapter Eval의 hosted security job 실행
+- `docs/upstream-downstream-architecture.md`, `docs/requirements.md`: 구현 범위와 REQ-042 상태 현행화
 
 ## 검증
 
@@ -151,17 +163,22 @@ pilot 검증 단계다.
 - sanitized artifact raw license text 부재·14일 만료 metadata: PASS
 - main branch protection strict required checks `security`·`license-provenance`: PASS
 - protection 관리자 적용·force push 차단·branch 삭제 차단: PASS
+- Codex·Claude Code adapter source와 현재 root adapter의 byte equality: PASS
+- adapter preview 무변경·선택 적용·generator/source/target hash lock Eval: PASS
+- 미승인 apply/uninstall 차단·기존 파일 충돌 atomic 차단 Eval: PASS
+- 생성 전 동일 파일·적용 후 drift 파일 보존과 관리 파일 제거 uninstall Eval: PASS
+- adapter lock을 통한 downstream target drift negative fixture: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. REQ-042 Codex·Claude Code 선택형 adapter의 preview·source hash·drift·uninstall 보존 Eval을 구현한다.
-2. 필수 gate가 안정된 뒤 REQ-041 bounded-patch pilot을 수행한다.
-3. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
+1. 필수 gate가 안정된 뒤 REQ-041 bounded-patch pilot을 수행한다.
+2. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
    준비될 때까지 Production 승인을 차단한다.
-4. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+3. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+4. REQ-042의 다른 AI 도구 adapter와 release-level 공통 core materializer는 별도 preview·Eval 후 확장한다.
 
 ## 위험·주의
 

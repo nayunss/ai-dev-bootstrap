@@ -274,6 +274,17 @@ if (existsSync(join(root, "scripts/validate-mcp-manifest.mjs"))) {
   const mcp = spawnSync(process.execPath, ["scripts/validate-mcp-manifest.mjs"], { cwd: root, encoding: "utf8" });
   if (mcp.status !== 0) errors.push(mcp.stderr.trim() || "MCP manifest validation failed");
 }
+if (existsSync(join(root, ".ai/manifests/adapters.lock.json"))) {
+  if (!existsSync(join(root, "scripts/manage-adapters.mjs"))) {
+    errors.push("adapter lock requires scripts/manage-adapters.mjs");
+  } else {
+    const adapters = spawnSync(process.execPath, ["scripts/manage-adapters.mjs", "validate", root], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    if (adapters.status !== 0) errors.push(adapters.stderr.trim() || "adapter hash validation failed");
+  }
+}
 
 for (const note of notes) process.stdout.write(`NOTE: ${note}\n`);
 if (errors.length) {

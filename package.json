@@ -17,6 +17,7 @@
     "validate:handoff": "node scripts/validate-handoff.mjs full",
     "test:handoff-validator": "node scripts/test-handoff-validator.mjs",
     "test:downstream-validator": "node scripts/test-downstream-validator.mjs",
+    "test:adapter-manager": "node scripts/test-adapter-manager.mjs",
     "test:production-readiness": "node scripts/test-production-readiness.mjs",
     "test:readiness-materialization": "node scripts/test-readiness-materialization.mjs",
     "test:dependency-upgrade-validator": "node scripts/test-dependency-upgrade-validator.mjs",

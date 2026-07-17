@@ -18,13 +18,33 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 | release tag·archive checksum | v0.2.0~v0.2.2 pilot 발행 완료, v0.2.3 발행 준비 중 |
 | application preview·validator | reference automation 적용, 지원 stack·profile 제한 존재 |
 | `upstream.lock` schema·생성·parser | 목표 설계, 미구현 |
-| 공통 코어·선택 adapter materialization | env-be 수동 pilot 근거만 존재, 범용 명령 미구현 |
+| 공통 코어 materialization | env-be 수동 pilot 근거만 존재, 범용 명령 미구현 |
+| Codex·Claude Code 선택 adapter materialization | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
 | downstream security tool 설치 | 미구현; 현재 `security-tools`는 upstream `.tools/`에 설치 |
 | stack별 dependency bootstrap | npm·pnpm root 경로만 부분 구현 |
 | upgrade diff·migration·rollback 자동화 | 목표 설계, 미구현 |
 
 미구현 항목은 실행 가능한 기능으로 완료 표시하지 않는다. 실제 환경 구축 단계에서 schema·generator·
 validator·migration과 clean clone Eval을 함께 구현한다.
+
+### 현재 선택형 adapter 명령
+
+REQ-042 범위의 reference materializer는 논리적 source를 `adapters/codex/`와
+`adapters/claude-code/`에 두고, 선택한 adapter만 target에 적용한다. 기본 동작은 read-only
+preview이며 apply와 uninstall은 `--approve`가 없으면 종료 코드 2로 차단한다.
+
+```sh
+scripts/bootstrap adapters preview /absolute/path/to/project codex,claude-code
+scripts/bootstrap adapters apply /absolute/path/to/project codex --approve
+scripts/bootstrap adapters validate /absolute/path/to/project
+scripts/bootstrap adapters uninstall /absolute/path/to/project codex --approve
+```
+
+적용 시 `.ai/manifests/adapters.lock.json`에 generator version, adapter source hash, 파일별 source·target
+SHA-256과 생성 소유권을 기록한다. validator와 CI는 source·target·generator drift를 fail-closed한다.
+uninstall은 이 작업이 생성했고 이후 수정되지 않은 파일만 제거한다. 적용 전에 존재했던 동일 파일과
+적용 후 변경된 파일은 보존하며, 기존 파일이 source와 다르면 apply 전체를 쓰기 전에 차단한다.
+이 lock은 선택 adapter의 생성 증적이며 아직 미구현인 release-level `upstream.lock`을 대신하지 않는다.
 
 ## upstream.lock의 역할
 

@@ -15,6 +15,7 @@ Bootstrap preview
 - Deployment install: approved exact-version build-script allowlist and separate provider-equivalent Eval required
 - Git/Vercel: verified commit identity and duplicate repository integration check required before push/import
 - AI adapters: AGENTS.md and CLAUDE.md reference the shared .ai engineering and security standards
+- Optional AI adapters: preview and explicitly approve only selected Codex or Claude Code files
 - Security binaries: exact versions and checksums from .ai/manifests/security-tools.yaml
 - Playwright browser binaries: excluded; separate preview and Human-in-the-loop approval required
 - Husky: excluded until the downstream environment and quality commands pass
@@ -30,6 +31,13 @@ Validate a downstream project: scripts/validate /absolute/path/to/project
 Validate a readiness profile: node scripts/validate-production-readiness.mjs PROFILE --expect-blocked
 Add a missing readiness profile without overwriting existing policy:
   scripts/bootstrap readiness /absolute/path/to/project
+Preview selected AI adapters without changing the target:
+  scripts/bootstrap adapters preview /absolute/path/to/project codex,claude-code
+Apply or uninstall reviewed adapters:
+  scripts/bootstrap adapters apply /absolute/path/to/project codex --approve
+  scripts/bootstrap adapters uninstall /absolute/path/to/project codex --approve
+Validate adapter generator, source and target hashes:
+  scripts/bootstrap adapters validate /absolute/path/to/project
 Online vulnerability audit: scripts/validate /absolute/path/to/project --online-audit
 EOF
     if [ -n "${2:-}" ]; then
@@ -84,8 +92,24 @@ EOF
     TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
     node "$ROOT/scripts/materialize-production-readiness.mjs" "$TARGET"
     ;;
+  adapters)
+    ACTION=${2:-}
+    TARGET=${3:-}
+    SELECTION=${4:-}
+    APPROVAL=${5:-}
+    if [ -z "$ACTION" ] || [ -z "$TARGET" ]; then
+      echo "Adapter management requires an action and target project." >&2
+      exit 2
+    fi
+    TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
+    if [ "$ACTION" = "validate" ]; then
+      node "$ROOT/scripts/manage-adapters.mjs" validate "$TARGET"
+    else
+      node "$ROOT/scripts/manage-adapters.mjs" "$ACTION" "$TARGET" "$SELECTION" "$APPROVAL"
+    fi
+    ;;
   *)
-    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools|dependencies TARGET --allow-network|readiness TARGET]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools|dependencies TARGET --allow-network|readiness TARGET|adapters ACTION TARGET [codex,claude-code] [--approve]]" >&2
     exit 2
     ;;
 esac
