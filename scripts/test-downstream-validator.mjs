@@ -11,6 +11,7 @@ const fixture = mkdtempSync(join(tmpdir(), "downstream-validator-"));
 mkdirSync(join(fixture, "docs"), { recursive: true });
 for (const path of [
   ".ai",
+  "adapters",
   ".claude",
   ".codex",
   "security",
@@ -49,6 +50,20 @@ function validate() {
   });
 }
 
+assert.equal(validate().status, 0);
+
+const adapterApply = spawnSync(
+  process.execPath,
+  [join(fixture, "scripts/manage-adapters.mjs"), "apply", fixture, "codex", "--approve"],
+  { encoding: "utf8" },
+);
+assert.equal(adapterApply.status, 0);
+assert.equal(validate().status, 0);
+writeFileSync(join(fixture, ".codex/hooks.json"), "{}\n");
+const adapterDrift = validate();
+assert.notEqual(adapterDrift.status, 0);
+assert.match(adapterDrift.stderr, /target drift: \.codex\/hooks\.json/);
+cpSync(join(root, ".codex/hooks.json"), join(fixture, ".codex/hooks.json"));
 assert.equal(validate().status, 0);
 
 mkdirSync(join(fixture, "frontend"), { recursive: true });
