@@ -4,7 +4,19 @@
 
 | Workflow | Triggers | Jobs | Deploy | Environments |
 |---|---|---|---|---|
-| Security | pull_request, push | 1 | — | — |
+| Security | pull_request, push | 2 | — | — |
+
+### Security
+
+> `.github/workflows/security.yml`
+
+- **security** on `ubuntu-latest` — 10 steps
+  - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
+  - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
+- **license-provenance** on `ubuntu-24.04` — 6 steps
+  - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
+  - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
+  - `actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02`
 
 ---
 _Source: .github/workflows/security.yml_

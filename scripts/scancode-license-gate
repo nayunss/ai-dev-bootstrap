@@ -1,0 +1,68 @@
+#!/bin/bash
+set -euo pipefail
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+ARCHIVE_NAME=scancode-toolkit-v32.5.0_py3.12-linux.tar.gz
+ARCHIVE_URL="https://github.com/aboutcode-org/scancode-toolkit/releases/download/v32.5.0/$ARCHIVE_NAME"
+ARCHIVE_SHA256=638adcd0af576d1f4d5b64dde228724b3ca4fdee2c4de20d88e4356be353f027
+IMAGE="docker.io/library/python@sha256:1b48a1b13ec678be8d84974541cc007d4367aaf01f985231daad1a940106efc0"
+EXPECTED_PODMAN_VERSION=4.9.3
+WORK=${RUNNER_TEMP:-"$ROOT/.tools"}/scancode-ci
+INPUT="$WORK/input"
+OUTPUT="$WORK/output"
+RUNTIME_VOLUME="scancode-ci-${GITHUB_RUN_ID:-local}-${GITHUB_RUN_ATTEMPT:-1}"
+
+case "$WORK" in
+  "$ROOT/.tools"/*|/home/runner/work/_temp/*) ;;
+  *) echo "Unsafe ScanCode work path: $WORK" >&2; exit 2 ;;
+esac
+
+rm -rf "$WORK"
+mkdir -p "$WORK" "$INPUT" "$OUTPUT"
+: > "$WORK/tracked-files.txt"
+git -C "$ROOT" ls-files | while IFS= read -r file; do
+  case "$file" in
+    .env|.env.*|*/.env|*/.env.*|.git/*|.tools/*) continue ;;
+  esac
+  printf '%s\n' "$file"
+done > "$WORK/tracked-files.txt"
+
+test -s "$WORK/tracked-files.txt"
+COPYFILE_DISABLE=1 tar --no-xattrs -C "$ROOT" -czf "$WORK/tracked-files.tar.gz" -T "$WORK/tracked-files.txt"
+tar -C "$INPUT" -xzf "$WORK/tracked-files.tar.gz"
+
+actual_podman_version=$(podman version --format '{{.Client.Version}}')
+test "$actual_podman_version" = "$EXPECTED_PODMAN_VERSION" || {
+  echo "Podman version changed: expected $EXPECTED_PODMAN_VERSION, got $actual_podman_version" >&2
+  exit 1
+}
+
+curl --proto '=https' --tlsv1.2 --fail --location --retry 2 --max-time 300 \
+  --output "$WORK/$ARCHIVE_NAME" "$ARCHIVE_URL"
+printf '%s  %s\n' "$ARCHIVE_SHA256" "$WORK/$ARCHIVE_NAME" | sha256sum --check --status
+
+podman pull --platform linux/amd64 "$IMAGE"
+test "$(podman image inspect "$IMAGE" --format '{{.Digest}}')" = "sha256:1b48a1b13ec678be8d84974541cc007d4367aaf01f985231daad1a940106efc0"
+podman volume create "$RUNTIME_VOLUME" >/dev/null
+trap 'podman volume rm "$RUNTIME_VOLUME" >/dev/null 2>&1 || true' EXIT
+
+podman run --rm --platform linux/amd64 --network none --read-only --cap-drop all \
+  --security-opt no-new-privileges \
+  -e HOME=/runtime/home -e XDG_CACHE_HOME=/runtime/cache -e TMPDIR=/tmp \
+  --tmpfs /tmp:rw,nosuid,nodev,size=1073741824 \
+  -v "$RUNTIME_VOLUME:/runtime:rw" \
+  -v "$WORK/$ARCHIVE_NAME:/archive/scancode.tar.gz:ro" \
+  -v "$INPUT:/input:ro" -v "$OUTPUT:/output:rw" \
+  "$IMAGE" sh -c '
+    set -eu
+    mkdir -p /runtime/install /runtime/home /runtime/cache
+    sha256sum /archive/scancode.tar.gz
+    tar --no-same-owner -xzf /archive/scancode.tar.gz -C /runtime/install
+    cd /runtime/install/scancode-toolkit-v32.5.0
+    timeout 600 ./scancode --no-check-version --processes 1 --license --license-text \
+      --copyright --json-pp /output/scancode.json /input
+    test ! -e /runtime/cache/scancode-version-check.json
+    test ! -e /runtime/home/.cache/scancode-version-check.json
+  '
+
+node "$ROOT/scripts/evaluate-scancode-report.mjs" "$OUTPUT/scancode.json" "$OUTPUT/summary.json"

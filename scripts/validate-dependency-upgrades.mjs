@@ -53,7 +53,6 @@ function approvals() {
     ids.add(entry.id);
     if (entry.status !== "approved") throw new Error(`${entry.id}: status must be approved.`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.approvedAt) || !/^\d{4}-\d{2}-\d{2}$/.test(entry.expiresAt)) throw new Error(`${entry.id}: invalid approval date.`);
-    if (entry.expiresAt < new Date().toISOString().slice(0, 10)) throw new Error(`${entry.id}: approval expired.`);
     if (!Array.isArray(entry.validation) || entry.validation.length === 0) throw new Error(`${entry.id}: validation plan is required.`);
   }
   return manifest.entries;
@@ -61,6 +60,10 @@ function approvals() {
 
 function sha256(value) {
   return `sha256:${createHash("sha256").update(value).digest("hex")}`;
+}
+
+function active(entry) {
+  return entry.expiresAt >= new Date().toISOString().slice(0, 10);
 }
 
 const entries = approvals();
@@ -84,7 +87,7 @@ for (const path of changed.filter((file) => file.endsWith("package.json"))) {
 }
 
 for (const change of versionChanges) {
-  const approved = entries.some((entry) =>
+  const approved = entries.some((entry) => active(entry) &&
     entry.package === change.package && entry.manifest === change.manifest && entry.from === change.from && entry.to === change.to,
   );
   if (!approved) throw new Error(`Unapproved dependency version change: ${change.manifest} ${change.package} ${change.from} -> ${change.to}`);
@@ -95,7 +98,7 @@ for (const path of changed.filter((file) => lockfiles.has(file.split("/").at(-1)
   const before = content(refFor("before"), path);
   const after = content(refFor("after"), path);
   if (before === null || after === null || before === after) continue;
-  const approved = entries.some((entry) =>
+  const approved = entries.some((entry) => active(entry) &&
     entry.package === "__lockfile__" && entry.manifest === path && entry.from === sha256(before) && entry.to === sha256(after),
   );
   if (!approved) throw new Error(`Unapproved lockfile-only change: ${path} ${sha256(before)} -> ${sha256(after)}`);

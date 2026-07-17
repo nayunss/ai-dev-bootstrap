@@ -37,7 +37,7 @@
 | REQ-040 | 부분 검증 | 초기 owner·retention·multi-instance 질문 template/validator와 env-be의 BOLA, 단일-instance rate limit, log redaction·correlation, 격리 logical restore, readiness Eval·BFF fixture PASS. 실제 운영 결정·Production provider restore는 차단 상태 |
 | REQ-041 | 설계 완료 | bounded-patch pilot과 격리 grader Eval 미착수 |
 | REQ-042 | 부분 구현 | canonical `.ai/`와 Codex·Claude adapter 적용, generator hash·uninstall Eval 미완료 |
-| REQ-043 | 설계 완료 | scanner 공급망 심사와 source-match fixture 미착수 |
+| REQ-043 | 부분 검증 | 후보 심사, ScanCode synthetic·project pilot, 조건부 hosted CI PASS. true public-corpus snippet provenance는 미검증 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
 | REQ-046 | 설계 완료 | 단독·다중 pilot, downstream 시작·blind 검증·feedback schema와 AI provenance·전원 PASS 계약 작성. 독립 tester 간 실제 재현·결과 취합 운영은 미검증 |
@@ -864,6 +864,10 @@
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-07-14 | REQ-043 scanner 후보의 공급망·외부 전송·비용과 suppression 계약 1차 심사 |
+| 2026-07-14 | REQ-043 ScanCode 32.5.0 고정 digest·network-none Podman synthetic security pilot PASS |
+| 2026-07-14 | REQ-043 ScanCode read-only tracked-project pilot PASS, documentation·metadata finding은 MANUAL_REVIEW |
+| 2026-07-14 | REQ-043 고정 digest·network-none ScanCode 조건부 CI gate와 fail-closed evaluator 구현 |
 | 2026-07-14 | 작업 종료 HANDOFF의 날짜·Git authority·완료/다음 작업 drift 검증 강화 |
 | 2026-07-12 | 여러 tester의 frontend·backend·full-stack 독립 downstream pilot·증거·환류 요구사항 추가 |
 | 2026-07-11 | 초기 목표와 확정 요구사항 작성 |

@@ -20,6 +20,7 @@
     "test:production-readiness": "node scripts/test-production-readiness.mjs",
     "test:readiness-materialization": "node scripts/test-readiness-materialization.mjs",
     "test:dependency-upgrade-validator": "node scripts/test-dependency-upgrade-validator.mjs",
+    "test:scancode-report-evaluator": "node scripts/test-scancode-report-evaluator.mjs",
     "validate:dependency-upgrades": "node scripts/validate-dependency-upgrades.mjs full",
     "bootstrap": "scripts/bootstrap preview",
     "validate": "scripts/validate ."
