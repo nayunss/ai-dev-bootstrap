@@ -27,7 +27,7 @@ REQ-046의 “설계 완료”라는 기존 표현은 이 감사의 **설계 명
 
 ## 감사 범위
 
-- 요구사항: `REQ-001`~`REQ-046`의 고유 ID, 승인 상태와 구현·검증 추적
+- 요구사항: REQ-001–REQ-046의 고유 ID, 승인 상태와 구현·검증 추적
 - normative source: `.ai/standards/`, `.ai/workflows/`, `docs/requirements.md`
 - architecture·operation: `docs/architecture.md`, `docs/harness.md`,
   `docs/upstream-downstream-architecture.md`, `docs/adoption-and-maintenance-model.md`

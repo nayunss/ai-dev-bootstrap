@@ -8,7 +8,7 @@
   "documentationSync": {
     "source": "docs/requirements.md",
     "statusModel": "implementation-and-verification-separated",
-    "latestRequirementId": "REQ-048",
+    "latestRequirementId": "REQ-052",
     "stackPriorityAsOf": "2026-07-17",
     "settingsBoundaryApprovedAt": "2026-07-17",
     "skillPluginDistributionApprovedAt": "2026-07-17",
@@ -16,7 +16,8 @@
     "branchReviewProfileApprovedAt": "2026-07-17",
     "ciDeploymentProfileApprovedAt": "2026-07-17",
     "repositoryTopologyPriorityAsOf": "2026-07-17",
-    "developmentEnvironmentProfileSchemaApprovedAt": "2026-07-17"
+    "developmentEnvironmentProfileSchemaApprovedAt": "2026-07-17",
+    "downstreamFeedbackTriagedAt": "2026-07-17"
   },
   "requirements": [
     {

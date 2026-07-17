@@ -1,6 +1,6 @@
 {
   "name": "common-ai-development-harness",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": true,
   "packageManager": "npm@10.9.8",
   "engines": {

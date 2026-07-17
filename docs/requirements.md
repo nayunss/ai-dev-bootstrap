@@ -12,7 +12,7 @@
 
 ## 확정 요구사항
 
-이 절의 `REQ-001`~`REQ-048`는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
+이 절의 REQ-001–REQ-052는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
 구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
 `HANDOFF.md`를 같은 작업에서 갱신한다.
 
@@ -35,15 +35,19 @@
 | REQ-029–REQ-030 | 설계 구현 | downstream 미검증 | BaaS·HITL 질문·승인 계약은 작성. provider별 IAM·Rules·복구 Eval은 실제 project 대기 |
 | REQ-031–REQ-036 | 부분 구현 | 부분 검증 | 민감 파일·MCP 기본 차단, bootstrap·dependency·build policy와 GitHub CI gate가 발행됨. provider-neutral Git·branch/review·CI/deployment profile schema와 adapter fixture는 미구현이며 실제 IAM·deploy는 환경 대기 |
 | REQ-037–REQ-039 | reference 구현 | deterministic PASS | Codex·Claude Code·GitHub Copilot의 공통 policy·role·permission manifest와 source/materialized parity Eval PASS. Codex·Claude hook outcome과 Copilot의 명시적 공통 fallback을 구분하며 native 기능의 권한 확대·전역 persona를 차단. 실제 model별 outcome 비교는 미수행 |
-| REQ-040 | reference 구현 | synthetic PASS | schema v2 hard gate, onboarding 질문·blocked template·보존 retrofit Eval PASS. 법률·retention owner, 다중-instance limiter와 provider restore의 실제 운영 증거는 미제공 |
+| REQ-040 | reference 구현 | synthetic PASS | schema v2 hard gate, onboarding 질문·blocked template·보존 retrofit Eval PASS. 법률·retention owner, 다중-instance limiter와 provider restore의 실제 운영 증거는 미제공이며 정책 주장과 구현 증거의 연결은 REQ-049로 분리해 NOT-RUN |
 | REQ-041 | reference 구현 | synthetic PASS | bounded patch와 offline trial gate·project별 model/harness 설정 template PASS. 실제 model 비결정 trial·held-out 사람 검토·release는 NOT-RUN |
 | REQ-042 | 부분 구현 | reference PASS | Codex·Claude Code·GitHub Copilot adapter, canonical YAML lock·manifest/core materializer와 transaction upgrade·rollback이 발행됨. skill bundle·plugin catalog 배포 연계와 real downstream upgrade·rollback은 NOT-RUN |
 | REQ-043 | 조건부 구현 | 부분 검증 | ScanCode 공급망 심사, network-none synthetic·read-only project pilot과 hosted CI PASS. true public-corpus source snippet provenance는 미검증 |
 | REQ-044 | reference 구현 | deterministic·pilot PASS | 기존 Spring Boot 4/SpringDoc 3·Next.js BFF pilot에 더해 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift, route inventory의 undocumented/stale operation과 Production `/openapi.json`·`/docs`·`/redoc` exposure synthetic Eval PASS. 실제 FastAPI runtime·authorization E2E는 미수행 |
 | REQ-045 | reference 구현 | deterministic·pilot PASS | 재귀 inventory와 최초 full-stack materializer·transaction rollback fixture PASS. 우선순위 stack starter·single/workspace monorepo profile matrix와 실제 DB execution·restore는 NOT-RUN |
-| REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator와 2-tester synthetic regression PASS. 실제 독립 tester campaign·결과 취합은 NOT-RUN |
+| REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator와 2-tester synthetic regression PASS. 실제 독립 tester campaign·결과 취합 및 feedback baseline의 upstream release·commit·checksum 전이 검증은 NOT-RUN |
 | REQ-047 | 설계 승인 | 구현·검증 NOT-RUN | 비개발자용 signed desktop app과 전문가용 CLI가 동일 adoption core를 사용하는 one-button 도입, release bundle·checksum·preview·transaction rollback·릴리즈별 자동 갱신 계약을 검토 완료. app·release automation·사용성 Eval은 미구현 |
 | REQ-048 | 설계 승인 | 구현·검증 NOT-RUN | canonical YAML 개발환경 profile, JSON Schema 구조 검증과 의미·repository drift·단계별 readiness validator 범위를 확정. schema·validator·migration·fixture는 미구현 |
+| REQ-049 | 설계 승인 | 구현·검증 NOT-RUN | 정책·법률 주장을 실제 강제 지점과 반증 가능한 증거에 연결하는 공통 계약을 확정. validator·fixture는 미구현 |
+| REQ-050 | 설계 승인 | 구현·검증 NOT-RUN | staged tree 기준 생성물 일관성과 check-only 명령의 tracked source 무변경 계약을 확정. validator·fixture는 미구현 |
+| REQ-051 | 설계 승인 | 구현·검증 NOT-RUN | push·CI·deploy·health·행동 검증·Production 승인을 분리하는 delivery evidence 상태 계약을 확정. schema·adapter·fixture는 미구현 |
+| REQ-052 | 설계 승인 | 구현·검증 NOT-RUN | frontend·BFF·backend 전반의 project별 사용자 표시 언어 계약을 확정. adapter·cross-stack fixture는 미구현 |
 
 ### 요구사항별 문서·산출물 추적
 
@@ -77,6 +81,10 @@
 | REQ-046 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [pilot result schema](schemas/distributed-pilot-result.schema.json), [pilot campaign template](templates/distributed-pilot-campaign.json) |
 | REQ-047 | [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
 | REQ-048 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md), [프로젝트 개발환경 정의](project-environment-definition.md), [설정 경계](personal-team-settings-boundary.md), [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
+| REQ-049 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [웹서비스 Production 준비](web-service-production-readiness.md), [API 계약과 문서화](api-contract-documentation.md) |
+| REQ-050 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CodeSight](codesight.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md) |
+| REQ-051 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CI·배포 Provider](ci-deployment-provider-selection.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md) |
+| REQ-052 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [코드 품질 표준](code-quality-standards.md), [API 계약과 문서화](api-contract-documentation.md) |
 
 ### 승인된 횡단 검토 기준
 
@@ -94,6 +102,7 @@
 | 저장소 구조·Template | REQ-020, REQ-026, REQ-033, REQ-045, REQ-047–REQ-048 | application inventory·full-stack materializer 부분 구현, starter profile 미구현 | 기존 full-stack fixture PASS, single/workspace matrix NOT-RUN | `REQ-026-045-stack-profile-fixtures` | [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
 | 비개발자 도입 | REQ-047 | 설계만 승인 | NOT-RUN | `REQ-047-one-click-adoption` | [원클릭 도입](one-click-project-adoption-review.md) |
 | 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | 설계만 승인 | NOT-RUN | `REQ-048-development-profile-schema` | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
+| Downstream 검증 피드백 일반화 | REQ-046, REQ-049–REQ-052 | 원문 13건을 공통 원인 4개와 REQ-046 보강으로 중복 제거·매핑 | 구현·재검증 NOT-RUN | `REQ-049-policy-evidence-validator`, `REQ-050-repository-state-invariants`, `REQ-051-delivery-evidence-states`, `REQ-052-fullstack-locale-contract`, `UF-001-013-downstream-revalidation` | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) |
 
 ### REQ-001: 독립 저장소
 
@@ -711,6 +720,9 @@
 - 운영 중인 기존 project에서 readiness 문서가 누락되면 preview가 이를 표시하고 명시적 retrofit
   명령으로 blocked template을 최초 생성할 수 있어야 한다. 기존 정책 파일은 자동 덮어쓰기·병합하지
   않고, 생성 직후 validator가 `TBD`를 Production blocker로 확인한다.
+- 자유 텍스트가 존재하거나 `TBD`가 아니라는 사실만으로 법률·retention·파기 정책이 구현됐다고
+  판정하지 않는다. 정책 주장과 실제 server enforcement·data flow·반증 가능한 evidence의 연결은
+  REQ-049를 충족해야 하며, 충족 전에는 기존 synthetic PASS와 별개로 Production을 차단한다.
 
 ### REQ-041: Eval로 통제되는 제한적 Skill Evolution
 
@@ -869,6 +881,9 @@
   `docs/distributed-pilot-testing-guide.md`를 따른다.
 - 한 사람이 전 역할을 수행할 수 있으며, 이 경우 배정된 모든 필수 항목과 별도 clean self-review가
   전부 PASS해야 설계 검증 완료로 판정한다.
+- feedback campaign은 upstream repository·release·commit·공개 archive checksum 또는
+  `not-published`, downstream commit과 관찰 상태를 함께 고정한다. 이 기준이 없으면 결과를 일반
+  참고로 보존할 수는 있지만 특정 release의 해결·회귀 판정에는 포함하지 않는다.
 
 ### REQ-047: 비개발자용 원클릭 프로젝트 도입과 Release Bundle
 
@@ -934,6 +949,63 @@
 - 상세 schema field, 상태 모델, 단계별 구현 범위와 완료 조건은
   `docs/development-environment-profile-schema-review.md`를 따른다.
 
+### REQ-049: 정책 주장과 구현·증거의 검증 가능한 연결
+
+- 법률·개인정보·retention·파기·data applicability 주장은 stable claim ID, 적용 data category,
+  적용 범위, 책임자, enforcement layer와 evidence reference로 구조화한다. 자유 텍스트만으로 완료
+  또는 Production 승인 상태를 만들지 않는다.
+- `수집하지 않음`, `사용하지 않음`, `해당 없음`, `접근 차단`, `server에서 강제됨`을 서로 다른
+  상태로 기록한다. Client UI·문서·숨겨진 route는 server-side authorization·validation·deletion을
+  증명하지 않는다.
+- 정책 조항은 관련 source·endpoint·schema·test·provider 또는 운영 evidence에 연결한다. 주장에
+  필요한 연결이 없거나 실제 처리·저장 service와 region이 법률 판단 근거와 다르면 fail-closed한다.
+- 삭제·파기는 token과 session revoke 지연 상한, 삭제 후 read/write 차단과 보존 예외를 포함한다.
+  Retention·legal hold와 실제 파기 경로를 구분하며 시간 경과와 재사용 공격 negative evidence를 둔다.
+- Evidence는 실패할 수 있는 사전 조건·실행·기대 결과를 가져야 한다. 직접 DB 확인이 허용되지 않으면
+  제약 위반 요청, 승인된 provider 증적 또는 동등한 반증 가능 proof를 사용하고 단순 화면 확인을
+  대체 증거로 삼지 않는다.
+- Validator는 법률 결론을 내리지 않는다. 자격 있는 책임자가 승인한 주장에 필요한 연결과 evidence가
+  존재하고 현재 범위에 유효한지만 검사하며, 누락·만료·모순은 Production blocker로 보고한다.
+- 일반화 근거와 UF mapping은 `docs/downstream-feedback-requirement-triage.md`를 따른다.
+
+### REQ-050: Repository 상태 일관성과 Check-only 무변경
+
+- Commit 대상 generated artifact와 탐색 cache는 staged tree에서 산출하거나, working tree와 staged
+  tree가 다르면 partial commit을 차단한다. 관련 없는 working-tree 변경을 자동 stage하지 않는다.
+- Format·lint·typecheck·test·build 등 check-only로 선언된 명령은 실행 전후 tracked source hash와
+  diff를 비교한다. 변경이 발생하면 실패하고 원상복구하거나 명시적인 write mode로 다시 실행하게 한다.
+- 생성물이 필수라면 owner source, 갱신 명령, ignore 여부와 commit 정책을 명시한다. 누락된 cache를
+  임의의 working-tree snapshot으로 생성해 staged commit과 불일치시키지 않는다.
+- Clean tree, staged/unstaged 분리, 생성 누락과 source mutation positive/negative fixture를
+  stack-neutral 계약으로 제공한다. 특정 framework의 부작용은 이 공통 invariant의 adapter fixture로
+  추가한다.
+- 일반화 근거와 UF mapping은 `docs/downstream-feedback-requirement-triage.md`를 따른다.
+
+### REQ-051: Delivery 단계와 Evidence 상태 분리
+
+- Delivery 상태는 최소 `created`, `pushed`, `ci-triggered`, `ci-passed`, `deployed`, `healthy`,
+  `behavior-verified`, `production-approved`로 분리하며 상태마다 run ID·ref·timestamp·scope와
+  evidence reference를 기록한다.
+- Push 성공은 CI 실행 또는 PASS가 아니며, deploy 성공은 health 또는 핵심 behavior 검증이 아니다.
+  Health PASS와 Preview PASS도 Production 승인이나 사용자 flow PASS로 확대하지 않는다.
+- 실행 기록이 없으면 `NOT-RUN`, 실행 실패는 `FAIL`, 외부 조건으로 수행할 수 없으면 `BLOCKED`로
+  기록한다. 앞 단계 성공으로 뒤 단계 결과를 추론하지 않는다.
+- Behavior evidence는 사전 조건, 입력, assertion, cleanup·rollback과 반증 가능한 negative path를
+  포함한다. Provider adapter는 provider 고유 run을 공통 상태에 매핑하되 공통 상태를 합치지 않는다.
+- 일반화 근거와 UF mapping은 `docs/downstream-feedback-requirement-triage.md`를 따른다.
+
+### REQ-052: Cross-stack 사용자 표시 언어·Locale 계약
+
+- 사용자 표시 언어와 지원 locale은 project별 profile에서 결정하며 한국어·영어 또는 특정 언어를
+  공통 기본값으로 강제하지 않는다.
+- Frontend, BFF, backend validation·error response와 사용자에게 노출되는 문서가 선택 locale 계약을
+  일관되게 따른다. Machine-readable error code는 안정적으로 유지하고 raw backend message를 그대로
+  노출하지 않으며 user-facing layer에서 승인된 문구로 매핑한다.
+- HTML `lang`, 날짜·시간·숫자·통화·timezone과 접근성 이름·오류 안내도 같은 locale 계약에 포함한다.
+- 지원 locale별 positive flow와 frontend–BFF–backend validation/error negative flow fixture를
+  제공한다. 내부 log·metric·protocol field는 사용자 표시 언어와 분리한다.
+- 일반화 근거와 UF mapping은 `docs/downstream-feedback-requirement-triage.md`를 따른다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -975,6 +1047,7 @@
 
 | 날짜 | 변경 내용 |
 |---|---|
+| 2026-07-17 | env-be UF-001–UF-013을 일반화·중복 제거해 REQ-049–REQ-052와 REQ-046 보강으로 primary mapping |
 | 2026-07-17 | REQ-048 canonical YAML 개발환경 profile·JSON Schema·read-only validator·migration·fixture 구현 범위 확정 |
 | 2026-07-17 | 최근 횡단 검토 상세를 주제별 문서로 분리하고 requirements에는 불변 조건과 링크만 유지 |
 | 2026-07-17 | 저장소 구조와 생성 방식을 분리하고 단일 starter·retrofit P0, workspace monorepo P1, 전문 orchestrator·조직 template P2 우선순위 확정 |

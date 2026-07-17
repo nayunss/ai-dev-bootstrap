@@ -84,6 +84,25 @@ finding의 심각도·상태와 pilot gate 결과는 같은 값이 아니다. mi
 Tester와 upstream maintainer가 같은 사람이어도 실행 중인 trial의 upstream 기준을 즉시 수정하지 않는다.
 trial 결과를 먼저 고정하고 별도 branch·maintenance 작업으로 보완한 뒤 새 upstream SHA로 재검증한다.
 
+## Upstream Triage
+
+제출된 finding은 requirements에 그대로 복사하지 않는다. Upstream maintainer는 다음 결과를 기록한다.
+
+- 일반화 가능한 공통 원인
+- 중복 finding과 대표 finding
+- 구현·완료 판정을 소유하는 primary REQ 하나
+- 보강할 기존 REQ 또는 새 REQ
+- 구현 상태, 검증 상태와 안정적인 후속 task ID
+- 기각·downstream 고유 판정 사유
+
+여러 기존 REQ가 영향을 받아도 finding의 primary REQ는 하나만 둔다. 관련 REQ는 consumer 또는
+secondary reference로 연결해 같은 결함을 여러 구현 task가 중복 해결하지 않게 한다. Source review와
+synthetic fixture만으로 downstream finding을 `반영됨`이나 `해결`로 바꾸지 않고, 새
+release·commit·checksum을 고정한 실제 downstream 재시험 결과를 요구한다.
+
+`env-be`의 첫 공식 triage와 mapping은
+[Downstream Feedback 요구사항 Triage](downstream-feedback-requirement-triage.md)를 따른다.
+
 ## 추적성
 
 - 관련 문서: [Downstream 시작 가이드](downstream-getting-started.md),

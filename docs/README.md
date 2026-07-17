@@ -6,7 +6,8 @@
 
 | 문서 | 목적 | 상태 |
 |---|---|---|
-| [요구사항](requirements.md) | 승인된 REQ-001–REQ-048과 구현·검증 상태를 추적 | 설계 승인 |
+| [요구사항](requirements.md) | 승인된 REQ-001–REQ-052와 구현·검증 상태를 추적 | 설계 승인 |
+| [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) | downstream 관찰을 일반화·중복 제거해 단일 primary REQ와 후속 task로 매핑 | 설계 승인 |
 | [설계 완료 감사](design-completion-audit.md) | 설계 명세 완료 범위, 실제 구현 경계와 감사 finding | 설계 승인 |
 | [권장 아키텍처](architecture.md) | 도구 중립 코어와 도구별 어댑터 구조 정의 | 설계 승인 |
 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md) | 공개 규약·저장소와 제공 이미지 기반 canonical 구조·adapter 비교 | 검토 완료 |
@@ -73,6 +74,7 @@
 | [v0.2.4-pilot Release](releases/v0.2.4-pilot.md) | 공통 installer·adapter·canonical lock·upgrade rollback automation | 발행 완료 |
 | [v0.2.5-pilot Release](releases/v0.2.5-pilot.md) | deterministic capability·quality·adapter·FastAPI·full-stack materializer | 발행 완료 |
 | [v0.2.6-pilot Release](releases/v0.2.6-pilot.md) | REQ-047·048와 project별 profile·배포·저장소 구조 설계 baseline | 발행 완료 |
+| [v0.2.7-pilot Release](releases/v0.2.7-pilot.md) | UF-001–UF-013 일반화·REQ 매핑과 tool-neutral 추적 자동화 우선순위 baseline | 발행 준비 |
 
 ## 문서 상태
 
