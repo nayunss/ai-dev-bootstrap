@@ -335,8 +335,8 @@ match나 project 전체 license 판정이 아니며 자동 suppression하지 않
   실행한다.
 
 14일 보존은 이 조건부 pilot evidence에만 적용한다. 조직의 법률·retention 책임자가 다른 기간을 정하면
-해당 결정과 파기 검증을 반영해 재승인한다. 현재 구현은 local evaluator와 기존 project pilot report로
-검증했으며 새 GitHub Actions job 자체의 hosted-runner 실행은 commit·push 전이라 아직 `NOT-RUN`이다.
+해당 결정과 파기 검증을 반영해 재승인한다. 구현은 local evaluator와 project pilot report로 검증했고,
+PR #4 hosted `license-provenance` job에서도 PASS했다.
 ScanCode는 계속 license detector일 뿐 public corpus source snippet matcher가 아니므로 REQ-043 전체 완료나
 provenance 보장을 선언하지 않는다.
 
@@ -345,6 +345,13 @@ finding으로 차단되는 것을 확인했다. 경로 예외나 suppression을 
 바꿔 전체를 다시 검사했다. 최종 preview는 113 non-empty file, 233초, error·version cache 0,
 review-only finding 5, source·unclassified finding 0으로 evaluator PASS했다. 이는 fail-closed negative와
 수정 후 positive를 모두 재현한 local 증거이며 hosted runner PASS를 대체하지 않는다.
+
+Hosted run `29552220688`의 `license-provenance` job은 1분 23초에 완료됐다. 고정 ScanCode archive
+SHA-256 `638adcd0af576d1f4d5b64dde228724b3ca4fdee2c4de20d88e4356be353f027`과 Python image digest pull,
+Podman 4.9.3 version gate, network-none scan이 통과했다. ScanCode는 113 files, error 0,
+review-only finding 5, source finding 0을 보고했다. artifact `scancode-license-evidence`
+ID `8396167730`은 `summary.json` 한 파일만 포함하고 raw license text는 없으며 2026-07-17 생성,
+2026-07-31 만료로 14일 보존이 확인됐다.
 
 ### 비용 계약
 
