@@ -274,6 +274,19 @@ if (existsSync(join(root, "scripts/validate-mcp-manifest.mjs"))) {
   const mcp = spawnSync(process.execPath, ["scripts/validate-mcp-manifest.mjs"], { cwd: root, encoding: "utf8" });
   if (mcp.status !== 0) errors.push(mcp.stderr.trim() || "MCP manifest validation failed");
 }
+if (existsSync(join(root, "docs/production-readiness.json"))) {
+  if (!existsSync(join(root, "scripts/validate-production-readiness.mjs"))) {
+    errors.push("production readiness profile requires scripts/validate-production-readiness.mjs");
+  } else {
+    const readiness = spawnSync(
+      process.execPath,
+      ["scripts/validate-production-readiness.mjs", "docs/production-readiness.json", "--check-consistency"],
+      { cwd: root, encoding: "utf8" },
+    );
+    if (readiness.status !== 0) errors.push(readiness.stderr.trim() || "Production readiness validation failed");
+    else if (readiness.stdout.includes("BLOCKED")) notes.push("Production remains blocked until readiness evidence passes --expect-ready");
+  }
+}
 if (existsSync(join(root, ".ai/manifests/adapters.lock.json"))) {
   if (!existsSync(join(root, "scripts/manage-adapters.mjs"))) {
     errors.push("adapter lock requires scripts/manage-adapters.mjs");

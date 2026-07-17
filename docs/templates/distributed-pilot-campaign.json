@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "TBD",
+  "synthetic": false,
+  "upstream": {
+    "repository": "TBD",
+    "ref": "TBD",
+    "commitSha": "TBD",
+    "releaseChecksum": "not-published"
+  },
+  "minimumIndependentTesters": 2,
+  "coordinatorId": "TBD-coordinator",
+  "participants": [
+    {
+      "testerId": "TBD-coordinator",
+      "roles": ["coordinator", "reviewer"],
+      "status": "registered",
+      "withdrawalReason": "none"
+    },
+    {
+      "testerId": "TBD-tester-1",
+      "roles": ["tester"],
+      "status": "registered",
+      "withdrawalReason": "none"
+    },
+    {
+      "testerId": "TBD-tester-2",
+      "roles": ["tester"],
+      "status": "registered",
+      "withdrawalReason": "none"
+    }
+  ],
+  "assignments": [
+    {
+      "pilotId": "TBD",
+      "testerId": "TBD-tester-1",
+      "type": "TBD",
+      "requiredRequirementIds": ["REQ-046"],
+      "requiredGates": ["TBD"],
+      "requiresCleanReproduction": true
+    }
+  ],
+  "matrixRevision": 1,
+  "matrixHistory": [
+    {
+      "revision": 1,
+      "changedAt": "TBD",
+      "changedBy": "TBD",
+      "reason": "initial registration"
+    }
+  ]
+}

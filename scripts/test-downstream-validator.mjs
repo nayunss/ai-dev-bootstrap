@@ -52,6 +52,25 @@ function validate() {
 
 assert.equal(validate().status, 0);
 
+cpSync(
+  join(root, "docs/templates/production-readiness.json"),
+  join(fixture, "docs/production-readiness.json"),
+);
+const blockedReadiness = validate();
+assert.equal(blockedReadiness.status, 0);
+assert.match(blockedReadiness.stdout, /Production remains blocked/);
+const invalidReadiness = JSON.parse(readFileSync(join(fixture, "docs/production-readiness.json"), "utf8"));
+invalidReadiness.schemaVersion = 1;
+writeFileSync(
+  join(fixture, "docs/production-readiness.json"),
+  `${JSON.stringify(invalidReadiness, null, 2)}\n`,
+);
+assert.match(validate().stderr, /schemaVersion must be 2/);
+cpSync(
+  join(root, "docs/templates/production-readiness.json"),
+  join(fixture, "docs/production-readiness.json"),
+);
+
 const adapterApply = spawnSync(
   process.execPath,
   [join(fixture, "scripts/manage-adapters.mjs"), "apply", fixture, "codex", "--approve"],

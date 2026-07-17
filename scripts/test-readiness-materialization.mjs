@@ -23,6 +23,9 @@ assert.equal(
   readFileSync(profile, "utf8"),
   readFileSync(join(root, "docs/templates/production-readiness.json"), "utf8"),
 );
+const materialized = JSON.parse(readFileSync(profile, "utf8"));
+assert.equal(materialized.schemaVersion, 2);
+assert.equal(materialized.onboardingDecisions.productionProviderRestore.status, "TBD");
 
 const validate = spawnSync(
   process.execPath,
@@ -31,6 +34,13 @@ const validate = spawnSync(
 );
 assert.equal(validate.status, 0);
 assert.match(validate.stdout, /BLOCKED/);
+const productionGate = spawnSync(
+  process.execPath,
+  [resolve("scripts/validate-production-readiness.mjs"), profile, "--expect-ready"],
+  { encoding: "utf8" },
+);
+assert.notEqual(productionGate.status, 0);
+assert.match(productionGate.stderr, /Unexpected production readiness: blocked/);
 
 const preserve = spawnSync(process.execPath, [resolve("scripts/materialize-production-readiness.mjs"), target], {
   encoding: "utf8",

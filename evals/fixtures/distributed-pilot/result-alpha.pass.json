@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "req-046-synthetic-20260717",
+  "pilotId": "SYN-FE-001",
+  "trialId": "SYN-FE-001-T1",
+  "tester": {
+    "id": "synthetic-tester-alpha",
+    "roles": ["tester"]
+  },
+  "executedAt": "2026-07-17T01:00:00Z",
+  "upstream": {
+    "repository": "git@github.com:nayunss/ai-dev-bootstrap.git",
+    "ref": "main",
+    "commitSha": "3814ae468ee2a253fc48943cb986d403668fc9a2",
+    "releaseChecksum": "not-published"
+  },
+  "downstream": {
+    "commitSha": "1111111111111111111111111111111111111111",
+    "repositoryFingerprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "workspaceId": "synthetic-workspace-alpha",
+    "resourceIsolationId": "synthetic-resource-alpha",
+    "cleanStart": true,
+    "independentGitRepository": true
+  },
+  "environment": {
+    "os": "synthetic-os@1.0.0",
+    "architecture": "synthetic-amd64",
+    "stack": [
+      { "name": "synthetic-frontend", "version": "1.0.0" }
+    ],
+    "ciProvider": "synthetic-ci",
+    "deployProvider": "synthetic-preview"
+  },
+  "aiProvenance": {
+    "provider": "synthetic-provider",
+    "toolSurface": "synthetic-cli",
+    "toolVersion": "1.0.0",
+    "modelDisplayName": "Synthetic Deterministic",
+    "modelId": "synthetic-model@1.0.0",
+    "modeProfile": "test",
+    "adapters": ["AGENTS.md"],
+    "permissions": {
+      "filesystem": "fixture-only",
+      "network": "deny",
+      "approval": "synthetic-fixture"
+    },
+    "evidenceLevel": "verified",
+    "verificationReference": {
+      "reference": "fixture://alpha/provenance",
+      "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "requirementIds": ["REQ-046"],
+  "outcomes": [
+    {
+      "gate": "bootstrap-preview",
+      "status": "PASS",
+      "command": "synthetic bootstrap preview",
+      "exitStatus": 0,
+      "evidenceReferences": [{
+        "reference": "fixture://alpha/bootstrap",
+        "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }],
+      "notes": "synthetic state remained unchanged"
+    },
+    {
+      "gate": "local-security",
+      "status": "PASS",
+      "command": "synthetic security gate",
+      "exitStatus": 0,
+      "evidenceReferences": [{
+        "reference": "fixture://alpha/security",
+        "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }],
+      "notes": "synthetic findings zero"
+    },
+    {
+      "gate": "rollback",
+      "status": "PASS",
+      "command": "synthetic rollback state check",
+      "exitStatus": 0,
+      "evidenceReferences": [{
+        "reference": "fixture://alpha/rollback",
+        "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }],
+      "notes": "synthetic state restored"
+    }
+  ],
+  "negativeRollbackFixtures": [
+    {
+      "fixture": "synthetic-approval-denial",
+      "status": "PASS",
+      "expected": "unapproved mutation is blocked",
+      "observed": "mutation blocked",
+      "cleanupStatus": "PASS",
+      "evidenceReferences": [{
+        "reference": "fixture://alpha/negative",
+        "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }]
+    }
+  ],
+  "findings": {
+    "count": 0,
+    "feedbackReference": {
+      "reference": "fixture://alpha/findings-none",
+      "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "unverified": [],
+  "cost": {
+    "durationMinutes": 3,
+    "tokenUsage": 0,
+    "externalCost": { "amount": 0, "currency": "USD" },
+    "measurementNotes": "deterministic synthetic fixture"
+  },
+  "attestation": {
+    "graderAssetsModified": false,
+    "previousTesterResultsAccessed": false,
+    "productionDataUsed": false,
+    "secretsIncluded": false,
+    "submittedBy": "synthetic-tester-alpha",
+    "submittedAt": "2026-07-17T01:05:00Z"
+  },
+  "review": {
+    "status": "approved",
+    "reviewerId": "synthetic-coordinator",
+    "reviewedAt": "2026-07-17T01:10:00Z",
+    "evidenceReference": {
+      "reference": "fixture://alpha/review",
+      "sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "reportedStatus": "PASS"
+}

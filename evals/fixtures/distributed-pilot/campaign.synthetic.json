@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "req-046-synthetic-20260717",
+  "synthetic": true,
+  "upstream": {
+    "repository": "git@github.com:nayunss/ai-dev-bootstrap.git",
+    "ref": "main",
+    "commitSha": "3814ae468ee2a253fc48943cb986d403668fc9a2",
+    "releaseChecksum": "not-published"
+  },
+  "minimumIndependentTesters": 2,
+  "coordinatorId": "synthetic-coordinator",
+  "participants": [
+    {
+      "testerId": "synthetic-coordinator",
+      "roles": ["coordinator", "reviewer"],
+      "status": "registered",
+      "withdrawalReason": "none"
+    },
+    {
+      "testerId": "synthetic-tester-alpha",
+      "roles": ["tester"],
+      "status": "registered",
+      "withdrawalReason": "none"
+    },
+    {
+      "testerId": "synthetic-tester-beta",
+      "roles": ["tester"],
+      "status": "registered",
+      "withdrawalReason": "none"
+    }
+  ],
+  "assignments": [
+    {
+      "pilotId": "SYN-FE-001",
+      "testerId": "synthetic-tester-alpha",
+      "type": "frontend",
+      "requiredRequirementIds": ["REQ-046"],
+      "requiredGates": ["bootstrap-preview", "local-security", "rollback"],
+      "requiresCleanReproduction": true
+    },
+    {
+      "pilotId": "SYN-BE-001",
+      "testerId": "synthetic-tester-beta",
+      "type": "backend",
+      "requiredRequirementIds": ["REQ-046"],
+      "requiredGates": ["bootstrap-preview", "local-security", "rollback"],
+      "requiresCleanReproduction": true
+    }
+  ],
+  "matrixRevision": 1,
+  "matrixHistory": [
+    {
+      "revision": 1,
+      "changedAt": "2026-07-17T00:00:00Z",
+      "changedBy": "synthetic-coordinator",
+      "reason": "synthetic validator fixture registration"
+    }
+  ]
+}

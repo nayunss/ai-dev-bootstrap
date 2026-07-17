@@ -24,4 +24,6 @@ if (existsSync(destination)) {
 mkdirSync(dirname(destination), { recursive: true });
 copyFileSync(source, destination);
 process.stdout.write(`Created blocked readiness profile: ${destination}\n`);
-process.stdout.write("Review every TBD with the named owner before Production approval.\n");
+process.stdout.write(
+  "Production remains blocked until legal/privacy, retention/disposal, multi-instance rate-limit and provider restore evidence pass --expect-ready.\n",
+);

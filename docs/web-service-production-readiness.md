@@ -97,6 +97,27 @@ Soft delete는 복구·감사 편의 기능이지 법적 보존 근거가 아니
 `scripts/bootstrap readiness <target>`으로 blocked profile을 최초 생성한다. 기존 파일은 보존하며
 자동 merge나 overwrite를 하지 않는다.
 
+schema v2 profile은 다음 네 evidence 묶음이 모두 `approved`여야 한다.
+
+| Gate | Production 승인에 필요한 최소 evidence |
+|---|---|
+| 법률·개인정보 | owner, reviewer, 검토일, 비밀 없는 검토 문서 reference |
+| retention·파기 | 정책 owner와 data category별 목적·기간·파기·legal hold·review evidence |
+| 다중 instance rate limit | 실제 multi-instance mode, enforcement layer, 2개 이상 instance와 분산 우회 test PASS |
+| provider restore | provider backup source와 별도 restore target, 장애 격리 경계, rehearsal 시각, 목표·실측 RPO/RTO, 무결성 PASS |
+
+일반 downstream validation은 blocked profile의 구조적 일관성을 허용하면서 Production 차단 note를
+출력한다. 네 evidence 묶음이 모두 충족되어도 `productionApproval`에 approver·승인 시각·reference가
+없으면 `productionDecision`은 `blocked`를 유지한다. 사람이 evidence를 검토해 승인을 기록한 뒤에도
+배포 승인 gate는 별도로 다음 명령에서 `READY`를 반환해야 한다.
+
+```sh
+node scripts/validate-production-readiness.mjs docs/production-readiness.json --expect-ready
+```
+
+기존 schema v1 profile은 자동 변환하거나 기존 결정을 덮어쓰지 않는다. schema v2 template과 diff를
+검토해 evidence를 직접 이관할 때까지 Production은 차단된다.
+
 개발환경 확정 시 다음 feature flag를 `yes | no | TBD`로 분류한다.
 
 ```yaml

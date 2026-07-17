@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "req-046-synthetic-20260717",
+  "campaignHash": "sha256:3e4b6d2ce2ba3da3c40ad4b4f09543fca833ff795699264eaf1a34198ce416ff",
+  "synthetic": true,
+  "status": "SYNTHETIC_COMPLETE",
+  "supportDecisionEligible": false,
+  "compatibilityEligible": true,
+  "minimumIndependentTesters": 2,
+  "independentPassingTesters": 2,
+  "counts": {
+    "assignments": 2,
+    "submitted": 2,
+    "pass": 2,
+    "incomplete": 0,
+    "invalid": 0
+  },
+  "matrix": [
+    {
+      "pilotId": "SYN-FE-001",
+      "testerId": "synthetic-tester-alpha",
+      "type": "frontend",
+      "status": "PASS",
+      "compatibilityEligible": true
+    },
+    {
+      "pilotId": "SYN-BE-001",
+      "testerId": "synthetic-tester-beta",
+      "type": "backend",
+      "status": "PASS",
+      "compatibilityEligible": true
+    }
+  ],
+  "errors": []
+}

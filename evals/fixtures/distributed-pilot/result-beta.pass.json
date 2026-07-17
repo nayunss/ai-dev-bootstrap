@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "campaignId": "req-046-synthetic-20260717",
+  "pilotId": "SYN-BE-001",
+  "trialId": "SYN-BE-001-T1",
+  "tester": {
+    "id": "synthetic-tester-beta",
+    "roles": ["tester"]
+  },
+  "executedAt": "2026-07-17T02:00:00Z",
+  "upstream": {
+    "repository": "git@github.com:nayunss/ai-dev-bootstrap.git",
+    "ref": "main",
+    "commitSha": "3814ae468ee2a253fc48943cb986d403668fc9a2",
+    "releaseChecksum": "not-published"
+  },
+  "downstream": {
+    "commitSha": "2222222222222222222222222222222222222222",
+    "repositoryFingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "workspaceId": "synthetic-workspace-beta",
+    "resourceIsolationId": "synthetic-resource-beta",
+    "cleanStart": true,
+    "independentGitRepository": true
+  },
+  "environment": {
+    "os": "synthetic-os@2.0.0",
+    "architecture": "synthetic-arm64",
+    "stack": [
+      { "name": "synthetic-backend", "version": "1.0.0" }
+    ],
+    "ciProvider": "synthetic-ci",
+    "deployProvider": "synthetic-preview"
+  },
+  "aiProvenance": {
+    "provider": "synthetic-provider",
+    "toolSurface": "synthetic-app",
+    "toolVersion": "2.0.0",
+    "modelDisplayName": "Synthetic Deterministic B",
+    "modelId": "synthetic-model@2.0.0",
+    "modeProfile": "test",
+    "adapters": ["CLAUDE.md"],
+    "permissions": {
+      "filesystem": "fixture-only",
+      "network": "deny",
+      "approval": "synthetic-fixture"
+    },
+    "evidenceLevel": "tester-declared",
+    "verificationReference": {
+      "reference": "fixture://beta/provenance",
+      "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  },
+  "requirementIds": ["REQ-046"],
+  "outcomes": [
+    {
+      "gate": "bootstrap-preview",
+      "status": "PASS",
+      "command": "synthetic bootstrap preview",
+      "exitStatus": 0,
+      "evidenceReferences": [{
+        "reference": "fixture://beta/bootstrap",
+        "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }],
+      "notes": "synthetic state remained unchanged"
+    },
+    {
+      "gate": "local-security",
+      "status": "PASS",
+      "command": "synthetic security gate",
+      "exitStatus": 0,
+      "evidenceReferences": [{
+        "reference": "fixture://beta/security",
+        "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }],
+      "notes": "synthetic findings zero"
+    },
+    {
+      "gate": "rollback",
+      "status": "PASS",
+      "command": "synthetic rollback state check",
+      "exitStatus": 0,
+      "evidenceReferences": [{
+        "reference": "fixture://beta/rollback",
+        "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }],
+      "notes": "synthetic state restored"
+    }
+  ],
+  "negativeRollbackFixtures": [
+    {
+      "fixture": "synthetic-rollback-failure-detection",
+      "status": "PASS",
+      "expected": "rollback mismatch is detected",
+      "observed": "mismatch detected and safe state retained",
+      "cleanupStatus": "PASS",
+      "evidenceReferences": [{
+        "reference": "fixture://beta/negative",
+        "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }]
+    }
+  ],
+  "findings": {
+    "count": 1,
+    "feedbackReference": {
+      "reference": "fixture://beta/sanitized-finding",
+      "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  },
+  "unverified": [],
+  "cost": {
+    "durationMinutes": 4,
+    "tokenUsage": null,
+    "externalCost": null,
+    "measurementNotes": "token and external cost unavailable in synthetic surface"
+  },
+  "attestation": {
+    "graderAssetsModified": false,
+    "previousTesterResultsAccessed": false,
+    "productionDataUsed": false,
+    "secretsIncluded": false,
+    "submittedBy": "synthetic-tester-beta",
+    "submittedAt": "2026-07-17T02:05:00Z"
+  },
+  "review": {
+    "status": "approved",
+    "reviewerId": "synthetic-coordinator",
+    "reviewedAt": "2026-07-17T02:10:00Z",
+    "evidenceReference": {
+      "reference": "fixture://beta/review",
+      "sha256": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  },
+  "reportedStatus": "PASS"
+}
