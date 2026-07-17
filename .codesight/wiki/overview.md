@@ -6,7 +6,7 @@
 
 ## Scale
 
-1 database models · 15 library files · 5 middleware layers · 2 environment variables
+1 database models · 15 library files · 6 middleware layers · 2 environment variables
 
 **Database:** unknown, 1 models — see [database.md](./database.md)
 

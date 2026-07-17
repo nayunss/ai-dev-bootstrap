@@ -18,12 +18,12 @@ REQ-025 deterministic capability suite는 `tasks/deterministic-capability-smoke.
 grader allowlist와 비용·latency·tool-call·diff 집계를 검증한다. token·비용은 0이며 실제 model
 trial을 호출하거나 대체하지 않는다.
 
-REQ-009~014 stack quality adapter Eval은 `fixtures/stack-quality/`의 JavaScript·Java·Python source와
+REQ-009–REQ-014 stack quality adapter Eval은 `fixtures/stack-quality/`의 JavaScript·Java·Python source와
 고정 failure record를 사용한다. OS 임시 project의 fake project-local tool로 formatter·linter·
 typecheck와 web accessibility 순서, exact version, application cwd, network-none 실행 경계,
 check-only source drift와 fail-fast를 검증한다. 실제 생태계 tool 설치·실행 결과가 아니다.
 
-REQ-037~039 adapter parity Eval은 `.ai/manifests/adapter-parity.json`과
+REQ-037–REQ-039 adapter parity Eval은 `.ai/manifests/adapter-parity.json`과
 `scripts/adapter-parity.mjs`를 사용한다. Codex·Claude Code·GitHub Copilot source의 공통 정책·역할·
 권한 reference, hook/fallback enforcement와 세 adapter 동시 materialization 결과를 검증한다.
 role·permission drift, hook 우회, global persona와 target drift negative fixture를 포함하지만 실제

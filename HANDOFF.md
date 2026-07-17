@@ -1,17 +1,18 @@
 # Handoff
 
 갱신: 2026-07-17 Asia/Seoul
-상태: v0.2.5-pilot 발행 완료·공통 구현 진행 중
+상태: v0.2.6-pilot 발행 준비·공통 구현 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
 완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer
-다음 작업: REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
+다음 작업: REQ-048-development-profile-schema, REQ-020-021-project-profile-materializer, REQ-026-045-stack-profile-fixtures, REQ-033-035-provider-profile-adapters, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
 
 Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안전한 AI 개발환경 공통 하네스를
-설계하고 downstream pilot으로 검증한다. REQ-001~046 설계 명세는
+설계하고 downstream pilot으로 검증한다. REQ-001–REQ-046 설계 명세는
 `DESIGN-BASELINE-2026-07-17` 감사로 완료됐고 실제 공통 환경 구현 단계로 전환한다. 구현·검증 상태는
 `docs/requirements.md`의 추적 표를 기준으로 하며 설계 완료를 실제 지원 완료로 해석하지 않는다.
+REQ-047·048은 baseline 이후 승인된 추가 요구사항이며 별도 구현·검증 상태로 추적한다.
 
 ## 완료
 
@@ -93,7 +94,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-040·041·042의 프로젝트별 값을 공통 하네스에 고정하지 않고 초기 설정과 기존 project retrofit에서
   질문하는 onboarding materializer를 구현했다. 세 blocked template 중 기존 파일은 보존하고 누락된
   파일만 생성하며 `TBD`·`pending`은 어떤 실행 승인도 뜻하지 않는다.
-- REQ-001~046의 requirement·architecture·workflow·project profile·HITL·Eval 경계를 감사해
+- REQ-001–REQ-046의 requirement·architecture·workflow·project profile·HITL·Eval 경계를 감사해
   `DESIGN-BASELINE-2026-07-17` 설계 명세 완료로 판정했다. 실제 구현·지원·실제 환경 검증은 별도
   상태로 유지하고 첫 구현 increment를 canonical YAML lock으로 확정했다.
 - REQ-042 실제 구현 첫 increment로 canonical YAML upstream lock schema·결정론적 parser/serializer·
@@ -115,7 +116,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   발행했다. tracked archive SHA-256
   `fa9b369444f4408eb04944a20ed25d12c79edbb68def5025c98da0ce72cba723`과 게시 asset 재다운로드를
   검증했다.
-- REQ-019~024의 normative source·구현·검증·token-profile 영향과 외부 gate를 machine-readable
+- REQ-019–REQ-024의 normative source·구현·검증·token-profile 영향과 외부 gate를 machine-readable
   manifest로 연결했다. requirements 변경에 manifest 동기화가 없거나 evidence 경로·ID·token 영향이
   drift하면 staged·PR gate가 실패한다.
 - `docs/`의 설계·운영 문서 36개를 요구사항 묶음에 역참조하고 schema 3개·template 5개를 문서
@@ -124,10 +125,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-025 공통 deterministic capability task schema·trial별 임시 fixture runner와
   비용·latency·tool-call·diff aggregator를 구현했다. 저장소 내부 Node grader만 허용하고
   network·token·비용은 0으로 고정했으며 실제 model trial은 수행하지 않았다.
-- REQ-009~014 JavaScript·Java·Python formatter·linter·typecheck와 web accessibility adapter 계약을
+- REQ-009–REQ-014 JavaScript·Java·Python formatter·linter·typecheck와 web accessibility adapter 계약을
   구현했다. project-local exact tool/version·application cwd·check-only source 보존을 강제하고,
   외부 sandbox의 network-none 증거가 없으면 실행을 차단한다.
-- REQ-037~039 세 AI adapter의 공통 policy·role·permission parity manifest와 validator를 구현했다.
+- REQ-037–REQ-039 세 AI adapter의 공통 policy·role·permission parity manifest와 validator를 구현했다.
   Codex·Claude Code hook outcome과 GitHub Copilot fallback을 구분하고 source·materialized target에서
   동일한 공통 계약과 권한 비확대를 검증한다.
 - REQ-044 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift,
@@ -142,6 +143,47 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - PR #16 required checks를 통과한 merge commit `d0a3a6d31c4cbf883708335ff0f9bab121c5f2f0`에
   `v0.2.5-pilot` prerelease를 발행했다. tracked archive와 게시 asset 재다운로드 SHA-256
   `84d27ae9607f1fdc7fd6b662382f3ba50b9c73482cc191c10a9695c78f2a9757`이 일치한다.
+- REQ-047로 terminal 비숙련자를 위한 local desktop app의 one-button 적용 UX, GUI·CLI 공통
+  headless adoption core, checksum·서명·preview·transaction rollback과 release별 bundle 자동 갱신
+  계약을 검토했다. 문서·요구사항 승인 범위이며 app과 release automation은 아직 구현하지 않았다.
+- 2026-07-17 현재 최신 공식 공개본인 GitHub의 2026년 2월 Octoverse 2025 분석, Stack Overflow
+  Developer Survey 2025와 State of JavaScript 2025를 근거로 frontend·backend·full-stack adapter
+  P0~P3 순서를 확정했다. P0는 React+Vite, Node+Express, Next.js와 분리 React+Node full-stack이며
+  실제 project stack을 자동 교체하는 기본값으로 사용하지 않는다.
+- backend 우선순위를 framework만이 아니라 primary DB·driver/ORM·migration·test isolation·restore
+  계약까지 포함하도록 보완했다. PostgreSQL은 P0, MySQL·SQLite·SQL Server는 P1, MongoDB는 P2이며
+  Redis는 primary DB가 아닌 cache·rate-limit·queue 보조 profile로 분리한다.
+- 개인·팀·프로젝트 설정 경계를 표로 확정했다. 결과·보안·CI·배포·재현성에 영향을 주는 설정은
+  팀/project 필수, IDE·UI와 AI 도구 선택은 개인 선택으로 분리하고 plugin·MCP·실행형 자산은 개인
+  선택이어도 사전 심사를 요구한다. 사용자 전역 설정 강제 변경과 개인 override의 gate 약화는 금지한다.
+- Skill·plugin 배포를 core·optional·organization/private·personal skill, generated tool adapter,
+  plugin·hook과 MCP 계층으로 분리했다. Core는 최소 Markdown 계약, optional은 선택 archive로
+  project-local materialize하고 plugin catalog 등재와 실제 설치 승인, MCP 승인을 각각 분리한다.
+- GitHub organization·repository 이름을 공통값으로 정하지 않고 GitHub 개인·조직·Enterprise,
+  GitLab.com·self-managed와 기타 host를 provider-neutral hosting profile로 질문하도록 확정했다.
+  `origin`은 local alias, remote-tracking reference는 마지막 fetch 결과이며 PR/MR·policy·pipeline·
+  release는 provider adapter별 독립 검증과 외부 변경 승인을 요구한다.
+- Branch 전략과 review 승인 인원도 project별 질문 값으로 확정했다. 개인 project의 일반 변경
+  self-review를 허용할 수 있지만 검토 생략으로 취급하지 않으며 dependency·security·release·
+  Production·DB·파괴적 변경은 독립 reviewer/역할과 별도 고위험 승인을 우선한다.
+- CI provider, artifact 저장소와 배포 대상도 Git host와 분리된 project별 profile로 확정했다.
+  GitHub remote가 GitHub Actions·Vercel 선택을 뜻하지 않으며 GitLab CI·Azure Pipelines·Jenkins·
+  self-hosted와 cloud/Kubernetes 또는 deployment `none`을 표현하고 provider별 fixture로 검증한다.
+- `monorepo` 저장소 구조와 `project template` 생성·도입 방식을 분리했다. 단일 project starter와
+  기존 repository retrofit은 P0, native workspace monorepo는 P1, 전문 orchestrator와 조직 golden
+  template은 P2로 확정했다. JavaScript·TypeScript monorepo adapter 순서는 2026-07-17 현재 최신
+  State of JS 2025 응답을 근거로 pnpm workspace, npm Workspaces, Turborepo, Nx, Yarn Workspaces
+  순이며 project 조건 없이 monorepo나 JavaScript 도구를 강제하지 않는다.
+- REQ-048로 canonical YAML 개발환경 profile, JSON Schema 구조 검증과 의미·repository drift·단계별
+  readiness validator의 구현 범위를 확정했다. 최근 stack·설정·Skill·Git hosting·branch/review·
+  CI/deployment·저장소 구조·원클릭 도입 검토 상세는 주제별 문서로 분리하고 requirements에는
+  승인된 불변 조건과 링크만 유지한다. Schema·validator·migration·fixture 구현은 아직 NOT-RUN이다.
+- 오늘 승인한 9개 횡단 검토를 관련 REQ의 기존 구현과 다시 대조했다. 기존 adapter·GitHub pilot·
+  full-stack materializer의 PASS를 새 provider-neutral profile·starter matrix·배포 bundle 검증으로
+  확대하지 않고 주제별 구현·검증 상태와 공통 구현 task 6개로 분리했다.
+- 위 설계·상태 추적 변경을 `v0.2.6-pilot` 후보로 묶고 package·lock root version `0.2.6`,
+  migration·rollback release note를 준비했다. GUI·profile schema·provider adapter·starter fixture는
+  구현되지 않았으므로 tag·release 게시 후에도 `NOT-RUN` 상태를 유지한다.
 
 ## 현재 상태
 
@@ -248,7 +290,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - `.ai/approvals/dependency-upgrades.json`, `package.json`, `package-lock.json`,
   `docs/releases/v0.2.4-pilot.md`: 0.2.4 release metadata lock 승인과 migration·rollback·artifact 증적 준비
 - `.ai/manifests/requirement-traceability.json`, `scripts/validate-requirement-traceability.mjs`,
-  `scripts/test-requirement-traceability.mjs`: REQ-019~024 source·구현·검증·token 영향 추적과
+  `scripts/test-requirement-traceability.mjs`: REQ-019–REQ-024 source·구현·검증·token 영향 추적과
   requirements staged·PR 동기화 gate
 - `docs/requirements.md`, `docs/README.md`, `docs/ai-generated-code-license-provenance.md`: 요구사항별
   문서·산출물 역참조, 구현/검증 상태 분리, 누락 schema·template와 REQ-043 문서 상태 현행화
@@ -261,11 +303,11 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   `docs/requirements.md`, `docs/README.md`, `package.json`, `.github/workflows/security.yml`:
   실행 계약·상태·CI 연결
 - `docs/schemas/stack-quality-adapters.schema.json`, `docs/templates/stack-quality-adapters.json`,
-  `scripts/{stack-quality-adapters,run-stack-quality,test-stack-quality-adapters}.mjs`: REQ-009~014
+  `scripts/{stack-quality-adapters,run-stack-quality,test-stack-quality-adapters}.mjs`: REQ-009–REQ-014
   품질 adapter profile·preview·승인 실행·regression
 - `evals/fixtures/stack-quality/`: JavaScript·Java·Python source와 linter failure 기대 결과
 - `.ai/manifests/adapter-parity.json`, `docs/schemas/adapter-parity.schema.json`,
-  `scripts/{adapter-parity,validate-adapter-parity,test-adapter-parity}.mjs`: REQ-037~039 공통
+  `scripts/{adapter-parity,validate-adapter-parity,test-adapter-parity}.mjs`: REQ-037–REQ-039 공통
   policy·role·permission과 source/materialized parity Eval
 - `adapters/{codex,claude-code,github-copilot}/`, `AGENTS.md`, `CLAUDE.md`: 공통 role·persona·permission
   reference와 native 권한 비확대 명시
@@ -335,7 +377,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - live trial plan·candidate-bound 사람 승인 없는 release gate: BLOCKED
 - 초기 project의 세 blocked decision profile 생성·질문 출력: PASS
 - 기존 project의 일부 profile·owner 파일 보존과 누락 profile만 retrofit: PASS
-- REQ-001~046 설계 source·상태·경계·남은 gate coverage audit: PASS
+- REQ-001–REQ-046 설계 source·상태·경계·남은 gate coverage audit: PASS
 - 설계 명세 완료와 REQ-046 설계 검증 완료 용어 분리: PASS
 - canonical YAML round-trip·canonical form·schema/content/file SHA-256: PASS
 - JSON reference lock→YAML migration positive와 manifest 불일치·overwrite negative: PASS
@@ -352,13 +394,13 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - current target/source drift·새 경로 collision·기존 동일 파일 rollback 보존: PASS
 - PR #13과 main Security run `29560757023`의 `security`·`license-provenance`: PASS
 - `v0.2.4-pilot` tag 대상 commit·GitHub asset digest·재다운로드 archive SHA-256 일치: PASS
-- REQ-019~024 complete/sorted ID, evidence path, unsafe `.env*`, token impact와 requirements 동기화
+- REQ-019–REQ-024 complete/sorted ID, evidence path, unsafe `.env*`, token impact와 requirements 동기화
   positive·negative fixture: PASS
 - docs Markdown 43개 local link와 요구사항에서 설계·운영 문서 36개 역참조 completeness: PASS
 - REQ-025 task schema, fixture hash·격리 복제·grader allowlist와 2-trial deterministic runner: PASS
 - 비용 0·token 0, latency·tool-call·diff 집계와 failed hard gate 비상쇄: PASS
 - unsafe path·`.env*`·network allow·model budget·임의 command·fixture drift negative: PASS
-- REQ-009~014 3개 언어 formatter·linter·typecheck와 web accessibility·backend N/A 계약: PASS
+- REQ-009–REQ-014 3개 언어 formatter·linter·typecheck와 web accessibility·backend N/A 계약: PASS
 - exact tool version·project-local executable·application cwd·check-only source 보존: PASS
 - linter non-zero fail-fast·version drift·source mutation·network-none 미증명 실행 차단: PASS
 - 세 adapter 공통 engineering·security·role·persona·HANDOFF·CodeSight·change-mode reference: PASS
@@ -378,7 +420,21 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ### 공통 저장소에서 진행 가능
 
-현재 추가 project·사람·release 입력 없이 확정된 공통 구현 작업은 없다.
+1. [작업:REQ-048-development-profile-schema] [공통 구현 가능] canonical YAML schema, read-only
+   structure·semantic·repository drift·readiness validator와 positive/negative fixture를 구현한다.
+   실제 provider write·dependency 설치·DB migration·Production deploy는 범위에서 제외한다.
+2. [작업:REQ-020-021-project-profile-materializer] [공통 구현 가능] 개인·팀·project 설정 경계를
+   canonical profile에 materialize하고 신규·기존 project 질문·retrofit·충돌 fixture를 구현한다.
+3. [작업:REQ-026-045-stack-profile-fixtures] [공통 구현 가능] 우선순위 stack·DB starter와
+   single-project·workspace monorepo profile의 clean install·retrofit·rollback fixture를 구현한다.
+4. [작업:REQ-033-035-provider-profile-adapters] [공통 구현 가능] provider-neutral Git hosting·
+   branch/review·CI·artifact·deployment schema와 GitHub·GitLab·generic/none synthetic adapter
+   fixture를 구현한다. 실제 provider write·credential 사용은 수행하지 않는다.
+5. [작업:REQ-005-008-skill-distribution] [공통 구현 가능] core·optional skill bundle, tool adapter
+   manifest, reviewed plugin catalog와 checksum·설치·upgrade·보존 uninstall fixture를 구현한다.
+6. [작업:REQ-047-one-click-adoption] [공통 구현 가능] 위 profile·bundle을 사용하는 GUI·CLI 공통
+   release adoption core와 clean install·upgrade·rollback·변조·부분 실패 fixture를 구현한다.
+   desktop signing·notarization과 실제 비개발자 사용성 검증은 별도 사람·credential 입력으로 분리한다.
 
 ### 외부 입력·실제 환경 대기
 
