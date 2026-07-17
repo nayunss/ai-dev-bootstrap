@@ -134,6 +134,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   implementation route inventory와 Production docs exposure synthetic adapter를 구현했다.
 - REQ-045 최초 frontend·backend·shared·paired migration artifact 일괄 materializer와 transaction
   부분 실패 원복·보존 rollback을 구현했다. DB SQL은 실행하지 않고 `NOT-RUN`으로 유지한다.
+- 위 공통 구현 묶음의 요구사항 추적 표·설계 감사·운영 및 Eval 문서를 구현 증거와 일치하도록
+  현행화했다. reference·synthetic PASS와 실제 downstream·model·DB 검증 상태는 계속 분리한다.
 
 ## 현재 상태
 

@@ -5,6 +5,10 @@
     "to": "REQ-024"
   },
   "reviewedAt": "2026-07-17",
+  "documentationSync": {
+    "source": "docs/requirements.md",
+    "statusModel": "implementation-and-verification-separated"
+  },
   "requirements": [
     {
       "id": "REQ-019",

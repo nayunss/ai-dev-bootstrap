@@ -114,3 +114,27 @@ undocumented endpoint를 탐지하고, BFF route handler를 호출해 backend me
 이 fixture는 해당 조합의 근거이며 다른 framework adapter 검증을 대신하지 않는다.
 
 contract diff tool과 generator도 plugin·dependency이므로 공급망 심사와 exact version 승인을 거친다.
+
+## FastAPI deterministic reference adapter
+
+`docs/schemas/fastapi-contract-adapter.schema.json`과
+`scripts/fastapi-contract-adapter.mjs`는 FastAPI를 설치·호출하지 않는 OpenAPI 3.0/3.1 reference
+검사기다. committed baseline, 현재 generated contract, FastAPI route inventory와 environment별 docs
+관측 profile을 입력으로 받는다.
+
+- OpenAPI version·info·operationId·2xx response와 secret-like/internal metadata를 검사한다.
+- operation·2xx response·component schema·property 삭제와 새 required parameter를 breaking으로 판정한다.
+- route inventory와 contract를 양방향 비교해 undocumented·stale operation을 차단한다.
+- Production의 `/openapi.json`, `/docs`, `/redoc`이 disabled/authenticated/network-restricted/
+  public-approved 정책과 실제 관측 status에 맞는지 검사한다.
+- write operation이 있을 때 Production `Try it out` 활성화와 별도 승인 없는 외부 docs asset host를
+  차단한다.
+
+```sh
+node scripts/evaluate-fastapi-contract.mjs \
+  baseline.openapi.json current.openapi.json routes.json profile.json --expect-pass
+```
+
+synthetic PASS는 FastAPI runtime, server-side authorization, 실제 network restriction, CSP 또는
+브라우저 UI를 검증한 결과가 아니다. 실제 project에서는 승인된 exact FastAPI version과 생성 schema,
+runtime route inventory, 인증 전후 HTTP 응답과 authorization negative E2E를 별도로 제공해야 한다.
