@@ -3,8 +3,8 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 설계 baseline 완료·공통 구현 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation
-다음 작업: release:v0.2.4-pilot, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation
+다음 작업: REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
 
@@ -111,6 +111,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-042 release upgrade reference automation을 구현했다. 이전·다음 manifest union diff, 승인 apply,
   transaction failure 원복, rollback record 무결성·소유권 보존 복구와 명시 finalize를 실제 downstream
   write 없이 OS 임시 fixture에서 검증했다.
+- `v0.2.4-pilot`을 merge commit `d6141ea6ccd7d9ac7a7a40df1bdc2b9d8a1c424d`에 prerelease로
+  발행했다. tracked archive SHA-256
+  `fa9b369444f4408eb04944a20ed25d12c79edbb68def5025c98da0ce72cba723`과 게시 asset 재다운로드를
+  검증했다.
 
 ## 현재 상태
 
@@ -119,8 +123,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 로컬 branch·HEAD는 상단 명령으로 확인한다. 원격 상태가 필요한 작업만 fetch 후 remote-tracking
   reference와 대조하며 fetch 전 `origin/*`을 최신 원격 상태로 간주하지 않는다.
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`
-- 최신 발행 baseline은 `v0.2.3-pilot`이며 발행·checksum 증적은
-  `docs/releases/v0.2.3-pilot.md`에 기록돼 있다.
+- 최신 발행 baseline은 `v0.2.4-pilot`이며 발행·checksum 증적은
+  `docs/releases/v0.2.4-pilot.md`에 기록돼 있다.
 - `KakaoTalk_Photo_2026-07-12-11-38-40.jpeg`는 사용자가 Git에 올리지 않는 로컬 파일이다. 수정·이동·
   삭제·stage하지 않고 untracked 상태로 보존한다.
 - `/private/tmp` 등 별도 격리 저장소에서 프로젝트 변경을 만들거나 그 상태를 실제 작업 경로의
@@ -291,6 +295,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - core upgrade create·update·delete·unchanged·preexisting-identical union diff와 미승인 apply: PASS
 - apply·rollback·finalize, transaction write failure 원복과 rollback record 변조 차단: PASS
 - current target/source drift·새 경로 collision·기존 동일 파일 rollback 보존: PASS
+- PR #13과 main Security run `29560757023`의 `security`·`license-provenance`: PASS
+- `v0.2.4-pilot` tag 대상 commit·GitHub asset digest·재다운로드 archive SHA-256 일치: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
@@ -299,9 +305,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ### 공통 저장소에서 진행 가능
 
-1. [작업:release:v0.2.4-pilot] 구현 PR의 required checks와 병합을 확인한 뒤 merge commit의 tracked
-   archive checksum을 검증하고 prerelease를 발행한다. 게시 asset 재다운로드와 증적 문서 현행화까지
-   완료 조건이다.
+현재 추가 project·사람·release 입력 없이 확정된 공통 구현 작업은 없다.
 
 ### 외부 입력·실제 환경 대기
 
