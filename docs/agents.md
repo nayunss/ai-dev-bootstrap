@@ -75,3 +75,17 @@
 - 자동 테스트 통과는 리뷰의 대체물이 아니다.
 - 보안, 데이터 마이그레이션, 인증, 결제 변경은 별도 체크리스트를 적용한다.
 - 에이전트 분리가 불가능한 도구에서는 구현을 완료한 뒤 컨텍스트를 분리한 검증 단계를 수행한다.
+
+## 다중 AI adapter parity
+
+Codex·Claude Code·GitHub Copilot adapter는 모두 이 문서의 역할 계약과
+`docs/persona-and-role-guidelines.md`를 참조하며, 네이티브 agent 기능 유무와 관계없이
+`sequential-baseline`을 제공한다. subagent·병렬 실행은 역할 계약의 권한을 확대하지 않으며,
+지원하지 않는 도구에서는 같은 검토 단계를 순차 수행한다.
+
+`.ai/manifests/adapter-parity.json`과 `scripts/validate-adapter-parity.mjs`는 공통 정책·역할·권한
+reference, 전역 persona 부재, Codex·Claude Code hook outcome, GitHub Copilot 공통 fallback과
+materialized downstream 계약을 검사한다.
+
+이 PASS는 실제 Codex·Claude·Copilot model outcome이 동일하다는 뜻이 아니다. model·surface별
+비결정 task 비교는 exact version과 비용·network 승인 뒤 별도 수행한다.

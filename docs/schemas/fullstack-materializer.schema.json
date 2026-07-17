@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/common-ai-development-harness/fullstack-materializer.schema.json",
+  "title": "Initial full-stack materialization profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "mode",
+    "roots",
+    "files",
+    "databaseMigrations",
+    "rollback"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "mode": { "const": "initial-full-stack" },
+    "roots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frontend", "backend", "shared", "migrations"],
+      "properties": {
+        "frontend": { "$ref": "#/$defs/safePath" },
+        "backend": { "$ref": "#/$defs/safePath" },
+        "shared": { "$ref": "#/$defs/safePath" },
+        "migrations": { "$ref": "#/$defs/safePath" }
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["layer", "source", "target", "sha256"],
+        "properties": {
+          "layer": { "enum": ["frontend", "backend", "shared", "migration"] },
+          "source": { "$ref": "#/$defs/safePath" },
+          "target": { "$ref": "#/$defs/safePath" },
+          "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "databaseMigrations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "upTarget", "rollbackTarget", "execution"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$" },
+          "upTarget": { "$ref": "#/$defs/safePath" },
+          "rollbackTarget": { "$ref": "#/$defs/safePath" },
+          "execution": { "const": "artifact-only-not-authorized" }
+        }
+      }
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applicationFiles", "database"],
+      "properties": {
+        "applicationFiles": { "const": "transaction-record" },
+        "database": { "const": "paired-artifact-no-execution" }
+      }
+    }
+  },
+  "$defs": {
+    "safePath": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    }
+  }
+}

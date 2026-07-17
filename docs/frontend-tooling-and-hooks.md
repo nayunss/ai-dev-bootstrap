@@ -181,6 +181,24 @@ CI는 클라이언트 훅과 독립적으로 다음을 실행한다.
 결정한다.
 문서의 의사 코드를 그대로 shell 문자열로 복사하지 않는다.
 
+## 공통 stack quality adapter
+
+`docs/schemas/stack-quality-adapters.schema.json`은 JavaScript·Java·Python application별 formatter,
+linter, typecheck와 접근성 gate를 선언하는 공통 계약이다. 특정 도구를 공통 기본값으로 설치하지
+않고 downstream이 공급망 심사를 통과한 project-local executable, 정확한 version과 shell을 사용하지
+않는 argv를 기록한다.
+
+- formatter·linter·typecheck는 세 언어 모두 필수다.
+- `web: true` application은 accessibility gate가 필수다.
+- UI가 없는 Java·Python backend는 `not-applicable`과 구체적인 근거를 기록할 수 있다.
+- preview는 실행하지 않고 application cwd·tool·version·argv를 보여준다.
+- run은 preview 뒤 `--approve`와 caller-enforced network-none sandbox가 모두 있어야 한다.
+- runner는 version drift, non-zero exit, timeout과 source 변경을 fail-closed한다.
+- check-only 품질 실행이므로 formatter가 source를 수정하면 성공 exit라도 실패다.
+
+synthetic runner는 실제 Prettier·ESLint·Java·Python 도구 설치나 브라우저 접근성 검증을 대신하지
+않는다. project별 도구와 version은 개발환경 정의·dependency 승인 뒤 확정한다.
+
 ## 커스텀 규칙 후보
 
 초기에는 기존 생태계 규칙을 우선하고 다음 프로젝트 선호를 AST 기반 커스텀 규칙으로

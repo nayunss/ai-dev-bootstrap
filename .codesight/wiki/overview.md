@@ -6,22 +6,27 @@
 
 ## Scale
 
-7 library files · 5 middleware layers · 1 environment variables
+1 database models · 15 library files · 5 middleware layers · 2 environment variables
+
+**Database:** unknown, 1 models — see [database.md](./database.md)
+
+**Libraries:** 15 files — see [libraries.md](./libraries.md)
 
 ## High-Impact Files
 
 Changes to these files have the widest blast radius across the codebase:
 
 - `scripts/upstream-lock.mjs` — imported by **3** files
+- `scripts/capability-suite.mjs` — imported by **2** files
 - `scripts/pilot-results.mjs` — imported by **2** files
+- `scripts/fastapi-contract-adapter.mjs` — imported by **2** files
 - `scripts/application-inventory.mjs` — imported by **2** files
-- `scripts/upgrade-core.mjs` — imported by **1** files
-- `scripts/validate-production-readiness.mjs` — imported by **1** files
-- `scripts/validate-skill-evolution-trial.mjs` — imported by **1** files
+- `scripts/adapter-parity.mjs` — imported by **2** files
 
 ## Required Environment Variables
 
-- `PATH` — `scripts/manage-dependencies.mjs`
+- `PATH` — `scripts/capability-suite.mjs`
+- `QUALITY_NETWORK_ENFORCED` — `scripts/run-stack-quality.mjs`
 
 ---
 _Back to [index.md](./index.md) · Generated from the repository_

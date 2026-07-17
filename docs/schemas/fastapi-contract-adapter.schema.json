@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/common-ai-development-harness/fastapi-contract-adapter.schema.json",
+  "title": "FastAPI OpenAPI contract adapter profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "framework",
+    "environment",
+    "sourceOfTruth",
+    "productionDocs",
+    "ignoredOperations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "framework": { "const": "fastapi" },
+    "environment": { "enum": ["local", "test", "staging", "production"] },
+    "sourceOfTruth": { "enum": ["contract-first", "code-first"] },
+    "productionDocs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "tryItOutEnabled",
+        "externalAssetHosts",
+        "observedEndpoints"
+      ],
+      "properties": {
+        "mode": { "enum": ["disabled", "authenticated", "network-restricted", "public-approved"] },
+        "tryItOutEnabled": { "type": "boolean" },
+        "externalAssetHosts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "observedEndpoints": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "unauthenticatedStatus", "authorizedStatus"],
+            "properties": {
+              "path": { "enum": ["/openapi.json", "/docs", "/redoc"] },
+              "unauthenticatedStatus": { "type": "integer", "minimum": 100, "maximum": 599 },
+              "authorizedStatus": {
+                "oneOf": [
+                  { "type": "integer", "minimum": 100, "maximum": 599 },
+                  { "type": "null" }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "ignoredOperations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["method", "path", "rationale"],
+        "properties": {
+          "method": { "type": "string", "pattern": "^(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)$" },
+          "path": { "type": "string", "pattern": "^/" },
+          "rationale": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

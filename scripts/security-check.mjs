@@ -69,6 +69,17 @@ if (handoff.status !== 0) {
   process.stderr.write(handoff.stderr || handoff.stdout || "HANDOFF.md validation failed.\n");
   process.exit(1);
 }
+const traceabilityMode = mode === "staged" ? "staged" : "full";
+const traceability = run(process.execPath, ["scripts/validate-requirement-traceability.mjs", traceabilityMode], true);
+if (traceability.status !== 0) {
+  process.stderr.write(traceability.stderr || traceability.stdout || "Requirement traceability validation failed.\n");
+  process.exit(1);
+}
+const adapterParity = run(process.execPath, ["scripts/validate-adapter-parity.mjs"], true);
+if (adapterParity.status !== 0) {
+  process.stderr.write(adapterParity.stderr || adapterParity.stdout || "Adapter parity validation failed.\n");
+  process.exit(1);
+}
 const dependencyMode = mode === "staged" ? "staged" : "full";
 const dependencyApproval = run(process.execPath, ["scripts/validate-dependency-upgrades.mjs", dependencyMode], true);
 if (dependencyApproval.status !== 0) {

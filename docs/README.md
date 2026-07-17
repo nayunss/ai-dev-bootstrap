@@ -43,6 +43,20 @@
 | [SDLC](sdlc.md) | 요구사항부터 운영까지의 AI 협업 절차 정의 | 설계 승인 |
 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md) | 프로젝트별 CI와 Preview·Production 배포 계약 | 설계 승인 |
 | [웹서비스 Production 준비](web-service-production-readiness.md) | 보안·운영·개인정보·DB·법적 적용성 팩트체크와 출시 gate | 설계 승인 |
+| [Capability task schema](schemas/capability-task.schema.json) | deterministic Eval task·권한·grader·trial·자원 한도 계약 | 적용 |
+| [Adapter parity schema](schemas/adapter-parity.schema.json) | 지원 AI adapter의 공통 policy·role·permission 계약 | 적용 |
+| [FastAPI contract adapter schema](schemas/fastapi-contract-adapter.schema.json) | OpenAPI drift·route inventory·Production docs 노출 계약 | 적용 |
+| [Full-stack materializer schema](schemas/fullstack-materializer.schema.json) | 최초 frontend·backend·shared·migration artifact와 rollback 계약 | 적용 |
+| [Dependency bootstrap schema](schemas/dependency-bootstrap.schema.json) | stack별 dependency adapter 입력 계약 | 적용 |
+| [Distributed pilot result schema](schemas/distributed-pilot-result.schema.json) | 독립 tester 결과·증거 계약 | 적용 |
+| [Stack quality adapter schema](schemas/stack-quality-adapters.schema.json) | 언어별 formatter·linter·typecheck·접근성 실행 계약 | 적용 |
+| [Canonical upstream lock schema](schemas/upstream-lock.schema.json) | release·source·target hash lock 계약 | 적용 |
+| [Dependency bootstrap template](templates/dependency-bootstrap.json) | 프로젝트별 dependency bootstrap 질문 입력 | 적용 |
+| [Distributed pilot campaign template](templates/distributed-pilot-campaign.json) | 실제·synthetic tester campaign 입력 | 적용 |
+| [Production readiness template](templates/production-readiness.json) | 법률·retention·limiter·restore evidence 입력 | 적용 |
+| [Skill evolution trial template](templates/skill-evolution-trial.json) | model·harness·trial·비용·network·reviewer 입력 | 적용 |
+| [Stack quality adapter template](templates/stack-quality-adapters.json) | project별 품질 도구·version·argv 입력 | 적용 |
+| [Upstream adoption template](templates/upstream-adoption.json) | release와 downstream 적용 대상 입력 | 적용 |
 | [v0.2.0-pilot Release](releases/v0.2.0-pilot.md) | Pilot 자동화·보안 변경과 migration·rollback | 발행 완료 |
 | [v0.2.1-pilot Release](releases/v0.2.1-pilot.md) | `.env*` 비접근 hotfix | 발행 완료 |
 | [v0.2.2-pilot Release](releases/v0.2.2-pilot.md) | Dependency version 승인 계약과 validator lint 수정 | 발행 완료 |

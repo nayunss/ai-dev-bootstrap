@@ -2,4 +2,5 @@
 
 ## Environment Variables
 
-- `PATH` **required** — scripts/manage-dependencies.mjs
+- `PATH` **required** — scripts/capability-suite.mjs
+- `QUALITY_NETWORK_ENFORCED` **required** — scripts/run-stack-quality.mjs

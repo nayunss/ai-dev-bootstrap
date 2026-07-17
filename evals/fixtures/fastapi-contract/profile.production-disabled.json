@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "framework": "fastapi",
+  "environment": "production",
+  "sourceOfTruth": "code-first",
+  "productionDocs": {
+    "mode": "disabled",
+    "tryItOutEnabled": false,
+    "externalAssetHosts": [],
+    "observedEndpoints": [
+      { "path": "/openapi.json", "unauthenticatedStatus": 404, "authorizedStatus": null },
+      { "path": "/docs", "unauthenticatedStatus": 404, "authorizedStatus": null },
+      { "path": "/redoc", "unauthenticatedStatus": 404, "authorizedStatus": null }
+    ]
+  },
+  "ignoredOperations": []
+}

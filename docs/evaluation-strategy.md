@@ -185,6 +185,27 @@ offline plan은 비용 0과 network deny만 허용하며 모델을 호출하지 
 외부 API Eval은 데이터 전송과 비용 때문에 기본 CI와 분리해 승인된 환경에서만 실행한다. 로컬
 결정론적 suite는 네트워크 없이 실행 가능해야 한다.
 
+### REQ-025 deterministic capability suite
+
+`docs/schemas/capability-task.schema.json`과 `scripts/capability-suite.mjs`는 공통 task 계약,
+fixture SHA-256, 저장소 내부 grader allowlist와 trial별 격리 실행을 구현한다. 각 trial은 fixture를
+OS 임시 디렉터리에 복사하고 `node + evals/graders/*.mjs`만 실행한다. `.env*`, 절대·상위 경로,
+network 허용, 임의 executable과 fixture hash drift는 실행 전에 거절한다.
+
+runner는 grader exit, timeout, fixture 변경과 duration·tool-call·diff bytes를 직접 계측한다.
+aggregator는 task별 hard gate와 합계·평균·p95 latency, tool-call·diff·token·비용을 취합한다.
+deterministic profile에서 token과 비용은 반드시 0이며, 효율 지표로 실패 task를 상쇄하지 않는다.
+
+```sh
+node scripts/run-capability-task.mjs \
+  evals/tasks/deterministic-capability-smoke.json --expect-pass
+node scripts/aggregate-capability-results.mjs result.json --expect-pass
+```
+
+이 suite는 repository-owned deterministic grader 실행 계약을 검증한다. agent 또는 model을 호출하지
+않으며 실제 capability·비결정 분포·token·유료 비용을 측정했다는 증거가 아니다. 실제 model trial은
+exact model·harness·network·token·비용 승인과 격리된 별도 plan으로 수행한다.
+
 ## 토큰 프로파일
 
 - `token-aware`: 변경 관련 필수 regression subset부터 실행하고 실패·고위험 시 확대한다.

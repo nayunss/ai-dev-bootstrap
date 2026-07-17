@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "from": "REQ-019",
+    "to": "REQ-024"
+  },
+  "reviewedAt": "2026-07-17",
+  "documentationSync": {
+    "source": "docs/requirements.md",
+    "statusModel": "implementation-and-verification-separated"
+  },
+  "requirements": [
+    {
+      "id": "REQ-019",
+      "status": "partial",
+      "normativeSources": ["docs/requirements.md"],
+      "implementationSources": [
+        ".ai/workflows/handoff.md",
+        "scripts/validate-requirement-traceability.mjs"
+      ],
+      "verificationSources": [
+        "scripts/test-requirement-traceability.mjs",
+        ".github/workflows/security.yml"
+      ],
+      "tokenProfileImpact": {
+        "mode": "common-required",
+        "rationale": "Requirement capture and synchronization gates are mandatory in token-aware and full profiles."
+      },
+      "externalGates": [
+        "Conversation intent still requires human clarification when new input conflicts or has materially different interpretations."
+      ]
+    },
+    {
+      "id": "REQ-020",
+      "status": "partial",
+      "normativeSources": [
+        "docs/requirements.md",
+        "docs/project-environment-definition.md"
+      ],
+      "implementationSources": [
+        "scripts/preview-applications.mjs",
+        "scripts/materialize-project-onboarding.mjs",
+        "scripts/validate-downstream.mjs"
+      ],
+      "verificationSources": [
+        "scripts/test-project-onboarding.mjs",
+        "scripts/test-downstream-validator.mjs"
+      ],
+      "tokenProfileImpact": {
+        "mode": "differentiated",
+        "rationale": "Profiles vary discovery depth and question detail, while exact versions and required gates remain common."
+      },
+      "externalGates": [
+        "Each downstream owner must approve its detected application inventory, runtime and deployment profile."
+      ]
+    },
+    {
+      "id": "REQ-021",
+      "status": "partial",
+      "normativeSources": [
+        "docs/requirements.md",
+        "docs/human-in-the-loop.md",
+        "docs/project-environment-definition.md"
+      ],
+      "implementationSources": [
+        "scripts/materialize-project-onboarding.mjs",
+        "scripts/materialize-production-readiness.mjs"
+      ],
+      "verificationSources": [
+        "scripts/test-project-onboarding.mjs",
+        "scripts/test-readiness-materialization.mjs"
+      ],
+      "tokenProfileImpact": {
+        "mode": "differentiated",
+        "rationale": "Question breadth may vary, but security, cost, data and production approvals cannot be omitted."
+      },
+      "externalGates": [
+        "Project-specific security, cost, data and production decisions remain explicit Human-in-the-loop inputs."
+      ]
+    },
+    {
+      "id": "REQ-022",
+      "status": "partial",
+      "normativeSources": [
+        "docs/requirements.md",
+        "docs/token-budget-profiles.md",
+        ".ai/workflows/token-budget.md"
+      ],
+      "implementationSources": [
+        ".ai/standards/engineering.md",
+        ".ai/workflows/handoff.md"
+      ],
+      "verificationSources": [
+        "scripts/validate-handoff.mjs",
+        "scripts/test-handoff-validator.mjs"
+      ],
+      "tokenProfileImpact": {
+        "mode": "differentiated",
+        "rationale": "Profiles intentionally differ in context and explanation depth while retaining identical mandatory gates."
+      },
+      "externalGates": [
+        "Live token and cost measurements require a selected model, harness and approved invocation budget."
+      ]
+    },
+    {
+      "id": "REQ-023",
+      "status": "partial",
+      "normativeSources": [
+        "docs/requirements.md",
+        "docs/token-budget-profiles.md",
+        ".ai/workflows/token-budget.md"
+      ],
+      "implementationSources": [
+        "scripts/validate-requirement-traceability.mjs",
+        ".ai/workflows/handoff.md"
+      ],
+      "verificationSources": [
+        "scripts/test-requirement-traceability.mjs",
+        "scripts/test-handoff-validator.mjs"
+      ],
+      "tokenProfileImpact": {
+        "mode": "common-required",
+        "rationale": "Every requirement change must record differentiated behavior or an explicit common-required rationale."
+      },
+      "externalGates": []
+    },
+    {
+      "id": "REQ-024",
+      "status": "partial",
+      "normativeSources": [
+        "docs/requirements.md",
+        "docs/prompt-templates.md"
+      ],
+      "implementationSources": [
+        "docs/prompt-templates.md",
+        "scripts/materialize-project-onboarding.mjs"
+      ],
+      "verificationSources": [
+        "scripts/test-project-onboarding.mjs",
+        "scripts/validate-requirement-traceability.mjs"
+      ],
+      "tokenProfileImpact": {
+        "mode": "differentiated",
+        "rationale": "Prompt length may vary by profile, while intent, acceptance criteria and approval fields remain mandatory."
+      },
+      "externalGates": [
+        "Product intent and high-risk approval scope must be supplied by the downstream decision owner."
+      ]
+    }
+  ]
+}

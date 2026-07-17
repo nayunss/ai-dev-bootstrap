@@ -1,6 +1,6 @@
 # AI 생성 코드 라이선스와 출처 검증
 
-상태: 후보 1차 심사 완료, 설치·외부 API 승인 대기
+상태: ScanCode 조건부 도입·hosted CI 검증 완료, public-corpus snippet provenance 미검증
 검토일: 2026-07-14
 
 이 문서는 법률 자문이 아니다. 실제 배포·판매·소스 공개 의무가 걸린 판단은 조직의 open-source
