@@ -38,6 +38,7 @@ jobs:
           npm run test:downstream-validator
           npm run test:adapter-manager
           npm run test:core-materializer
+          npm run test:upstream-lock
           npm run test:skill-evolution
           npm run test:skill-evolution-trial
           npm run test:pilot-results

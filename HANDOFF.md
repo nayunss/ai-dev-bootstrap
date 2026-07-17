@@ -3,8 +3,8 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 설계 baseline 완료·실제 구현 전환
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit
-다음 작업: REQ-042-yaml-lock-schema, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema
+다음 작업: downstream-security-installer, REQ-046, REQ-040-owner-evidence, REQ-041-live-trial-release, REQ-042-release-core-adoption
 
 ## 목표
 
@@ -96,6 +96,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - REQ-001~046의 requirement·architecture·workflow·project profile·HITL·Eval 경계를 감사해
   `DESIGN-BASELINE-2026-07-17` 설계 명세 완료로 판정했다. 실제 구현·지원·실제 환경 검증은 별도
   상태로 유지하고 첫 구현 increment를 canonical YAML lock으로 확정했다.
+- REQ-042 실제 구현 첫 increment로 canonical YAML upstream lock schema·결정론적 parser/serializer·
+  target validator, 기존 JSON reference migration과 명시적 inventory 기반 release manifest generator를
+  구현했다. core materializer와 downstream validator는 YAML lock과 target hash drift를 fail-closed한다.
 
 ## 현재 상태
 
@@ -126,9 +129,9 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - downstream은 upstream을 symlink·submodule·실시간 참조하지 않고 승인된 release를 고정 적용한다.
 - pilot PASS는 해당 stack·환경의 증거이며 모든 stack이나 Production readiness 완료를 뜻하지 않는다.
 - 실제 프로젝트의 기존 사용자 파일과 변경을 보존하며 Git stage는 대상 파일을 명시해서 수행한다.
-- 선택 adapter 적용 증적은 `.ai/manifests/adapters.lock.json`이며 release-level 목표 canonical
-  `.ai/manifests/upstream.lock.yaml`을 대신하지 않는다. core reference Eval의
-  `.ai/manifests/upstream.lock.json`도 YAML schema·migration 완료를 뜻하지 않는다.
+- 선택 adapter 적용 증적은 `.ai/manifests/adapters.lock.json`이며 release-level canonical
+  `.ai/manifests/upstream.lock.yaml`을 대신하지 않는다. 기존 JSON reference lock은 승인된 release
+  manifest와 모든 고정 값이 일치할 때만 YAML로 migration한다.
 - 현재 공통 저장소에는 실제 서비스의 법률·retention·provider restore 증적이 없다. synthetic gate
   PASS를 실제 Production 승인으로 해석하지 않으며 downstream profile은 owner가 직접 작성한다.
 
@@ -183,6 +186,12 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
   REQ-040·041·042 질문 template과 초기/retrofit 보존 Eval
 - `docs/design-completion-audit.md`, `README.md`, `docs/README.md`, `docs/requirements.md`: 설계 명세
   baseline 완료, 실제 구현·지원 검증 분리와 감사 finding
+- `docs/schemas/upstream-lock.schema.json`, `scripts/upstream-lock.mjs`,
+  `scripts/{generate-release-manifest,migrate-upstream-lock,validate-upstream-lock}.mjs`: canonical YAML
+  lock·migration·manifest 생성·target 검증
+- `scripts/materialize-core.mjs`, `scripts/test-upstream-lock.mjs`,
+  `scripts/test-core-materializer.mjs`, `scripts/validate-downstream.mjs`: YAML lock materialization과
+  deterministic·unsafe inventory·manifest mismatch·target drift regression
 
 ## 검증
 
@@ -243,6 +252,10 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 - 기존 project의 일부 profile·owner 파일 보존과 누락 profile만 retrofit: PASS
 - REQ-001~046 설계 source·상태·경계·남은 gate coverage audit: PASS
 - 설계 명세 완료와 REQ-046 설계 검증 완료 용어 분리: PASS
+- canonical YAML round-trip·canonical form·schema/content/file SHA-256: PASS
+- JSON reference lock→YAML migration positive와 manifest 불일치·overwrite negative: PASS
+- 명시 inventory release manifest 결정론·정렬과 `.env*`·unsafe path 차단: PASS
+- core apply YAML lock 생성·target drift 및 downstream enforcement: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
@@ -251,8 +264,8 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 
 ### 공통 저장소에서 진행 가능
 
-1. REQ-042 canonical YAML lock schema·JSON reference lock migration과 release manifest 생성
-   automation을 fixture로 구현한다. 이 단계는 release 발행이나 downstream 적용을 수행하지 않는다.
+1. REQ-026·033의 downstream project-local security tool installer를 exact version·checksum·network
+   승인과 clean uninstall fixture로 구현한다.
 
 ### 외부 입력·실제 환경 대기
 

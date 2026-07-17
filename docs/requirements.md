@@ -37,7 +37,7 @@
 | REQ-037~039 | 부분 검증 | 확장 스펙·engineering adapter·role 정책 적용, 다중 도구 Eval 확대 필요 |
 | REQ-040 | 부분 검증 | schema v2 hard gate와 초기/기존 project 공용 onboarding 질문·blocked template·보존 retrofit Eval PASS. 실제 운영 evidence와 provider rehearsal은 미완료 |
 | REQ-041 | 부분 검증 | synthetic bounded patch, offline trial gate와 project별 model/harness·비용·network·reviewer onboarding template Eval PASS. 실제 모델·비결정 trial·release는 미검증 |
-| REQ-042 | 부분 검증 | 3종 선택 adapter, core reference materializer와 project별 release/checksum·target·rollback onboarding template Eval PASS. 실제 release manifest 발행·downstream upgrade는 미검증 |
+| REQ-042 | 부분 검증 | 3종 adapter, canonical YAML lock schema/parser/validator, JSON migration, inventory 기반 release manifest generator와 core materializer Eval PASS. 실제 release 발행·downstream upgrade/rollback은 미검증 |
 | REQ-043 | 부분 검증 | 후보 심사, ScanCode synthetic·project pilot, 조건부 hosted CI PASS. true public-corpus snippet provenance는 미검증 |
 | REQ-044 | 부분 검증 | env-be Spring Boot 4/SpringDoc 3 contract·breaking-change·production exposure·undocumented endpoint와 Next.js BFF method/path fixture PASS. 다른 stack 미검증 |
 | REQ-045 | 부분 검증 | 재귀 inventory·drift 자동화와 env-be 증분 remediation, 3-service PR 격리·CRUD·application rollback PASS. 최초 full-stack 일괄 materialize·DB migration rollback 미검증 |
@@ -916,3 +916,4 @@
 | 2026-07-17 | REQ-040·041·042 프로젝트별 결정을 초기 설정과 기존 project retrofit에서 질문하는 공통 onboarding 구현 |
 | 2026-07-17 | HANDOFF 남은 작업을 공통 저장소 진행 가능과 프로젝트·사람·실제 환경·외부 승인 대기로 분류하는 계약 추가 |
 | 2026-07-17 | REQ-001~046 설계 완료 감사와 실제 구현 입력 baseline 확정 |
+| 2026-07-17 | REQ-042 canonical YAML upstream lock·JSON migration·release manifest generator와 downstream drift enforcement 구현 |

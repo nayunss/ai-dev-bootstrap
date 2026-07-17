@@ -17,8 +17,9 @@ materialize한 검증 근거가 있지만, 범용 installer 전체가 구현된 
 |---|---|
 | release tag·archive checksum | v0.2.0~v0.2.3 pilot 발행 완료 |
 | application preview·validator | reference automation 적용, 지원 stack·profile 제한 존재 |
-| `upstream.lock` schema·생성·parser | JSON reference lock과 hash validator Eval 구현, release manifest 발행 automation은 미구현 |
-| 공통 코어 materialization | release manifest 기반 preview·승인 apply·충돌·source/target drift reference Eval 구현 |
+| `upstream.lock` schema·생성·parser | canonical YAML schema·결정론적 parser/serializer·target validator와 JSON migration 구현 |
+| release manifest | 명시적 inventory·repository·release·commit·archive SHA-256 기반 결정론적 generator 구현 |
+| 공통 코어 materialization | canonical YAML lock을 생성하는 preview·승인 apply·충돌·source/target drift 구현 |
 | Codex·Claude Code·GitHub Copilot 선택 adapter | preview·명시 승인·hash drift·보존 uninstall reference 구현 |
 | downstream security tool 설치 | 미구현; 현재 `security-tools`는 upstream `.tools/`에 설치 |
 | stack별 dependency bootstrap | npm·pnpm root 경로만 부분 구현 |
@@ -46,7 +47,7 @@ uninstall은 이 작업이 생성했고 이후 수정되지 않은 파일만 제
 적용 후 변경된 파일은 보존하며, 기존 파일이 source와 다르면 apply 전체를 쓰기 전에 차단한다.
 이 lock은 선택 adapter의 생성 증적이며 release-level upstream lock을 대신하지 않는다.
 
-### release-level 공통 core reference 명령
+### release-level 공통 core 명령
 
 release publisher가 만든 manifest는 release·commit·archive SHA-256과 파일별 SHA-256 및 canonical
 content hash를 포함한다. materializer는 source snapshot과 manifest가 일치할 때만 preview하며, 기존
@@ -58,16 +59,25 @@ node scripts/materialize-core.mjs apply TARGET RELEASE_MANIFEST RELEASE_SOURCE -
 node scripts/materialize-core.mjs validate TARGET RELEASE_MANIFEST RELEASE_SOURCE
 ```
 
-적용 결과는 reference 구현의 `.ai/manifests/upstream.lock.json`에 기록한다. reference Eval은 생성·동일 파일 보존,
-기존 파일 충돌의 atomic 차단, manifest/source/target drift를 검증한다. 실제 v0.2.3 이후 release
-manifest 발행, 목표 canonical YAML lock으로의 migration과 real downstream upgrade·rollback은 별도
-release 작업이다.
+적용 결과는 `.ai/manifests/upstream.lock.yaml`에 기록한다. 기존 JSON reference lock은 release
+manifest와 release·commit·archive/content SHA-256·files가 모두 일치할 때만 migration한다.
+
+```sh
+node scripts/generate-release-manifest.mjs SOURCE INVENTORY.json OUTPUT.json \
+  --repository=URL --release=TAG --commit=SHA --archive=RELEASE_ARCHIVE
+node scripts/migrate-upstream-lock.mjs INPUT.json OUTPUT.yaml \
+  --manifest=MANIFEST.json --repository=URL
+node scripts/validate-upstream-lock.mjs .ai/manifests/upstream.lock.yaml TARGET
+```
+
+generator는 명시적 inventory만 읽고 절대 경로·`..`·`.env*`를 차단한다. 실제 release 발행과 real
+downstream upgrade·rollback은 별도 외부 변경 승인 작업이다.
 
 ## upstream.lock의 역할
 
-`upstream.lock`은 **downstream 저장소에 둘 목표 manifest**다. 목표 canonical 위치는 기존 설계대로
-`.ai/manifests/upstream.lock.yaml`이다. 이번 reference materializer의 JSON lock은 release manifest의
-고정값과 materialize된 파일 hash 검증을 재현하는 pilot 증적이며 YAML schema·migration을 대신하지 않는다.
+`upstream.lock`은 **downstream 저장소에 두는 canonical manifest**다. 위치는
+`.ai/manifests/upstream.lock.yaml`이며 release manifest의 repository·release·commit·archive/content·
+manifest SHA-256과 materialize된 파일 hash를 기록한다.
 
 | 필드 | 내용 | 출처 |
 |---|---|---|
@@ -88,8 +98,8 @@ release 작업이다.
 - **모드 판별 입력**: AI가 작업 시작 시 upstream 유지보수인지 downstream 도입인지 감지할 때
   읽는 신호 중 하나다(`.ai/workflows/change-mode.md`).
 
-현재 이 파일을 파싱하거나 checksum을 집행하는 script는 없다. bootstrap·validate가 lock까지 검증한다는
-주장은 해당 구현과 fixture가 추가된 뒤에만 적용한다.
+`scripts/validate-upstream-lock.mjs`와 downstream validator는 canonical form, content hash와 target
+file hash를 fail-closed한다.
 
 ## 적용 원리: 참조가 아니라 materialization
 

@@ -15,8 +15,8 @@
     "coreLockPath": ".ai/manifests/upstream.lock.yaml"
   },
   "migration": {
-    "fromSchemaVersion": "TBD",
-    "toSchemaVersion": "TBD",
+    "fromSchemaVersion": "JSON-reference-v1-or-none",
+    "toSchemaVersion": "canonical-YAML-v1",
     "previewReference": "TBD",
     "compatibilityEvidenceReference": "TBD"
   },

@@ -298,6 +298,18 @@ if (existsSync(join(root, ".ai/manifests/adapters.lock.json"))) {
     if (adapters.status !== 0) errors.push(adapters.stderr.trim() || "adapter hash validation failed");
   }
 }
+if (existsSync(join(root, ".ai/manifests/upstream.lock.yaml"))) {
+  if (!existsSync(join(root, "scripts/validate-upstream-lock.mjs"))) {
+    errors.push("upstream lock requires scripts/validate-upstream-lock.mjs");
+  } else {
+    const upstream = spawnSync(
+      process.execPath,
+      ["scripts/validate-upstream-lock.mjs", ".ai/manifests/upstream.lock.yaml", root],
+      { cwd: root, encoding: "utf8" },
+    );
+    if (upstream.status !== 0) errors.push(upstream.stderr.trim() || "upstream lock validation failed");
+  }
+}
 
 for (const note of notes) process.stdout.write(`NOTE: ${note}\n`);
 if (errors.length) {
