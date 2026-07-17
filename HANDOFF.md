@@ -3,8 +3,8 @@
 갱신: 2026-07-17 Asia/Seoul
 상태: 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional
-다음 작업: REQ-043-required-check-decision, REQ-042, REQ-041
+완료 작업: release:v0.2.3-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks
+다음 작업: REQ-042, REQ-041
 
 ## 목표
 
@@ -70,6 +70,8 @@ pilot 검증 단계다.
 - PR #4 hosted Security run `29552220688`에서 `security`와 `license-provenance`가 PASS했다. hosted
   scanner는 113 files·error 0·review-only 5·source 0이었고 sanitized artifact ID `8396167730`은
   `summary.json`만 포함해 2026-07-31까지 정확히 14일 보존된다.
+- PR #4 병합 후 main run `29552778527`도 두 job이 PASS했다. 사람 검토 후 `main` branch protection에
+  `security`와 `license-provenance`를 strict required checks로 지정하고 관리자에게도 적용했다.
 
 ## 현재 상태
 
@@ -147,18 +149,19 @@ pilot 검증 단계다.
 - hosted `license-provenance` job: PASS, run `29552220688`, 1분 23초
 - hosted archive checksum·image digest·Podman 4.9.3 gate·network-none scan: PASS
 - sanitized artifact raw license text 부재·14일 만료 metadata: PASS
+- main branch protection strict required checks `security`·`license-provenance`: PASS
+- protection 관리자 적용·force push 차단·branch 삭제 차단: PASS
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
 
 ## 남은 작업
 
-1. hosted 결과를 사람이 검토한 뒤 branch protection의 required check 지정 여부를 별도 결정한다.
-2. REQ-042 Codex·Claude Code 선택형 adapter의 preview·source hash·drift·uninstall 보존 Eval을 구현한다.
-3. 필수 gate가 안정된 뒤 REQ-041 bounded-patch pilot을 수행한다.
-4. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
+1. REQ-042 Codex·Claude Code 선택형 adapter의 preview·source hash·drift·uninstall 보존 Eval을 구현한다.
+2. 필수 gate가 안정된 뒤 REQ-041 bounded-patch pilot을 수행한다.
+3. REQ-040 다중-instance limiter·Production provider restore와 법률·retention 책임자 evidence가
    준비될 때까지 Production 승인을 차단한다.
-5. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
+4. REQ-046의 독립 tester 다중 참여와 결과 취합을 실제로 재현한다.
 
 ## 위험·주의
 
@@ -177,5 +180,5 @@ pilot 검증 단계다.
 2. 실제 프로젝트 경로에서 `git status --short --branch`와 `git rev-parse HEAD`를 확인한다.
 3. 사용자 JPEG가 untracked 상태로 보존되는지 확인하고, 원격 비교가 필요하면 `git fetch` 후
    remote-tracking reference와 대조한다.
-4. `docs/ai-generated-code-license-provenance.md`의 조건부 CI 계약과 hosted PASS를 읽고 required check
-   지정 여부가 승인됐는지 확인한다. branch protection 변경은 별도 승인 전 수행하지 않는다.
+4. `docs/ai-generated-code-license-provenance.md`의 조건부 CI 계약과 hosted PASS를 읽고 GitHub API에서
+   `main`의 두 required checks와 strict·관리자 적용 상태가 유지되는지 확인한다.
