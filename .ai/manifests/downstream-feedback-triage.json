@@ -23,7 +23,15 @@
     {"id": "UF-008", "generalizedCause": "검사 전용 명령이 추적 중인 원본을 변경한다", "primaryRequirementId": "REQ-050", "duplicateOf": "UF-007", "implementationTaskId": "REQ-050-repository-state-invariants", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
     {"id": "UF-009", "generalizedCause": "전송 완료를 지속적 통합 실행 성공으로 확대한다", "primaryRequirementId": "REQ-051", "duplicateOf": null, "implementationTaskId": "REQ-051-delivery-evidence-states", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
     {"id": "UF-010", "generalizedCause": "배포 또는 상태 확인을 핵심 동작 검증으로 확대한다", "primaryRequirementId": "REQ-051", "duplicateOf": "UF-009", "implementationTaskId": "REQ-051-delivery-evidence-states", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
-    {"id": "UF-011", "generalizedCause": "반증할 수 없는 확인을 정책 이행 증거로 채택한다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {
+      "id": "UF-011",
+      "generalizedCause": "반증할 수 없는 확인을 정책 이행 증거로 채택한다",
+      "primaryRequirementId": "REQ-049",
+      "duplicateOf": "UF-001",
+      "implementationTaskId": "REQ-049-policy-evidence-validator",
+      "revalidationTaskId": "UF-001-013-downstream-revalidation",
+      "status": "triaged"
+    },
     {
       "id": "UF-012",
       "generalizedCause": "사용자 표시 언어 계약을 단일 계층으로 한정한다",
