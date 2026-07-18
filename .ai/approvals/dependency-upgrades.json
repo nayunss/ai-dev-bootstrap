@@ -114,6 +114,25 @@
       "approvedAt": "2026-07-18",
       "expiresAt": "2026-07-19",
       "status": "approved"
+    },
+    {
+      "id": "DEP-LOCK-2026-07-18-001",
+      "package": "__lockfile__",
+      "manifest": "package-lock.json",
+      "from": "sha256:ce20975fdda375b79593fcd9285aeb723bf7b0e2c407d4bea747c2bff7890f71",
+      "to": "sha256:77734e04d1c9787f0e55c7e1a7c222c44dfb0000bd4bed6ae6f87f4ff5089108",
+      "reason": "Add exact Electron 43.1.1, @electron/packager 20.0.3 and @electron/fuses 2.1.3 development dependencies for the approved REQ-047 macOS GUI delivery baseline",
+      "migration": "No production runtime or downstream migration; the dependencies are development-only and GUI assets remain unsupported until packaging, signing, notarization and usability gates pass",
+      "validation": [
+        "scripts-off dependency inventory contains 53 packages with reviewed licenses and no lifecycle flags",
+        "Electron package tar and macOS arm64 runtime checksums match the reviewed exact artifacts",
+        "npm audit reports zero vulnerabilities and desktop GUI, release adoption, security and traceability regressions pass"
+      ],
+      "rollback": "Revert the REQ-047 GUI desktop shell commits and restore package.json and package-lock.json to the v0.2.8-pilot dependency graph",
+      "approvedBy": "repository owner via explicit Electron dependency approval and PR merge request",
+      "approvedAt": "2026-07-18",
+      "expiresAt": "2026-07-19",
+      "status": "approved"
     }
   ]
 }

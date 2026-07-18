@@ -1,100 +1,93 @@
-# Common Project
+# AI Dev Bootstrap
 
-각 사용자가 이 저장소를 clone한 뒤, 서로 다른 Codex·Claude Code 등의 개인 환경을 동일한
-프로젝트 규칙, 승인된 도구 버전, 스킬, hook과 검증 절차로 맞춘 다음 개발을 시작하도록 돕는
-AI 개발 환경 표준화 프로젝트입니다.
+Codex·Claude Code·GitHub Copilot 등 서로 다른 AI 도구를 사용하더라도 같은 프로젝트 규칙,
+보안 경계, 승인된 도구 버전과 검증 절차로 개발을 시작할 수 있게 돕는 프로젝트 로컬
+부트스트랩입니다. 신규 프로젝트와 운영 중인 기존 프로젝트를 모두 지원하며 개인 전역 설정을
+강제로 덮어쓰지 않습니다.
 
-## 목표
+> 최신 검증 기준: [`v0.2.8-pilot`](docs/releases/v0.2.8-pilot.md)
+>
+> 처음 사용하는 경우: [처음부터 끝까지 사용 가이드](docs/bootstrap-user-guide.md)
 
-- Codex, Claude Code 등 특정 AI 도구에 종속되지 않는 공통 규칙을 정의합니다.
-- 개발자마다 다른 스킬과 플러그인 구성을 재현 가능한 형태로 관리합니다.
-- 프로젝트 폴더 구조와 AI 관련 설정의 기준을 제공합니다.
-- 새로운 프로젝트와 기존 프로젝트에 적용할 수 있는 설치·검증 절차를 만듭니다.
-- 개인 전역 설정을 강제로 덮어쓰지 않고 프로젝트 로컬 환경을 우선합니다.
+## 제공 기능
 
-## clone 후 목표 흐름
+- `.ai/`를 단일 진실 원천으로 사용하는 AI 도구 중립 engineering·security·handoff 규칙
+- Codex·Claude Code·GitHub Copilot 선택형 project-local adapter와 source/target hash drift 검증
+- 신규 프로젝트 초기 질문과 기존 프로젝트 retrofit을 위한 onboarding·개발환경 profile
+- 단일 프로젝트와 workspace monorepo의 stack·DB starter reference 및 충돌·rollback 검사
+- npm·pnpm·Yarn·Maven·Gradle·Python dependency bootstrap 계약과 network 승인 분리
+- JavaScript·Java·Python formatter·linter·typecheck 및 웹 접근성 adapter 계약
+- FastAPI/OpenAPI contract drift, full-stack materialization·locale·DB rollback artifact 계약
+- core·optional skill bundle, reviewed plugin catalog와 설치·upgrade·보존 uninstall 검증
+- GitHub·GitLab·generic/none hosting, branch/review, CI·artifact·deployment provider profile
+- 법률·retention·다중-instance limiter·provider restore를 포함한 Production readiness hard gate
+- staged tree invariant, delivery evidence 상태, feedback triage와 REQ-001–REQ-052 추적성 CI gate
+- Gitleaks·Opengrep와 network-none ScanCode license-provenance hosted security gate
+- release adoption preview·apply·validate·upgrade·rollback 공통 core와 부분 실패 transaction 원복
+
+Reference·synthetic PASS는 실제 dependency 설치, DB write, provider 변경, Production 배포 또는
+모든 기술 스택의 지원 완료를 의미하지 않습니다. 현재 지원·검증 경계는
+[요구사항 상태표](docs/requirements.md)와 [최신 release note](docs/releases/v0.2.8-pilot.md)를
+기준으로 확인합니다.
+
+## 빠른 시작
 
 ```text
-git clone
+검증된 release 고정
    ↓
 읽기 전용 환경 진단
    ↓
-승인된 버전·해시로 프로젝트 로컬 bootstrap
+프로젝트별 질문·profile 확정
    ↓
-Codex·Claude Code 등 도구별 얇은 어댑터 연결
+preview 확인 후 선택 adapter 적용
    ↓
-validate + 필수 security/Eval gate
+validate + project별 quality/security gate
    ↓
 프로젝트 개발 시작
 ```
 
-AI 도구의 공통 작업 지침은 `.ai/standards/engineering.md`에 한 번만 둔다. Claude Code는
-`CLAUDE.md`, Codex와 AGENTS 규약 지원 도구는 `AGENTS.md`, 그 밖의 도구는 `.ai/README.md`를 얇은
-진입점으로 사용한다. 프로젝트별 기술 스택과 반복되는 함정은 공통 지침에 복제하지 않고 각각
-`docs/development-environment.md`와 `docs/project-maintenance.md`에 기록한다.
-
-공통 진입점은 기본적으로 preview만 출력한다.
-
 ```sh
+git clone https://github.com/nayunss/ai-dev-bootstrap.git
+cd ai-dev-bootstrap
+git checkout v0.2.8-pilot
 scripts/bootstrap preview
 scripts/bootstrap preview /absolute/path/to/downstream
 scripts/validate /absolute/path/to/downstream
 ```
 
-대상 경로를 함께 주면 root와 하위 manifest를 재귀적으로 찾아 단일 application인지, 선언되지 않은
-application이 있는지 읽기 전용으로 표시한다. 다중 application 저장소는
-`docs/development-environment.md`의 JSON inventory에 application별 quality·CI·deploy·hook과 공통
-CodeSight 상태를 선언해야 validate를 통과한다.
+위 명령은 시작점입니다. 신규·기존 프로젝트 적용, adapter 선택, 검증, update와 rollback까지의
+전체 절차는 [부트스트랩 사용 가이드](docs/bootstrap-user-guide.md)를 따르세요.
 
-dependency 설치는 정확한 package manager와 lockfile, project-local runtime을 확인하고
-`--ignore-scripts`·strict peer mode를 사용한다. network가 필요하므로 preview 후 명시적으로
-`--allow-network`를 전달해야 한다. Playwright browser와 Husky는 이 단계에서 자동 설치하지 않는다.
+## GUI 설치
 
-## 두 가지 사용 방식
+현재 `v0.2.8-pilot`은 GUI·CLI 공통 adoption core와 synthetic GUI surface 검증을 포함하지만,
+서명·notarization된 데스크톱 GUI 설치 파일은 아직 발행하지 않았습니다. 따라서 지금 설치 가능한
+GUI 링크는 없으며, release page의 source archive를 GUI 앱으로 오해하면 안 됩니다.
 
-- 공통 환경 유지보수: maintainer와 contributor가 skill, plugin, adapter, 보안과 Eval을 개선해
-  versioned upstream release를 만든다.
-- 프로젝트 도입: 회사·팀·개인이 검증된 release를 고정하고 조직 정책과 기술 스택을 확장해
-  구성원들이 같은 AI 환경에서 제품을 개발하게 한다.
+- [GUI 설치 자산 및 최신 릴리즈 확인](https://github.com/nayunss/ai-dev-bootstrap/releases/latest)
+- [현재 GUI 설치 자산·구현·보안·배포 상태](docs/gui-installation-distribution-review.md)
+- [CLI로 현재 제공 기능 사용하기](docs/bootstrap-user-guide.md#빠른-시작-변경-없이-확인)
 
-Husky 같은 기술 스택별 hook manager는 clone 직후 설치하지 않습니다. downstream의 개발환경과
-실제 format·lint·test 명령이 승인된 뒤 해당 프로파일에서 적용합니다.
+향후 GUI는 지원 OS, publisher, 서명·notarization, checksum 재검증과 비개발자 사용성 Eval을 통과한
+설치 asset만 위 release page에 게시합니다. `curl | sh`, unsigned 실행 파일이나 비공식 mirror는
+지원 설치 경로가 아닙니다.
 
-회사·프로젝트의 비밀과 전용 규칙은 public upstream과 분리한다. 자세한 책임과 업데이트 흐름은
-[`docs/adoption-and-maintenance-model.md`](docs/adoption-and-maintenance-model.md)를 따른다.
+## 적용 방식
 
-## 현재 상태
+- 공통 환경 유지보수: maintainer와 contributor가 skill, adapter, 보안과 Eval을 개선해 versioned
+  upstream release를 만듭니다.
+- 프로젝트 도입: 회사·팀·개인이 검증된 release·commit·checksum을 고정하고 project profile과
+  조직 정책을 추가합니다.
 
-REQ-001–REQ-046의 **설계 명세 baseline은 완료**됐으며
-[`설계 완료 감사`](docs/design-completion-audit.md)를 실제 구현 입력 계약으로 사용한다. 저장소의
-script·validator·fixture는 설계의 실행 가능성과 누락을 검증한 reference automation이며, 최종 실제
-환경 구현이나 모든 stack 지원이 완료됐다는 뜻은 아니다.
+AI 공통 지침은 `.ai/standards/`에 한 번만 두고 `AGENTS.md`, `CLAUDE.md` 같은 도구별 파일은 얇은
+진입점으로 유지합니다. 회사·프로젝트의 비밀과 전용 규칙은 public upstream과 분리하며,
+[유지보수와 도입 모델](docs/adoption-and-maintenance-model.md)을 따릅니다.
 
-현재 단계는 검증된 design/reference baseline을 공통 환경 구현으로 확장하는 단계다.
-`v0.2.5-pilot`에는 deterministic capability runner, JavaScript·Java·Python 품질 adapter,
-Codex·Claude Code·GitHub Copilot parity Eval, FastAPI contract adapter와 최초 full-stack
-materializer reference가 포함된다. 구현 중 발견한 실패는 요구사항·설계·Eval에 환류하고 검증하지
-않은 범위를 완료나 지원으로 표시하지 않는다. 특정 pilot 기술 조합도 실제 환경의 공통 기본값으로
-확정하지 않는다.
-`v0.2.6-pilot`은 REQ-047·048과 2026-07-17 기준 stack·설정·Skill·Git·CI·저장소 구조 검토를
-기계 판독 상태·후속 task와 연결한 설계 baseline이다. 해당 GUI, schema, provider adapter와
-starter fixture는 아직 구현·검증되지 않았으며 release 게시가 구현 완료를 뜻하지 않는다.
-`v0.2.7-pilot`은 downstream UF-001–UF-013을 공통 원인으로 일반화해 REQ-049–REQ-052와
-REQ-046 보강으로 매핑하고, requirements–HANDOFF 정합성·전체 추적성·tool-neutral feedback triage를
-우선 구현 작업으로 고정한 설계 baseline이다. 관련 validator·schema·fixture와 실제 downstream
-재검증은 아직 `NOT-RUN`이다.
-한 명 또는 여러 사람이 검증에 참여할 때는
-[Downstream Pilot 검증 가이드](docs/distributed-pilot-testing-guide.md)에 따라 upstream SHA, 독립 downstream,
-격리 자원, AI provider·tool·model·mode provenance와 공통 결과 형식을 사용한다.
-실제 구현의 설계 검증 완료와 지원 승격은 참여 maintainer를 포함한 모든 tester의 배정 필수 항목이
-전부 PASS일 때만 판정한다.
+## 현재 실제 검증 범위
 
-### 검증 범위
-
-요구사항과 아키텍처의 목표는 언어·framework·AI 도구에 종속되지 않는 공통 환경이다. 현재 실제
-downstream 적용과 배포까지 완료한 pilot은 **Next.js frontend 한 건**과 **Spring Boot + Next.js
-full-stack 한 건**이다. full-stack pilot은 backend-only로 시작한 뒤 frontend를 추가하는 증분 전환도
-포함한다.
+실제 downstream 적용과 배포까지 완료한 pilot은 Next.js frontend와 Spring Boot + Next.js
+full-stack 조합입니다. 다른 stack의 schema·adapter·fixture PASS를 실제 downstream 지원 완료로
+확대하지 않습니다.
 
 | 범위 | 현재 검증 수준 |
 |---|---|
@@ -102,23 +95,12 @@ full-stack 한 건**이다. full-stack pilot은 backend-only로 시작한 뒤 fr
 | 백엔드 | Spring Boot 4.1.0·Java 21·Maven·PostgreSQL·Flyway·JWT·Testcontainers·SpringDoc 3·GitHub Actions·Railway 조합에서 compile, unit·integration, BOLA 회귀, 단일-instance rate limit, 보안 log redaction·correlation, 격리 logical restore, readiness fixture와 OpenAPI contract·breaking fixture·production docs 404를 검증. 실제 retention·법률 검토·Production provider restore와 다른 backend stack adapter는 미검증 |
 | 풀스택 | Spring Boot backend에 Next.js frontend와 BFF를 증분 추가해 application별 CI, 3-browser·mobile E2E, Railway private network, 같은 PR environment의 frontend·backend·PostgreSQL 격리 CRUD, BFF rate-limit·correlation header 계약과 application revert rollback을 검증. 최초 frontend·backend·shared 일괄 materialize와 부분 filesystem 실패 원복·paired DB rollback artifact 계약은 synthetic reference Eval을 통과했지만 실제 DB migration write·rollback, 다중-instance rate limit과 provider restore는 미검증 |
 
-요구사항은 대부분 공통·언어 중립으로 작성됐지만 검증 근거는 위 두 조합에 한정된다. frontend
-pilot의 발견 사항은 REQ-033–REQ-036에, backend→full-stack pilot의 발견 사항은 `REQ-045`와 관련
-문서에 환류했다. pilot 성공은 공통 bootstrap·validator가 모든 stack과 전환 경로를 지원한다는 뜻이
-아니다. 최초 full-stack 일괄 구성과 재귀 application inventory의 reference Eval은 구현됐지만,
-지원 완료로 표시하려면 실제 downstream에서 CodeSight·hook·CI drift, DB migration rollback과 추가
-stack 호환성을 검증해야 한다.
+## 주요 문서
 
-Frontend·backend·fullstack 스펙은 프로젝트마다 사용자가 정의한다. 기본 질문에 없는 언어,
-framework, database, infrastructure와 품질 도구도 개발환경 프로파일에 추가할 수 있으며, upstream은
-감지·질문·공급망 심사·설치 승인·검증 adapter를 통해 적용한다. 문서의 특정 기술 조합은 검증 사례나
-예시일 뿐 자동 설치 기본값이 아니다.
-
-설계 문서와 요구사항은 [`docs/`](docs/README.md)에서 관리하며, 최신 release의 migration·rollback
-범위는 [`v0.2.7-pilot release note`](docs/releases/v0.2.7-pilot.md)에 기록합니다.
-
-## 문서 원칙
-
-- 특정 AI 제품에 종속되지 않는 규칙을 먼저 정의합니다.
-- `AGENTS.md`, `CLAUDE.md` 같은 도구별 파일은 공통 규칙을 연결하는 어댑터로 취급합니다.
-- 제안과 확정된 요구사항을 구분하고, 중요한 결정은 근거와 함께 기록합니다.
+- [처음부터 끝까지 사용 가이드](docs/bootstrap-user-guide.md)
+- [전체 문서 목록](docs/README.md)
+- [요구사항과 구현·검증 상태](docs/requirements.md)
+- [최신 v0.2.8-pilot release note](docs/releases/v0.2.8-pilot.md)
+- [Upstream–Downstream 아키텍처](docs/upstream-downstream-architecture.md)
+- [공급망 보안](docs/supply-chain-security.md)
+- [Production readiness](docs/web-service-production-readiness.md)

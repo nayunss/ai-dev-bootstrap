@@ -1,5 +1,9 @@
 # Libraries
 
+- `desktop/ipc-contract.mjs`
+  - function validateSelectedRoot: (value) => void
+  - function validateDesktopRequest: (value) => void
+  - function summarizeAdoptionResult: (result) => void
 - `evals/fixtures/stack-quality/javascript/source.js` — function greet: (name) => void
 - `evals/fixtures/stack-quality/python/app.py` — function greet: (name) -> str
 - `scripts/adapter-parity.mjs` — function validateAdapterParity: (manifest, options) => void, function readParityManifest: (path) => void

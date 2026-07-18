@@ -218,6 +218,9 @@ export function runReleaseAdoption(mode, manifest, sourceValue, targetValue, opt
         return { status: "BLOCKED", ...summary, errors: ["existing target differs; no files changed"], execution: EXECUTION };
       }
       if (mode === "preview") return { status: "PREVIEW", surface, ...summary, execution: EXECUTION };
+      if (options.expectedPlanSha256 && options.expectedPlanSha256 !== summary.planSha256) {
+        return { status: "BLOCKED", surface, ...summary, errors: ["approved plan differs from current target; no files changed"], execution: EXECUTION };
+      }
       if (options.approved !== true) return { status: "APPROVAL_REQUIRED", surface, ...summary, execution: EXECUTION };
       const lock = seal({
         schemaVersion: 1,

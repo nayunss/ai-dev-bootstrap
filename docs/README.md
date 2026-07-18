@@ -30,6 +30,9 @@
 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md) | 단독·다중 tester의 frontend·backend·full-stack 생성, AI provenance·증거·환류 절차 | 설계 승인 |
 | [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | 설계 승인 |
 | [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 설계 승인 |
+| [AI Dev Bootstrap 처음부터 끝까지 사용 가이드](bootstrap-user-guide.md) | release 선택·진단·onboarding·adapter·검증·update·rollback과 GUI 설치 상태 | 적용 |
+| [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md) | 설치 가능 여부, source archive 구분, OS별 signing·notarization·checksum·사용성 release gate | 설치 자산 미발행 |
+| [Desktop GUI Delivery Baseline](desktop-gui-delivery-baseline.md) | 최초 macOS arm64·Electron 후보, IPC threat model, package·signing·update와 dependency 승인 경계 | 기술 기준 확정·dependency 승인 대기 |
 | [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md) | GUI 설치 버튼·공통 adoption core·release bundle과 rollback 검토 | shared core reference 구현 |
 | [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 설계 승인 |
 | [Upstream 피드백 기록 계약](upstream-feedback-log.md) | downstream 저장소에 남기는 upstream 수정 필요 사항 기록 형식 | 설계 승인 |
@@ -80,6 +83,7 @@
 | [v0.2.5-pilot Release](releases/v0.2.5-pilot.md) | deterministic capability·quality·adapter·FastAPI·full-stack materializer | 발행 완료 |
 | [v0.2.6-pilot Release](releases/v0.2.6-pilot.md) | REQ-047·048와 project별 profile·배포·저장소 구조 설계 baseline | 발행 완료 |
 | [v0.2.7-pilot Release](releases/v0.2.7-pilot.md) | UF-001–UF-013 일반화·REQ 매핑과 tool-neutral 추적 자동화 우선순위 baseline | 발행 완료 |
+| [v0.2.8-pilot Release](releases/v0.2.8-pilot.md) | 전체 추적성·profile·provider·policy evidence·skill distribution·release adoption 공통 reference 구현 | 발행 완료 |
 
 ## 문서 상태
 
