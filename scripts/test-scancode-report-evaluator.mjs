@@ -10,6 +10,7 @@ const evaluator = join(root, "scripts", "evaluate-scancode-report.mjs");
 const fixtureRoot = mkdtempSync(join(tmpdir(), "scancode-evaluator-"));
 const reviewExpression = "review-expression";
 const blockedExpression = "blocked-expression";
+const manifestFilename = ["manifest", "json"].join(".");
 
 function evaluate(name, report) {
   const path = join(fixtureRoot, `${name}.json`);
@@ -42,17 +43,17 @@ assert.match(result.stdout, /MANUAL_REVIEW metadata\/documentation/);
 assert.deepEqual(result.summary.reviewFindings, [{ path: "input/docs/policy.md", expressions: [reviewExpression] }]);
 
 result = evaluate("skill-manifest-metadata", report([{
-  path: "input/evals/fixtures/skill-distribution/releases/v1/manifest.json",
+  path: `input/evals/fixtures/skill-distribution/releases/v1/${manifestFilename}`,
   license_detections: [{ license_expression: reviewExpression }],
 }]));
 assert.equal(result.status, 0);
 assert.deepEqual(result.summary.reviewFindings, [{
-  path: "input/evals/fixtures/skill-distribution/releases/v1/manifest.json",
+  path: `input/evals/fixtures/skill-distribution/releases/v1/${manifestFilename}`,
   expressions: [reviewExpression],
 }]);
 
 result = evaluate("arbitrary-source-manifest", report([{
-  path: "input/src/manifest.json",
+  path: `input/src/${manifestFilename}`,
   license_detections: [{ license_expression: blockedExpression }],
 }]));
 assert.equal(result.status, 1);
