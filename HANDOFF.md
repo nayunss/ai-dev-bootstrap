@@ -547,6 +547,9 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   checksum도 재검증했다. Lockfile 이전·이후 SHA-256과 이 승인 범위는
   `DEP-LOCK-2026-07-18-001`에 고정했다. Upstream `Electron.app`은 Developer ID가 없고 strict
   codesign 검증에 실패하므로 배포 자산으로 승격하지 않는다.
+  PR #24의 초기 security run에서 누락된 dependency approval과 downstream triage 동기화를
+  fail-closed로 탐지했으며 exact approval·traceability manifest를 보정해 동일 base range 검증을
+  통과했다.
 - GUI-02 desktop shell은 local-only renderer, sandbox·context isolation, typed IPC sender/argument
   검증, project/release picker, preview·apply·validate·rollback과 apply 직전 plan SHA-256 재확인을
   공통 adoption core에 연결했다. 자동 fixture와 macOS 개발 runtime 기본 화면을 확인했지만 실제
