@@ -43,6 +43,7 @@
     {"taskId": "REQ-026-045-stack-profile-fixtures", "status": "completed", "requirementIds": ["REQ-009", "REQ-010", "REQ-011", "REQ-012", "REQ-013", "REQ-014", "REQ-020", "REQ-026", "REQ-027", "REQ-028", "REQ-033", "REQ-034", "REQ-035", "REQ-036", "REQ-044", "REQ-045", "REQ-047", "REQ-048"], "feedbackIds": []},
     {"taskId": "REQ-033-035-provider-profile-adapters", "status": "completed", "requirementIds": ["REQ-001", "REQ-003", "REQ-016", "REQ-019", "REQ-020", "REQ-021", "REQ-022", "REQ-023", "REQ-024", "REQ-033", "REQ-034", "REQ-035", "REQ-036", "REQ-037", "REQ-038", "REQ-040", "REQ-042", "REQ-044", "REQ-045", "REQ-046", "REQ-047", "REQ-048"], "feedbackIds": []},
     {"taskId": "REQ-047-one-click-adoption", "status": "completed", "requirementIds": ["REQ-047"], "feedbackIds": []},
+    {"taskId": "GUI-01-delivery-baseline", "status": "completed", "requirementIds": ["REQ-047"], "feedbackIds": []},
     {"taskId": "REQ-047-gui-installer-delivery", "status": "pending", "requirementIds": ["REQ-047"], "feedbackIds": []},
     {"taskId": "REQ-048-development-profile-schema", "status": "completed", "requirementIds": ["REQ-020", "REQ-021", "REQ-026", "REQ-033", "REQ-037", "REQ-045", "REQ-048"], "feedbackIds": []},
     {"taskId": "REQ-049-policy-evidence-validator", "status": "completed", "requirementIds": ["REQ-049"], "feedbackIds": ["UF-001", "UF-002", "UF-003", "UF-004", "UF-005", "UF-006", "UF-011"]},
