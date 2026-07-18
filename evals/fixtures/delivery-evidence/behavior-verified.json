@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "deliveryId": "DELIVERY-SYNTHETIC-001",
+  "deliveryRef": "commit:1111111111111111111111111111111111111111",
+  "states": [
+    {"stage": "created", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "commit-record", "reference": "fixture://commit/1", "observedAt": "2026-07-18T00:00:00Z", "scope": "synthetic commit", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": null, "approval": null},
+    {"stage": "pushed", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "remote-receipt", "reference": "fixture://remote/1", "observedAt": "2026-07-18T00:01:00Z", "scope": "synthetic ref update", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": null, "approval": null},
+    {"stage": "ci-triggered", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "ci-run", "reference": "fixture://ci/run/1", "observedAt": "2026-07-18T00:02:00Z", "scope": "synthetic CI run", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": null, "approval": null},
+    {"stage": "ci-passed", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "ci-conclusion", "reference": "fixture://ci/run/1/conclusion", "observedAt": "2026-07-18T00:03:00Z", "scope": "synthetic required checks", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": null, "approval": null},
+    {"stage": "deployed", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "deployment-record", "reference": "fixture://deployment/1", "observedAt": "2026-07-18T00:04:00Z", "scope": "synthetic preview", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": null, "approval": null},
+    {"stage": "healthy", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "health-assertion", "reference": "fixture://health/1", "observedAt": "2026-07-18T00:05:00Z", "scope": "synthetic preview health", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": null, "approval": null},
+    {"stage": "behavior-verified", "status": "PASS", "blockedReason": null, "evidence": [{"kind": "behavior-assertion", "reference": "fixture://behavior/1", "observedAt": "2026-07-18T00:06:00Z", "scope": "synthetic user flow", "deliveryRef": "commit:1111111111111111111111111111111111111111"}], "behavior": {"precondition": "isolated synthetic preview is available", "input": "submit synthetic valid and invalid requests", "assertions": ["valid request succeeds", "invalid request is rejected"], "negativePath": "unauthorized request is rejected", "cleanup": "remove synthetic records"}, "approval": null},
+    {"stage": "production-approved", "status": "NOT-RUN", "blockedReason": null, "evidence": [], "behavior": null, "approval": null}
+  ]
+}

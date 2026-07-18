@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/common-ai-development-harness/release-adoption-result.schema.json",
+  "title": "Shared GUI and CLI release adoption result",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["status", "execution"],
+  "properties": {
+    "status": {
+      "enum": ["PREVIEW", "APPROVAL_REQUIRED", "PASS", "BLOCKED", "INVALID", "FAIL"]
+    },
+    "surface": { "enum": ["gui", "cli"] },
+    "planSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "action"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "action": {
+            "enum": [
+              "create",
+              "preserve-identical",
+              "update-managed",
+              "blocked-existing-different",
+              "remove-managed",
+              "preserve-removed-drifted"
+            ]
+          }
+        }
+      }
+    },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["network", "telemetry", "dependencyInstall", "databaseMigration", "providerWrite", "productionDeploy"],
+      "properties": {
+        "network": { "const": "NOT_RUN" },
+        "telemetry": { "const": "DISABLED" },
+        "dependencyInstall": { "const": "NOT_RUN" },
+        "databaseMigration": { "const": "NOT_RUN" },
+        "providerWrite": { "const": "NOT_RUN" },
+        "productionDeploy": { "const": "NOT_RUN" }
+      }
+    }
+  }
+}

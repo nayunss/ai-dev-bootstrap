@@ -1,6 +1,6 @@
 # 비개발자용 원클릭 프로젝트 도입 검토
 
-상태: 검토 완료
+상태: shared adoption core reference 구현
 검토일: 2026-07-17
 관련 요구사항: `REQ-047`
 
@@ -147,3 +147,12 @@ metadata에서 생성하거나 drift 검사한다.
 사용성 Eval로 실행하고, 신규·기존 프로젝트의 preview·apply·validate·rollback과 게시 asset
 재다운로드가 모두 PASS해야 해당 OS를 지원 완료로 표시한다. 다른 OS와 IDE extension은 개별 상태로
 추적한다.
+
+2026-07-18 reference 구현은 P0 stack profile과 검증된 skill bundle을 clean staging에서 결합한 뒤
+실제 target에 단일 transaction으로 적용하는 headless core를 제공한다. CLI·synthetic GUI adapter는
+동일 plan hash·lock·결과 schema를 사용하고 clean install·retrofit·upgrade·rollback·manifest 및
+component checksum 변조·충돌·두 번째 write 실패 원복 fixture를 통과했다. Network·dependency
+install·DB migration·provider write·Production deploy·telemetry는 실행하지 않는다.
+
+이는 desktop application 또는 지원 OS 발행이 아니다. Folder picker와 실제 GUI, code signing,
+notarization, publisher credential, 게시 asset 재다운로드와 비개발자 사용성 Eval은 계속 `NOT_RUN`이다.

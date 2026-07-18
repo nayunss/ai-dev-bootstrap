@@ -1,10 +1,10 @@
 # Handoff
 
-갱신: 2026-07-17 Asia/Seoul
+갱신: 2026-07-18 Asia/Seoul
 상태: v0.2.7-pilot 발행 완료·공통 구현 진행 중
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer
-다음 작업: requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-048-development-profile-schema, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption
+다음 작업: REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
 
 ## 목표
 
@@ -145,7 +145,8 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   `84d27ae9607f1fdc7fd6b662382f3ba50b9c73482cc191c10a9695c78f2a9757`이 일치한다.
 - REQ-047로 terminal 비숙련자를 위한 local desktop app의 one-button 적용 UX, GUI·CLI 공통
   headless adoption core, checksum·서명·preview·transaction rollback과 release별 bundle 자동 갱신
-  계약을 검토했다. 문서·요구사항 승인 범위이며 app과 release automation은 아직 구현하지 않았다.
+  계약을 검토했다. 이후 공통 headless core와 deterministic release fixture를 구현했으며 desktop app,
+  signing·notarization과 실제 release asset automation은 아직 구현하지 않았다.
 - 2026-07-17 현재 최신 공식 공개본인 GitHub의 2026년 2월 Octoverse 2025 분석, Stack Overflow
   Developer Survey 2025와 State of JavaScript 2025를 근거로 frontend·backend·full-stack adapter
   P0~P3 순서를 확정했다. P0는 React+Vite, Node+Express, Next.js와 분리 React+Node full-stack이며
@@ -307,8 +308,8 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - `.ai/approvals/dependency-upgrades.json`, `package.json`, `package-lock.json`,
   `docs/releases/v0.2.4-pilot.md`: 0.2.4 release metadata lock 승인과 migration·rollback·artifact 증적 준비
 - `.ai/manifests/requirement-traceability.json`, `scripts/validate-requirement-traceability.mjs`,
-  `scripts/test-requirement-traceability.mjs`: REQ-019–REQ-024 source·구현·검증·token 영향 추적과
-  requirements staged·PR 동기화 gate
+  `scripts/test-requirement-traceability.mjs`: REQ-001–REQ-052 구현·검증 상태, 공통 구현·외부 task와
+  UF-001–UF-013 primary mapping 추적 및 requirements·triage·HANDOFF staged·PR 동기화 gate
 - `docs/requirements.md`, `docs/README.md`, `docs/ai-generated-code-license-provenance.md`: 요구사항별
   문서·산출물 역참조, 구현/검증 상태 분리, 누락 schema·template와 REQ-043 문서 상태 현행화
 - `docs/schemas/capability-task.schema.json`, `scripts/capability-suite.mjs`,
@@ -336,6 +337,41 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   `evals/fixtures/fullstack-materializer/`, `scripts/bootstrap`: REQ-045 최초 full-stack transaction·rollback
 - `.ai/workflows/handoff.md`, `scripts/validate-handoff.mjs`, `scripts/test-handoff-validator.mjs`: 상단
   다음 작업과 하단 남은 작업의 안정적 ID 일치 및 완료 작업 잔존 차단
+- `scripts/validate-requirement-handoff-tasks.mjs`,
+  `scripts/test-requirement-handoff-tasks.mjs`: requirements 후속 task와 feedback primary REQ·UF mapping을
+  HANDOFF 남은 작업·완료 metadata와 교차 검증하고 staged·PR 동기화를 강제
+- `.ai/workflows/downstream-feedback-triage.md`,
+  `docs/schemas/downstream-feedback-triage.schema.json`,
+  `.ai/manifests/downstream-feedback-triage.json`: project 고유 입력을 복제하지 않는 일반화·중복·
+  primary REQ·구현/재검증 task와 고정 release baseline 계약
+- `scripts/validate-downstream-feedback-triage.mjs`,
+  `scripts/test-downstream-feedback-triage.mjs`: sanitized field·duplicate·task 분리·release hash·
+  traceability 및 staged·PR 동기화 positive/negative fixture
+- `docs/schemas/policy-evidence.schema.json`, `scripts/validate-policy-evidence.mjs`,
+  `scripts/test-policy-evidence.mjs`, `evals/fixtures/policy-evidence/`: REQ-049 claim·owner scope·실제
+  service/region/data flow·server enforcement·반증 가능한 evidence와 disposal 차단 reference Eval
+- `.ai/workflows/repository-state-invariants.md`,
+  `docs/schemas/repository-state-invariants.schema.json`, `scripts/validate-repository-state.mjs`,
+  `scripts/test-repository-state-invariants.mjs`: REQ-050 staged blob provenance·partial commit과
+  check-only tracked source mutation 실제 Git fixture
+- `.ai/workflows/delivery-evidence-states.md`,
+  `docs/schemas/delivery-evidence-states.schema.json`, `scripts/validate-delivery-evidence.mjs`,
+  `scripts/test-delivery-evidence.mjs`, `evals/fixtures/delivery-evidence/`: REQ-051 provider-neutral
+  8단계 상태·evidence·behavior·사람 승인 분리 reference Eval
+- `.ai/workflows/fullstack-locale-contract.md`,
+  `docs/schemas/fullstack-locale-contract.schema.json`, `scripts/validate-fullstack-locale.mjs`,
+  `scripts/test-fullstack-locale.mjs`, `evals/fixtures/fullstack-locale/`: REQ-052 project profile 기반
+  frontend·BFF·backend locale·message code·formatting·접근성 adapter matrix
+- `docs/schemas/development-environment-profile.schema.json`, `scripts/development-profile.mjs`,
+  `scripts/validate-development-environment-profile.mjs`, `evals/fixtures/development-profile/`: REQ-048
+  canonical profile 구조·의미·repository·readiness reference validator
+- `scripts/materialize-development-profile.mjs`, `scripts/test-development-profile-materializer.mjs`,
+  `scripts/bootstrap`, `.ai/workflows/project-environment.md`: REQ-020·021 settings 경계 질문·preview·승인
+  initial/retrofit materialization과 기존 profile 충돌 차단
+- `docs/schemas/provider-profile-adapters.schema.json`, `scripts/provider-profile-adapters.mjs`,
+  `scripts/validate-provider-profile.mjs`, `scripts/test-provider-profile-adapters.mjs`,
+  `evals/fixtures/provider-profiles/`: REQ-033·035 provider-neutral Git·review·CI·artifact·deployment
+  contract와 GitHub·GitLab·generic/none synthetic adapter
 
 ## 검증
 
@@ -344,6 +380,39 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - `v0.2.3-pilot` 원격 release·archive checksum·재다운로드 검증: PASS
 - HANDOFF 필수 구조·staged 동반 변경·PR range·semantic-change regression: PASS
 - HANDOFF stale 날짜·branch/commit snapshot·완료/다음 작업 ID 중복 negative fixture: PASS
+- requirements 후속 task·feedback triage 구현 순서의 HANDOFF 누락, 완료 task 잔존, REQ·UF 범위
+  누락·초과 negative fixture: PASS
+- 공통 구현 task의 공통 섹션 및 실제 downstream 재검증 task의 외부 대기 섹션 분리 negative
+  fixture: PASS
+- downstream feedback project/source 누출, duplicate chain·scope drift, task collapse, moving
+  release·checksum 누락·false resolution·traceability drift negative fixture: PASS
+- feedback triage source만 변경한 staged 상태 차단과 manifest 동반 staged·PR range: PASS
+- REQ-049 valid claim graph와 client-only, owner 누락, service/region drift, missing reference·evidence,
+  vague/failed evidence, disposal assertion·revocation bound 누락, 만료 승인 negative fixture: PASS
+- REQ-049 validator의 `legalConclusion=NOT_EVALUATED`,
+  `productionApprovalGranted=false`: PASS
+- REQ-050 staged source/artifact hash 일치와 check-only 무변경: PASS
+- REQ-050 working-tree source/artifact를 staged provenance로 위조한 partial commit, tracked source
+  mutation, unsafe·missing path negative fixture: PASS
+- REQ-051 created부터 behavior까지 evidence와 별도 사람 Production approval record: PASS,
+  validator decision은 `EVIDENCE_VALID_ONLY`
+- REQ-051 push→CI, health→behavior 확대, 선행 단계 누락, ref·시간 drift, behavior negative path와
+  human attestation 누락 negative fixture: PASS
+- REQ-052 2개 locale의 frontend·BFF·backend code·문서·HTML·formatting·접근성 matrix: PASS,
+  `humanLocaleReviewRequired=true`
+- REQ-052 frontend-only, BFF locale 누락, backend raw diagnostic, code·HTML·timezone drift와 접근성
+  label 누락 negative fixture: PASS
+- REQ-048 canonical YAML round-trip, Draft 2020-12 구조 계약과 single frontend·backend·full-stack·
+  workspace monorepo의 semantic·repository·local/CI readiness: PASS, read-only source hash 유지
+- REQ-048 missing application, unsafe·`.env*`·symlink escape, shell command, exact version, secret field,
+  false·expired approval와 Production 별도 gate negative fixture: PASS
+- REQ-020·021 settings 5분류, 신규·기존 project 질문과 preview 무변경·승인 생성·동일 profile 보존:
+  PASS
+- REQ-020·021 기존 profile 충돌 atomic 차단, 팀 security gate 약화·경계 중복 negative fixture: PASS
+- REQ-033·035 GitHub·GitLab·generic Git·none hosting/review/CI/artifact/deployment profile: PASS,
+  `SYNTHETIC_CONTRACT_ONLY`
+- REQ-033·035 adapter/provider mismatch, embedded credential, broad CI permission, required outcome·
+  고위험 role·emergency·artifact·Production promotion·none integration negative fixture: PASS
 - downstream validator와 production readiness·retrofit fixture: PASS
 - CodeSight generate 후 generated diff: 없음
 - 변경 파일 Gitleaks·Opengrep: PASS, finding 0
@@ -413,6 +482,8 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - `v0.2.4-pilot` tag 대상 commit·GitHub asset digest·재다운로드 archive SHA-256 일치: PASS
 - REQ-019–REQ-024 complete/sorted ID, evidence path, unsafe `.env*`, token impact와 requirements 동기화
   positive·negative fixture: PASS
+- REQ-001–REQ-052 상태 정확한 단일 coverage, requirements 상태 drift, 구현·외부 task 분리·범위와
+  UF-001–UF-013 primary mapping drift negative fixture: PASS
 - docs Markdown 43개 local link와 요구사항에서 설계·운영 문서 36개 역참조 completeness: PASS
 - REQ-025 task schema, fixture hash·격리 복제·grader allowlist와 2-trial deterministic runner: PASS
 - 비용 0·token 0, latency·tool-call·diff 집계와 failed hard gate 비상쇄: PASS
@@ -429,6 +500,28 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - 최초 frontend·backend·shared·up/down migration artifact preview/apply/validate/rollback: PASS
 - 기존 파일 충돌 atomic 차단·preexisting identical 보존·부분 write 실패 transaction restore: PASS
 - DB execution: NOT-RUN, paired rollback artifact만 검증
+- P0 React+Vite, Node+Express+PostgreSQL, Next.js+PostgreSQL 단일 project와
+  React+Vite/Node+Express+PostgreSQL workspace profile schema·artifact 계약: PASS
+- 네 P0 profile의 clean preview·승인 apply·validate·생성 파일 rollback과 기존 동일 파일·owner 파일
+  보존 retrofit: PASS
+- 기존 파일 충돌 atomic 차단, migration pair 누락·execution 경계 확대·workspace/target drift
+  negative fixture: PASS
+- P0 dependency install·DB migration·provider write·Production deploy와 실제 downstream pilot: NOT-RUN
+- core `requirements`·optional `frontend` package와 Codex·Claude Code·GitHub Copilot adapter
+  manifest checksum·dependency DAG·exact version validation: PASS
+- project-local 검증 가상환경의 PyYAML `6.0.3`으로 v1/v2 core·optional 네 package를
+  `skill-creator` quick validator로 검사: PASS
+- core-only·optional+3 adapter clean apply, existing collision·두 번째 write failure atomic 차단과
+  preexisting identical·사용자 변경 파일 보존 uninstall: PASS
+- v1→v2 skill upgrade·rollback binding과 target/package/adapter hash, dependency cycle·version
+  incompatibility·plugin catalog 실행 승인 negative fixture: PASS
+- 실제 plugin 설치·호출, native AI tool discovery와 private organization bundle: NOT-RUN
+- GUI·CLI surface의 동일 release union plan·plan SHA-256·lock 결과 parity: PASS
+- P0 profile+skill bundle clean install·기존 동일 파일 retrofit·v1→v2 upgrade와 initial/upgrade
+  rollback: PASS
+- release manifest·archive binding·component checksum 변조, 기존 파일 충돌·target drift와 두 번째
+  write 실패 전체 transaction 원복 negative fixture: PASS
+- desktop GUI·folder picker·signing·notarization·게시 asset 재다운로드·비개발자 사용성 Eval: NOT-RUN
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
@@ -437,47 +530,7 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 
 ### 공통 저장소에서 진행 가능
 
-1. [작업:requirement-handoff-task-reconciliation] [공통 구현 가능] requirements와 feedback triage의
-   미완료 구현·검증 task가 HANDOFF 남은 작업에 모두 존재하는지, 완료 task가 잔존하지 않는지,
-   task별 REQ·UF 범위가 일치하는지 교차 검증하는 validator와 negative fixture를 구현한다.
-2. [작업:handoff-workflow-rule-sync] [공통 구현 가능] `.ai/workflows/handoff.md`에 requirements 또는
-   feedback triage의 미완료 task를 같은 변경의 HANDOFF에 반영하고 공통 구현과 실제 downstream
-   재검증을 별도 task로 기록하는 규칙을 추가한다. 문서 규칙은 1번 validator로 강제한다.
-3. [작업:full-requirement-traceability] [공통 구현 가능] 현재 REQ-019–REQ-024 중심의
-   machine-readable manifest를 REQ-001–REQ-052 전체로 확장하고 구현 상태·검증 상태·구현 task·
-   외부 task·UF primary mapping을 분리해 문서 drift를 CI에서 차단한다.
-4. [작업:downstream-feedback-triage-automation] [공통 구현 가능] downstream finding의 project 고유
-   내용을 제거하고 공통 원인·중복·단일 primary REQ·구현 task·재검증 task·release baseline을
-   산출하는 tool-neutral workflow, schema, validator와 fixture를 구현한다. 안정화 후 동일 계약을
-   사용하는 재사용 skill로 포장하되 skill 고유 판단을 단일 진실 원천으로 만들지 않는다.
-5. [작업:REQ-049-policy-evidence-validator] [공통 구현 가능] 정책·법률 claim과 server enforcement·
-   data flow·반증 가능한 evidence를 연결하는 schema, validator와 positive/negative fixture를 구현한다.
-   법률 판단과 실제 Production 승인은 자동화하지 않는다. 대상 finding은
-   UF-001–UF-006·UF-011이다.
-6. [작업:REQ-050-repository-state-invariants] [공통 구현 가능] staged tree 기반 generated artifact와
-   check-only 명령의 tracked source 무변경 validator·partial commit·mutation fixture를 구현한다.
-   대상 finding은 UF-007–UF-008이다.
-7. [작업:REQ-051-delivery-evidence-states] [공통 구현 가능] push·CI·deploy·health·behavior·Production
-   approval 상태와 증거를 분리하는 schema, provider-neutral validator와 synthetic fixture를 구현한다.
-   대상 finding은 UF-009–UF-010이다.
-8. [작업:REQ-052-fullstack-locale-contract] [공통 구현 가능] project별 locale을 frontend·BFF·backend
-   user-facing output에 적용하는 adapter 계약과 cross-stack positive/negative fixture를 구현한다.
-   대상 finding은 UF-012다.
-9. [작업:REQ-048-development-profile-schema] [공통 구현 가능] canonical YAML schema, read-only
-   structure·semantic·repository drift·readiness validator와 positive/negative fixture를 구현한다.
-   실제 provider write·dependency 설치·DB migration·Production deploy는 범위에서 제외한다.
-10. [작업:REQ-020-021-project-profile-materializer] [공통 구현 가능] 개인·팀·project 설정 경계를
-   canonical profile에 materialize하고 신규·기존 project 질문·retrofit·충돌 fixture를 구현한다.
-11. [작업:REQ-033-035-provider-profile-adapters] [공통 구현 가능] provider-neutral Git hosting·
-   branch/review·CI·artifact·deployment schema와 GitHub·GitLab·generic/none synthetic adapter
-   fixture를 구현한다. 실제 provider write·credential 사용은 수행하지 않는다.
-12. [작업:REQ-026-045-stack-profile-fixtures] [공통 구현 가능] 우선순위 stack·DB starter와
-   single-project·workspace monorepo profile의 clean install·retrofit·rollback fixture를 구현한다.
-13. [작업:REQ-005-008-skill-distribution] [공통 구현 가능] core·optional skill bundle, tool adapter
-   manifest, reviewed plugin catalog와 checksum·설치·upgrade·보존 uninstall fixture를 구현한다.
-14. [작업:REQ-047-one-click-adoption] [공통 구현 가능] 위 profile·bundle을 사용하는 GUI·CLI 공통
-   release adoption core와 clean install·upgrade·rollback·변조·부분 실패 fixture를 구현한다.
-   desktop signing·notarization과 실제 비개발자 사용성 검증은 별도 사람·credential 입력으로 분리한다.
+- 현재 추가 project·사람·release 입력 없이 확정된 공통 구현 작업은 없다.
 
 ### 외부 입력·실제 환경 대기
 

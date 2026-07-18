@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "profileId": "gitlab-synthetic",
+  "adapter": {"id": "gitlab", "mode": "synthetic-read-only", "capabilities": ["git-read", "change-request-preview", "branch-policy-preview", "pipeline-preview", "artifact-preview", "deployment-preview"]},
+  "hosting": {"provider": "gitlab-self-managed", "host": "git.example.invalid", "namespace": "platform/services", "repository": "example-repo", "canonicalRemote": "company", "fetchUrl": "https://git.example.invalid/platform/services/example-repo.git", "pushUrl": "ssh://git@git.example.invalid/platform/services/example-repo.git", "defaultBranch": "trunk", "visibility": "internal", "changeRequestMode": "merge-request", "credentialRef": "credentials/gitlab-project"},
+  "branchReview": {
+    "strategy": "trunk-based",
+    "mergeMethods": ["merge"],
+    "forcePush": false,
+    "requiredChecks": ["verify", "security"],
+    "riskPolicies": [
+      {"risk": "normal", "minimumApprovals": 1, "requiredRoles": ["maintainer"], "selfReview": false},
+      {"risk": "dependency", "minimumApprovals": 1, "requiredRoles": ["supply-chain"], "selfReview": false},
+      {"risk": "security", "minimumApprovals": 1, "requiredRoles": ["security"], "selfReview": false},
+      {"risk": "release", "minimumApprovals": 1, "requiredRoles": ["release"], "selfReview": false},
+      {"risk": "production", "minimumApprovals": 1, "requiredRoles": ["production"], "selfReview": false},
+      {"risk": "database", "minimumApprovals": 1, "requiredRoles": ["database"], "selfReview": false},
+      {"risk": "destructive", "minimumApprovals": 1, "requiredRoles": ["independent-reviewer"], "selfReview": false}
+    ],
+    "emergency": {"enabled": true, "approverRole": "incident-commander", "expiresAt": "2026-07-19T00:00:00Z", "postReviewRequired": true, "rollbackRef": "docs/emergency-rollback.md"}
+  },
+  "ci": {"provider": "gitlab-ci", "configPath": ".gitlab-ci.yml", "ownerRef": "owners/ci", "credentialRef": "credentials/gitlab-ci", "permissions": ["repository-read", "oidc"], "network": "approved-hosts", "requiredOutcomes": ["immutable-checkout", "quality", "test", "security", "provenance", "artifact-integrity", "fail-closed"]},
+  "artifacts": {"provider": "gitlab-registry", "configPath": ".gitlab-ci.yml", "ownerRef": "owners/release", "credentialRef": "credentials/gitlab-registry", "permissions": ["registry-write"], "network": "approved-hosts", "requiredOutcomes": ["sanitized-evidence"], "integrity": "digest-signature", "retentionDays": 30},
+  "deployments": [{"environment": "staging", "provider": "kubernetes", "applicationRoot": "api", "configPath": "deploy/staging.yaml", "promotion": "human-approved", "rollbackRef": "docs/rollback.md", "credentialRef": "credentials/staging-deploy"}]
+}

@@ -35,7 +35,19 @@ jobs:
           scripts/validate .
           npm run test:ai-security-hook
           npm run test:handoff-validator
+          npm run test:requirement-handoff-tasks
           npm run test:requirement-traceability
+          npm run test:downstream-feedback-triage
+          npm run test:policy-evidence
+          npm run test:repository-state-invariants
+          npm run test:delivery-evidence
+          npm run test:fullstack-locale
+          npm run test:development-profile
+          npm run test:development-profile-materializer
+          npm run test:provider-profile-adapters
+          npm run test:stack-profile-fixtures
+          npm run test:skill-distribution
+          npm run test:release-adoption
           npm run test:capability-suite
           npm run test:stack-quality-adapters
           npm run test:adapter-parity
@@ -75,6 +87,14 @@ jobs:
       - name: Require requirement traceability synchronization
         if: github.event_name == 'pull_request'
         run: node scripts/validate-requirement-traceability.mjs range "${{ github.event.pull_request.base.sha }}"
+
+      - name: Reconcile requirement and HANDOFF tasks
+        if: github.event_name == 'pull_request'
+        run: node scripts/validate-requirement-handoff-tasks.mjs range "${{ github.event.pull_request.base.sha }}"
+
+      - name: Require downstream feedback triage synchronization
+        if: github.event_name == 'pull_request'
+        run: node scripts/validate-downstream-feedback-triage.mjs range "${{ github.event.pull_request.base.sha }}"
 
       - name: Run security checks
         run: scripts/security-check full

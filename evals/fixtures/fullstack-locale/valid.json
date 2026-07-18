@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "profile": {
+    "defaultLocale": "ko-KR",
+    "supportedLocales": ["ko-KR", "en-US"],
+    "timezone": "Asia/Seoul",
+    "currency": "KRW"
+  },
+  "adapters": [
+    {
+      "layer": "frontend",
+      "adapterId": "synthetic-frontend-locale",
+      "sourceReference": "fixture://frontend/messages",
+      "outputs": [
+        {"locale": "ko-KR", "documentLanguage": "ko-KR", "htmlLang": "ko-KR", "messages": [{"code": "ACCOUNT_NOT_FOUND", "userMessage": "계정을 찾을 수 없습니다.", "internalDiagnostic": null}], "formatting": {"dateLocale": "ko-KR", "numberLocale": "ko-KR", "currency": "KRW", "timezone": "Asia/Seoul"}, "accessibilityLabels": ["계정 검색", "오류 닫기"], "rawBackendMessageExposed": false},
+        {"locale": "en-US", "documentLanguage": "en-US", "htmlLang": "en-US", "messages": [{"code": "ACCOUNT_NOT_FOUND", "userMessage": "The account could not be found.", "internalDiagnostic": null}], "formatting": {"dateLocale": "en-US", "numberLocale": "en-US", "currency": "KRW", "timezone": "Asia/Seoul"}, "accessibilityLabels": ["Search accounts", "Dismiss error"], "rawBackendMessageExposed": false}
+      ]
+    },
+    {
+      "layer": "bff",
+      "adapterId": "synthetic-bff-locale",
+      "sourceReference": "fixture://bff/messages",
+      "outputs": [
+        {"locale": "ko-KR", "documentLanguage": "ko-KR", "htmlLang": null, "messages": [{"code": "ACCOUNT_NOT_FOUND", "userMessage": "계정을 찾을 수 없습니다.", "internalDiagnostic": "upstream account lookup returned no row"}], "formatting": {"dateLocale": "ko-KR", "numberLocale": "ko-KR", "currency": "KRW", "timezone": "Asia/Seoul"}, "accessibilityLabels": ["계정 오류 안내"], "rawBackendMessageExposed": false},
+        {"locale": "en-US", "documentLanguage": "en-US", "htmlLang": null, "messages": [{"code": "ACCOUNT_NOT_FOUND", "userMessage": "The account could not be found.", "internalDiagnostic": "upstream account lookup returned no row"}], "formatting": {"dateLocale": "en-US", "numberLocale": "en-US", "currency": "KRW", "timezone": "Asia/Seoul"}, "accessibilityLabels": ["Account error notice"], "rawBackendMessageExposed": false}
+      ]
+    },
+    {
+      "layer": "backend",
+      "adapterId": "synthetic-backend-locale",
+      "sourceReference": "fixture://backend/messages",
+      "outputs": [
+        {"locale": "ko-KR", "documentLanguage": "ko-KR", "htmlLang": null, "messages": [{"code": "ACCOUNT_NOT_FOUND", "userMessage": "계정을 찾을 수 없습니다.", "internalDiagnostic": "repository lookup returned empty result"}], "formatting": {"dateLocale": "ko-KR", "numberLocale": "ko-KR", "currency": "KRW", "timezone": "Asia/Seoul"}, "accessibilityLabels": ["계정 검증 오류"], "rawBackendMessageExposed": false},
+        {"locale": "en-US", "documentLanguage": "en-US", "htmlLang": null, "messages": [{"code": "ACCOUNT_NOT_FOUND", "userMessage": "The account could not be found.", "internalDiagnostic": "repository lookup returned empty result"}], "formatting": {"dateLocale": "en-US", "numberLocale": "en-US", "currency": "KRW", "timezone": "Asia/Seoul"}, "accessibilityLabels": ["Account validation error"], "rawBackendMessageExposed": false}
+      ]
+    }
+  ]
+}

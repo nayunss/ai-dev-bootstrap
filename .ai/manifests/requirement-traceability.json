@@ -1,161 +1,69 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "scope": {
-    "from": "REQ-019",
-    "to": "REQ-024"
+    "from": "REQ-001",
+    "to": "REQ-052"
   },
-  "reviewedAt": "2026-07-17",
-  "documentationSync": {
-    "source": "docs/requirements.md",
-    "statusModel": "implementation-and-verification-separated",
-    "latestRequirementId": "REQ-052",
-    "stackPriorityAsOf": "2026-07-17",
-    "settingsBoundaryApprovedAt": "2026-07-17",
-    "skillPluginDistributionApprovedAt": "2026-07-17",
-    "gitHostingBoundaryApprovedAt": "2026-07-17",
-    "branchReviewProfileApprovedAt": "2026-07-17",
-    "ciDeploymentProfileApprovedAt": "2026-07-17",
-    "repositoryTopologyPriorityAsOf": "2026-07-17",
-    "developmentEnvironmentProfileSchemaApprovedAt": "2026-07-17",
-    "downstreamFeedbackTriagedAt": "2026-07-17"
+  "reviewedAt": "2026-07-18",
+  "sources": {
+    "requirements": "docs/requirements.md",
+    "handoff": "HANDOFF.md",
+    "feedbackTriage": "docs/downstream-feedback-requirement-triage.md",
+    "feedbackManifest": ".ai/manifests/downstream-feedback-triage.json"
   },
-  "requirements": [
-    {
-      "id": "REQ-019",
-      "status": "partial",
-      "normativeSources": ["docs/requirements.md"],
-      "implementationSources": [
-        ".ai/workflows/handoff.md",
-        "scripts/validate-requirement-traceability.mjs"
-      ],
-      "verificationSources": [
-        "scripts/test-requirement-traceability.mjs",
-        ".github/workflows/security.yml"
-      ],
-      "tokenProfileImpact": {
-        "mode": "common-required",
-        "rationale": "Requirement capture and synchronization gates are mandatory in token-aware and full profiles."
-      },
-      "externalGates": [
-        "Conversation intent still requires human clarification when new input conflicts or has materially different interpretations."
-      ]
-    },
-    {
-      "id": "REQ-020",
-      "status": "partial",
-      "normativeSources": [
-        "docs/requirements.md",
-        "docs/project-environment-definition.md"
-      ],
-      "implementationSources": [
-        "scripts/preview-applications.mjs",
-        "scripts/materialize-project-onboarding.mjs",
-        "scripts/validate-downstream.mjs"
-      ],
-      "verificationSources": [
-        "scripts/test-project-onboarding.mjs",
-        "scripts/test-downstream-validator.mjs"
-      ],
-      "tokenProfileImpact": {
-        "mode": "differentiated",
-        "rationale": "Profiles vary discovery depth and question detail, while exact versions and required gates remain common."
-      },
-      "externalGates": [
-        "Each downstream owner must approve its detected application inventory, runtime and deployment profile."
-      ]
-    },
-    {
-      "id": "REQ-021",
-      "status": "partial",
-      "normativeSources": [
-        "docs/requirements.md",
-        "docs/human-in-the-loop.md",
-        "docs/project-environment-definition.md"
-      ],
-      "implementationSources": [
-        "scripts/materialize-project-onboarding.mjs",
-        "scripts/materialize-production-readiness.mjs"
-      ],
-      "verificationSources": [
-        "scripts/test-project-onboarding.mjs",
-        "scripts/test-readiness-materialization.mjs"
-      ],
-      "tokenProfileImpact": {
-        "mode": "differentiated",
-        "rationale": "Question breadth may vary, but security, cost, data and production approvals cannot be omitted."
-      },
-      "externalGates": [
-        "Project-specific security, cost, data and production decisions remain explicit Human-in-the-loop inputs."
-      ]
-    },
-    {
-      "id": "REQ-022",
-      "status": "partial",
-      "normativeSources": [
-        "docs/requirements.md",
-        "docs/token-budget-profiles.md",
-        ".ai/workflows/token-budget.md"
-      ],
-      "implementationSources": [
-        ".ai/standards/engineering.md",
-        ".ai/workflows/handoff.md"
-      ],
-      "verificationSources": [
-        "scripts/validate-handoff.mjs",
-        "scripts/test-handoff-validator.mjs"
-      ],
-      "tokenProfileImpact": {
-        "mode": "differentiated",
-        "rationale": "Profiles intentionally differ in context and explanation depth while retaining identical mandatory gates."
-      },
-      "externalGates": [
-        "Live token and cost measurements require a selected model, harness and approved invocation budget."
-      ]
-    },
-    {
-      "id": "REQ-023",
-      "status": "partial",
-      "normativeSources": [
-        "docs/requirements.md",
-        "docs/token-budget-profiles.md",
-        ".ai/workflows/token-budget.md"
-      ],
-      "implementationSources": [
-        "scripts/validate-requirement-traceability.mjs",
-        ".ai/workflows/handoff.md"
-      ],
-      "verificationSources": [
-        "scripts/test-requirement-traceability.mjs",
-        "scripts/test-handoff-validator.mjs"
-      ],
-      "tokenProfileImpact": {
-        "mode": "common-required",
-        "rationale": "Every requirement change must record differentiated behavior or an explicit common-required rationale."
-      },
-      "externalGates": []
-    },
-    {
-      "id": "REQ-024",
-      "status": "partial",
-      "normativeSources": [
-        "docs/requirements.md",
-        "docs/prompt-templates.md"
-      ],
-      "implementationSources": [
-        "docs/prompt-templates.md",
-        "scripts/materialize-project-onboarding.mjs"
-      ],
-      "verificationSources": [
-        "scripts/test-project-onboarding.mjs",
-        "scripts/validate-requirement-traceability.mjs"
-      ],
-      "tokenProfileImpact": {
-        "mode": "differentiated",
-        "rationale": "Prompt length may vary by profile, while intent, acceptance criteria and approval fields remain mandatory."
-      },
-      "externalGates": [
-        "Product intent and high-risk approval scope must be supplied by the downstream decision owner."
-      ]
-    }
+  "requirementStates": [
+    {"requirementIds": ["REQ-001", "REQ-002", "REQ-003", "REQ-004"], "implementationStatus": "적용", "verificationStatus": "PASS"},
+    {"requirementIds": ["REQ-005", "REQ-006", "REQ-007", "REQ-008"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-009", "REQ-010", "REQ-011", "REQ-012", "REQ-013", "REQ-014"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-015", "REQ-016"], "implementationStatus": "부분 구현", "verificationStatus": "부분 검증"},
+    {"requirementIds": ["REQ-017", "REQ-018"], "implementationStatus": "적용", "verificationStatus": "PASS"},
+    {"requirementIds": ["REQ-019", "REQ-020", "REQ-021", "REQ-022", "REQ-023", "REQ-024"], "implementationStatus": "부분 구현", "verificationStatus": "reference PASS"},
+    {"requirementIds": ["REQ-025"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-026", "REQ-027", "REQ-028"], "implementationStatus": "부분 구현", "verificationStatus": "reference PASS"},
+    {"requirementIds": ["REQ-029", "REQ-030"], "implementationStatus": "설계 구현", "verificationStatus": "downstream 미검증"},
+    {"requirementIds": ["REQ-031", "REQ-032", "REQ-033", "REQ-034", "REQ-035", "REQ-036"], "implementationStatus": "부분 구현", "verificationStatus": "reference PASS"},
+    {"requirementIds": ["REQ-037", "REQ-038", "REQ-039"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-040", "REQ-041"], "implementationStatus": "reference 구현", "verificationStatus": "synthetic PASS"},
+    {"requirementIds": ["REQ-042"], "implementationStatus": "부분 구현", "verificationStatus": "reference PASS"},
+    {"requirementIds": ["REQ-043"], "implementationStatus": "조건부 구현", "verificationStatus": "부분 검증"},
+    {"requirementIds": ["REQ-044", "REQ-045"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic·pilot PASS"},
+    {"requirementIds": ["REQ-046"], "implementationStatus": "reference 구현", "verificationStatus": "synthetic PASS"},
+    {"requirementIds": ["REQ-047"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-048"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-049", "REQ-050", "REQ-051", "REQ-052"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"}
+  ],
+  "implementationTasks": [
+    {"taskId": "REQ-005-008-skill-distribution", "status": "completed", "requirementIds": ["REQ-005", "REQ-006", "REQ-007", "REQ-008", "REQ-026", "REQ-027", "REQ-028", "REQ-032", "REQ-037", "REQ-038", "REQ-039", "REQ-040", "REQ-041", "REQ-042", "REQ-043", "REQ-047"], "feedbackIds": []},
+    {"taskId": "REQ-020-021-project-profile-materializer", "status": "completed", "requirementIds": ["REQ-003", "REQ-007", "REQ-019", "REQ-020", "REQ-021", "REQ-022", "REQ-023", "REQ-024", "REQ-026", "REQ-031", "REQ-033", "REQ-037", "REQ-038", "REQ-039", "REQ-040", "REQ-041", "REQ-042", "REQ-045", "REQ-047", "REQ-048"], "feedbackIds": []},
+    {"taskId": "REQ-026-045-stack-profile-fixtures", "status": "completed", "requirementIds": ["REQ-009", "REQ-010", "REQ-011", "REQ-012", "REQ-013", "REQ-014", "REQ-020", "REQ-026", "REQ-027", "REQ-028", "REQ-033", "REQ-034", "REQ-035", "REQ-036", "REQ-044", "REQ-045", "REQ-047", "REQ-048"], "feedbackIds": []},
+    {"taskId": "REQ-033-035-provider-profile-adapters", "status": "completed", "requirementIds": ["REQ-001", "REQ-003", "REQ-016", "REQ-019", "REQ-020", "REQ-021", "REQ-022", "REQ-023", "REQ-024", "REQ-033", "REQ-034", "REQ-035", "REQ-036", "REQ-037", "REQ-038", "REQ-040", "REQ-042", "REQ-044", "REQ-045", "REQ-046", "REQ-047", "REQ-048"], "feedbackIds": []},
+    {"taskId": "REQ-047-one-click-adoption", "status": "completed", "requirementIds": ["REQ-047"], "feedbackIds": []},
+    {"taskId": "REQ-048-development-profile-schema", "status": "completed", "requirementIds": ["REQ-020", "REQ-021", "REQ-026", "REQ-033", "REQ-037", "REQ-045", "REQ-048"], "feedbackIds": []},
+    {"taskId": "REQ-049-policy-evidence-validator", "status": "completed", "requirementIds": ["REQ-049"], "feedbackIds": ["UF-001", "UF-002", "UF-003", "UF-004", "UF-005", "UF-006", "UF-011"]},
+    {"taskId": "REQ-050-repository-state-invariants", "status": "completed", "requirementIds": ["REQ-050"], "feedbackIds": ["UF-007", "UF-008"]},
+    {"taskId": "REQ-051-delivery-evidence-states", "status": "completed", "requirementIds": ["REQ-051"], "feedbackIds": ["UF-009", "UF-010"]},
+    {"taskId": "REQ-052-fullstack-locale-contract", "status": "completed", "requirementIds": ["REQ-052"], "feedbackIds": ["UF-012"]}
+  ],
+  "externalTasks": [
+    {"taskId": "REQ-040-owner-evidence", "status": "waiting", "requirementIds": ["REQ-040"], "feedbackIds": []},
+    {"taskId": "REQ-041-live-trial-release", "status": "waiting", "requirementIds": ["REQ-041"], "feedbackIds": []},
+    {"taskId": "REQ-042-release-core-adoption", "status": "waiting", "requirementIds": ["REQ-042"], "feedbackIds": []},
+    {"taskId": "REQ-046", "status": "waiting", "requirementIds": ["REQ-046"], "feedbackIds": ["UF-013"]},
+    {"taskId": "UF-001-013-downstream-revalidation", "status": "waiting", "requirementIds": ["REQ-046", "REQ-049", "REQ-050", "REQ-051", "REQ-052"], "feedbackIds": ["UF-001", "UF-002", "UF-003", "UF-004", "UF-005", "UF-006", "UF-007", "UF-008", "UF-009", "UF-010", "UF-011", "UF-012", "UF-013"]}
+  ],
+  "feedbackPrimaryMappings": [
+    {"feedbackId": "UF-001", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-002", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-003", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-004", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-005", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-006", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-007", "primaryRequirementId": "REQ-050"},
+    {"feedbackId": "UF-008", "primaryRequirementId": "REQ-050"},
+    {"feedbackId": "UF-009", "primaryRequirementId": "REQ-051"},
+    {"feedbackId": "UF-010", "primaryRequirementId": "REQ-051"},
+    {"feedbackId": "UF-011", "primaryRequirementId": "REQ-049"},
+    {"feedbackId": "UF-012", "primaryRequirementId": "REQ-052"},
+    {"feedbackId": "UF-013", "primaryRequirementId": "REQ-046"}
   ]
 }

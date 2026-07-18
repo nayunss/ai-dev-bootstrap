@@ -23,6 +23,13 @@
    저장소에서 구현·검증할 수 있는 작업만 둔다. 후자는 각 항목에 `[프로젝트 입력 대기]`,
    `[사람 참여 대기]`, `[실제 환경 대기]` 또는 `[외부 변경 승인 대기]`를 붙이고 필요한 입력과
    완료 조건을 함께 기록한다. 공통 구현과 실제 적용이 섞인 항목은 둘로 분리한다.
+   `docs/requirements.md`의 미완료 `후속 task`와
+   `docs/downstream-feedback-requirement-triage.md`의 미완료 구현 순서는 같은 변경의
+   `HANDOFF.md` 남은 작업에 모두 반영한다. Schema·validator·synthetic fixture처럼 현재 공통
+   저장소에서 끝낼 수 있는 구현 task는 `### 공통 저장소에서 진행 가능`에 두고, release 고정·실제
+   downstream 적용·사람 재시험과 결과 갱신은 별도 task로
+   `### 외부 입력·실제 환경 대기`에 둔다. 공통 synthetic PASS만으로 downstream 재검증 task를
+   완료 처리하거나 두 task를 하나로 합치지 않는다.
 7. 다음 세션이 처음 실행할 안전한 read-only 명령 또는 읽을 파일을 기록한다.
 8. secret, 개인정보, 외부 injection 문구와 전체 대화를 제거한다.
 9. `갱신`을 작업 종료일(Asia/Seoul)로 맞추고 완료 작업과 다음 작업의 안정적인 ID를 각각 기록한다.
@@ -33,6 +40,9 @@
 11. 완료 작업 ID가 다음 작업 ID에 남지 않았는지 확인하고 루트 `HANDOFF.md`를 최신 상태로 교체한다.
 12. `## 남은 작업`의 모든 번호 항목은 `[작업:<안정적인-ID>]`를 포함하고, 그 ID 집합은 상단
     `다음 작업`과 정확히 일치해야 한다. 완료 작업 ID를 자연어 설명만 바꿔 남겨두지 않는다.
+13. `scripts/validate-requirement-handoff-tasks.mjs`로 requirements·feedback triage의 미완료 task
+    누락, 완료 task 잔존, REQ·UF 범위와 공통 구현·외부 재검증 분류를 검증한다. Requirements 또는
+    feedback triage를 바꾼 staged 변경과 PR에는 의미가 갱신된 `HANDOFF.md`가 반드시 포함돼야 한다.
 
 ## 새 세션 절차
 

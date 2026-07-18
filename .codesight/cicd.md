@@ -10,7 +10,7 @@
 
 > `.github/workflows/security.yml`
 
-- **security** on `ubuntu-latest` — 11 steps
+- **security** on `ubuntu-latest` — 13 steps
   - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
   - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
 - **license-provenance** on `ubuntu-24.04` — 6 steps

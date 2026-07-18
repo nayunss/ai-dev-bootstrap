@@ -1,0 +1,35 @@
+schemaVersion: 1
+profileId: "full-stack"
+status: "approved"
+reviewedAt: "2026-07-18"
+ownerRef: "owners/platform"
+repository:
+  topology: "full-stack"
+  remoteRef: "hosting/origin"
+applications: [{"id":"web","type":"frontend","root":"web","language":"typescript","runtime":{"name":"node","version":"22.23.1"},"framework":{"name":"next","version":"15.4.1"},"manifest":"web/package.json","lockfile":"web/package-lock.json","commands":{"test":{"cwd":"web","executable":"npm","argv":["test"],"network":"deny","timeoutSeconds":300,"expectedArtifacts":["web/coverage"]}},"data":{"primary":"none","migrationRef":null,"retentionEvidenceRef":null,"restoreEvidenceRef":null}},{"id":"api","type":"backend","root":"api","language":"python","runtime":{"name":"python","version":"3.13.5"},"framework":{"name":"fastapi","version":"0.116.1"},"manifest":"api/pyproject.toml","lockfile":"api/uv.lock","commands":{"test":{"cwd":"api","executable":"uv","argv":["run","pytest"],"network":"deny","timeoutSeconds":300,"expectedArtifacts":["api/reports"]}},"data":{"primary":"postgresql","migrationRef":"docs/migrations.md","retentionEvidenceRef":"evidence/retention.json","restoreEvidenceRef":"evidence/restore.json"}}]
+settings:
+  teamRequired: ["policy/engineering","policy/security","gate/test","gate/security"]
+  projectRequired: ["project/applications","project/runtime","project/database","project/collaboration","project/ci","project/deployment"]
+  personalChoice: ["personal/editor","personal/ai-adapter"]
+  reviewRequired: ["tool/plugin","tool/mcp","tool/hook","tool/telemetry"]
+  prohibited: ["global/git-write","global/ai-config-write","security/gate-disable","unreviewed/network-install"]
+collaboration:
+  providerRef: "hosting/provider"
+  policyRef: "policies/review"
+  status: "approved"
+ci:
+  providerRef: "ci/provider"
+  policyRef: "policies/ci"
+  status: "approved"
+artifacts:
+  providerRef: "artifacts/provider"
+  policyRef: "policies/artifacts"
+  status: "approved"
+deployments: []
+security:
+  policyRef: ".ai/standards/security.md"
+  aiAdapters: []
+  credentials: []
+decisions: [{"id":"local-tools","stage":"local","status":"approved","ownerRef":"owners/platform","evidenceRef":"evidence/local-tools.json","reviewedAt":"2026-07-18","expiresAt":"2027-07-18","blocker":null},{"id":"ci-gates","stage":"ci","status":"approved","ownerRef":"owners/platform","evidenceRef":"evidence/ci-gates.json","reviewedAt":"2026-07-18","expiresAt":"2027-07-18","blocker":null},{"id":"production-release","stage":"production","status":"pending","ownerRef":"owners/release","evidenceRef":null,"reviewedAt":null,"expiresAt":null,"blocker":"Separate Production approval is required"}]
+extensions:
+  example.com: {}

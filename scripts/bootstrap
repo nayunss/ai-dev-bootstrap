@@ -24,6 +24,7 @@ Bootstrap preview
 - Production readiness onboarding: require legal/privacy and retention owners, multi-instance limiter evidence, and provider restore RPO/RTO evidence
 - Readiness retrofit: after reviewing applicability, use scripts/bootstrap readiness TARGET; existing policy is never overwritten and unresolved values block Production
 - Project-specific decisions: use scripts/bootstrap onboarding TARGET for initial setup or retrofit; existing profiles are preserved and questions remain TBD
+- Canonical project profile: preview settings-boundary materialization first; an existing different profile blocks automatic retrofit
 
 Apply reviewed security tools to this upstream clone only: scripts/bootstrap security-tools
 Preview/apply/validate/uninstall project-local tools without installer network:
@@ -42,10 +43,24 @@ Add a missing readiness profile without overwriting existing policy:
   scripts/bootstrap readiness /absolute/path/to/project
 Create missing REQ-040/041/042 project profiles and print project-specific questions:
   scripts/bootstrap onboarding /absolute/path/to/project
+Preview/apply a canonical development profile without overwriting an existing profile:
+  scripts/bootstrap profile /absolute/path/to/project /path/to/reviewed-profile.json
+  scripts/bootstrap profile /absolute/path/to/project /path/to/reviewed-profile.json --approve
 Preview/apply/validate/rollback an initial full-stack profile without executing DB SQL:
   scripts/bootstrap fullstack preview TARGET PROFILE SOURCE
   scripts/bootstrap fullstack apply TARGET PROFILE SOURCE --approve
   scripts/bootstrap fullstack rollback TARGET PROFILE SOURCE --approve
+Preview/apply/validate/rollback a reviewed P0 stack starter without installing dependencies or executing DB SQL:
+  scripts/bootstrap stack-fixture preview TARGET /path/to/reviewed-profile.json
+  scripts/bootstrap stack-fixture apply TARGET /path/to/reviewed-profile.json --approve
+  scripts/bootstrap stack-fixture rollback TARGET /path/to/reviewed-profile.json --approve
+Preview/apply/validate/upgrade/rollback/uninstall reviewed portable skill bundles:
+  scripts/bootstrap skills preview TARGET /path/to/release/manifest.json --optional=frontend --adapters=codex
+  scripts/bootstrap skills apply TARGET /path/to/release/manifest.json --optional=frontend --adapters=codex --approve
+Plugin catalog entries remain non-executable and require a separate native installation approval.
+Preview/apply/validate/upgrade/rollback one release through the shared GUI/CLI adoption core:
+  scripts/bootstrap adopt preview TARGET /path/to/release-adoption.json
+  scripts/bootstrap adopt apply TARGET /path/to/release-adoption.json --approve
 Preview selected AI adapters without changing the target:
   scripts/bootstrap adapters preview /absolute/path/to/project codex,claude-code,github-copilot
 Apply or uninstall reviewed adapters:
@@ -142,6 +157,21 @@ EOF
     TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
     node "$ROOT/scripts/materialize-project-onboarding.mjs" "$TARGET"
     ;;
+  profile)
+    TARGET=${2:-}
+    INPUT=${3:-}
+    APPROVAL=${4:-}
+    if [ -z "$TARGET" ] || [ -z "$INPUT" ]; then
+      echo "Development profile materialization requires a target project and reviewed JSON profile." >&2
+      exit 2
+    fi
+    TARGET=$(CDPATH= cd -- "$TARGET" && pwd)
+    if [ "$APPROVAL" = "--approve" ]; then
+      node "$ROOT/scripts/materialize-development-profile.mjs" "$TARGET" "$INPUT" --approve
+    else
+      node "$ROOT/scripts/materialize-development-profile.mjs" "$TARGET" "$INPUT"
+    fi
+    ;;
   fullstack)
     ACTION=${2:-}
     TARGET=${3:-}
@@ -153,6 +183,43 @@ EOF
       exit 2
     fi
     node "$ROOT/scripts/materialize-fullstack.mjs" "$ACTION" "$TARGET" "$PROFILE" "$SOURCE" "$APPROVAL"
+    ;;
+  stack-fixture)
+    ACTION=${2:-}
+    TARGET=${3:-}
+    PROFILE=${4:-}
+    APPROVAL=${5:-}
+    if [ -z "$ACTION" ] || [ -z "$TARGET" ] || [ -z "$PROFILE" ]; then
+      echo "Stack fixture materialization requires action, target and reviewed profile JSON path." >&2
+      exit 2
+    fi
+    if [ "$APPROVAL" = "--approve" ]; then
+      node "$ROOT/scripts/materialize-stack-profile-fixture.mjs" "$ACTION" "$TARGET" "$PROFILE" --approve
+    else
+      node "$ROOT/scripts/materialize-stack-profile-fixture.mjs" "$ACTION" "$TARGET" "$PROFILE"
+    fi
+    ;;
+  skills)
+    ACTION=${2:-}
+    TARGET=${3:-}
+    MANIFEST=${4:-}
+    shift 4 || true
+    if [ -z "$ACTION" ] || [ -z "$TARGET" ] || [ -z "$MANIFEST" ]; then
+      echo "Skill distribution requires action, target and reviewed release manifest JSON path." >&2
+      exit 2
+    fi
+    node "$ROOT/scripts/materialize-skill-distribution.mjs" "$ACTION" "$TARGET" "$MANIFEST" "$@"
+    ;;
+  adopt)
+    ACTION=${2:-}
+    TARGET=${3:-}
+    MANIFEST=${4:-}
+    shift 4 || true
+    if [ -z "$ACTION" ] || [ -z "$TARGET" ] || [ -z "$MANIFEST" ]; then
+      echo "Release adoption requires action, target and reviewed release adoption manifest JSON path." >&2
+      exit 2
+    fi
+    node "$ROOT/scripts/adopt-release.mjs" "$ACTION" "$TARGET" "$MANIFEST" "$@"
     ;;
   adapters)
     ACTION=${2:-}
@@ -171,7 +238,7 @@ EOF
     fi
     ;;
   *)
-    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|fullstack ACTION TARGET PROFILE SOURCE [--approve]|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|profile TARGET PROFILE.json [--approve]|fullstack ACTION TARGET PROFILE SOURCE [--approve]|stack-fixture ACTION TARGET PROFILE.json [--approve]|skills ACTION TARGET MANIFEST.json [--optional=a,b] [--adapters=a,b] [--approve]|adopt ACTION TARGET MANIFEST.json [--surface=cli|gui] [--approve]|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
     exit 2
     ;;
 esac

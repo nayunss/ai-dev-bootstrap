@@ -1,6 +1,6 @@
 # Git Hosting·Namespace·Remote 계약 검토
 
-상태: 설계 승인
+상태: reference 구현
 확정일: 2026-07-17
 관련 요구사항: `REQ-001`, `REQ-003`, REQ-019–REQ-024, REQ-033–REQ-038, `REQ-042`, `REQ-046`, `REQ-047`
 
@@ -187,3 +187,8 @@ Provider-neutral profile schema·validator, Git core와 최소 GitHub·GitLab ad
 각 provider의 personal/organization 또는 group·enterprise/self-hosted 경계, 권한 차단과 rollback을
 검증해야 공통 구현 완료로 표시한다. 문서에서 provider 이름을 열거한 것만으로 해당 provider 지원을
 주장하지 않는다.
+
+2026-07-18 provider-neutral hosting·branch/review·CI·artifact·deployment schema와 GitHub·GitLab·
+generic Git·none synthetic adapter fixture를 구현했다. 이는 field mapping과 fail-closed 권한 경계를
+검증한 `SYNTHETIC_CONTRACT_ONLY` 결과이며 실제 provider API, credential, push·PR/MR·policy·release
+변경 지원을 뜻하지 않는다.

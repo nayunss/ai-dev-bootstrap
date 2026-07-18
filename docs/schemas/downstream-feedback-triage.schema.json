@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/downstream-feedback-triage.schema.json",
+  "title": "Downstream feedback triage",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reviewedAt", "sanitization", "releaseBaseline", "findings"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reviewedAt": { "type": "string", "format": "date" },
+    "sanitization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projectSpecificDetailsRemoved", "sourceExcerptIncluded", "secretsIncluded"],
+      "properties": {
+        "projectSpecificDetailsRemoved": { "const": true },
+        "sourceExcerptIncluded": { "const": false },
+        "secretsIncluded": { "const": false }
+      }
+    },
+    "releaseBaseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "release", "commitSha", "archiveSha256"],
+      "properties": {
+        "repository": { "type": "string", "pattern": "^https://[^\\s]+$" },
+        "release": { "type": "string", "minLength": 1 },
+        "commitSha": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "archiveSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "generalizedCause",
+          "primaryRequirementId",
+          "duplicateOf",
+          "implementationTaskId",
+          "revalidationTaskId",
+          "status"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^UF-[0-9]{3}$" },
+          "generalizedCause": { "type": "string", "minLength": 12 },
+          "primaryRequirementId": { "type": "string", "pattern": "^REQ-[0-9]{3}$" },
+          "duplicateOf": {
+            "oneOf": [
+              { "type": "null" },
+              { "type": "string", "pattern": "^UF-[0-9]{3}$" }
+            ]
+          },
+          "implementationTaskId": { "type": "string", "minLength": 1 },
+          "revalidationTaskId": { "type": "string", "minLength": 1 },
+          "status": { "const": "triaged" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+schemaVersion: 1
+profileId: "backend-service"
+status: "approved"
+reviewedAt: "2026-07-18"
+ownerRef: "owners/backend"
+repository:
+  topology: "single-project"
+  remoteRef: "hosting/origin"
+applications: [{"id":"api","type":"backend","root":"api","language":"java","runtime":{"name":"java","version":"21.0.7"},"framework":{"name":"spring-boot","version":"3.5.3"},"manifest":"api/pom.xml","lockfile":"api/dependency-lock.json","commands":{"test":{"cwd":"api","executable":"mvn","argv":["test","--offline"],"network":"deny","timeoutSeconds":600,"expectedArtifacts":["api/target"]}},"data":{"primary":"postgresql","migrationRef":"docs/migrations.md","retentionEvidenceRef":"evidence/retention.json","restoreEvidenceRef":"evidence/restore.json"}}]
+settings:
+  teamRequired: ["policy/engineering","policy/security","gate/test","gate/security"]
+  projectRequired: ["project/applications","project/runtime","project/database","project/retention","project/restore"]
+  personalChoice: ["personal/editor","personal/ai-adapter"]
+  reviewRequired: ["tool/plugin","tool/mcp","tool/hook","tool/telemetry"]
+  prohibited: ["global/git-write","global/ai-config-write","security/gate-disable","unreviewed/network-install"]
+collaboration:
+  providerRef: "hosting/provider"
+  policyRef: "policies/review"
+  status: "approved"
+ci:
+  providerRef: "ci/provider"
+  policyRef: "policies/ci"
+  status: "approved"
+artifacts:
+  providerRef: "artifacts/provider"
+  policyRef: "policies/artifacts"
+  status: "approved"
+deployments: []
+security:
+  policyRef: ".ai/standards/security.md"
+  aiAdapters: []
+  credentials: []
+decisions: [{"id":"local-tools","stage":"local","status":"approved","ownerRef":"owners/backend","evidenceRef":"evidence/local-tools.json","reviewedAt":"2026-07-18","expiresAt":"2027-07-18","blocker":null},{"id":"ci-gates","stage":"ci","status":"approved","ownerRef":"owners/backend","evidenceRef":"evidence/ci-gates.json","reviewedAt":"2026-07-18","expiresAt":"2027-07-18","blocker":null},{"id":"production-release","stage":"production","status":"pending","ownerRef":"owners/release","evidenceRef":null,"reviewedAt":null,"expiresAt":null,"blocker":"Separate Production approval is required"}]
+extensions:
+  example.com: {}

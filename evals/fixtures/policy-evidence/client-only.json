@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "services": ["synthetic-account-service"],
+    "regions": ["synthetic-region-1"],
+    "dataCategories": ["synthetic-account"]
+  },
+  "claims": [
+    {
+      "id": "CLAIM-PRIVACY",
+      "kind": "privacy",
+      "statement": "사용자 화면에서 비공개 데이터 접근을 차단한다",
+      "ownerApproval": {
+        "role": "synthetic-privacy-owner",
+        "approvalReference": "fixture://owner-approval",
+        "reviewedAt": "2026-07-18",
+        "validUntil": "2027-07-18"
+      },
+      "applicability": {
+        "services": ["synthetic-account-service"],
+        "regions": ["synthetic-region-1"],
+        "dataCategories": ["synthetic-account"]
+      },
+      "dataFlowRefs": ["FLOW-ACCOUNT"],
+      "enforcementRefs": ["ENF-CLIENT"],
+      "evidenceRefs": ["EVID-CLIENT"],
+      "disposalContract": null
+    }
+  ],
+  "dataFlows": [
+    {
+      "id": "FLOW-ACCOUNT",
+      "source": "synthetic-client",
+      "processingService": "synthetic-account-service",
+      "region": "synthetic-region-1",
+      "dataCategories": ["synthetic-account"],
+      "destinations": ["synthetic-account-store"]
+    }
+  ],
+  "enforcements": [
+    {
+      "id": "ENF-CLIENT",
+      "layer": "client",
+      "mechanism": "hidden user interface control",
+      "sourceReference": "fixture://client/hidden-control"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "EVID-CLIENT",
+      "kind": "negative-test",
+      "precondition": "user interface control is hidden",
+      "action": "inspect the visible interface",
+      "expectedFailure": "control remains hidden",
+      "result": "PASS",
+      "observedAt": "2026-07-18T00:00:00Z",
+      "reference": "fixture://tests/client-only",
+      "coversDataFlowRefs": ["FLOW-ACCOUNT"],
+      "coversEnforcementRefs": ["ENF-CLIENT"],
+      "assertions": []
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "profileId": "node-express-postgresql",
+  "priority": "P0",
+  "topology": "single-project",
+  "applications": [
+    {"id": "api", "type": "backend", "root": ".", "language": "typescript", "runtime": {"name": "node", "version": "22.23.1"}, "framework": {"name": "express", "version": "5.1.0"}, "packageManager": {"name": "npm", "version": "10.9.8"}}
+  ],
+  "database": {"product": "postgresql", "version": "17.5", "role": "primary", "migrationPairs": [{"id": "initial", "up": "database/001_initial.up.sql", "down": "database/001_initial.down.sql"}], "restoreEvidenceRef": "docs/restore-evidence.json"},
+  "artifacts": [
+    {"path": "package.json", "content": "{\"name\":\"api\",\"private\":true,\"packageManager\":\"npm@10.9.8\"}\n"},
+    {"path": "package-lock.json", "content": "{\"name\":\"api\",\"lockfileVersion\":3}\n"},
+    {"path": "src/server.ts", "content": "export const service = \"express\";\n"},
+    {"path": "database/001_initial.up.sql", "content": "-- reviewed forward migration artifact\n"},
+    {"path": "database/001_initial.down.sql", "content": "-- reviewed rollback migration artifact\n"},
+    {"path": "docs/restore-evidence.json", "content": "{\"status\":\"NOT_RUN\"}\n"}
+  ],
+  "execution": {"dependencyInstall": "NOT_RUN", "databaseMigration": "NOT_RUN", "providerWrite": "NOT_RUN", "productionDeploy": "NOT_RUN"}
+}

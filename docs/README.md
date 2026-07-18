@@ -15,22 +15,22 @@
 | [API 계약과 문서화](api-contract-documentation.md) | FastAPI·OpenAPI·Swagger 역할, stack adapter와 production docs gate | 설계 승인 |
 | [하네스 구성](harness.md) | 최소 공통 하네스와 프로젝트별 구성 방식 정의 | 설계 승인 |
 | [프로젝트 개발환경 정의](project-environment-definition.md) | 기술 스택 자동 감지·질문·버전 확정 절차 | 설계 승인 |
-| [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md) | canonical YAML·JSON Schema·drift·readiness validator 구현 범위 | 설계 승인 |
-| [2026년 기준 최초 검증 Stack과 Adapter 우선순위](stack-adapter-priority-review.md) | 기준일 현재 최신 공개 사용량 기반 frontend·backend·full-stack P0~P3 순서 | 검토 완료 |
-| [저장소 구조와 Project Template 우선순위](repository-topology-and-template-priority.md) | 단일 starter·retrofit·workspace monorepo·전문 orchestrator 제공 순서 | 설계 승인 |
-| [개인·팀·프로젝트 설정 경계](personal-team-settings-boundary.md) | 팀 필수·project 필수·개인 선택·사전 심사·금지 범위 | 설계 승인 |
+| [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md) | canonical YAML·JSON Schema·drift·readiness validator 구현 범위 | P0 reference 구현 |
+| [2026년 기준 최초 검증 Stack과 Adapter 우선순위](stack-adapter-priority-review.md) | 기준일 현재 최신 공개 사용량 기반 frontend·backend·full-stack P0~P3 순서 | P0 reference fixture 구현 |
+| [저장소 구조와 Project Template 우선순위](repository-topology-and-template-priority.md) | 단일 starter·retrofit·workspace monorepo·전문 orchestrator 제공 순서 | P0 reference fixture 구현 |
+| [개인·팀·프로젝트 설정 경계](personal-team-settings-boundary.md) | 팀 필수·project 필수·개인 선택·사전 심사·금지 범위 | reference 구현 |
 | [프로젝트 유지관리 기록](project-maintenance.md) | 반복 문제·환경 함정의 원인·탐지·예방 기록 | 운영 메모 |
 | [토큰 예산별 프로파일](token-budget-profiles.md) | 토큰 절약형과 충분한 분석형 실행 방식 | 설계 승인 |
 | [프롬프트 템플릿](prompt-templates.md) | 프롬프트가 필요한 조건과 최소 공통 템플릿 | 설계 승인 |
 | [Eval 전략](evaluation-strategy.md) | 하네스·루프·모델 변경의 outcome 기반 평가 | 설계 승인 |
 | [SkillOpt 논문 검토](skillopt-paper-review.md) | 제한적 skill evolution의 근거·한계·차용 범위 | 검토 완료 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 설계 승인 |
-| [Git Hosting·Namespace·Remote 계약](git-hosting-and-remote-review.md) | GitHub·GitLab·enterprise·self-hosted provider-neutral 원격 계약 | 설계 승인 |
+| [Git Hosting·Namespace·Remote 계약](git-hosting-and-remote-review.md) | GitHub·GitLab·enterprise·self-hosted provider-neutral 원격 계약 | reference 구현 |
 | [Branch 전략과 Review 승인 계약](branch-and-review-strategy.md) | project별 branch·merge·위험별 reviewer·self-review 경계 | 설계 승인 |
 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md) | 단독·다중 tester의 frontend·backend·full-stack 생성, AI provenance·증거·환류 절차 | 설계 승인 |
 | [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | 설계 승인 |
 | [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 설계 승인 |
-| [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md) | GUI 설치 버튼·공통 adoption core·release bundle과 rollback 검토 | 검토 완료 |
+| [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md) | GUI 설치 버튼·공통 adoption core·release bundle과 rollback 검토 | shared core reference 구현 |
 | [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 설계 승인 |
 | [Upstream 피드백 기록 계약](upstream-feedback-log.md) | downstream 저장소에 남기는 upstream 수정 필요 사항 기록 형식 | 설계 승인 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 설계 승인 |
@@ -39,7 +39,7 @@
 | [코드 품질 표준](code-quality-standards.md) | 언어 중립 클린 코드와 시멘틱 웹 접근성 기준 | 설계 승인 |
 | [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md) | Prettier·ESLint·Husky 및 AI·Git 훅 정책 | 설계 승인 |
 | [스킬 체계](skills.md) | 공통 스킬의 분류, 계약, 설치 및 검증 방식 정의 | 설계 승인 |
-| [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md) | core·optional·private skill과 adapter·plugin·MCP 배포 경계 | 설계 승인 |
+| [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md) | core·optional·private skill과 adapter·plugin·MCP 배포 경계 | reference 구현 |
 | [도구 호환성](tool-compatibility.md) | 선호 플러그인의 도구별 지원과 공통 대체 경로 | 설계 승인 |
 | [외부 도구 평가](external-tools-review.md) | GitHub Spec Kit과 Agent Skills의 도입·차용 가능성 평가 | 설계 승인 |
 | [공급망 보안](supply-chain-security.md) | 텔레메트리 없는 설치와 보안 검토 게이트 | 설계 승인 |
@@ -59,6 +59,11 @@
 | [Full-stack materializer schema](schemas/fullstack-materializer.schema.json) | 최초 frontend·backend·shared·migration artifact와 rollback 계약 | 적용 |
 | [Dependency bootstrap schema](schemas/dependency-bootstrap.schema.json) | stack별 dependency adapter 입력 계약 | 적용 |
 | [Distributed pilot result schema](schemas/distributed-pilot-result.schema.json) | 독립 tester 결과·증거 계약 | 적용 |
+| [Downstream feedback triage schema](schemas/downstream-feedback-triage.schema.json) | 일반화·중복·primary REQ·task·release baseline 계약 | 적용 |
+| [Policy evidence schema](schemas/policy-evidence.schema.json) | 정책 claim·data flow·server enforcement·반증 가능한 evidence 연결 계약 | 적용 |
+| [Repository state invariants schema](schemas/repository-state-invariants.schema.json) | staged generated artifact·source hash와 check-only 무변경 계약 | 적용 |
+| [Delivery evidence states schema](schemas/delivery-evidence-states.schema.json) | push·CI·deploy·health·behavior·Production 승인 상태·증거 분리 계약 | 적용 |
+| [Full-stack locale contract schema](schemas/fullstack-locale-contract.schema.json) | project별 frontend·BFF·backend 사용자 표시 locale 계약 | 적용 |
 | [Stack quality adapter schema](schemas/stack-quality-adapters.schema.json) | 언어별 formatter·linter·typecheck·접근성 실행 계약 | 적용 |
 | [Canonical upstream lock schema](schemas/upstream-lock.schema.json) | release·source·target hash lock 계약 | 적용 |
 | [Dependency bootstrap template](templates/dependency-bootstrap.json) | 프로젝트별 dependency bootstrap 질문 입력 | 적용 |
