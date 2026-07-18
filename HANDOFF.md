@@ -1,9 +1,9 @@
 # Handoff
 
 갱신: 2026-07-18 Asia/Seoul
-상태: v0.2.8-pilot release candidate·공통 reference 구현 검증 완료
+상태: v0.2.8-pilot prerelease 발행·공통 reference 구현 검증 완료
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption
 다음 작업: REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
 
 ## 목표
@@ -522,12 +522,16 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - release manifest·archive binding·component checksum 변조, 기존 파일 충돌·target drift와 두 번째
   write 실패 전체 transaction 원복 negative fixture: PASS
 - desktop GUI·folder picker·signing·notarization·게시 asset 재다운로드·비개발자 사용성 Eval: NOT-RUN
-- `v0.2.8-pilot` package version·migration·rollback·검증 경계 release candidate 문서: PASS,
-  hosted PR checks·merge·tag·게시 archive 재다운로드 evidence: PENDING
+- `v0.2.8-pilot` package version·migration·rollback·검증 경계, hosted PR checks, PR #22 merge,
+  tag와 게시 archive 재다운로드 evidence: PASS
 - PR #22 hosted `security`: PASS. `license-provenance` 1차 run은 skill distribution release
   `manifest.json`의 license metadata, 2차 run은 evaluator regression source의 synthetic
   `manifest.json` 문자열을 각각 source finding으로 오분류해 FAIL했다. Exact fixture manifest만
-  review-only로 제한하고 test path는 runtime에 조립하도록 보정했다. 3차 재실행 결과: PENDING
+  review-only로 제한하고 test path는 runtime에 조립하도록 보정했다. 3차 run `29635598581`에서
+  `security`와 `license-provenance`가 모두 PASS했다.
+- PR #22 merge commit `1cc6406831a8ac7592f6ec3a765c0746f773195e`에 `v0.2.8-pilot` prerelease를
+  발행했다. Tracked archive, GitHub asset digest와 재다운로드 SHA-256
+  `3963402cf8d28c88858055a90e4be3c9c4170ea99f483f8360bd8749c22db4f8`이 일치한다.
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
