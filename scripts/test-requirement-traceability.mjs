@@ -25,6 +25,10 @@ const unsafe = structuredClone(manifest);
 unsafe.sources.requirements = ".env.example";
 assert.match(validateTraceability(unsafe).join("\n"), /unsafe source path requirements/);
 
+const invalidReleaseBaseline = structuredClone(manifest);
+invalidReleaseBaseline.releaseBaseline = "latest";
+assert.match(validateTraceability(invalidReleaseBaseline).join("\n"), /releaseBaseline must be an exact pilot/);
+
 const taskClassDrift = structuredClone(manifest);
 taskClassDrift.implementationTasks.find((task) => task.taskId === "REQ-047-one-click-adoption").status = "pending";
 assert.match(validateTraceability(taskClassDrift).join("\n"), /implementationTasks task is absent from matching HANDOFF section/);

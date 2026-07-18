@@ -149,6 +149,9 @@ export function validateTraceability(manifest, {
   if (manifest?.scope?.from !== "REQ-001" || manifest?.scope?.to !== "REQ-052") {
     errors.push("scope must be REQ-001 through REQ-052");
   }
+  if (!/^v\d+\.\d+\.\d+-pilot(?:-rc)?$/u.test(manifest?.releaseBaseline ?? "")) {
+    errors.push("releaseBaseline must be an exact pilot or pilot RC version");
+  }
   if (!/^\d{4}-\d{2}-\d{2}$/u.test(manifest?.reviewedAt ?? "")) errors.push("reviewedAt must be an ISO date");
   for (const [name, path] of Object.entries(manifest?.sources ?? {})) {
     if (!safePath(path)) errors.push(`unsafe source path ${name}: ${path}`);

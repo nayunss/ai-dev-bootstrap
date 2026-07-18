@@ -4,6 +4,7 @@
     "from": "REQ-001",
     "to": "REQ-052"
   },
+  "releaseBaseline": "v0.2.8-pilot-rc",
   "reviewedAt": "2026-07-18",
   "sources": {
     "requirements": "docs/requirements.md",
