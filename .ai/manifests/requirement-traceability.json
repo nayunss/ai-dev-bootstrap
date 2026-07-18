@@ -26,7 +26,11 @@
     {"requirementIds": ["REQ-037", "REQ-038", "REQ-039"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
     {"requirementIds": ["REQ-040", "REQ-041"], "implementationStatus": "reference 구현", "verificationStatus": "synthetic PASS"},
     {"requirementIds": ["REQ-042"], "implementationStatus": "부분 구현", "verificationStatus": "reference PASS"},
-    {"requirementIds": ["REQ-043"], "implementationStatus": "조건부 구현", "verificationStatus": "부분 검증"},
+    {
+      "requirementIds": ["REQ-043"],
+      "implementationStatus": "조건부 구현",
+      "verificationStatus": "부분 검증"
+    },
     {"requirementIds": ["REQ-044", "REQ-045"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic·pilot PASS"},
     {"requirementIds": ["REQ-046"], "implementationStatus": "reference 구현", "verificationStatus": "synthetic PASS"},
     {"requirementIds": ["REQ-047"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},

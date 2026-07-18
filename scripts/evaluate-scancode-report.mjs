@@ -13,7 +13,11 @@ function isReviewOnly(path) {
   const extension = extname(path).toLowerCase();
   return extension === ".md"
     || basename(path) === "package-lock.json"
-    || (path.includes("/.ai/manifests/") && new Set([".json", ".yaml", ".yml"]).has(extension));
+    || (path.includes("/.ai/manifests/") && new Set([".json", ".yaml", ".yml"]).has(extension))
+    || (
+      basename(path) === "manifest.json"
+      && path.includes("/evals/fixtures/skill-distribution/releases/")
+    );
 }
 
 let report;

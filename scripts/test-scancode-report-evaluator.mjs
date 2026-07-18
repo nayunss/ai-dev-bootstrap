@@ -41,6 +41,23 @@ assert.equal(result.status, 0);
 assert.match(result.stdout, /MANUAL_REVIEW metadata\/documentation/);
 assert.deepEqual(result.summary.reviewFindings, [{ path: "input/docs/policy.md", expressions: [reviewExpression] }]);
 
+result = evaluate("skill-manifest-metadata", report([{
+  path: "input/evals/fixtures/skill-distribution/releases/v1/manifest.json",
+  license_detections: [{ license_expression: reviewExpression }],
+}]));
+assert.equal(result.status, 0);
+assert.deepEqual(result.summary.reviewFindings, [{
+  path: "input/evals/fixtures/skill-distribution/releases/v1/manifest.json",
+  expressions: [reviewExpression],
+}]);
+
+result = evaluate("arbitrary-source-manifest", report([{
+  path: "input/src/manifest.json",
+  license_detections: [{ license_expression: blockedExpression }],
+}]));
+assert.equal(result.status, 1);
+assert.match(result.stderr, /BLOCKED source license finding/);
+
 result = evaluate("source-finding", report([{
   path: "input/src/copied.ts",
   license_detections: [{ license_expression: blockedExpression }],

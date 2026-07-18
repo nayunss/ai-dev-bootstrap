@@ -524,6 +524,9 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - desktop GUI·folder picker·signing·notarization·게시 asset 재다운로드·비개발자 사용성 Eval: NOT-RUN
 - `v0.2.8-pilot` package version·migration·rollback·검증 경계 release candidate 문서: PASS,
   hosted PR checks·merge·tag·게시 archive 재다운로드 evidence: PENDING
+- PR #22 hosted `security`: PASS. `license-provenance` 1차 run은 skill distribution release
+  `manifest.json`의 license metadata를 source finding으로 오분류해 FAIL했으며, exact fixture manifest만
+  review-only로 제한하는 evaluator regression을 적용했다. 재실행 결과: PENDING
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
