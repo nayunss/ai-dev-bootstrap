@@ -1,6 +1,6 @@
 # CI Provider·배포 대상 선택 계약
 
-상태: 설계 승인
+상태: reference 구현
 확정일: 2026-07-17
 관련 요구사항: REQ-019–REQ-024, REQ-033–REQ-036, `REQ-040`, REQ-044–REQ-047
 
@@ -163,3 +163,8 @@ Provider-neutral CI·deployment schema와 validator, 최소 두 종류의 CI ada
 포함한 두 종류의 target adapter fixture, permission·artifact·environment·rollback negative Eval을
 통과해야 공통 구현 완료로 표시한다. Production 배포 성공은 provider별 별도 승인과 실제 환경
 증거가 있어야 한다.
+
+2026-07-18 GitHub Actions·GitLab CI·Jenkins 예시와 artifact integrity/retention, Vercel·Kubernetes 및
+deployment `none`을 공통 schema로 검증하는 synthetic fixture를 구현했다. Required outcome 누락,
+광범위 permission, Production 자동 promotion과 `none` integration drift를 차단한다. Provider write,
+credential 사용과 실제 deployment는 모두 `NOT_RUN`이다.

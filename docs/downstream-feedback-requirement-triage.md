@@ -11,6 +11,8 @@
 - 최초 관찰 upstream: `f6ffc56f309233c914ffb77e64f4b3ee59ad458d`
 - 재관찰 upstream: `v0.2.5-pilot`,
   `d0a3a6d31c4cbf883708335ff0f9bab121c5f2f0`
+- 재관찰 archive SHA-256:
+  `84d27ae9607f1fdc7fd6b662382f3ba50b9c73482cc191c10a9695c78f2a9757`
 - 입력 finding: `UF-001`–`UF-013`
 
 Downstream source의 project 이름, Railway, Spring Boot, Next.js, PostgreSQL과 구현 세부는 공통
@@ -71,12 +73,22 @@ formatting을 application 경계를 넘는 하나의 계약으로 검증한다. 
 
 ## 구현 순서
 
-1. `REQ-049-policy-evidence-validator`
-2. `REQ-050-repository-state-invariants`
-3. `REQ-051-delivery-evidence-states`
-4. `REQ-052-fullstack-locale-contract`
-5. `UF-001-013-downstream-revalidation`: 위 구현을 포함한 새 upstream release·commit·checksum을
+완료된 공통 구현: `REQ-049-policy-evidence-validator`,
+`REQ-050-repository-state-invariants`, `REQ-051-delivery-evidence-states`,
+`REQ-052-fullstack-locale-contract`
+
+1. `UF-001-013-downstream-revalidation`: 위 구현을 포함한 새 upstream release·commit·checksum을
    고정해 실제 `env-be`에 적용하고 UF-001–UF-013을 항목별로 재시험
+
+## 자동화 계약
+
+- Machine-readable 결과는 `.ai/manifests/downstream-feedback-triage.json`, 구조 계약은
+  `docs/schemas/downstream-feedback-triage.schema.json`에서 관리한다.
+- `.ai/workflows/downstream-feedback-triage.md`의 tool-neutral 절차에 따라 원문·project 고유
+  세부·source excerpt·비밀을 복제하지 않고 일반화 원인만 기록한다.
+- `scripts/validate-downstream-feedback-triage.mjs`는 단일 primary REQ, duplicate 일관성, 공통 구현·
+  실제 재검증 task 분리, release·commit·archive checksum 고정과 traceability drift를 차단한다.
+- 이 계약은 reference automation이며 UF 해결이나 실제 downstream 재검증 완료를 의미하지 않는다.
 
 ## 완료 판정
 

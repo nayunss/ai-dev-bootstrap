@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "release": {
+    "version": "2.0.0",
+    "requiredCoreVersion": "2.0.0"
+  },
+  "core": [
+    {
+      "id": "requirements",
+      "version": "1.1.0",
+      "source": "core/requirements",
+      "packageSha256": "sha256:8a8037d4a525b6ed1c72c4ed4a31e84d5abcdbb381c508a0dc3193ebe0fdd516",
+      "license": "CC-BY-4.0",
+      "risk": "markdown-only",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "sha256:fab027e7d25fa621b807f396ac48aaab38acba2ded697e5f67464319bbf751a0"
+        }
+      ]
+    }
+  ],
+  "optional": [
+    {
+      "id": "frontend",
+      "version": "1.0.0",
+      "source": "optional/frontend",
+      "packageSha256": "sha256:f859d1c36212ea962fd92cd886e16b8a2dbc1fc43bf43dfc0c616157dff49251",
+      "license": "CC-BY-4.0",
+      "risk": "markdown-only",
+      "dependencies": [
+        {
+          "id": "requirements",
+          "version": "1.1.0"
+        }
+      ],
+      "files": [
+        {
+          "path": "SKILL.md",
+          "sha256": "sha256:b6d501ef2c82e7183d63d5578c33560d825a95317d6f8ebc37d3511490444aff"
+        }
+      ]
+    }
+  ],
+  "toolAdapters": [
+    {
+      "id": "codex",
+      "version": "1.0.0",
+      "canonicalRoot": ".ai/skills",
+      "targetRoot": ".codex/skills",
+      "sha256": "sha256:c97c63a28bb0ba2c26d6ef355303c2e0acde80eabe0cefb64dc26b62961113aa"
+    },
+    {
+      "id": "claude-code",
+      "version": "1.0.0",
+      "canonicalRoot": ".ai/skills",
+      "targetRoot": ".claude/skills",
+      "sha256": "sha256:bfc270e06524a03ebd040b4b5f29ae4f657f91f5546b1a35d60c0ba4539d1193"
+    },
+    {
+      "id": "github-copilot",
+      "version": "1.0.0",
+      "canonicalRoot": ".ai/skills",
+      "targetRoot": ".github/skills",
+      "sha256": "sha256:60f0b5bb6716686235f1ab64916a128eb25f85fad0c3b3e92e8f6890c13c2a5e"
+    }
+  ],
+  "reviewedPlugins": [
+    {
+      "id": "synthetic-review-plugin",
+      "version": "1.0.0",
+      "source": "https://example.invalid/reviewed-plugin/1.0.0",
+      "sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "license": "MIT",
+      "permissions": ["read-project"],
+      "network": "review-required",
+      "telemetry": "review-required",
+      "catalogState": "reviewed-catalog-only",
+      "installApproved": false
+    }
+  ]
+}

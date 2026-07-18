@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "profileId": "next-postgresql",
+  "priority": "P0",
+  "topology": "single-project",
+  "applications": [
+    {"id": "app", "type": "fullstack", "root": ".", "language": "typescript", "runtime": {"name": "node", "version": "22.23.1"}, "framework": {"name": "next", "version": "15.4.1"}, "packageManager": {"name": "pnpm", "version": "10.13.1"}}
+  ],
+  "database": {"product": "postgresql", "version": "17.5", "role": "primary", "migrationPairs": [{"id": "initial", "up": "database/001_initial.up.sql", "down": "database/001_initial.down.sql"}], "restoreEvidenceRef": "docs/restore-evidence.json"},
+  "artifacts": [
+    {"path": "package.json", "content": "{\"name\":\"next-app\",\"private\":true,\"packageManager\":\"pnpm@10.13.1\"}\n"},
+    {"path": "pnpm-lock.yaml", "content": "lockfileVersion: '9.0'\n"},
+    {"path": "app/page.tsx", "content": "export default function Page() { return null; }\n"},
+    {"path": "database/001_initial.up.sql", "content": "-- reviewed forward migration artifact\n"},
+    {"path": "database/001_initial.down.sql", "content": "-- reviewed rollback migration artifact\n"},
+    {"path": "docs/restore-evidence.json", "content": "{\"status\":\"NOT_RUN\"}\n"}
+  ],
+  "execution": {"dependencyInstall": "NOT_RUN", "databaseMigration": "NOT_RUN", "providerWrite": "NOT_RUN", "productionDeploy": "NOT_RUN"}
+}

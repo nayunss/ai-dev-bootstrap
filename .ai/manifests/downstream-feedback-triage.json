@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-07-18",
+  "sanitization": {
+    "projectSpecificDetailsRemoved": true,
+    "sourceExcerptIncluded": false,
+    "secretsIncluded": false
+  },
+  "releaseBaseline": {
+    "repository": "https://github.com/nayunss/ai-dev-bootstrap",
+    "release": "v0.2.5-pilot",
+    "commitSha": "d0a3a6d31c4cbf883708335ff0f9bab121c5f2f0",
+    "archiveSha256": "sha256:84d27ae9607f1fdc7fd6b662382f3ba50b9c73482cc191c10a9695c78f2a9757"
+  },
+  "findings": [
+    {"id": "UF-001", "generalizedCause": "정책 주장이 이행 증거 없이 완료로 판정된다", "primaryRequirementId": "REQ-049", "duplicateOf": null, "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-002", "generalizedCause": "정책과 구현 및 검증 사이의 추적 연결이 없다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-003", "generalizedCause": "미사용 주장과 서버 강제 차단을 구분하지 않는다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-004", "generalizedCause": "클라이언트 동작을 서버 강제 정책으로 과대평가한다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-005", "generalizedCause": "파기 후 접근 차단과 지연 상한 증거가 누락된다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-006", "generalizedCause": "법률 판단 범위와 실제 처리 범위의 연결이 없다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-007", "generalizedCause": "생성 결과가 커밋 대상 상태와 다른 상태를 반영한다", "primaryRequirementId": "REQ-050", "duplicateOf": null, "implementationTaskId": "REQ-050-repository-state-invariants", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-008", "generalizedCause": "검사 전용 명령이 추적 중인 원본을 변경한다", "primaryRequirementId": "REQ-050", "duplicateOf": "UF-007", "implementationTaskId": "REQ-050-repository-state-invariants", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-009", "generalizedCause": "전송 완료를 지속적 통합 실행 성공으로 확대한다", "primaryRequirementId": "REQ-051", "duplicateOf": null, "implementationTaskId": "REQ-051-delivery-evidence-states", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-010", "generalizedCause": "배포 또는 상태 확인을 핵심 동작 검증으로 확대한다", "primaryRequirementId": "REQ-051", "duplicateOf": "UF-009", "implementationTaskId": "REQ-051-delivery-evidence-states", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {"id": "UF-011", "generalizedCause": "반증할 수 없는 확인을 정책 이행 증거로 채택한다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
+    {
+      "id": "UF-012",
+      "generalizedCause": "사용자 표시 언어 계약을 단일 계층으로 한정한다",
+      "primaryRequirementId": "REQ-052",
+      "duplicateOf": null,
+      "implementationTaskId": "REQ-052-fullstack-locale-contract",
+      "revalidationTaskId": "UF-001-013-downstream-revalidation",
+      "status": "triaged"
+    },
+    {
+      "id": "UF-013",
+      "generalizedCause": "재검증 결과에 고정된 상위 릴리스 기준선이 없다",
+      "primaryRequirementId": "REQ-046",
+      "duplicateOf": null,
+      "implementationTaskId": "REQ-046",
+      "revalidationTaskId": "UF-001-013-downstream-revalidation",
+      "status": "triaged"
+    }
+  ]
+}

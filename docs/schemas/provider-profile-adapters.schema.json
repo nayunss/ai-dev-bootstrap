@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/schemas/provider-profile-adapters.schema.json",
+  "title": "Provider-neutral Git, review, CI, artifact and deployment profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "profileId", "adapter", "hosting", "branchReview", "ci", "artifacts", "deployments"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "profileId": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "mode", "capabilities"],
+      "properties": {
+        "id": {"enum": ["github", "gitlab", "generic", "none"]},
+        "mode": {"enum": ["synthetic-read-only", "none"]},
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["git-read", "change-request-preview", "branch-policy-preview", "pipeline-preview", "artifact-preview", "deployment-preview"]}
+        }
+      }
+    },
+    "hosting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "host", "namespace", "repository", "canonicalRemote", "fetchUrl", "pushUrl", "defaultBranch", "visibility", "changeRequestMode", "credentialRef"],
+      "properties": {
+        "provider": {"enum": ["github", "github-enterprise", "gitlab", "gitlab-self-managed", "generic-git", "none"]},
+        "host": {"type": ["string", "null"]},
+        "namespace": {"type": ["string", "null"]},
+        "repository": {"type": ["string", "null"]},
+        "canonicalRemote": {"type": ["string", "null"]},
+        "fetchUrl": {"type": ["string", "null"]},
+        "pushUrl": {"type": ["string", "null"]},
+        "defaultBranch": {"type": ["string", "null"]},
+        "visibility": {"enum": ["public", "private", "internal", "not-applicable"]},
+        "changeRequestMode": {"enum": ["pull-request", "merge-request", "manual", "none"]},
+        "credentialRef": {"type": ["string", "null"]}
+      }
+    },
+    "branchReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "mergeMethods", "forcePush", "requiredChecks", "riskPolicies", "emergency"],
+      "properties": {
+        "strategy": {"enum": ["trunk-based", "short-lived-feature", "release-branch", "git-flow", "local-only"]},
+        "mergeMethods": {"type": "array", "uniqueItems": true, "items": {"enum": ["merge", "squash", "rebase", "none"]}},
+        "forcePush": {"const": false},
+        "requiredChecks": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "riskPolicies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["risk", "minimumApprovals", "requiredRoles", "selfReview"],
+            "properties": {
+              "risk": {"enum": ["normal", "dependency", "security", "release", "production", "database", "destructive"]},
+              "minimumApprovals": {"type": "integer", "minimum": 0},
+              "requiredRoles": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+              "selfReview": {"type": "boolean"}
+            }
+          }
+        },
+        "emergency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["enabled", "approverRole", "expiresAt", "postReviewRequired", "rollbackRef"],
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "approverRole": {"type": ["string", "null"]},
+            "expiresAt": {"type": ["string", "null"]},
+            "postReviewRequired": {"type": "boolean"},
+            "rollbackRef": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "ci": {"$ref": "#/$defs/providerService"},
+    "artifacts": {
+      "allOf": [{"$ref": "#/$defs/providerService"}],
+      "properties": {
+        "integrity": {"enum": ["sha256", "digest-signature", "not-applicable"]},
+        "retentionDays": {"type": "integer", "minimum": 0}
+      },
+      "required": ["integrity", "retentionDays"]
+    },
+    "deployments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["environment", "provider", "applicationRoot", "configPath", "promotion", "rollbackRef", "credentialRef"],
+        "properties": {
+          "environment": {"enum": ["preview", "staging", "production", "none"]},
+          "provider": {"type": "string", "minLength": 1},
+          "applicationRoot": {"type": ["string", "null"]},
+          "configPath": {"type": ["string", "null"]},
+          "promotion": {"enum": ["automatic-preview", "human-approved", "none"]},
+          "rollbackRef": {"type": ["string", "null"]},
+          "credentialRef": {"type": ["string", "null"]}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "providerService": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["provider", "configPath", "ownerRef", "credentialRef", "permissions", "network", "requiredOutcomes"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "configPath": {"type": ["string", "null"]},
+        "ownerRef": {"type": ["string", "null"]},
+        "credentialRef": {"type": ["string", "null"]},
+        "permissions": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+        "network": {"enum": ["deny", "approved-hosts", "not-applicable"]},
+        "requiredOutcomes": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    }
+  }
+}

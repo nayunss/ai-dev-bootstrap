@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 1 models | 0 components | 15 lib files | 2 env vars | 6 middleware
-> **Token savings:** this file is ~1,900 tokens. Without it, AI exploration would cost ~13,800 tokens. **Saves ~12,000 tokens per conversation.**
+> 0 routes | 1 models | 0 components | 28 lib files | 2 env vars | 6 middleware
+> **Token savings:** this file is ~2,700 tokens. Without it, AI exploration would cost ~18,600 tokens. **Saves ~15,800 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -27,6 +27,12 @@
   - function runCapabilityTask: (task, root) => void
   - function aggregateCapabilityResults: (results) => void
   - function loadTask: (path) => void
+- `scripts/development-profile.mjs`
+  - function serializeDevelopmentProfile: (profile) => void
+  - function parseDevelopmentProfileYaml: (source) => void
+  - function safeProfilePath: (value) => void
+  - function validateDevelopmentProfile: (profile, options) => void
+  - function loadDevelopmentProfile: (path) => void
 - `scripts/evaluate-skill-evolution.mjs` — function sha256: (value) => void, function evaluateSkillEvolution: (record, options) => void
 - `scripts/fastapi-contract-adapter.mjs` — function evaluateFastApiContract: ({...}, current, routes, profile }) => void, function readJson: (path) => void
 - `scripts/fullstack-materializer.mjs`
@@ -35,11 +41,23 @@
   - function applyFullStackTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
+- `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
   - function validatePilotCampaign: (campaign) => void
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
+- `scripts/provider-profile-adapters.mjs` — function validateProviderProfile: (profile) => void
+- `scripts/release-adoption-surfaces.mjs` — function runCliAdoption: (mode, manifest, source, target, options) => void, function runGuiAdoption: (mode, manifest, source, target, options) => void
+- `scripts/release-adoption.mjs`
+  - function sha256: (value) => void
+  - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void
+  - function runReleaseAdoption: (mode, manifest, sourceValue, targetValue, options) => void
+- `scripts/skill-distribution.mjs`
+  - function sha256: (value) => void
+  - function validateSkillDistribution: (manifest, sourceValue) => void
+  - function runSkillDistribution: (mode, manifest, sourceValue, targetValue, options) => void
+- `scripts/stack-profile-fixtures.mjs` — function validateStackProfile: (profile) => void, function runStackProfileFixture: (mode, profile, targetValue, options) => void
 - `scripts/stack-quality-adapters.mjs`
   - function validateQualityProfile: (profile, targetValue) => void
   - function runQualityProfile: (profile, targetValue, options) => void
@@ -54,7 +72,16 @@
   - function validateUpstreamLock: (lock) => void
   - function serializeUpstreamLock: (lock) => void
   - _...2 more_
+- `scripts/validate-delivery-evidence.mjs` — function validateDeliveryEvidence: (document) => void
+- `scripts/validate-downstream-feedback-triage.mjs` — function validateDownstreamFeedbackTriage: (document, {...}, }) => void
+- `scripts/validate-fullstack-locale.mjs` — function validateFullstackLocale: (document) => void
+- `scripts/validate-policy-evidence.mjs` — function validatePolicyEvidence: (profile) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
+- `scripts/validate-repository-state.mjs`
+  - function validateRepositoryState: (profile, root) => void
+  - function captureTrackedState: (root, paths) => void
+  - function compareCheckOnlyState: (before, after) => void
+- `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
 - `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
 
@@ -87,32 +114,39 @@
 
 ## Most Imported Files (change these carefully)
 
+- `scripts/fullstack-materializer.mjs` — imported by **4** files
+- `scripts/development-profile.mjs` — imported by **3** files
+- `scripts/skill-distribution.mjs` — imported by **3** files
+- `scripts/stack-profile-fixtures.mjs` — imported by **3** files
 - `scripts/upstream-lock.mjs` — imported by **3** files
+- `scripts/release-adoption-surfaces.mjs` — imported by **2** files
 - `scripts/capability-suite.mjs` — imported by **2** files
 - `scripts/pilot-results.mjs` — imported by **2** files
 - `scripts/fastapi-contract-adapter.mjs` — imported by **2** files
 - `scripts/application-inventory.mjs` — imported by **2** files
+- `scripts/release-adoption.mjs` — imported by **2** files
 - `scripts/adapter-parity.mjs` — imported by **2** files
-- `scripts/fullstack-materializer.mjs` — imported by **1** files
+- `scripts/provider-profile-adapters.mjs` — imported by **2** files
 - `scripts/stack-quality-adapters.mjs` — imported by **1** files
 - `scripts/upgrade-core.mjs` — imported by **1** files
+- `scripts/validate-delivery-evidence.mjs` — imported by **1** files
+- `scripts/validate-downstream-feedback-triage.mjs` — imported by **1** files
+- `scripts/validate-fullstack-locale.mjs` — imported by **1** files
+- `scripts/validate-policy-evidence.mjs` — imported by **1** files
 - `scripts/validate-production-readiness.mjs` — imported by **1** files
-- `scripts/validate-requirement-traceability.mjs` — imported by **1** files
-- `scripts/validate-skill-evolution-trial.mjs` — imported by **1** files
-- `scripts/evaluate-skill-evolution.mjs` — imported by **1** files
 
 ## Import Map (who imports what)
 
+- `scripts/fullstack-materializer.mjs` ← `scripts/materialize-fullstack.mjs`, `scripts/release-adoption.mjs`, `scripts/skill-distribution.mjs`, `scripts/stack-profile-fixtures.mjs`
+- `scripts/development-profile.mjs` ← `scripts/materialize-development-profile.mjs`, `scripts/test-development-profile-materializer.mjs`, `scripts/validate-development-environment-profile.mjs`
+- `scripts/skill-distribution.mjs` ← `scripts/materialize-skill-distribution.mjs`, `scripts/release-adoption.mjs`, `scripts/test-skill-distribution.mjs`
+- `scripts/stack-profile-fixtures.mjs` ← `scripts/materialize-stack-profile-fixture.mjs`, `scripts/release-adoption.mjs`, `scripts/test-stack-profile-fixtures.mjs`
 - `scripts/upstream-lock.mjs` ← `scripts/test-downstream-validator.mjs`, `scripts/validate-core-upgrade-record.mjs`, `scripts/validate-upstream-lock.mjs`
+- `scripts/release-adoption-surfaces.mjs` ← `scripts/adopt-release.mjs`, `scripts/test-release-adoption.mjs`
 - `scripts/capability-suite.mjs` ← `scripts/aggregate-capability-results.mjs`, `scripts/run-capability-task.mjs`
 - `scripts/pilot-results.mjs` ← `scripts/aggregate-pilot-results.mjs`, `scripts/validate-pilot-result.mjs`
 - `scripts/fastapi-contract-adapter.mjs` ← `scripts/evaluate-fastapi-contract.mjs`, `scripts/test-fastapi-contract-adapter.mjs`
 - `scripts/application-inventory.mjs` ← `scripts/preview-applications.mjs`, `scripts/validate-downstream.mjs`
-- `scripts/adapter-parity.mjs` ← `scripts/test-adapter-parity.mjs`, `scripts/validate-adapter-parity.mjs`
-- `scripts/fullstack-materializer.mjs` ← `scripts/materialize-fullstack.mjs`
-- `scripts/stack-quality-adapters.mjs` ← `scripts/run-stack-quality.mjs`
-- `scripts/upgrade-core.mjs` ← `scripts/test-core-upgrade.mjs`
-- `scripts/validate-production-readiness.mjs` ← `scripts/test-production-readiness.mjs`
 
 ---
 
@@ -128,7 +162,7 @@
 
 > `.github/workflows/security.yml`
 
-- **security** on `ubuntu-latest` — 11 steps
+- **security** on `ubuntu-latest` — 13 steps
   - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
   - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
 - **license-provenance** on `ubuntu-24.04` — 6 steps

@@ -10,6 +10,12 @@
   - function runCapabilityTask: (task, root) => void
   - function aggregateCapabilityResults: (results) => void
   - function loadTask: (path) => void
+- `scripts/development-profile.mjs`
+  - function serializeDevelopmentProfile: (profile) => void
+  - function parseDevelopmentProfileYaml: (source) => void
+  - function safeProfilePath: (value) => void
+  - function validateDevelopmentProfile: (profile, options) => void
+  - function loadDevelopmentProfile: (path) => void
 - `scripts/evaluate-skill-evolution.mjs` — function sha256: (value) => void, function evaluateSkillEvolution: (record, options) => void
 - `scripts/fastapi-contract-adapter.mjs` — function evaluateFastApiContract: ({...}, current, routes, profile }) => void, function readJson: (path) => void
 - `scripts/fullstack-materializer.mjs`
@@ -18,11 +24,23 @@
   - function applyFullStackTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
+- `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
   - function validatePilotCampaign: (campaign) => void
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
+- `scripts/provider-profile-adapters.mjs` — function validateProviderProfile: (profile) => void
+- `scripts/release-adoption-surfaces.mjs` — function runCliAdoption: (mode, manifest, source, target, options) => void, function runGuiAdoption: (mode, manifest, source, target, options) => void
+- `scripts/release-adoption.mjs`
+  - function sha256: (value) => void
+  - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void
+  - function runReleaseAdoption: (mode, manifest, sourceValue, targetValue, options) => void
+- `scripts/skill-distribution.mjs`
+  - function sha256: (value) => void
+  - function validateSkillDistribution: (manifest, sourceValue) => void
+  - function runSkillDistribution: (mode, manifest, sourceValue, targetValue, options) => void
+- `scripts/stack-profile-fixtures.mjs` — function validateStackProfile: (profile) => void, function runStackProfileFixture: (mode, profile, targetValue, options) => void
 - `scripts/stack-quality-adapters.mjs`
   - function validateQualityProfile: (profile, targetValue) => void
   - function runQualityProfile: (profile, targetValue, options) => void
@@ -37,6 +55,15 @@
   - function validateUpstreamLock: (lock) => void
   - function serializeUpstreamLock: (lock) => void
   - _...2 more_
+- `scripts/validate-delivery-evidence.mjs` — function validateDeliveryEvidence: (document) => void
+- `scripts/validate-downstream-feedback-triage.mjs` — function validateDownstreamFeedbackTriage: (document, {...}, }) => void
+- `scripts/validate-fullstack-locale.mjs` — function validateFullstackLocale: (document) => void
+- `scripts/validate-policy-evidence.mjs` — function validatePolicyEvidence: (profile) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
+- `scripts/validate-repository-state.mjs`
+  - function validateRepositoryState: (profile, root) => void
+  - function captureTrackedState: (root, paths) => void
+  - function compareCheckOnlyState: (before, after) => void
+- `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
 - `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void

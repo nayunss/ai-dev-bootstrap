@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "profileId": "local-only",
+  "adapter": {"id": "none", "mode": "none", "capabilities": []},
+  "hosting": {"provider": "none", "host": null, "namespace": null, "repository": null, "canonicalRemote": null, "fetchUrl": null, "pushUrl": null, "defaultBranch": null, "visibility": "not-applicable", "changeRequestMode": "none", "credentialRef": null},
+  "branchReview": {
+    "strategy": "local-only",
+    "mergeMethods": ["none"],
+    "forcePush": false,
+    "requiredChecks": ["local-quality", "local-security"],
+    "riskPolicies": [
+      {"risk": "normal", "minimumApprovals": 0, "requiredRoles": [], "selfReview": true},
+      {"risk": "dependency", "minimumApprovals": 1, "requiredRoles": ["supply-chain"], "selfReview": false},
+      {"risk": "security", "minimumApprovals": 1, "requiredRoles": ["security"], "selfReview": false},
+      {"risk": "release", "minimumApprovals": 1, "requiredRoles": ["release"], "selfReview": false},
+      {"risk": "production", "minimumApprovals": 1, "requiredRoles": ["production"], "selfReview": false},
+      {"risk": "database", "minimumApprovals": 1, "requiredRoles": ["database"], "selfReview": false},
+      {"risk": "destructive", "minimumApprovals": 1, "requiredRoles": ["independent-reviewer"], "selfReview": false}
+    ],
+    "emergency": {"enabled": false, "approverRole": null, "expiresAt": null, "postReviewRequired": true, "rollbackRef": null}
+  },
+  "ci": {"provider": "none", "configPath": null, "ownerRef": null, "credentialRef": null, "permissions": [], "network": "not-applicable", "requiredOutcomes": ["local-quality", "local-security"]},
+  "artifacts": {"provider": "none", "configPath": null, "ownerRef": null, "credentialRef": null, "permissions": [], "network": "not-applicable", "requiredOutcomes": [], "integrity": "not-applicable", "retentionDays": 0},
+  "deployments": [{"environment": "none", "provider": "none", "applicationRoot": null, "configPath": null, "promotion": "none", "rollbackRef": null, "credentialRef": null}]
+}

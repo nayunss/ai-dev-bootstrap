@@ -16,6 +16,10 @@ public 웹·앱 출시, Production 배포, 인증·개인정보·DB·결제·광
 5. secret·bundle·log, admin·BOLA, rate limit·quota, DB exposure·least privilege, password hashing,
    backup restore, 외부 API failure, 시간·금액 boundary를 test·scanner·review로 검증한다.
 6. 개인정보처리방침·동의·위탁·국외이전·보존·파기·사업자 표시와 실제 data flow의 일치를 확인한다.
+   구조화된 claim에는 `docs/schemas/policy-evidence.schema.json`을 적용하고
+   `scripts/validate-policy-evidence.mjs`로 owner 승인 범위, 실제 service·region·data category,
+   server/database/provider enforcement와 반증 가능한 evidence 연결을 검증한다. 이 PASS는 법률
+   결론이나 `productionApproval`을 생성하지 않는다.
 7. 법령 시행일과 공식 지침을 배포 시점에 다시 확인한다. 제재 숫자는 gate의 근거로 사용하지 않는다.
 8. 미검증 고위험 항목과 적용되는 법률의 `TBD`가 있으면 Production을 default-deny한다.
 9. provider backup을 Production과 다른 장애 경계에 restore하고 RPO·RTO·무결성 evidence를 기록한다.

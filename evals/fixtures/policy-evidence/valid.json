@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "services": ["synthetic-account-service"],
+    "regions": ["synthetic-region-1"],
+    "dataCategories": ["synthetic-account"]
+  },
+  "claims": [
+    {
+      "id": "CLAIM-DISPOSAL",
+      "kind": "disposal",
+      "statement": "승인된 삭제 요청 후 계정 데이터와 인증 수단의 재사용을 차단한다",
+      "ownerApproval": {
+        "role": "synthetic-privacy-owner",
+        "approvalReference": "fixture://owner-approval",
+        "reviewedAt": "2026-07-18",
+        "validUntil": "2027-07-18"
+      },
+      "applicability": {
+        "services": ["synthetic-account-service"],
+        "regions": ["synthetic-region-1"],
+        "dataCategories": ["synthetic-account"]
+      },
+      "dataFlowRefs": ["FLOW-ACCOUNT"],
+      "enforcementRefs": ["ENF-ACCOUNT-DISPOSAL"],
+      "evidenceRefs": ["EVID-ACCOUNT-DISPOSAL"],
+      "disposalContract": {
+        "maxRevocationDelaySeconds": 60,
+        "requiredAssertions": [
+          "post-disposal-read-denied",
+          "post-disposal-write-denied",
+          "token-reuse-denied",
+          "session-reuse-denied"
+        ]
+      }
+    }
+  ],
+  "dataFlows": [
+    {
+      "id": "FLOW-ACCOUNT",
+      "source": "synthetic-client",
+      "processingService": "synthetic-account-service",
+      "region": "synthetic-region-1",
+      "dataCategories": ["synthetic-account"],
+      "destinations": ["synthetic-account-store"]
+    }
+  ],
+  "enforcements": [
+    {
+      "id": "ENF-ACCOUNT-DISPOSAL",
+      "layer": "server",
+      "mechanism": "authenticated disposal command and server-side access denial",
+      "sourceReference": "fixture://server/disposal-handler"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "EVID-ACCOUNT-DISPOSAL",
+      "kind": "negative-test",
+      "precondition": "synthetic account is deleted and revocation delay has elapsed",
+      "action": "attempt read, write, token reuse and session reuse",
+      "expectedFailure": "every post-disposal operation is rejected by the server",
+      "result": "PASS",
+      "observedAt": "2026-07-18T00:00:00Z",
+      "reference": "fixture://tests/disposal-negative",
+      "coversDataFlowRefs": ["FLOW-ACCOUNT"],
+      "coversEnforcementRefs": ["ENF-ACCOUNT-DISPOSAL"],
+      "assertions": [
+        "post-disposal-read-denied",
+        "post-disposal-write-denied",
+        "token-reuse-denied",
+        "session-reuse-denied"
+      ]
+    }
+  ]
+}

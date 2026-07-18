@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "profileId": "generic-git-synthetic",
+  "adapter": {"id": "generic", "mode": "synthetic-read-only", "capabilities": ["git-read"]},
+  "hosting": {"provider": "generic-git", "host": "git.example.invalid", "namespace": "team", "repository": "example-repo", "canonicalRemote": "canonical", "fetchUrl": "https://git.example.invalid/team/example-repo.git", "pushUrl": "ssh://git@git.example.invalid/team/example-repo.git", "defaultBranch": "main", "visibility": "private", "changeRequestMode": "manual", "credentialRef": "credentials/generic-git"},
+  "branchReview": {
+    "strategy": "short-lived-feature",
+    "mergeMethods": ["merge"],
+    "forcePush": false,
+    "requiredChecks": ["local-quality", "local-security"],
+    "riskPolicies": [
+      {"risk": "normal", "minimumApprovals": 1, "requiredRoles": ["maintainer"], "selfReview": false},
+      {"risk": "dependency", "minimumApprovals": 1, "requiredRoles": ["supply-chain"], "selfReview": false},
+      {"risk": "security", "minimumApprovals": 1, "requiredRoles": ["security"], "selfReview": false},
+      {"risk": "release", "minimumApprovals": 1, "requiredRoles": ["release"], "selfReview": false},
+      {"risk": "production", "minimumApprovals": 1, "requiredRoles": ["production"], "selfReview": false},
+      {"risk": "database", "minimumApprovals": 1, "requiredRoles": ["database"], "selfReview": false},
+      {"risk": "destructive", "minimumApprovals": 1, "requiredRoles": ["independent-reviewer"], "selfReview": false}
+    ],
+    "emergency": {"enabled": false, "approverRole": null, "expiresAt": null, "postReviewRequired": true, "rollbackRef": null}
+  },
+  "ci": {"provider": "jenkins", "configPath": "ci/Jenkinsfile", "ownerRef": "owners/ci", "credentialRef": "credentials/jenkins-status", "permissions": ["repository-read", "status-write"], "network": "approved-hosts", "requiredOutcomes": ["immutable-checkout", "quality", "test", "security", "provenance", "artifact-integrity", "fail-closed"]},
+  "artifacts": {"provider": "object-store", "configPath": "ci/artifacts.json", "ownerRef": "owners/release", "credentialRef": "credentials/artifact-store", "permissions": ["artifact-write"], "network": "approved-hosts", "requiredOutcomes": ["sanitized-evidence"], "integrity": "sha256", "retentionDays": 14},
+  "deployments": [{"environment": "none", "provider": "none", "applicationRoot": null, "configPath": null, "promotion": "none", "rollbackRef": null, "credentialRef": null}]
+}

@@ -1,6 +1,6 @@
 # Skill·Plugin 배포 방식 검토
 
-상태: 설계 승인
+상태: reference 구현·deterministic PASS
 확정일: 2026-07-17
 관련 요구사항: REQ-005–REQ-008, REQ-026–REQ-028, `REQ-032`, REQ-037–REQ-043, `REQ-047`
 
@@ -164,3 +164,10 @@ Plugin·MCP·network·credential은 같은 버튼으로 승인하지 않는다.
 문서·catalog만 작성한 상태는 구현 완료가 아니다. Manifest schema, materializer, lock,
 clean install·upgrade·uninstall fixture와 실제 supported adapter pilot을 통과해야 배포 구현 완료로
 표시한다.
+
+2026-07-18 reference 구현은 `requirements` core와 `frontend` optional portable skill package,
+Codex·Claude Code·GitHub Copilot tool adapter manifest, 실행 승인이 아닌 synthetic reviewed plugin
+catalog를 포함한다. Package·file·adapter checksum, dependency DAG·exact version, 선택 materialization,
+transaction 원복, upgrade·rollback과 preexisting identical·사용자 변경 파일 보존 uninstall fixture는
+PASS했다. 실제 plugin 설치·호출, native AI tool discovery pilot, private organization bundle과 GUI
+사용성 검증은 `NOT-RUN`이며 이 reference PASS로 승인된 것으로 해석하지 않는다.

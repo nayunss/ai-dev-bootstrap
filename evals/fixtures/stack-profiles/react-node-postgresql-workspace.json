@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "profileId": "react-node-postgresql-workspace",
+  "priority": "P0",
+  "topology": "workspace-monorepo",
+  "applications": [
+    {"id": "web", "type": "frontend", "root": "apps/web", "language": "typescript", "runtime": {"name": "node", "version": "22.23.1"}, "framework": {"name": "react-vite", "version": "19.1.0"}, "packageManager": {"name": "pnpm", "version": "10.13.1"}},
+    {"id": "api", "type": "backend", "root": "apps/api", "language": "typescript", "runtime": {"name": "node", "version": "22.23.1"}, "framework": {"name": "express", "version": "5.1.0"}, "packageManager": {"name": "pnpm", "version": "10.13.1"}}
+  ],
+  "database": {"product": "postgresql", "version": "17.5", "role": "primary", "migrationPairs": [{"id": "initial", "up": "database/001_initial.up.sql", "down": "database/001_initial.down.sql"}], "restoreEvidenceRef": "docs/restore-evidence.json"},
+  "artifacts": [
+    {"path": "package.json", "content": "{\"name\":\"workspace\",\"private\":true,\"packageManager\":\"pnpm@10.13.1\"}\n"},
+    {"path": "pnpm-workspace.yaml", "content": "packages:\n  - apps/*\n"},
+    {"path": "pnpm-lock.yaml", "content": "lockfileVersion: '9.0'\n"},
+    {"path": "apps/web/package.json", "content": "{\"name\":\"web\",\"private\":true}\n"},
+    {"path": "apps/web/src/main.tsx", "content": "export const web = \"react-vite\";\n"},
+    {"path": "apps/api/package.json", "content": "{\"name\":\"api\",\"private\":true}\n"},
+    {"path": "apps/api/src/server.ts", "content": "export const api = \"express\";\n"},
+    {"path": "database/001_initial.up.sql", "content": "-- reviewed forward migration artifact\n"},
+    {"path": "database/001_initial.down.sql", "content": "-- reviewed rollback migration artifact\n"},
+    {"path": "docs/restore-evidence.json", "content": "{\"status\":\"NOT_RUN\"}\n"}
+  ],
+  "execution": {"dependencyInstall": "NOT_RUN", "databaseMigration": "NOT_RUN", "providerWrite": "NOT_RUN", "productionDeploy": "NOT_RUN"}
+}
