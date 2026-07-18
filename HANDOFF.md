@@ -3,8 +3,8 @@
 갱신: 2026-07-18 Asia/Seoul
 상태: v0.2.8-pilot prerelease 발행·공통 reference 구현 검증 완료
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption
-다음 작업: REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, GUI-01-delivery-baseline
+다음 작업: REQ-047-gui-installer-delivery, GUI-02-desktop-shell, GUI-03-resilience-accessibility, GUI-04-package-provenance, GUI-05-signing-notarization, GUI-06-usability-eval, GUI-07-release-publish, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
 
 ## 목표
 
@@ -210,8 +210,8 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - 로컬 branch·HEAD는 상단 명령으로 확인한다. 원격 상태가 필요한 작업만 fetch 후 remote-tracking
   reference와 대조하며 fetch 전 `origin/*`을 최신 원격 상태로 간주하지 않는다.
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`
-- 최신 발행 baseline은 `v0.2.7-pilot`이며 발행·checksum 증적은
-  `docs/releases/v0.2.7-pilot.md`에 기록돼 있다.
+- 최신 발행 baseline은 `v0.2.8-pilot`이며 발행·checksum 증적은
+  `docs/releases/v0.2.8-pilot.md`에 기록돼 있다.
 - `KakaoTalk_Photo_2026-07-12-11-38-40.jpeg`는 사용자가 Git에 올리지 않는 로컬 파일이다. 수정·이동·
   삭제·stage하지 않고 untracked 상태로 보존한다.
 - `/private/tmp` 등 별도 격리 저장소에서 프로젝트 변경을 만들거나 그 상태를 실제 작업 경로의
@@ -532,6 +532,24 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - PR #22 merge commit `1cc6406831a8ac7592f6ec3a765c0746f773195e`에 `v0.2.8-pilot` prerelease를
   발행했다. Tracked archive, GitHub asset digest와 재다운로드 SHA-256
   `3963402cf8d28c88858055a90e4be3c9c4170ea99f483f8360bd8749c22db4f8`이 일치한다.
+- 루트 README를 `v0.2.8-pilot` 기능·검증 경계·빠른 시작·GUI 배포 상태에 맞춰 현행화하고,
+  release 선택부터 onboarding·adapter·검증·update·rollback까지의 전체 사용자 가이드를
+  `docs/bootstrap-user-guide.md`에 추가했다. 실제 signed desktop GUI asset은 아직 없으며 release
+  page source archive를 GUI installer로 표시하지 않는다. GUI 설치 자산의 현재 상태와 OS별
+  publisher·signing·notarization·checksum 재검증·접근성·비개발자 사용성 release gate는
+  `docs/gui-installation-distribution-review.md`로 분리해 REQ-047에서 추적한다.
+- GUI-01 delivery baseline은 최초 개발·지원 후보를 macOS 13+ arm64, Electron `43.1.1`, 개발
+  `.app`·배포 `.dmg`, 자동 update 없는 수동 release preview로 확정했다. 현재 Node ESM adoption
+  core를 main process에서 직접 재사용하고 renderer는 sandbox·context isolation·allowlisted typed
+  IPC로 격리한다. Threat model과 중단 조건은 `docs/desktop-gui-delivery-baseline.md`에 기록했다.
+  사용자 승인 뒤 Electron·packager·fuses exact dependency와 lock을 고정했다. 격리 inventory는
+  53 packages, 허용 license 집합과 audit 0을 확인했고 Electron package tar·macOS arm64 runtime
+  checksum도 재검증했다. Upstream `Electron.app`은 Developer ID가 없고 strict codesign 검증에
+  실패하므로 배포 자산으로 승격하지 않는다.
+- GUI-02 desktop shell은 local-only renderer, sandbox·context isolation, typed IPC sender/argument
+  검증, project/release picker, preview·apply·validate·rollback과 apply 직전 plan SHA-256 재확인을
+  공통 adoption core에 연결했다. 자동 fixture와 macOS 개발 runtime 기본 화면을 확인했지만 실제
+  release 입력 전 과정, 취소·재실행·screen reader·사람 사용성은 아직 완료하지 않았다.
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
@@ -540,20 +558,40 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 
 ### 공통 저장소에서 진행 가능
 
-- 현재 추가 project·사람·release 입력 없이 확정된 공통 구현 작업은 없다.
+1. [작업:REQ-047-gui-installer-delivery] REQ-047의 실제 GUI installer 발행을
+   `docs/gui-installation-distribution-review.md`의 순서와 중단 조건에 따라 진행한다. 현재 공통
+   headless adoption core PASS를 desktop 지원 완료로 확대하지 않는다.
+2. [작업:GUI-02-desktop-shell] 구현된 folder/release picker, 요약·diff,
+   apply·validate·rollback을 실제 reviewed release bundle로 검증하고 취소·재실행
+   복구 UI를 공통 core에 연결한다. `.env*`, project 밖 경로와 credential store는 접근하지 않는다.
+3. [작업:GUI-03-resilience-accessibility] GUI·CLI plan/lock/result parity, clean·retrofit·upgrade,
+   충돌·변조·부분 실패·crash·중복 실행, keyboard·screen reader·focus·오류 요약 fixture를 구현한다.
+4. [작업:GUI-04-package-provenance] 지원 후보 OS별 재현 가능한 unsigned development package,
+   SBOM·provenance, manifest·`SHA256SUMS`, 게시 전후 asset 재다운로드 drift gate를 구현한다.
+   산출물은 signing·사용성 gate 전까지 `UNSIGNED_DEVELOPMENT_ONLY`로 유지한다.
 
 ### 외부 입력·실제 환경 대기
 
-1. [작업:REQ-040-owner-evidence] [프로젝트 입력·실제 환경 대기] downstream owner의 법률·retention evidence, 실제
+1. [작업:GUI-05-signing-notarization] [사람 승인·외부 credential·실제 OS 대기] publisher 법적
+   표시명, credential owner·격리 보관·회전·폐기·감사를 승인한 뒤 OS별 code signing·notarization
+   또는 동등 검증과 clean-machine 설치 검증을 수행한다. Credential은 AI context와 repository에
+   제공하지 않는다.
+2. [작업:GUI-06-usability-eval] [사람 참여·실제 OS 대기] terminal 비숙련 사용자가 신규·기존
+   프로젝트의 설치·preview·apply·오류 이해·rollback·uninstall을 수행하는 접근성·사용성 Eval을
+   사전 정의 task와 합격 기준으로 실행한다.
+3. [작업:GUI-07-release-publish] [외부 변경·release 승인 대기] GUI-01–GUI-06 PASS 증거가 모두
+   있는 OS asset만 exact release에 게시한다. README·release note·manifest 지원 상태를 동기화하고
+   게시 asset을 재다운로드해 signature·notarization·checksum을 다시 검증한다.
+4. [작업:REQ-040-owner-evidence] [프로젝트 입력·실제 환경 대기] downstream owner의 법률·retention evidence, 실제
    multi-instance bypass test와 provider restore rehearsal이 제공될 때만 schema v2를 READY로 승인한다.
-2. [작업:REQ-046] [사람 참여 대기] 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
+5. [작업:REQ-046] [사람 참여 대기] 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
    결과가 제출되면 취합한다. synthetic 결과만으로 완료하지 않는다. Feedback campaign에는 UF-013
    보강 계약에 따라 upstream repository·release·commit·archive checksum과 downstream commit을 고정한다.
-3. [작업:REQ-041-live-trial-release] [프로젝트 입력·외부 변경 승인 대기] project별 exact model·harness·비용·network·reviewer와
+6. [작업:REQ-041-live-trial-release] [프로젝트 입력·외부 변경 승인 대기] project별 exact model·harness·비용·network·reviewer와
    candidate가 정해지고 호출 승인을 받은 뒤 비결정 trial·사람 승인 held-out test·release를 수행한다.
-4. [작업:REQ-042-release-core-adoption] [외부 변경 승인·실제 환경 대기] release version과 manifest 발행 승인, 실제 downstream
+7. [작업:REQ-042-release-core-adoption] [외부 변경 승인·실제 환경 대기] release version과 manifest 발행 승인, 실제 downstream
    대상이 정해진 뒤 upgrade·rollback을 수행한다.
-5. [작업:UF-001-013-downstream-revalidation] [release 발행·실제 downstream 대기] REQ-049–REQ-052와
+8. [작업:UF-001-013-downstream-revalidation] [release 발행·실제 downstream 대기] REQ-049–REQ-052와
    REQ-046 보강을 포함한 새 upstream release·commit·archive checksum을 고정하고 실제 `env-be`에
    적용한다. UF-001–UF-013을 각각 재현해 `PASS | FAIL | BLOCKED | NOT-RUN`과 evidence를 갱신하며,
    공통 synthetic PASS만으로 downstream finding을 해결 처리하지 않는다.

@@ -42,7 +42,7 @@
 | REQ-044 | reference 구현 | deterministic·pilot PASS | 기존 Spring Boot 4/SpringDoc 3·Next.js BFF pilot에 더해 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift, route inventory의 undocumented/stale operation과 Production `/openapi.json`·`/docs`·`/redoc` exposure synthetic Eval PASS. 실제 FastAPI runtime·authorization E2E는 미수행 |
 | REQ-045 | reference 구현 | deterministic·pilot PASS | 재귀 inventory, 최초 full-stack materializer와 P0 single/workspace starter transaction·rollback fixture PASS. 실제 dependency install·DB execution·restore는 NOT-RUN |
 | REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator, 2-tester synthetic regression과 sanitized feedback triage·고정 release baseline reference automation PASS. 실제 독립 tester campaign·결과 취합 및 새 baseline 전이 검증은 NOT-RUN |
-| REQ-047 | reference 구현 | deterministic PASS | GUI·CLI 공통 headless adoption core와 release/profile/skill checksum, clean·retrofit·upgrade·rollback·변조·충돌·부분 실패 fixture PASS. 실제 desktop GUI·signing·notarization·게시 asset·비개발자 사용성 Eval은 NOT-RUN |
+| REQ-047 | 부분 구현 | deterministic PASS | GUI·CLI 공통 adoption core와 macOS 개발용 desktop shell·typed IPC·plan hash 재확인 구현. clean·retrofit·upgrade·rollback·변조·충돌·부분 실패 fixture PASS. Package·signing·notarization·게시 asset·비개발자 사용성 Eval은 NOT-RUN |
 | REQ-048 | reference 구현 | deterministic PASS | canonical YAML parser/serializer, Draft 2020-12 schema와 read-only 구조·의미·repository drift·local/CI/Production readiness validator, 4개 topology positive 및 path·secret·version·approval·symlink negative fixture PASS. P1 materializer·migration·실제 downstream retrofit은 NOT-RUN |
 | REQ-049 | reference 구현 | deterministic PASS | claim·실제 service/region/data flow·server/database/provider enforcement·반증 가능한 evidence 연결과 disposal read/write/token/session 차단 fixture PASS. 법률 결론·실제 Production 승인은 NOT-RUN |
 | REQ-050 | reference 구현 | deterministic PASS | Git index blob 기반 generated artifact·source hash 검증, working/staged partial commit과 check-only tracked source mutation 실제 Git fixture PASS. 생성 의미·CI·배포 검증은 별도 |
@@ -79,7 +79,7 @@
 | REQ-044 | [API 계약과 문서화](api-contract-documentation.md), [FastAPI contract adapter schema](schemas/fastapi-contract-adapter.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 시작 가이드](downstream-getting-started.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-046 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [pilot result schema](schemas/distributed-pilot-result.schema.json), [pilot campaign template](templates/distributed-pilot-campaign.json), [feedback triage schema](schemas/downstream-feedback-triage.schema.json) |
-| REQ-047 | [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
+| REQ-047 | [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md), [Desktop GUI Delivery Baseline](desktop-gui-delivery-baseline.md), [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
 | REQ-048 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md), [프로젝트 개발환경 정의](project-environment-definition.md), [설정 경계](personal-team-settings-boundary.md), [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
 | REQ-049 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [웹서비스 Production 준비](web-service-production-readiness.md), [API 계약과 문서화](api-contract-documentation.md), [policy evidence schema](schemas/policy-evidence.schema.json) |
 | REQ-050 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CodeSight](codesight.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [repository state schema](schemas/repository-state-invariants.schema.json) |
@@ -100,7 +100,7 @@
 | Branch·review | REQ-016, REQ-019–REQ-021, REQ-033, REQ-035, REQ-046, REQ-048 | risk별 승인·필수 역할·self-review·emergency 계약 reference 구현 | deterministic fixture PASS, 실제 branch policy NOT-RUN | 완료 | [Branch·Review 계약](branch-and-review-strategy.md) |
 | CI·artifact·deployment | REQ-019–REQ-024, REQ-033–REQ-036, REQ-040, REQ-044–REQ-047 | provider-neutral CI·artifact·deployment와 `none` reference adapter 구현 | synthetic matrix PASS, provider write·deploy NOT-RUN | 완료 | [CI·배포 Provider](ci-deployment-provider-selection.md) |
 | 저장소 구조·Template | REQ-020, REQ-026, REQ-033, REQ-045, REQ-047–REQ-048 | P0 single-project·workspace starter와 기존 full-stack materializer reference 구현 | clean·retrofit·collision·rollback deterministic PASS, 실제 stack install/DB NOT-RUN | 완료 | [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
-| 비개발자 도입 | REQ-047 | GUI·CLI 공통 headless core와 deterministic release adoption fixture 구현 | plan/lock parity·clean·upgrade·rollback·변조·부분 실패 PASS, desktop·사람 사용성 NOT-RUN | 완료 | [원클릭 도입](one-click-project-adoption-review.md) |
+| 비개발자 도입 | REQ-047 | GUI·CLI 공통 core와 macOS 개발용 desktop shell 구현, installer 미발행 | core·IPC deterministic PASS와 기본 화면 시각 확인, package·signing·notarization·사람 사용성 NOT-RUN | `REQ-047-gui-installer-delivery` | [GUI 설치 자산·배포 준비](gui-installation-distribution-review.md) |
 | 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | P0 validator와 P1 initial/retrofit materializer reference 구현, migration 미구현 | deterministic fixture PASS, 실제 downstream retrofit NOT-RUN | 완료 | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
 | Downstream 검증 피드백 일반화 | REQ-046, REQ-049–REQ-052 | REQ-049–REQ-052 공통 reference 구현 완료, REQ-046 보강과 실제 재검증 분리 | REQ-049–REQ-052 deterministic PASS, 실제 downstream 재검증 NOT-RUN | `UF-001-013-downstream-revalidation` | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) |
 
@@ -915,7 +915,8 @@
   수신자 심사와 사용자의 명시적 opt-in이 필요하다.
 - 지원 OS별 code signing·notarization, permission·quarantine, keyboard·screen reader·오류 복구와
   비개발자 사용성 Eval을 별도로 통과한 경우에만 해당 OS를 지원 완료로 표시한다.
-- 세부 검토, 단계적 구현과 완료 기준은 `docs/one-click-project-adoption-review.md`를 따른다.
+- 설치 자산 게시·검증 gate는 `docs/gui-installation-distribution-review.md`, desktop UX·공통 core의
+  단계적 구현과 완료 기준은 `docs/one-click-project-adoption-review.md`를 따른다.
 
 ### REQ-048: 기계 판독 가능한 개발환경 Profile과 Validator
 

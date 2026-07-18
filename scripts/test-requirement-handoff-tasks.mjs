@@ -17,8 +17,8 @@ assert.deepEqual(validateRequirementHandoffTasks(input), []);
 const missingTask = {
   ...input,
   requirements: input.requirements.replace(
-    "| 비개발자 도입 | REQ-047 | GUI·CLI 공통 headless core와 deterministic release adoption fixture 구현 | plan/lock parity·clean·upgrade·rollback·변조·부분 실패 PASS, desktop·사람 사용성 NOT-RUN | 완료 |",
-    "| 비개발자 도입 | REQ-047 | 미완료 fixture | NOT-RUN | `REQ-047-one-click-adoption` |",
+    "| 비개발자 도입 | REQ-047 | GUI·CLI 공통 core와 macOS 개발용 desktop shell 구현, installer 미발행 | core·IPC deterministic PASS와 기본 화면 시각 확인, package·signing·notarization·사람 사용성 NOT-RUN | `REQ-047-gui-installer-delivery` |",
+    "| 비개발자 도입 | REQ-047 | 미완료 fixture | NOT-RUN | `REQ-047-one-click-adoption`, `REQ-047-gui-installer-delivery` |",
   ),
 };
 assert.match(validateRequirementHandoffTasks(missingTask).join("\n"), /missing from HANDOFF remaining work: REQ-047-one-click-adoption/);

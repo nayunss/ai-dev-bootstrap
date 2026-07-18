@@ -2,7 +2,7 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**28 library files** across 2 modules
+**29 library files** across 3 modules
 
 ## Scripts (26 files)
 
@@ -37,6 +37,10 @@
 
 - `evals/fixtures/stack-quality/javascript/source.js` — greet
 - `evals/fixtures/stack-quality/python/app.py` — greet
+
+## Desktop (1 files)
+
+- `desktop/ipc-contract.mjs` — validateSelectedRoot, validateDesktopRequest, summarizeAdoptionResult
 
 ---
 _Back to [overview.md](./overview.md)_

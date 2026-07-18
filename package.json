@@ -31,6 +31,8 @@
     "test:stack-profile-fixtures": "node scripts/test-stack-profile-fixtures.mjs",
     "test:skill-distribution": "node scripts/test-skill-distribution.mjs",
     "test:release-adoption": "node scripts/test-release-adoption.mjs",
+    "test:desktop-gui": "node scripts/test-desktop-gui.mjs",
+    "desktop:dev": "electron desktop/main.mjs",
     "test:capability-suite": "node scripts/test-capability-suite.mjs",
     "test:stack-quality-adapters": "node scripts/test-stack-quality-adapters.mjs",
     "test:adapter-parity": "node scripts/test-adapter-parity.mjs",
@@ -56,6 +58,9 @@
     "validate": "scripts/validate ."
   },
   "devDependencies": {
+    "@electron/fuses": "2.1.3",
+    "@electron/packager": "20.0.3",
+    "electron": "43.1.1",
     "codesight": "1.18.0"
   }
 }
