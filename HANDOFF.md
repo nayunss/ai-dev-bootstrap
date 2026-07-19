@@ -205,13 +205,13 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 
 ## 현재 상태
 
-- 이 파일과 모든 프로젝트 변경은 실제 경로
-  `/Users/nayunss/Documents/vibe-coding/common-project`에서 관리한다.
+- 이 파일과 모든 프로젝트 변경은 현재 repository root에서 관리한다. 개인 컴퓨터의 절대 경로는
+  tracked 문서·manifest·cache에 기록하지 않는다.
 - 로컬 branch·HEAD는 상단 명령으로 확인한다. 원격 상태가 필요한 작업만 fetch 후 remote-tracking
   reference와 대조하며 fetch 전 `origin/*`을 최신 원격 상태로 간주하지 않는다.
 - remote: `git@github.com:nayunss/ai-dev-bootstrap.git`
-- 최신 발행 baseline은 `v0.2.8-pilot`이며 발행·checksum 증적은
-  `docs/releases/v0.2.8-pilot.md`에 기록돼 있다.
+- 최신 발행 baseline은 `v0.2.9-pilot`이며 발행·checksum 증적은
+  `docs/releases/v0.2.9-pilot.md`에 기록돼 있다.
 - `KakaoTalk_Photo_2026-07-12-11-38-40.jpeg`는 사용자가 Git에 올리지 않는 로컬 파일이다. 수정·이동·
   삭제·stage하지 않고 untracked 상태로 보존한다.
 - `/private/tmp` 등 별도 격리 저장소에서 프로젝트 변경을 만들거나 그 상태를 실제 작업 경로의

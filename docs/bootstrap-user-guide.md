@@ -17,8 +17,8 @@
 > - `v0.2.9-pilot`의 전체 release adoption은 reference 구현이다. 일반 사용자가 바로 적용할
 >   production manifest는 아직 제공하지 않는다.
 
-명령의 `/absolute/path/to/project`는 설정하려는 프로젝트 폴더의 절대 경로로 바꾼다. 예를 들어
-macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명/Documents/my-app`처럼 입력한다.
+명령의 `/absolute/path/to/project`는 설정하려는 프로젝트 폴더의 실제 절대 경로로 바꾼다. 문서,
+prompt, HANDOFF와 issue에는 개인 컴퓨터의 실제 홈 경로를 복사하지 않고 이 placeholder를 유지한다.
 
 ## 먼저 내 경로 선택하기
 
