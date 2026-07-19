@@ -1172,3 +1172,4 @@
 | 2026-07-19 | REQ-047 desktop GUI 코드·패키징·CI·의존성과 설치 문서를 제거하고 CLI·web surface 및 Portal local no-network 가이드로 단일화 |
 | 2026-07-19 | REQ-024 README 제공 기능을 비개발자가 목적·승인·자동 실행 제외 범위를 이해할 수 있는 완전한 문장으로 확장 |
 | 2026-07-19 | 현재 Portal-only source를 기준으로 아키텍처·하네스·개발환경·upstream/downstream 상태를 현행화하고 중복된 one-click/Web Adoption 및 downstream 시작 가이드를 canonical 문서로 통합 |
+| 2026-07-19 | PR #30 merge commit `c08c38f52f434c5c29b882316f987e85db29620d`에 `v0.2.9-pilot` prerelease 발행, tracked archive·GitHub digest·재다운로드 SHA-256 일치 검증 |
