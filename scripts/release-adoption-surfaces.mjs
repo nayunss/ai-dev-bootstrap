@@ -7,3 +7,7 @@ export function runCliAdoption(mode, manifest, source, target, options = {}) {
 export function runGuiAdoption(mode, manifest, source, target, options = {}) {
   return runReleaseAdoption(mode, manifest, source, target, { ...options, surface: "gui" });
 }
+
+export function runWebAdoption(mode, manifest, source, target, options = {}) {
+  return runReleaseAdoption(mode, manifest, source, target, { ...options, surface: "web" });
+}

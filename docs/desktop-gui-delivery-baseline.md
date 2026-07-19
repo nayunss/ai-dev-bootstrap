@@ -1,11 +1,15 @@
 # Desktop GUI Delivery Baseline
 
-상태: `GUI-01-delivery-baseline` 완료
+상태: `GUI-01-delivery-baseline` 완료, 후속 desktop delivery `DEFERRED / OUT-OF-SCOPE`
 확정일: 2026-07-18
 관련 요구사항: `REQ-047`
 관련 작업: `REQ-047-gui-installer-delivery`, `GUI-01-delivery-baseline`
 
 ## 결정
+
+이 문서는 2026-07-18에 완료한 desktop 기술 검토와 개발 증거를 보존한다. 2026-07-19 제품 범위
+결정으로 GitHub App Web Portal이 기본 비개발자 surface가 되었으며, desktop installer 후속 작업은
+활성 backlog가 아니다.
 
 최초 desktop 개발·지원 후보는 다음으로 고정한다.
 

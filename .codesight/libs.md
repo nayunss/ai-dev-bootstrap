@@ -31,6 +31,7 @@
   - function applyFullStackTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
+- `scripts/github-actions-adoption.mjs` — function runGitHubActionsAdoption: ({...}, release, source, target, expectedPlanSha256, stage, }) => void
 - `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
@@ -38,7 +39,10 @@
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
 - `scripts/provider-profile-adapters.mjs` — function validateProviderProfile: (profile) => void
-- `scripts/release-adoption-surfaces.mjs` — function runCliAdoption: (mode, manifest, source, target, options) => void, function runGuiAdoption: (mode, manifest, source, target, options) => void
+- `scripts/release-adoption-surfaces.mjs`
+  - function runCliAdoption: (mode, manifest, source, target, options) => void
+  - function runGuiAdoption: (mode, manifest, source, target, options) => void
+  - function runWebAdoption: (mode, manifest, source, target, options) => void
 - `scripts/release-adoption.mjs`
   - function sha256: (value) => void
   - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void

@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 1 models | 0 components | 31 lib files | 2 env vars | 6 middleware
-> **Token savings:** this file is ~3,000 tokens. Without it, AI exploration would cost ~19,400 tokens. **Saves ~16,400 tokens per conversation.**
+> 0 routes | 1 models | 0 components | 32 lib files | 10 env vars | 6 middleware
+> **Token savings:** this file is ~3,200 tokens. Without it, AI exploration would cost ~20,700 tokens. **Saves ~17,400 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -48,6 +48,7 @@
   - function applyFullStackTransaction: (operations, io, mkdirSync, readFileSync, unlinkSync, writeFileSync, }) => void
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
+- `scripts/github-actions-adoption.mjs` — function runGitHubActionsAdoption: ({...}, release, source, target, expectedPlanSha256, stage, }) => void
 - `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
@@ -55,7 +56,10 @@
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
 - `scripts/provider-profile-adapters.mjs` — function validateProviderProfile: (profile) => void
-- `scripts/release-adoption-surfaces.mjs` — function runCliAdoption: (mode, manifest, source, target, options) => void, function runGuiAdoption: (mode, manifest, source, target, options) => void
+- `scripts/release-adoption-surfaces.mjs`
+  - function runCliAdoption: (mode, manifest, source, target, options) => void
+  - function runGuiAdoption: (mode, manifest, source, target, options) => void
+  - function runWebAdoption: (mode, manifest, source, target, options) => void
 - `scripts/release-adoption.mjs`
   - function sha256: (value) => void
   - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void
@@ -99,8 +103,16 @@
 
 ## Environment Variables
 
+- `GITHUB_OUTPUT` **required** — scripts/github-actions-adoption.mjs
+- `GITHUB_STEP_SUMMARY` **required** — scripts/github-actions-adoption.mjs
+- `GITHUB_WORKSPACE` **required** — scripts/github-actions-adoption.mjs
 - `PATH` **required** — scripts/capability-suite.mjs
 - `QUALITY_NETWORK_ENFORCED` **required** — scripts/run-stack-quality.mjs
+- `RUNNER_TEMP` **required** — scripts/github-actions-adoption.mjs
+- `WEB_ADOPTION_EXPECTED_PLAN_SHA256` **required** — scripts/github-actions-adoption.mjs
+- `WEB_ADOPTION_MODE` **required** — scripts/github-actions-adoption.mjs
+- `WEB_ADOPTION_RELEASE` **required** — scripts/github-actions-adoption.mjs
+- `WEB_ADOPTION_STAGE` **required** — scripts/github-actions-adoption.mjs
 
 ---
 
@@ -122,14 +134,14 @@
 
 ## Most Imported Files (change these carefully)
 
-- `scripts/release-adoption.mjs` — imported by **5** files
+- `scripts/release-adoption.mjs` — imported by **6** files
 - `scripts/fullstack-materializer.mjs` — imported by **4** files
 - `desktop/session.mjs` — imported by **3** files
+- `scripts/release-adoption-surfaces.mjs` — imported by **3** files
 - `scripts/development-profile.mjs` — imported by **3** files
 - `scripts/skill-distribution.mjs` — imported by **3** files
 - `scripts/stack-profile-fixtures.mjs` — imported by **3** files
 - `scripts/upstream-lock.mjs` — imported by **3** files
-- `scripts/release-adoption-surfaces.mjs` — imported by **2** files
 - `scripts/capability-suite.mjs` — imported by **2** files
 - `scripts/pilot-results.mjs` — imported by **2** files
 - `scripts/fastapi-contract-adapter.mjs` — imported by **2** files
@@ -145,14 +157,14 @@
 
 ## Import Map (who imports what)
 
-- `scripts/release-adoption.mjs` ← `desktop/adoption-worker.mjs`, `scripts/release-adoption-surfaces.mjs`, `scripts/test-desktop-gui.mjs`, `scripts/test-desktop-resilience-accessibility.mjs`, `scripts/test-release-adoption.mjs`
+- `scripts/release-adoption.mjs` ← `desktop/adoption-worker.mjs`, `scripts/github-actions-adoption.mjs`, `scripts/release-adoption-surfaces.mjs`, `scripts/test-desktop-gui.mjs`, `scripts/test-desktop-resilience-accessibility.mjs` +1 more
 - `scripts/fullstack-materializer.mjs` ← `scripts/materialize-fullstack.mjs`, `scripts/release-adoption.mjs`, `scripts/skill-distribution.mjs`, `scripts/stack-profile-fixtures.mjs`
 - `desktop/session.mjs` ← `desktop/main.mjs`, `scripts/test-desktop-gui.mjs`, `scripts/test-desktop-resilience-accessibility.mjs`
+- `scripts/release-adoption-surfaces.mjs` ← `scripts/adopt-release.mjs`, `scripts/github-actions-adoption.mjs`, `scripts/test-release-adoption.mjs`
 - `scripts/development-profile.mjs` ← `scripts/materialize-development-profile.mjs`, `scripts/test-development-profile-materializer.mjs`, `scripts/validate-development-environment-profile.mjs`
 - `scripts/skill-distribution.mjs` ← `scripts/materialize-skill-distribution.mjs`, `scripts/release-adoption.mjs`, `scripts/test-skill-distribution.mjs`
 - `scripts/stack-profile-fixtures.mjs` ← `scripts/materialize-stack-profile-fixture.mjs`, `scripts/release-adoption.mjs`, `scripts/test-stack-profile-fixtures.mjs`
 - `scripts/upstream-lock.mjs` ← `scripts/test-downstream-validator.mjs`, `scripts/validate-core-upgrade-record.mjs`, `scripts/validate-upstream-lock.mjs`
-- `scripts/release-adoption-surfaces.mjs` ← `scripts/adopt-release.mjs`, `scripts/test-release-adoption.mjs`
 - `scripts/capability-suite.mjs` ← `scripts/aggregate-capability-results.mjs`, `scripts/run-capability-task.mjs`
 - `scripts/pilot-results.mjs` ← `scripts/aggregate-pilot-results.mjs`, `scripts/validate-pilot-result.mjs`
 

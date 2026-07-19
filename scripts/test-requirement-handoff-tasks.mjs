@@ -17,8 +17,8 @@ assert.deepEqual(validateRequirementHandoffTasks(input), []);
 const missingTask = {
   ...input,
   requirements: input.requirements.replace(
-    /^\| 비개발자 도입 \| REQ-047 \|.+\| `REQ-047-gui-installer-delivery` \|/mu,
-    "| 비개발자 도입 | REQ-047 | 미완료 fixture | NOT-RUN | `REQ-047-one-click-adoption`, `REQ-047-gui-installer-delivery` |",
+    /^\| 비개발자 도입 \| REQ-047 \|.*$/mu,
+    "| 비개발자 도입 | REQ-047 | 미완료 fixture | NOT-RUN | `REQ-047-one-click-adoption`, `REQ-047-github-app-web-portal` | fixture |",
   ),
 };
 assert.match(validateRequirementHandoffTasks(missingTask).join("\n"), /missing from HANDOFF remaining work: REQ-047-one-click-adoption/);

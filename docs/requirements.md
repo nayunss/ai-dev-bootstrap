@@ -42,7 +42,7 @@
 | REQ-044 | reference 구현 | deterministic·pilot PASS | 기존 Spring Boot 4/SpringDoc 3·Next.js BFF pilot에 더해 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift, route inventory의 undocumented/stale operation과 Production `/openapi.json`·`/docs`·`/redoc` exposure synthetic Eval PASS. 실제 FastAPI runtime·authorization E2E는 미수행 |
 | REQ-045 | reference 구현 | deterministic·pilot PASS | 재귀 inventory, 최초 full-stack materializer와 P0 single/workspace starter transaction·rollback fixture PASS. 실제 dependency install·DB execution·restore는 NOT-RUN |
 | REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator, 2-tester synthetic regression과 sanitized feedback triage·고정 release baseline reference automation PASS. 실제 독립 tester campaign·결과 취합 및 새 baseline 전이 검증은 NOT-RUN |
-| REQ-047 | 부분 구현 | deterministic PASS | GUI·CLI 공통 adoption core와 macOS 개발용 desktop shell, resilience·접근성 semantic, 재현 가능한 unsigned development package·fuse·SBOM·provenance·manifest·`SHA256SUMS` 구현. clean·retrofit·upgrade·rollback·변조·충돌·target drift·부분 실패·crash fixture PASS. Signed installer·notarization·게시 asset·실제 screen reader·비개발자 사용성 Eval은 NOT-RUN |
+| REQ-047 | 부분 구현 | deterministic PASS | CLI·web·historical GUI surface 공통 adoption core와 GitHub Actions preview→승인→PR P0 reference 구현. Clean·upgrade·rollback·변조·충돌·drift·부분 실패·권한 fixture PASS. 기본 비개발자 경로는 GitHub App Web Portal이며 실제 downstream pilot·Portal·browser 사용성 Eval은 NOT-RUN. Desktop installer는 `DEFERRED / OUT-OF-SCOPE` |
 | REQ-048 | reference 구현 | deterministic PASS | canonical YAML parser/serializer, Draft 2020-12 schema와 read-only 구조·의미·repository drift·local/CI/Production readiness validator, 4개 topology positive 및 path·secret·version·approval·symlink negative fixture PASS. P1 materializer·migration·실제 downstream retrofit은 NOT-RUN |
 | REQ-049 | reference 구현 | deterministic PASS | claim·실제 service/region/data flow·server/database/provider enforcement·반증 가능한 evidence 연결과 disposal read/write/token/session 차단 fixture PASS. 법률 결론·실제 Production 승인은 NOT-RUN |
 | REQ-050 | reference 구현 | deterministic PASS | Git index blob 기반 generated artifact·source hash 검증, working/staged partial commit과 check-only tracked source mutation 실제 Git fixture PASS. 생성 의미·CI·배포 검증은 별도 |
@@ -79,7 +79,7 @@
 | REQ-044 | [API 계약과 문서화](api-contract-documentation.md), [FastAPI contract adapter schema](schemas/fastapi-contract-adapter.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 시작 가이드](downstream-getting-started.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-046 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [pilot result schema](schemas/distributed-pilot-result.schema.json), [pilot campaign template](templates/distributed-pilot-campaign.json), [feedback triage schema](schemas/downstream-feedback-triage.schema.json) |
-| REQ-047 | [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md), [Desktop GUI Delivery Baseline](desktop-gui-delivery-baseline.md), [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
+| REQ-047 | [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md), [GitHub 기반 Web Adoption](web-adoption-delivery-review.md), [GitHub Actions P0 template](templates/github-actions-web-adoption-p0.yml), [Desktop GUI Delivery Baseline](desktop-gui-delivery-baseline.md), [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
 | REQ-048 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md), [프로젝트 개발환경 정의](project-environment-definition.md), [설정 경계](personal-team-settings-boundary.md), [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
 | REQ-049 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [웹서비스 Production 준비](web-service-production-readiness.md), [API 계약과 문서화](api-contract-documentation.md), [policy evidence schema](schemas/policy-evidence.schema.json) |
 | REQ-050 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CodeSight](codesight.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [repository state schema](schemas/repository-state-invariants.schema.json) |
@@ -100,7 +100,7 @@
 | Branch·review | REQ-016, REQ-019–REQ-021, REQ-033, REQ-035, REQ-046, REQ-048 | risk별 승인·필수 역할·self-review·emergency 계약 reference 구현 | deterministic fixture PASS, 실제 branch policy NOT-RUN | 완료 | [Branch·Review 계약](branch-and-review-strategy.md) |
 | CI·artifact·deployment | REQ-019–REQ-024, REQ-033–REQ-036, REQ-040, REQ-044–REQ-047 | provider-neutral CI·artifact·deployment와 `none` reference adapter 구현 | synthetic matrix PASS, provider write·deploy NOT-RUN | 완료 | [CI·배포 Provider](ci-deployment-provider-selection.md) |
 | 저장소 구조·Template | REQ-020, REQ-026, REQ-033, REQ-045, REQ-047–REQ-048 | P0 single-project·workspace starter와 기존 full-stack materializer reference 구현 | clean·retrofit·collision·rollback deterministic PASS, 실제 stack install/DB NOT-RUN | 완료 | [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
-| 비개발자 도입 | REQ-047 | GUI·CLI 공통 core, macOS 개발용 desktop shell·resilience·접근성 semantic과 재현 가능한 unsigned package provenance 구현, 지원 installer 미발행 | reviewed bundle 전체 흐름·negative fixture와 2회 package digest·fuse·SBOM·provenance·metadata drift deterministic PASS, signing·notarization·게시·실제 screen reader·사람 사용성 NOT-RUN | `REQ-047-gui-installer-delivery` | [GUI 설치 자산·배포 준비](gui-installation-distribution-review.md) |
+| 비개발자 도입 | REQ-047 | 공통 core와 GitHub Actions read-only preview·protected apply→PR P0 구현, GitHub App Portal 미구현, desktop installer 범위 제외 | Core surface parity, clean checkout·plan binding·least privilege·stage-only·no-auto-merge deterministic PASS. 실제 web pilot·Portal·browser 사용성 NOT-RUN | `REQ-047-github-app-web-portal` | [Web Adoption](web-adoption-delivery-review.md), [GUI 범위 결정 기록](gui-installation-distribution-review.md) |
 | 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | P0 validator와 P1 initial/retrofit materializer reference 구현, migration 미구현 | deterministic fixture PASS, 실제 downstream retrofit NOT-RUN | 완료 | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
 | Downstream 검증 피드백 일반화 | REQ-046, REQ-049–REQ-052 | REQ-049–REQ-052 공통 reference 구현 완료, REQ-046 보강과 실제 재검증 분리 | REQ-049–REQ-052 deterministic PASS, 실제 downstream 재검증 NOT-RUN | `UF-001-013-downstream-revalidation` | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) |
 
@@ -887,15 +887,21 @@
 
 ### REQ-047: 비개발자용 원클릭 프로젝트 도입과 Release Bundle
 
-- terminal과 script 사용에 익숙하지 않은 사용자는 공식 release page 또는 README의
-  **프로젝트에 적용** 버튼에서 OS에 맞는 local desktop app을 내려받을 수 있어야 한다.
-- 기본 사용자 흐름은 `앱 실행 → 프로젝트 폴더 선택 → 프로젝트에 적용`으로 제공한다. 무확인 자동
-  설치가 아니라 manifest 검증, read-only preview, 충돌 차단, transaction apply·validate·rollback을
-  UI 뒤에서 항상 수행한다.
-- GUI와 전문가·CI용 CLI는 서로 다른 설치 로직을 구현하지 않고 release pin, checksum·서명 검증,
-  target inventory, plan, lock, transaction과 rollback을 담당하는 동일한 headless adoption core를
-  사용해야 한다.
-- 앱은 생성·변경·보존·차단 건수와 위험 요약을 쉬운 문장으로 표시하고, 상세 file diff와 release·
+- terminal과 script 사용에 익숙하지 않은 GitHub 사용자는 Web Portal의 **프로젝트에 적용** 흐름에서
+  접근을 허용한 repository를 선택하고 변경 계획과 PR을 만들 수 있어야 한다.
+- 기본 사용자 흐름은 `GitHub 로그인 → repository 선택 → preview 확인 → 적용 승인 → PR 검토`다.
+  무확인 자동 설치가 아니라 manifest 검증, read-only preview, 충돌 차단, transaction
+  apply·validate·rollback과 사람 review를 UI 뒤에서 항상 수행한다.
+- Web Portal, 전문가·CI용 CLI와 GitHub Actions는 서로 다른 설치 로직을 구현하지 않고 release pin,
+  checksum 검증, target inventory, plan, lock, transaction과 rollback을 담당하는 동일한 headless
+  adoption core를 사용해야 한다.
+- Portal 전 P0는 GitHub Actions 기반 web adoption으로 제공한다.
+  Preview는 read-only여야 하며 apply는 exact plan SHA-256과 사람 승인을 다시 확인하고 새 branch와
+  pull request만 생성한다. Default branch 직접 push, force push와 자동 merge는 금지한다.
+- Web adoption은 exact upstream commit과 reviewed release allowlist를 사용한다. GitHub token은
+  provider delivery adapter에서만 사용하며 공통 core의 filesystem·network·credential 경계를
+  확대하지 않는다.
+- Portal은 생성·변경·보존·차단 건수와 위험 요약을 쉬운 문장으로 표시하고, 상세 file diff와 release·
   commit·checksum은 선택 가능한 고급 정보로 제공한다.
 - 기존 사용자 파일이 release source와 다르거나 project 밖 경로, `.env*`, manifest/archive 변조,
   target drift가 발견되면 어떤 파일도 쓰기 전에 전체 적용을 차단한다.
@@ -906,17 +912,19 @@
   rollback 값은 공통 기본값으로 추정하지 않는다. 미응답 `TBD`·`pending`은 실행 승인이 아니다.
 - update는 자동 적용하지 않는다. 새 release 알림, 현재/새 manifest diff preview, 사용자 승인,
   apply·validate 순서로 진행하고 실패하면 이전 lock·target snapshot으로 원복한다.
-- 모든 release는 supported OS app 또는 명시적 미지원 상태, CLI entrypoint, tracked source archive,
-  canonical `release-manifest.json`, `SHA256SUMS`와 migration·rollback release note를 함께 게시한다.
+- 모든 release는 CLI·web adoption entrypoint, tracked source archive, canonical
+  `release-manifest.json`, `SHA256SUMS`와 migration·rollback release note를 함께 게시한다.
 - release workflow는 신규 설치, 기존 retrofit, 이전 release upgrade·rollback, 충돌·변조·부분 실패,
-  GUI·CLI parity와 게시 asset 재다운로드를 clean fixture에서 검증한다. 필수 bundle이나 지원 OS의
-  서명·검증 증거가 누락되면 release를 발행하지 않는다.
-- desktop app의 telemetry와 crash upload는 기본 비활성화한다. 수집을 추가하려면 field·목적·보존·
-  수신자 심사와 사용자의 명시적 opt-in이 필요하다.
-- 지원 OS별 code signing·notarization, permission·quarantine, keyboard·screen reader·오류 복구와
-  비개발자 사용성 Eval을 별도로 통과한 경우에만 해당 OS를 지원 완료로 표시한다.
-- 설치 자산 게시·검증 gate는 `docs/gui-installation-distribution-review.md`, desktop UX·공통 core의
-  단계적 구현과 완료 기준은 `docs/one-click-project-adoption-review.md`를 따른다.
+  web·CLI parity를 clean fixture에서 검증한다. 필수 bundle이나 exact source binding이 누락되면
+  release를 발행하지 않는다.
+- Portal telemetry와 error upload는 기본 비활성화한다. 수집을 추가하려면 field·목적·보존·수신자
+  심사와 사용자의 명시적 opt-in이 필요하다.
+- Repository authorization, keyboard·screen reader·오류 복구와 비개발자 browser 사용성 Eval을
+  통과한 경우에만 Portal을 지원 완료로 표시한다.
+- GitHub Actions와 GitHub App Portal 경계는 `docs/web-adoption-delivery-review.md`, 공통 UX와
+  단계적 구현은 `docs/one-click-project-adoption-review.md`를 따른다. Desktop installer는 현재
+  `DEFERRED / OUT-OF-SCOPE`이며 과거 검토 기록은
+  `docs/gui-installation-distribution-review.md`에 보존한다.
 
 ### REQ-048: 기계 판독 가능한 개발환경 Profile과 Validator
 
@@ -1138,3 +1146,5 @@
 | 2026-07-18 | REQ-047 GUI·CLI 공통 release adoption core와 clean·retrofit·upgrade·rollback·checksum 변조·부분 실패 transaction fixture 구현 |
 | 2026-07-19 | REQ-047 GUI-03 desktop upgrade, 충돌·변조·target drift·부분 실패·worker crash·취소·중복 실행과 keyboard·focus·오류 요약 fixture 및 hosted gate 구현 |
 | 2026-07-19 | REQ-047 GUI-04 macOS arm64 unsigned development `.app` 재현 package, Electron fuse, CycloneDX SBOM, provenance·manifest·`SHA256SUMS`와 metadata drift gate 구현 |
+| 2026-07-19 | REQ-047 GitHub Actions P0의 read-only preview, protected apply·exact plan binding·허용 경로 stage, branch·PR 생성 template와 least-privilege negative fixture 구현 |
+| 2026-07-19 | REQ-047 기본 비개발자 surface를 GitHub App Web Portal로 전환하고 desktop installer GUI-05–GUI-07을 `DEFERRED / OUT-OF-SCOPE`로 분리 |
