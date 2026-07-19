@@ -42,7 +42,8 @@ invalidTaskRequirement.externalTasks[0].requirementIds = ["REQ-999"];
 assert.match(validateTraceability(invalidTaskRequirement).join("\n"), /invalid requirementIds/);
 
 const implementationFeedbackScopeDrift = structuredClone(manifest);
-implementationFeedbackScopeDrift.implementationTasks.at(-1).feedbackIds = [];
+implementationFeedbackScopeDrift.implementationTasks
+  .find((task) => task.taskId === "REQ-052-fullstack-locale-contract").feedbackIds = [];
 assert.match(validateTraceability(implementationFeedbackScopeDrift).join("\n"), /feedback scope differs from feedback triage/);
 
 const externalFeedbackScopeDrift = structuredClone(manifest);
@@ -112,4 +113,4 @@ assert.equal(validate("staged").status, 0);
 git("-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "synchronized");
 assert.equal(validate("range", base).status, 0);
 
-process.stdout.write("REQ-001–REQ-052 requirement status, task and UF traceability Eval: PASS\n");
+process.stdout.write("REQ-001–REQ-053 requirement status, task and UF traceability Eval: PASS\n");
