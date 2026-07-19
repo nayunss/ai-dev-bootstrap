@@ -202,6 +202,10 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - PR #18 required checks를 통과한 merge commit `1096dc6894978bd998a70ea65182ae08ced5083c`에
   `v0.2.6-pilot` prerelease를 발행했다. tracked archive와 GitHub asset digest·재다운로드 SHA-256
   `f731f6b97ff66fc0b0aa7d089319e8a9866bc2145cf7c2fe92e6f83fb7bbdcc9`이 일치한다.
+- 프로젝트 정체(무엇인가)를 "AI 개발 하네스"로 명명 통일했다. README 제목·자기정의를 하네스로
+  바꾸고 분류 섹션을, `docs/harness.md` FAQ에 하네스 vs 템플릿·보일러플레이트·부트스트랩 대조를
+  추가했다. `scripts/bootstrap` 명령·가이드와 저장소 slug `ai-dev-bootstrap`은 도입 방식 용어로
+  유지한다.
 
 ## 현재 상태
 
