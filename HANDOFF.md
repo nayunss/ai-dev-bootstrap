@@ -3,7 +3,7 @@
 갱신: 2026-07-19 Asia/Seoul
 상태: v0.2.9-pilot release candidate·GitHub App Portal local reference 검증 완료
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, GUI-01-delivery-baseline, GUI-02-desktop-shell, GUI-03-resilience-accessibility, GUI-04-package-provenance, REQ-047-web-adoption-actions-p0, REQ-047-web-adoption-p0-pilot, REQ-047-github-app-web-portal
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, REQ-047-web-adoption-actions-p0, REQ-047-web-adoption-p0-pilot, REQ-047-github-app-web-portal, REQ-024-026-047-ai-tool-adoption-prompt, REQ-047-portal-only-surface, REQ-024-047-048-documentation-consolidation
 다음 작업: release:v0.2.9-pilot, REQ-047-github-app-web-portal-production-pilot, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
 
 ## 목표
@@ -143,11 +143,10 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - PR #16 required checks를 통과한 merge commit `d0a3a6d31c4cbf883708335ff0f9bab121c5f2f0`에
   `v0.2.5-pilot` prerelease를 발행했다. tracked archive와 게시 asset 재다운로드 SHA-256
   `84d27ae9607f1fdc7fd6b662382f3ba50b9c73482cc191c10a9695c78f2a9757`이 일치한다.
-- REQ-047로 terminal 비숙련자를 위한 one-button 적용 UX와 GUI·CLI 공통 headless adoption core,
+- REQ-047로 terminal 비숙련자를 위한 one-button 적용 UX와 web·CLI 공통 headless adoption core,
   checksum·preview·transaction rollback과 release별 bundle 자동 갱신 계약을 검토했다. 이후 공통
-  headless core와 deterministic release fixture를 구현했다. 2026-07-19 제품 범위 결정으로 GitHub
-  저장소의 기본 비개발자 경로는 GitHub App Web Portal로 전환했고 desktop installer 발행은
-  `DEFERRED / OUT-OF-SCOPE`로 분리했다.
+  headless core와 deterministic release fixture를 구현했고 GitHub 저장소의 기본 비개발자 경로를
+  GitHub App Web Portal로 확정했다.
 - 2026-07-17 현재 최신 공식 공개본인 GitHub의 2026년 2월 Octoverse 2025 분석, Stack Overflow
   Developer Survey 2025와 State of JavaScript 2025를 근거로 frontend·backend·full-stack adapter
   P0~P3 순서를 확정했다. P0는 React+Vite, Node+Express, Next.js와 분리 React+Node full-stack이며
@@ -198,7 +197,7 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   `v0.2.7-pilot` prerelease를 발행했다. Tracked archive, GitHub asset digest와 재다운로드 SHA-256
   `090d70f54bb7e5b19fdfee8833bd5a7b68c199065e6aeaea99e3f839f50db9fa`가 일치한다.
 - 위 설계·상태 추적 변경을 `v0.2.6-pilot` 후보로 묶고 package·lock root version `0.2.6`,
-  migration·rollback release note를 준비했다. GUI·profile schema·provider adapter·starter fixture는
+  migration·rollback release note를 준비했다. Profile schema·provider adapter·starter fixture는
   구현되지 않았으므로 tag·release 게시 후에도 `NOT-RUN` 상태를 유지한다.
 - PR #18 required checks를 통과한 merge commit `1096dc6894978bd998a70ea65182ae08ced5083c`에
   `v0.2.6-pilot` prerelease를 발행했다. tracked archive와 GitHub asset digest·재다운로드 SHA-256
@@ -517,13 +516,11 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - v1→v2 skill upgrade·rollback binding과 target/package/adapter hash, dependency cycle·version
   incompatibility·plugin catalog 실행 승인 negative fixture: PASS
 - 실제 plugin 설치·호출, native AI tool discovery와 private organization bundle: NOT-RUN
-- GUI·CLI surface의 동일 release union plan·plan SHA-256·lock 결과 parity: PASS
+- Web·CLI surface의 동일 release union plan·plan SHA-256·lock 결과 parity: PASS
 - P0 profile+skill bundle clean install·기존 동일 파일 retrofit·v1→v2 upgrade와 initial/upgrade
   rollback: PASS
 - release manifest·archive binding·component checksum 변조, 기존 파일 충돌·target drift와 두 번째
   write 실패 전체 transaction 원복 negative fixture: PASS
-- desktop 개발 셸·folder/release picker·reviewed bundle 전체 흐름과 read-only 취소·재실행: PASS.
-  Packaging·signing·notarization·게시 asset 재다운로드·비개발자 사용성 Eval: NOT-RUN
 - `v0.2.8-pilot` package version·migration·rollback·검증 경계, hosted PR checks, PR #22 merge,
   tag와 게시 archive 재다운로드 evidence: PASS
 - PR #22 hosted `security`: PASS. `license-provenance` 1차 run은 skill distribution release
@@ -534,49 +531,10 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - PR #22 merge commit `1cc6406831a8ac7592f6ec3a765c0746f773195e`에 `v0.2.8-pilot` prerelease를
   발행했다. Tracked archive, GitHub asset digest와 재다운로드 SHA-256
   `3963402cf8d28c88858055a90e4be3c9c4170ea99f483f8360bd8749c22db4f8`이 일치한다.
-- 루트 README를 `v0.2.8-pilot` 기능·검증 경계·빠른 시작·GUI 배포 상태에 맞춰 현행화하고,
-  release 선택부터 onboarding·adapter·검증·update·rollback까지의 전체 사용자 가이드를
-  `docs/bootstrap-user-guide.md`에 추가했다. 실제 signed desktop GUI asset은 아직 없으며 release
-  page source archive를 GUI installer로 표시하지 않는다. GUI 설치 자산의 현재 상태와 OS별
-  publisher·signing·notarization·checksum 재검증·접근성·비개발자 사용성 release gate는
-  `docs/gui-installation-distribution-review.md`로 분리해 REQ-047에서 추적한다.
-- GUI-01 delivery baseline은 최초 개발·지원 후보를 macOS 13+ arm64, Electron `43.1.1`, 개발
-  `.app`·배포 `.dmg`, 자동 update 없는 수동 release preview로 확정했다. 현재 Node ESM adoption
-  core를 main process에서 직접 재사용하고 renderer는 sandbox·context isolation·allowlisted typed
-  IPC로 격리한다. Threat model과 중단 조건은 `docs/desktop-gui-delivery-baseline.md`에 기록했다.
-  사용자 승인 뒤 Electron·packager·fuses exact dependency와 lock을 고정했다. 격리 inventory는
-  53 packages, 허용 license 집합과 audit 0을 확인했고 Electron package tar·macOS arm64 runtime
-  checksum도 재검증했다. Lockfile 이전·이후 SHA-256과 이 승인 범위는
-  `DEP-LOCK-2026-07-18-001`에 고정했다. Upstream `Electron.app`은 Developer ID가 없고 strict
-  codesign 검증에 실패하므로 배포 자산으로 승격하지 않는다.
-  PR #24의 초기 security run에서 누락된 dependency approval과 downstream triage 동기화를
-  fail-closed로 탐지했으며 exact approval·traceability manifest를 보정해 동일 base range 검증을
-  통과했다.
-- GUI-02 desktop shell은 local-only renderer, sandbox·context isolation, typed IPC sender/argument
-  검증, project/release picker, preview·apply·validate·rollback과 apply 직전 plan SHA-256 재확인을
-  공통 adoption core에 연결했다. 독립된 reviewed bundle을 clean target에서
-  preview→apply→validate→rollback으로 검증했고 preview·validate는 별도 worker 취소 후 무변경
-  재실행을 통과했다. Apply·rollback은 transaction 중 강제 취소를 허용하지 않는다. Release
-  commit·manifest·unsigned 상태와 파일별 현재/목표 SHA-256을 UI에 표시하고 root·home·`.env*`
-  선택과 작업 중 selection 교체를 차단했다. 이 단계에서 남겼던 crash·중복 실행과 접근성 semantic
-  검증은 GUI-03에서 완료했고 실제 screen reader·사람 사용성은 GUI-06 범위다.
-- GUI-03 resilience·accessibility는 현재 lock을 읽어 신규 적용과 update를 구분하고, desktop
-  session의 v1→v2 preview·apply·validate·정확한 rollback을 공통 adoption core에 연결했다.
-  Clean·동일 파일 retrofit·upgrade, 충돌·manifest/archive 변조·target drift·두 번째 write 실패,
-  read-only 취소·중복 실행·worker 비정상 종료를 fail-closed로 검증했다. Renderer는 keyboard
-  semantic control, live status·전용 오류 요약, busy state와 결과·오류·재시도 focus 이동·시각
-  표시를 제공한다. `test:desktop-gui`와 `test:desktop-resilience`를 hosted security workflow에
-  추가했다. macOS 기본 화면은 확인했지만 Orca runtime 부재로 접근성 트리 확인은 `BLOCKED`,
-  실제 VoiceOver·비개발자 Eval은 GUI-06까지 `NOT-RUN`이다. Package·signing·notarization·공식
-  installer는 여전히 미발행이며 지원 OS는 없다.
-- GUI-04 package·provenance는 macOS arm64 `.app`을 ASAR로 package하고 security fuse를 적용·재확인한
-  뒤 timestamp·entry order를 정규화한 ZIP을 두 번 생성해 동일 SHA-256과 app inventory digest를
-  검증한다. CycloneDX 1.6 SBOM, source/core digest와 exact builder version provenance,
-  `UNSIGNED_DEVELOPMENT_ONLY` manifest·`SHA256SUMS`를 생성하고 SBOM bytes·지원 metadata drift를
-  fail-closed한다. 별도 `macos-14` read-only hosted job도 구성했다. 이 개발 ZIP은 installer·release
-  asset이 아니며 signing·notarization·게시·재다운로드·사람 Eval은 `NOT-RUN`, 지원 OS는 없다.
+- 루트 README와 `docs/bootstrap-user-guide.md`를 release 선택부터 onboarding·adapter·검증·
+  update·rollback 및 Portal local reference 흐름에 맞춰 현행화했다.
 - REQ-047 GitHub Actions Web Adoption P0는 downstream의 `workflow_dispatch`에서 read-only
-  preview와 protected environment 승인 apply를 분리했다. Web·GUI·CLI가 같은 plan SHA-256을
+  preview와 protected environment 승인 apply를 분리했다. Web·CLI가 같은 plan SHA-256을
   생성하고, apply adapter는 exact plan·clean checkout·reviewed release allowlist를 재검증한 뒤
   core 허용 파일만 stage한다. Reference workflow는 default branch 직접 write·force push·자동
   merge를 하지 않고 run별 branch와 PR만 생성하며, `pull_request_target`, broad permission과 secret
@@ -594,10 +552,16 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   Private repository의 environment required reviewer는 현재 billing plan에서 HTTP 422로 거부되어
   비밀 없는 격리 fixture를 승인 후 public으로 전환했다. Portal 설계는 plan별 기능 차이를 사전
   검사해야 한다.
-- 2026-07-19 범위 결정으로 GitHub App Web Portal이 REQ-047의 기본 GUI 역할을 대체한다. 기존
-  GUI-01–GUI-04 산출물은 검증 증거로 보존하지만 `REQ-047-gui-installer-delivery`와 GUI-05–GUI-07은
-  활성 backlog에서 제거하고 `DEFERRED / OUT-OF-SCOPE`로 기록한다. 향후 GitHub 외 local·offline
-  사용 요구와 OS publisher credential이 별도 승인될 때만 새 요구사항으로 재개한다.
+- 2026-07-19 범위 결정으로 REQ-047의 비개발자 surface를 GitHub App Web Portal로 단일화했다.
+  데스크톱 코드·패키징·CI·Electron 의존성과 설치 문서를 제거하고 공통 adoption surface를
+  CLI·web으로 축소했다. `docs/github-app-web-portal-local-guide.md`에 loopback no-network 실행,
+  확인 순서와 Production으로 확대하면 안 되는 경계를 기록했다.
+- README의 기능 목록을 비개발자가 각 기능의 목적, 별도 승인이 필요한 작업과 자동 실행하지 않는
+  범위를 이해할 수 있도록 항목별 완전한 설명으로 확장했다.
+- 현재 Portal-only tracked source를 기준으로 `docs/architecture.md`, 하네스·개발환경 profile·
+  upstream/downstream 문서와 문서 index를 현행화했다. 중복된 one-click 검토는 Web Adoption
+  설계·Delivery 문서로, downstream 시작 절차는 처음부터 끝까지 사용 가이드로 통합하고 모든
+  역참조를 canonical 문서로 바꿨다.
 - REQ-047 GitHub App Web Portal local reference를 구현했다. Selected repository·installation
   account·사용자 push 권한을 preview와 apply에서 다시 확인하고, Metadata read·Contents/Pull
   Requests write 밖의 권한을 차단한다. OAuth state는 256-bit·10분·one-time·local return path로
@@ -619,6 +583,14 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   변경 허용과 feedback scope 변경 차단 fixture를 추가했다. 같은 원칙으로 HANDOFF는 완료 metadata와
   공통·외부 task scope가 바뀔 때만 traceability manifest 동기화를 요구하고, 일반 evidence 설명
   보강은 no-op manifest 변경 없이 허용하도록 회귀 fixture를 추가했다.
+- GitHub App을 설치하지 않는 clone·공식 release ZIP 사용자가 AI 코딩 도구에서 곧바로 시작할 수
+  있도록 `.ai/prompts/adopt-cloned-bootstrap.md`와 README의 복사용 프롬프트를 추가했다. 목표,
+  source context, 첫 출력과 승인 boundary를 분리하고 source 무결성·upstream/downstream 모드·대상
+  경로·read-only 진단·변경 0건을 첫 turn 완료 조건으로 고정했다. `apply`·설치·Git write·외부
+  전송·credential·DB·provider·배포는 별도 승인 전 금지한다.
+- `Conversation interrupted` 뒤에는 Git·외부 상태를 먼저 재확인하고 남은 단계만 재개하도록 사용자
+  가이드를 보강했다. `/feedback`은 대화 재개가 아니라 선택적 session·log를 포함한 제품 feedback
+  제출 용도이며, 비밀·개인정보를 첨부하지 않는 경계를 함께 안내한다.
 - PR #25의 첫 hosted security run은 requirements 변경과 downstream feedback manifest 동기화 누락을
   fail-closed로 차단했다. 두 traceability manifest의 검토일을 2026-07-19로 동기화하고 동일 base
   range validator를 다시 적용한다.
@@ -639,7 +611,7 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 1. [작업:REQ-047-github-app-web-portal-production-pilot] [외부 변경 승인·실제 환경·사람 참여 대기]
    App owner·operator·incident owner, installation account, hosting·persistent state·secret manager와
    retention 결정을 확정한다. 별도 test App 등록·exact 권한·callback·webhook·배포를 각각 승인한 뒤
-   non-production repository에서 provider API·revoke·rollback과 모바일·desktop 비개발자 2명 Eval을
+   non-production repository에서 provider API·revoke·rollback과 모바일·PC browser 비개발자 2명 Eval을
    수행한다. Production 등록·배포는 이 pilot PASS 뒤에도 별도 승인한다.
 2. [작업:REQ-040-owner-evidence] [프로젝트 입력·실제 환경 대기] downstream owner의 법률·retention evidence, 실제
    multi-instance bypass test와 provider restore rehearsal이 제공될 때만 schema v2를 READY로 승인한다.

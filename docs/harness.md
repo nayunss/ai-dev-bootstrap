@@ -1,6 +1,7 @@
 # AI 개발 하네스 구성
 
-상태: 설계 승인
+상태: 공통 하네스 reference 구현
+갱신일: 2026-07-19
 
 ## 결론
 
@@ -129,27 +130,11 @@ AI에게 “이 프로젝트에 좋은 하네스를 알아서 구성해줘”라
 측정한다. 하네스·스킬·프롬프트·모델 변경 전후에는 [Eval 전략](evaluation-strategy.md)의
 regression suite와 baseline을 비교한다.
 
-최종 선택은 예를 들어 `.ai/project.yaml`에 저장하고 Git diff로 검토한다.
-
-```yaml
-schemaVersion: 1
-profile: web-application
-aiTools:
-  required: []
-  supported:
-    - codex
-    - claude-code
-qualityGates:
-  - format
-  - lint
-  - typecheck
-  - unit-test
-security:
-  telemetry: deny
-  networkDefault: deny
-```
-
-이 예시는 형식 제안을 위한 초안이며 실제 스키마는 요구사항 확정 후 구현한다.
+최종 선택은 `docs/development-environment.profile.yaml`에 저장하고 Git diff로 검토한다. 이 profile은
+이미 구현된 [Development environment profile schema](schemas/development-environment-profile.schema.json)와
+semantic·repository·readiness validator를 사용한다. AI 도구 선택은 별도의 adapter preview와
+`.ai/manifests/adapters.lock.json`으로 추적하므로 profile 안에 임의의 `aiTools` field를 추가하지
+않는다. 실제 예시는 `evals/fixtures/development-profile/`의 네 topology fixture를 따른다.
 
 ## 권장 구성 흐름
 
@@ -159,7 +144,7 @@ security:
 2. manifest·lockfile과 비교해 필수·선택·충돌·미지원 항목을 보여준다.
 3. 설치 파일, 버전, 해시, 권한, 네트워크와 전역 변경 여부를 사용자에게 제시한다.
 4. 승인된 항목만 프로젝트 로컬에 idempotent하게 설치한다.
-5. Codex·Claude Code 어댑터가 동일한 공통 정책과 명령을 참조하는지 검사한다.
+5. Codex·Claude Code·GitHub Copilot 어댑터가 동일한 공통 정책과 명령을 참조하는지 검사한다.
 6. `validate`, security gate와 필수 regression Eval을 통과한 뒤 개발을 시작한다.
 
 개인 전역 설정은 자동으로 덮어쓰지 않는다. 전역 변경이 필요한 선택 기능은 별도 승인과 제거
@@ -219,6 +204,12 @@ security:
 - 하네스 생성 플러그인은 초기 추천이나 감사에 선택적으로 사용할 수 있다.
 - Claude 전용 훅과 서브에이전트 설정은 공통 계약의 어댑터로 취급한다.
 
+### GitHub Copilot
+
+- `.github/copilot-instructions.md`가 같은 공통 코어와 project profile을 참조하도록 한다.
+- Copilot을 선택한 downstream에만 adapter를 materialize한다.
+- Native hook parity가 없는 동작은 hosted CI와 공통 validator가 fail-closed로 검증한다.
+
 ### 다른 AI 도구
 
 - `AGENTS.md` 또는 해당 도구의 지침 파일을 통해 같은 공통 코어를 연결한다.
@@ -230,7 +221,7 @@ security:
 하네스 기능을 필수로 승격하려면 다음을 만족해야 한다.
 
 - 둘 이상의 실제 프로젝트에서 반복되는 필요가 확인됐다.
-- Codex와 Claude Code에서 같은 핵심 결과를 낼 수 있다.
+- Codex·Claude Code·GitHub Copilot에서 같은 핵심 결과를 낼 수 있다.
 - 플러그인 없이 수행 가능한 대체 절차가 있다.
 - 설치 항목이 공급망 보안 게이트를 통과했다.
 - 로컬과 CI에서 상태를 자동 검증할 수 있다.

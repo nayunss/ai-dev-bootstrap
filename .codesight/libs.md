@@ -1,11 +1,5 @@
 # Libraries
 
-- `desktop/ipc-contract.mjs`
-  - function validateSelectedRoot: (value) => void
-  - function validateDesktopRequest: (value) => void
-  - function cancelledAdoptionResult: (mode) => void
-  - function summarizeAdoptionResult: (result) => void
-- `desktop/session.mjs` — class DesktopAdoptionSession
 - `evals/fixtures/stack-quality/javascript/source.js` — function greet: (name) => void
 - `evals/fixtures/stack-quality/python/app.py` — function greet: (name) -> str
 - `scripts/adapter-parity.mjs` — function validateAdapterParity: (manifest, options) => void, function readParityManifest: (path) => void
@@ -16,7 +10,6 @@
   - function runCapabilityTask: (task, root) => void
   - function aggregateCapabilityResults: (results) => void
   - function loadTask: (path) => void
-- `scripts/desktop-package-provenance.mjs` — function validateDesktopDevelopmentPackage: (outputValue) => void, function buildDesktopDevelopmentPackage: (outputValue) => void
 - `scripts/development-profile.mjs`
   - function serializeDevelopmentProfile: (profile) => void
   - function parseDevelopmentProfileYaml: (source) => void
@@ -48,10 +41,7 @@
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
 - `scripts/provider-profile-adapters.mjs` — function validateProviderProfile: (profile) => void
-- `scripts/release-adoption-surfaces.mjs`
-  - function runCliAdoption: (mode, manifest, source, target, options) => void
-  - function runGuiAdoption: (mode, manifest, source, target, options) => void
-  - function runWebAdoption: (mode, manifest, source, target, options) => void
+- `scripts/release-adoption-surfaces.mjs` — function runCliAdoption: (mode, manifest, source, target, options) => void, function runWebAdoption: (mode, manifest, source, target, options) => void
 - `scripts/release-adoption.mjs`
   - function sha256: (value) => void
   - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void

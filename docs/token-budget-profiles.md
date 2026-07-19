@@ -24,19 +24,11 @@
 “꼼꼼하게” 같은 의도를 프로파일로 매핑할 수 있다. 작업 중 프로파일을 바꿀 수 있으며,
 변경 전까지 완료된 검증을 불필요하게 반복하지 않는다.
 
-프로젝트 기본값은 향후 `.ai/project.yaml`에 다음과 같이 기록할 수 있다.
-
-```yaml
-aiExecution:
-  defaultProfile: token-aware
-  allowSessionOverride: true
-  requiredGates:
-    - security
-    - relevant-tests
-    - handoff
-```
-
-설정 파일이 구현되기 전에는 `docs/development-environment.md`에 기본 프로파일을 기록한다.
+현재 canonical development profile schema에는 token budget field가 없다. 따라서 project 기본값을
+존재하지 않는 `.ai/project.yaml`에 기록하지 않는다. 팀이 반복 기본값을 정해야 하면
+`docs/development-environment.md`에 운영 선택으로 설명하고, 각 세션에서 사용자가 선택하거나
+`HANDOFF.md`에 다음 세션용 선호를 남긴다. 향후 기계 판독 field를 추가하려면 profile schema
+migration·validator·fixture를 함께 승인해야 한다.
 
 ## 프로파일 비교
 

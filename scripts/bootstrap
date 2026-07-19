@@ -58,7 +58,7 @@ Preview/apply/validate/upgrade/rollback/uninstall reviewed portable skill bundle
   scripts/bootstrap skills preview TARGET /path/to/release/manifest.json --optional=frontend --adapters=codex
   scripts/bootstrap skills apply TARGET /path/to/release/manifest.json --optional=frontend --adapters=codex --approve
 Plugin catalog entries remain non-executable and require a separate native installation approval.
-Preview/apply/validate/upgrade/rollback one release through the shared GUI/CLI adoption core:
+Preview/apply/validate/upgrade/rollback one release through the shared CLI/web adoption core:
   scripts/bootstrap adopt preview TARGET /path/to/release-adoption.json
   scripts/bootstrap adopt apply TARGET /path/to/release-adoption.json --approve
 Preview selected AI adapters without changing the target:
@@ -238,7 +238,7 @@ EOF
     fi
     ;;
   *)
-    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|profile TARGET PROFILE.json [--approve]|fullstack ACTION TARGET PROFILE SOURCE [--approve]|stack-fixture ACTION TARGET PROFILE.json [--approve]|skills ACTION TARGET MANIFEST.json [--optional=a,b] [--adapters=a,b] [--approve]|adopt ACTION TARGET MANIFEST.json [--surface=cli|gui] [--approve]|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
+    echo "Usage: scripts/bootstrap [preview [TARGET]|security-tools [ACTION TARGET [ARTIFACT_DIR] [--approve]]|dependencies TARGET --allow-network|readiness TARGET|onboarding TARGET|profile TARGET PROFILE.json [--approve]|fullstack ACTION TARGET PROFILE SOURCE [--approve]|stack-fixture ACTION TARGET PROFILE.json [--approve]|skills ACTION TARGET MANIFEST.json [--optional=a,b] [--adapters=a,b] [--approve]|adopt ACTION TARGET MANIFEST.json [--surface=cli] [--approve]|adapters ACTION TARGET [codex,claude-code,github-copilot] [--approve]]" >&2
     exit 2
     ;;
 esac

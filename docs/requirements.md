@@ -42,7 +42,7 @@
 | REQ-044 | reference 구현 | deterministic·pilot PASS | 기존 Spring Boot 4/SpringDoc 3·Next.js BFF pilot에 더해 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift, route inventory의 undocumented/stale operation과 Production `/openapi.json`·`/docs`·`/redoc` exposure synthetic Eval PASS. 실제 FastAPI runtime·authorization E2E는 미수행 |
 | REQ-045 | reference 구현 | deterministic·pilot PASS | 재귀 inventory, 최초 full-stack materializer와 P0 single/workspace starter transaction·rollback fixture PASS. 실제 dependency install·DB execution·restore는 NOT-RUN |
 | REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator, 2-tester synthetic regression과 sanitized feedback triage·고정 release baseline reference automation PASS. 실제 독립 tester campaign·결과 취합 및 새 baseline 전이 검증은 NOT-RUN |
-| REQ-047 | 부분 구현 | deterministic·downstream pilot PASS | 공통 adoption core와 Actions preview→승인→PR 실제 pilot PASS. GitHub App Portal의 selected-repository·최소 권한·token confinement·webhook replay·exact-plan·PR-only local reference와 responsive browser contract PASS. 실제 App 등록·provider API·ephemeral compute·revoke·비개발자 사용성 Eval은 NOT-RUN. Desktop installer는 `DEFERRED / OUT-OF-SCOPE` |
+| REQ-047 | 부분 구현 | deterministic·downstream pilot PASS | CLI·web 공통 adoption core와 Actions preview→승인→PR 실제 pilot PASS. GitHub App Portal의 selected-repository·최소 권한·token confinement·webhook replay·exact-plan·PR-only local no-network reference와 responsive browser contract PASS. 실제 App 등록·provider API·ephemeral compute·revoke·비개발자 사용성 Eval은 NOT-RUN |
 | REQ-048 | reference 구현 | deterministic PASS | canonical YAML parser/serializer, Draft 2020-12 schema와 read-only 구조·의미·repository drift·local/CI/Production readiness validator, 4개 topology positive 및 path·secret·version·approval·symlink negative fixture PASS. P1 materializer·migration·실제 downstream retrofit은 NOT-RUN |
 | REQ-049 | reference 구현 | deterministic PASS | claim·실제 service/region/data flow·server/database/provider enforcement·반증 가능한 evidence 연결과 disposal read/write/token/session 차단 fixture PASS. 법률 결론·실제 Production 승인은 NOT-RUN |
 | REQ-050 | reference 구현 | deterministic PASS | Git index blob 기반 generated artifact·source hash 검증, working/staged partial commit과 check-only tracked source mutation 실제 Git fixture PASS. 생성 의미·CI·배포 검증은 별도 |
@@ -66,20 +66,20 @@
 | REQ-018 | [CodeSight](codesight.md) |
 | REQ-019–REQ-024 | [프로젝트 개발환경 정의](project-environment-definition.md), [토큰 예산별 프로파일](token-budget-profiles.md), [프롬프트 템플릿](prompt-templates.md), [유지보수와 도입 모델](adoption-and-maintenance-model.md) |
 | REQ-025 | [Eval 전략](evaluation-strategy.md), [SkillOpt 논문 검토](skillopt-paper-review.md), [capability task schema](schemas/capability-task.schema.json) |
-| REQ-026–REQ-028 | [Downstream 시작 가이드](downstream-getting-started.md), [Downstream 검증 가이드](downstream-validation-guide.md), [dependency bootstrap schema](schemas/dependency-bootstrap.schema.json), [dependency bootstrap template](templates/dependency-bootstrap.json) |
+| REQ-026–REQ-028 | [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [dependency bootstrap schema](schemas/dependency-bootstrap.schema.json), [dependency bootstrap template](templates/dependency-bootstrap.json) |
 | REQ-029–REQ-030 | [Supabase·Firebase 보안](backend-as-a-service-security.md), [Human-in-the-loop](human-in-the-loop.md) |
 | REQ-031 | [AI 보안 가드레일](ai-security-guardrails.md), [프로젝트 개발환경 정의](project-environment-definition.md) |
 | REQ-032 | [MCP 보안과 승인 절차](mcp-security.md) |
-| REQ-033–REQ-036 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md), [프로젝트 유지관리 기록](project-maintenance.md), [Downstream 시작 가이드](downstream-getting-started.md), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
+| REQ-033–REQ-036 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md), [프로젝트 유지관리 기록](project-maintenance.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
 | REQ-037–REQ-039 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [에이전트 체계](agents.md), [페르소나와 작업 역할](persona-and-role-guidelines.md), [Upstream 피드백 기록 계약](upstream-feedback-log.md), [adapter parity schema](schemas/adapter-parity.schema.json) |
 | REQ-040 | [웹서비스 Production 준비](web-service-production-readiness.md), [Production readiness template](templates/production-readiness.json) |
 | REQ-041 | [Eval 전략](evaluation-strategy.md), [SkillOpt 논문 검토](skillopt-paper-review.md), [skill evolution trial template](templates/skill-evolution-trial.json) |
 | REQ-042 | [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [upstream lock schema](schemas/upstream-lock.schema.json), [upstream adoption template](templates/upstream-adoption.json), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
 | REQ-043 | [AI 생성 코드 라이선스·출처](ai-generated-code-license-provenance.md), [공급망 보안](supply-chain-security.md) |
 | REQ-044 | [API 계약과 문서화](api-contract-documentation.md), [FastAPI contract adapter schema](schemas/fastapi-contract-adapter.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
-| REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 시작 가이드](downstream-getting-started.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
+| REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-046 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [pilot result schema](schemas/distributed-pilot-result.schema.json), [pilot campaign template](templates/distributed-pilot-campaign.json), [feedback triage schema](schemas/downstream-feedback-triage.schema.json) |
-| REQ-047 | [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md), [GitHub 기반 Web Adoption](web-adoption-delivery-review.md), [GitHub App Web Portal Reference](github-app-web-portal-reference.md), [GitHub Actions P0 template](templates/github-actions-web-adoption-p0.yml), [Desktop GUI Delivery Baseline](desktop-gui-delivery-baseline.md), [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
+| REQ-047 | [GitHub 기반 Web Adoption 설계·Delivery](web-adoption-delivery-review.md), [GitHub App Web Portal local no-network 가이드](github-app-web-portal-local-guide.md), [GitHub App Web Portal Reference](github-app-web-portal-reference.md), [GitHub Actions P0 template](templates/github-actions-web-adoption-p0.yml), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [공급망 보안](supply-chain-security.md) |
 | REQ-048 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md), [프로젝트 개발환경 정의](project-environment-definition.md), [설정 경계](personal-team-settings-boundary.md), [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
 | REQ-049 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [웹서비스 Production 준비](web-service-production-readiness.md), [API 계약과 문서화](api-contract-documentation.md), [policy evidence schema](schemas/policy-evidence.schema.json) |
 | REQ-050 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CodeSight](codesight.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [repository state schema](schemas/repository-state-invariants.schema.json) |
@@ -100,7 +100,7 @@
 | Branch·review | REQ-016, REQ-019–REQ-021, REQ-033, REQ-035, REQ-046, REQ-048 | risk별 승인·필수 역할·self-review·emergency 계약 reference 구현 | deterministic fixture PASS, 실제 branch policy NOT-RUN | 완료 | [Branch·Review 계약](branch-and-review-strategy.md) |
 | CI·artifact·deployment | REQ-019–REQ-024, REQ-033–REQ-036, REQ-040, REQ-044–REQ-047 | provider-neutral CI·artifact·deployment와 `none` reference adapter 구현 | synthetic matrix PASS, provider write·deploy NOT-RUN | 완료 | [CI·배포 Provider](ci-deployment-provider-selection.md) |
 | 저장소 구조·Template | REQ-020, REQ-026, REQ-033, REQ-045, REQ-047–REQ-048 | P0 single-project·workspace starter와 기존 full-stack materializer reference 구현 | clean·retrofit·collision·rollback deterministic PASS, 실제 stack install/DB NOT-RUN | 완료 | [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
-| 비개발자 도입 | REQ-047 | 공통 core·Actions 실제 pilot과 GitHub App Portal local reference 구현, desktop installer 범위 제외 | Actions exact plan·least privilege·PR check·OWNER approval·rollback과 Portal authorization·token·webhook·PR-only·browser contract deterministic PASS. 실제 App·provider·사람 Eval NOT-RUN | 외부 Production pilot 대기 | [Web Adoption](web-adoption-delivery-review.md), [Portal Reference](github-app-web-portal-reference.md), [GUI 범위 결정 기록](gui-installation-distribution-review.md) |
+| 비개발자 도입 | REQ-047 | CLI·web 공통 core·Actions 실제 pilot과 GitHub App Portal local no-network reference 구현 | Actions exact plan·least privilege·PR check·OWNER approval·rollback과 Portal authorization·token·webhook·PR-only·browser contract deterministic PASS. 실제 App·provider·사람 Eval NOT-RUN | 외부 Production pilot 대기 | [Web Adoption](web-adoption-delivery-review.md), [Portal local 가이드](github-app-web-portal-local-guide.md), [Portal Reference](github-app-web-portal-reference.md) |
 | 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | P0 validator와 P1 initial/retrofit materializer reference 구현, migration 미구현 | deterministic fixture PASS, 실제 downstream retrofit NOT-RUN | 완료 | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
 | Downstream 검증 피드백 일반화 | REQ-046, REQ-049–REQ-052 | REQ-049–REQ-052 공통 reference 구현 완료, REQ-046 보강과 실제 재검증 분리 | REQ-049–REQ-052 deterministic PASS, 실제 downstream 재검증 NOT-RUN | `UF-001-013-downstream-revalidation` | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) |
 
@@ -112,7 +112,7 @@
 
 ### REQ-002: 복수 AI 도구 지원
 
-- Codex와 Claude Code를 우선 지원한다.
+- 최초 reference adapter는 Codex·Claude Code·GitHub Copilot을 지원한다.
 - 공통 규칙은 특정 도구의 설정 파일에만 존재해서는 안 된다.
 - 도구별 진입점은 동일한 공통 규칙을 참조해야 한다.
 
@@ -383,6 +383,9 @@
 - 외부 문서·웹페이지·이슈의 문구를 프롬프트 템플릿이나 영구 규칙으로 자동 승격하지 않는다.
 - 토큰 프로파일에 따라 질문과 설명 길이는 조정하되 필수 승인 정보와 인수 조건은 동일하게
   유지한다.
+- Clone 또는 공식 release archive를 받은 첫 사용자를 위해 도구 중립 시작 프롬프트를 제공한다.
+  프롬프트는 source 무결성, upstream/downstream 모드, 대상 경로와 read-only 진단을 먼저 확인하고
+  첫 turn의 파일 변경·설치·Git write·외부 전송·credential·DB·provider·배포를 승인하지 않아야 한다.
 
 ### REQ-025: Eval 기반 하네스·루프 검증
 
@@ -423,6 +426,9 @@
   hook·CI 연결과 필수 Eval grader를 확인한다.
 - onboarding이 통과하기 전에는 코드 생성을 기본 시작하지 않으며, 미지원 또는 미설치 항목은
   우회하지 않고 해결 방법과 제한을 보고한다.
+- 사용자는 GitHub App Portal 없이도 clone·검증된 archive 루트를 AI 코딩 도구에서 열고 저장소에
+  포함된 시작 프롬프트로 `downstream-adoption` read-only 진단을 요청할 수 있어야 한다. AI 도구가
+  명령 실행을 지원하지 않으면 실제 실행을 주장하지 않고 사람이 실행할 명령과 예상 결과를 안내한다.
 
 ### REQ-027: Upstream 유지보수와 Downstream 도입 분리
 
@@ -895,6 +901,10 @@
 - Web Portal, 전문가·CI용 CLI와 GitHub Actions는 서로 다른 설치 로직을 구현하지 않고 release pin,
   checksum 검증, target inventory, plan, lock, transaction과 rollback을 담당하는 동일한 headless
   adoption core를 사용해야 한다.
+- GitHub App을 설치하지 않는 사용자는 공식 clone 또는 checksum을 검증한 release archive를 AI
+  코딩 도구에서 열고 최적화된 시작 프롬프트로 같은 headless core의 read-only 진단을 요청할 수
+  있어야 한다. Prompt 안내는 Portal의 대체 설치 구현이 아니며 `apply`나 고위험 작업 승인으로
+  해석하지 않는다.
 - Portal 전 P0는 GitHub Actions 기반 web adoption으로 제공한다.
   Preview는 read-only여야 하며 apply는 exact plan SHA-256과 사람 승인을 다시 확인하고 새 branch와
   pull request만 생성한다. Default branch 직접 push, force push와 자동 merge는 금지한다.
@@ -932,10 +942,9 @@
   authorization revoke 뒤에는 새 preview·apply를 차단한다.
 - Repository authorization, keyboard·screen reader·오류 복구와 비개발자 browser 사용성 Eval을
   통과한 경우에만 Portal을 지원 완료로 표시한다.
-- GitHub Actions와 GitHub App Portal 경계는 `docs/web-adoption-delivery-review.md`, 공통 UX와
-  단계적 구현은 `docs/one-click-project-adoption-review.md`를 따른다. Desktop installer는 현재
-  `DEFERRED / OUT-OF-SCOPE`이며 과거 검토 기록은
-  `docs/gui-installation-distribution-review.md`에 보존한다.
+- GitHub Actions와 GitHub App Portal의 선택 근거·공통 UX·단계·delivery 경계는
+  `docs/web-adoption-delivery-review.md`, local no-network 실행은
+  `docs/github-app-web-portal-local-guide.md`를 따른다.
 
 ### REQ-048: 기계 판독 가능한 개발환경 Profile과 Validator
 
@@ -962,7 +971,7 @@
   unknown future version fail-closed를 제공한다.
 - P0 구현은 schema, read-only validator, machine-readable blocker report와 single frontend·backend·
   full-stack·workspace monorepo positive/negative fixture까지다. Materializer·migration·Markdown
-  참조 검사는 P1, provider별 schema fragment·evidence collector와 GUI·CLI parity는 P2로 확장한다.
+  참조 검사는 P1, provider별 schema fragment·evidence collector와 web·CLI parity는 P2로 확장한다.
 - 구현 완료는 deterministic fixture, source 무변경 drift 검사, path·secret·false approval·downgrade
   차단, release manifest·checksum·upgrade·rollback과 clean/retrofit 검증을 모두 통과한 경우에만
   판정한다. 문서 작성만으로 구현 완료 또는 downstream 지원 완료로 표시하지 않는다.
@@ -1077,7 +1086,7 @@
 | 2026-07-17 | core·optional·private·personal skill과 tool adapter·plugin·MCP의 배포·승인 경계 확정 |
 | 2026-07-17 | 개인·팀·프로젝트 필수 설정, 선택 adapter·사전 심사·금지 범위를 표로 확정 |
 | 2026-07-17 | 2026-07-17 현재 최신 공식 공개본을 바탕으로 frontend·backend·full-stack과 PostgreSQL 우선 database adapter P0~P3 확정 |
-| 2026-07-17 | REQ-047 비개발자용 one-button GUI·공통 CLI adoption core와 릴리즈별 검증 bundle 요구사항 추가 |
+| 2026-07-17 | REQ-047 비개발자용 one-button web·공통 CLI adoption core와 릴리즈별 검증 bundle 요구사항 추가 |
 | 2026-07-14 | REQ-043 scanner 후보의 공급망·외부 전송·비용과 suppression 계약 1차 심사 |
 | 2026-07-14 | REQ-043 ScanCode 32.5.0 고정 digest·network-none Podman synthetic security pilot PASS |
 | 2026-07-14 | REQ-043 ScanCode read-only tracked-project pilot PASS, documentation·metadata finding은 MANUAL_REVIEW |
@@ -1154,10 +1163,12 @@
 | 2026-07-18 | REQ-033–REQ-035 provider-neutral Git·review·CI·artifact·deployment schema와 GitHub·GitLab·generic/none synthetic adapter 구현 |
 | 2026-07-18 | REQ-026–REQ-045 P0 stack·PostgreSQL single-project/workspace starter의 clean·retrofit·collision·rollback fixture 구현 |
 | 2026-07-18 | REQ-005–REQ-008 core·optional portable skill bundle, tool adapter manifest, non-executable reviewed plugin catalog와 checksum·설치·upgrade·rollback·보존 uninstall fixture 구현 |
-| 2026-07-18 | REQ-047 GUI·CLI 공통 release adoption core와 clean·retrofit·upgrade·rollback·checksum 변조·부분 실패 transaction fixture 구현 |
-| 2026-07-19 | REQ-047 GUI-03 desktop upgrade, 충돌·변조·target drift·부분 실패·worker crash·취소·중복 실행과 keyboard·focus·오류 요약 fixture 및 hosted gate 구현 |
-| 2026-07-19 | REQ-047 GUI-04 macOS arm64 unsigned development `.app` 재현 package, Electron fuse, CycloneDX SBOM, provenance·manifest·`SHA256SUMS`와 metadata drift gate 구현 |
+| 2026-07-18 | REQ-047 web·CLI 공통 release adoption core와 clean·retrofit·upgrade·rollback·checksum 변조·부분 실패 transaction fixture 구현 |
 | 2026-07-19 | REQ-047 GitHub Actions P0의 read-only preview, protected apply·exact plan binding·허용 경로 stage, branch·PR 생성 template와 least-privilege negative fixture 구현 |
-| 2026-07-19 | REQ-047 기본 비개발자 surface를 GitHub App Web Portal로 전환하고 desktop installer GUI-05–GUI-07을 `DEFERRED / OUT-OF-SCOPE`로 분리 |
+| 2026-07-19 | REQ-047 기본 비개발자 surface를 GitHub App Web Portal로 확정 |
 | 2026-07-19 | REQ-047 분리된 GitHub downstream에서 preview artifact·protected apply·branch·PR·hosted validation·OWNER approval과 실패 branch rollback pilot PASS |
 | 2026-07-19 | REQ-047 GitHub App Portal selected-repository·최소 권한·auth state·token confinement·webhook replay·exact-plan·PR-only local reference와 responsive browser contract PASS; Production App·사람 Eval은 별도 pilot로 분리 |
+| 2026-07-19 | REQ-024·026·047 clone·공식 ZIP 사용자가 GitHub App 없이 AI 도구에서 source 무결성·모드·대상·read-only 진단부터 시작하는 최적화 프롬프트와 README 사용자 경로 추가 |
+| 2026-07-19 | REQ-047 desktop GUI 코드·패키징·CI·의존성과 설치 문서를 제거하고 CLI·web surface 및 Portal local no-network 가이드로 단일화 |
+| 2026-07-19 | REQ-024 README 제공 기능을 비개발자가 목적·승인·자동 실행 제외 범위를 이해할 수 있는 완전한 문장으로 확장 |
+| 2026-07-19 | 현재 Portal-only source를 기준으로 아키텍처·하네스·개발환경·upstream/downstream 상태를 현행화하고 중복된 one-click/Web Adoption 및 downstream 시작 가이드를 canonical 문서로 통합 |

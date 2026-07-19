@@ -5,7 +5,7 @@
     "commit": "1111111111111111111111111111111111111111",
     "archivePath": "evals/fixtures/release-adoption/v1.bundle.json",
     "archiveSha256": "sha256:e4947e763e9497eb07b0c729a3fafea6a8c4791377a9d1107d36c62e3119bafb",
-    "manifestSha256": "sha256:24a1538d91c51d8b829b2931f8b9430226874bda565c484d1b511301f452ba17"
+    "manifestSha256": "sha256:98344d75f769c70ed333505466c0455472dea4517103995e4e46c38fd5991c88"
   },
   "components": {
     "stackProfile": {
@@ -20,12 +20,6 @@
   "selection": {
     "optionalSkills": ["frontend"],
     "adapters": ["codex"]
-  },
-  "desktop": {
-    "artifactStatus": "UNSIGNED_DEVELOPMENT_ONLY",
-    "signing": "NOT_RUN",
-    "notarization": "NOT_RUN",
-    "usability": "NOT_RUN"
   },
   "execution": {
     "network": "NOT_RUN",

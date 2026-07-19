@@ -2,9 +2,9 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**35 library files** across 3 modules
+**32 library files** across 2 modules
 
-## Scripts (31 files)
+## Scripts (30 files)
 
 - `scripts/github-app-portal.mjs` — validatePortalConfiguration, authorizeRepository, verifyWebhookDelivery, redactPortalValue, createPortalCoordinator, AuthStateStore, …
 - `scripts/upstream-lock.mjs` — sha256, safeRelativePath, targetPath, canonicalContentHash, validateUpstreamLock, serializeUpstreamLock, …
@@ -14,16 +14,15 @@
 - `scripts/pilot-results.mjs` — hashJson, validatePilotCampaign, validatePilotResult, aggregatePilotResults
 - `scripts/release-adoption.mjs` — sha256, validateReleaseAdoptionManifest, inspectReleaseAdoption, runReleaseAdoption
 - `scripts/stack-quality-adapters.mjs` — validateQualityProfile, runQualityProfile, previewQualityProfile, readQualityProfile
-- `scripts/release-adoption-surfaces.mjs` — runCliAdoption, runGuiAdoption, runWebAdoption
 - `scripts/skill-distribution.mjs` — sha256, validateSkillDistribution, runSkillDistribution
 - `scripts/validate-repository-state.mjs` — validateRepositoryState, captureTrackedState, compareCheckOnlyState
 - `scripts/validate-requirement-traceability.mjs` — validateTraceability, requiresManifestChange, handoffTraceabilityProjection
 - `scripts/adapter-parity.mjs` — validateAdapterParity, readParityManifest
 - `scripts/application-inventory.mjs` — discoverApplications, readDeclaredInventory
-- `scripts/desktop-package-provenance.mjs` — validateDesktopDevelopmentPackage, buildDesktopDevelopmentPackage
 - `scripts/evaluate-skill-evolution.mjs` — sha256, evaluateSkillEvolution
 - `scripts/fastapi-contract-adapter.mjs` — evaluateFastApiContract, readJson
 - `scripts/materialize-development-profile.mjs` — planDevelopmentProfileMaterialization, applyDevelopmentProfileMaterialization
+- `scripts/release-adoption-surfaces.mjs` — runCliAdoption, runWebAdoption
 - `scripts/stack-profile-fixtures.mjs` — validateStackProfile, runStackProfileFixture
 - `scripts/validate-downstream-feedback-triage.mjs` — feedbackTraceabilityProjection, validateDownstreamFeedbackTriage
 - `scripts/github-actions-adoption.mjs` — runGitHubActionsAdoption
@@ -31,12 +30,8 @@
 - `scripts/provider-profile-adapters.mjs` — validateProviderProfile
 - `scripts/upgrade-core.mjs` — applyFileTransaction
 - `scripts/validate-delivery-evidence.mjs` — validateDeliveryEvidence
-- _…and 6 more files_
-
-## Desktop (2 files)
-
-- `desktop/ipc-contract.mjs` — validateSelectedRoot, validateDesktopRequest, cancelledAdoptionResult, summarizeAdoptionResult
-- `desktop/session.mjs` — DesktopAdoptionSession
+- `scripts/validate-fullstack-locale.mjs` — validateFullstackLocale
+- _…and 5 more files_
 
 ## Evals (2 files)
 

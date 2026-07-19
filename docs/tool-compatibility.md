@@ -120,7 +120,8 @@ Hallmark는 공식적으로 Claude Code, Cursor, Codex용 스킬을 제공하므
 2. 설치 산출물만 별도 디렉터리에 펼쳐 실행 파일과 훅을 재검사한다.
 3. 네트워크 차단 환경에서 설치 후 핵심 시나리오를 실행한다.
 4. 예상 파일 외의 홈 디렉터리 변경이 없는지 전후 스냅샷으로 확인한다.
-5. 통과한 항목만 `skills.lock.yaml`의 허용 목록에 넣는다.
+5. 통과한 portable skill만 reviewed release manifest에 넣고, 실제 적용 결과는 downstream
+   `.ai/manifests/skills.lock.json`으로 고정한다. Plugin catalog 등재는 실행 승인이 아니다.
 
 ## 조사 출처
 

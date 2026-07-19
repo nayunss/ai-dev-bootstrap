@@ -1,10 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/common-ai-development-harness/release-adoption.schema.json",
-  "title": "GUI and CLI shared release adoption contract",
+  "title": "CLI and web shared release adoption contract",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "release", "components", "selection", "desktop", "execution"],
+  "required": ["schemaVersion", "release", "components", "selection", "execution"],
   "properties": {
     "schemaVersion": { "const": 1 },
     "release": {
@@ -39,17 +39,6 @@
           "items": { "enum": ["codex", "claude-code", "github-copilot"] },
           "uniqueItems": true
         }
-      }
-    },
-    "desktop": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["artifactStatus", "signing", "notarization", "usability"],
-      "properties": {
-        "artifactStatus": { "const": "UNSIGNED_DEVELOPMENT_ONLY" },
-        "signing": { "const": "NOT_RUN" },
-        "notarization": { "const": "NOT_RUN" },
-        "usability": { "const": "NOT_RUN" }
       }
     },
     "execution": {

@@ -8,14 +8,14 @@
 
 > **현재 상태**
 >
-> - 설치 가능한 GUI 앱은 아직 없다.
-> - 지금 바로 검증된 기본 경로는 terminal에서 실행하는 CLI다.
+> - 비개발자용 Portal은 local no-network reference까지 구현됐다.
+> - 로컬 프로젝트에 사용하는 기본 경로는 terminal CLI 또는 AI 도구 시작 프롬프트다.
 > - 설치 없는 GitHub Actions P0 delivery mechanics는 실제 분리 저장소에서 검증됐지만 현재 release
 >   allowlist는 synthetic fixture다.
 > - 기본 명령은 프로젝트를 바꾸지 않는 `preview`다.
 > - `apply`와 `--approve`가 포함된 명령만 파일을 변경할 수 있다.
 > - `v0.2.8-pilot`의 전체 release adoption은 reference 구현이다. 일반 사용자가 바로 적용할
->   production manifest나 서명된 installer는 아직 제공하지 않는다.
+>   production manifest는 아직 제공하지 않는다.
 
 명령의 `/absolute/path/to/project`는 설정하려는 프로젝트 폴더의 절대 경로로 바꾼다. 예를 들어
 macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명/Documents/my-app`처럼 입력한다.
@@ -25,11 +25,12 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 | 원하는 일 | 이동할 절 |
 |---|---|
 | 프로젝트 상태만 안전하게 확인하고 싶다 | [빠른 시작](#빠른-시작-변경-없이-확인) |
+| Clone·ZIP을 받은 뒤 AI 도구에 무엇을 입력할지 모르겠다 | [AI 도구 첫 프롬프트](#ai-도구에-첫-프롬프트-입력하기) |
 | Codex·Claude Code·GitHub Copilot 설정을 프로젝트에 연결하고 싶다 | [AI 도구 연결](#ai-도구-연결하기) |
 | Stack starter나 skill bundle을 검토된 manifest로 적용하고 싶다 | [고급 적용](#고급-적용-검토된-manifest가-있는-경우) |
 | Dependency 또는 보안 도구를 설치하고 싶다 | [별도 설치](#dependency와-보안-도구는-별도-설치) |
-| Apple 가입 없이 browser에서 적용 흐름을 검증하고 싶다 | [GitHub Actions P0](#설치-없는-github-actions-p0) |
-| GUI 앱을 설치하고 싶다 | [GUI 설치 상태](#gui-설치-상태) |
+| GitHub Actions 화면에서 적용 흐름을 검증하고 싶다 | [GitHub Actions P0](#설치-없는-github-actions-p0) |
+| Browser에서 Portal 흐름을 확인하고 싶다 | [Local no-network Portal](#github-app-web-portal-local-no-network) |
 
 ## 먼저 알아둘 안전 경계
 
@@ -44,6 +45,39 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 
 실제 적용 전에는 대상 프로젝트에서 새 branch를 만들고 기존 변경을 commit하거나 별도로 보존한다.
 기존 파일이 예상과 다르면 자동 덮어쓰지 않고 적용을 차단한다.
+
+## AI 도구에 첫 프롬프트 입력하기
+
+터미널 명령을 모두 알 필요는 없다. 이 저장소를 clone하거나 공식 release ZIP을 내려받아 압축을 푼
+뒤, 해당 폴더를 AI 코딩 도구에서 열고
+[Clone·ZIP 사용자용 AI 도입 시작 프롬프트](../.ai/prompts/adopt-cloned-bootstrap.md)를 복사한다.
+프롬프트의 `<대상 프로젝트 절대 경로>`만 실제 경로로 바꾼다.
+
+- 다른 프로젝트에 공통 환경을 적용하려면 그 프로젝트의 절대 경로를 입력한다.
+- 아직 적용할 프로젝트가 없고 문서만 살펴보려면 `미정`으로 둔다.
+- 이 저장소 자체를 유지보수하려는 contributor만 작업 모드로 `upstream-maintenance`를 사용한다.
+  일반 도입 사용자는 `downstream-adoption`이다.
+
+권장 프롬프트는 첫 응답에서 다음 다섯 가지를 먼저 확인하도록 최적화돼 있다.
+
+1. Clone인지 ZIP인지와 확인 가능한 release tag·commit·checksum
+2. Upstream 유지보수인지 downstream 도입인지
+3. 실제 대상 프로젝트 경로
+4. 읽기 전용 진단 결과와 변경 파일 0건
+5. 다음 한 단계와 그 단계에 필요한 사람 승인
+
+AI가 곧바로 설치·수정하거나 질문을 많이 늘어놓으면 진행하지 않는다. 먼저 source 무결성, 대상,
+읽기 전용 결과가 명확해야 한다. 이 시작 프롬프트는 `apply`, dependency 설치, Git write나 배포를
+승인하지 않는다.
+
+### Clone과 ZIP의 차이
+
+Git clone은 tag와 commit을 Git으로 확인할 수 있다. ZIP 사용자는 공식 GitHub Release asset인지와
+해당 release note의 SHA-256을 별도로 대조해야 한다. GitHub의 자동 생성 **Source code** archive나
+출처를 확인할 수 없는 ZIP을 설치 자산 또는 검증된 release bundle로 간주하지 않는다.
+
+AI 도구가 shell 명령을 실행할 수 없는 경우에는 실행했다고 가정하지 말고, 사용자가 직접 실행할
+읽기 전용 명령을 제시하도록 프롬프트에 명시돼 있다.
 
 ## 빠른 시작: 변경 없이 확인
 
@@ -63,8 +97,7 @@ cd ai-dev-bootstrap
 git checkout v0.2.8-pilot
 ```
 
-이 clone은 CLI와 문서를 받는 과정이며 GUI 설치가 아니다. Release page의 source archive도 GUI
-installer가 아니다.
+이 clone은 CLI와 문서를 받는 과정이다.
 
 Release archive를 직접 내려받았다면 release note의 SHA-256과 파일 checksum을 대조한다.
 `v0.2.8-pilot` archive SHA-256은
@@ -161,10 +194,9 @@ scripts/bootstrap skills preview /absolute/path/to/project /path/to/release/mani
 scripts/bootstrap skills apply /absolute/path/to/project /path/to/release/manifest.json --optional=frontend --adapters=codex --approve
 ```
 
-`scripts/bootstrap adopt`는 GUI와 CLI가 공유하는 headless adoption core의 reference 진입점이다.
+`scripts/bootstrap adopt`는 CLI와 web surface가 공유하는 headless adoption core의 reference 진입점이다.
 `v0.2.8-pilot`에는 실제 사용자 프로젝트에 바로 적용할 production release-adoption manifest나
-서명된 desktop app이 포함되지 않으므로, 저장소의 synthetic fixture를 실제 프로젝트 설치 입력으로
-사용하지 않는다.
+bundle이 포함되지 않으므로 저장소의 synthetic fixture를 실제 프로젝트 설치 입력으로 사용하지 않는다.
 
 ## 설치 없는 GitHub Actions P0
 
@@ -273,23 +305,23 @@ node scripts/validate-production-readiness.mjs /path/to/profile.json --expect-re
 5. project regression과 security gate를 다시 실행한다.
 6. 실패하면 생성 시점의 rollback record 또는 이전 release pin으로 복귀한다.
 
-자동 rollback은 installer가 관리하고 hash가 변하지 않은 파일만 대상으로 한다. 사용자가 변경한
+자동 rollback은 adoption lock이 관리하고 hash가 변하지 않은 파일만 대상으로 한다. 사용자가 변경한
 파일, dependency, DB와 provider rollback은 각각 별도 절차와 승인이 필요하다.
 
-## GUI 설치 상태
+## GitHub App Web Portal local no-network
 
-GUI·CLI 공통 plan·lock·transaction core와 synthetic parity fixture는 구현돼 있다. 그러나
-`v0.2.8-pilot`에는 macOS·Windows·Linux용 서명된 desktop installer가 없으며, desktop 발행은 현재
-`DEFERRED / OUT-OF-SCOPE`다. GitHub 저장소의 비개발자 기본 경로는 GitHub App Web Portal이고,
-현재는 그 전 단계인 GitHub Actions P0를 검증한다.
+Portal은 로컬 reference까지 구현돼 있다. 다음 명령으로 loopback demo를 실행하면 synthetic
+repository의 선택·preview·승인·PR-only 결과 흐름을 확인할 수 있다.
 
-- 설치 asset 확인: <https://github.com/nayunss/ai-dev-bootstrap/releases/latest>
-- GUI 설치 자산과 현재 배포 상태:
-  [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md)
-- GUI UX와 공통 core 설계:
-  [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md)
+```sh
+npm run portal:demo
+```
 
-Release page의 source archive나 unsigned development package를 desktop 앱으로 설치하지 않는다.
+브라우저에서 <http://127.0.0.1:4173>을 연다. 실제 GitHub 로그인, App 설치, provider API,
+repository write와 PR 생성은 수행하지 않는다. 실행 순서와 오류 확인 방법은
+[GitHub App Web Portal 로컬 no-network 사용 가이드](github-app-web-portal-local-guide.md),
+보안 계약과 Production 중단 조건은
+[GitHub App Web Portal Reference](github-app-web-portal-reference.md)를 따른다.
 
 ## 문제가 생겼을 때
 
@@ -298,4 +330,39 @@ Release page의 source archive나 unsigned development package를 desktop 앱으
 - target drift: 사용자가 변경한 파일을 자동 덮어쓰지 말고 유지·재적용·제외 중 하나를 사람이 정한다.
 - upstream 공통 결함: project 고유 정보와 비밀을 제거하고
   [upstream feedback 계약](upstream-feedback-log.md)에 따라 재현 조건과 release baseline을 기록한다.
+
+## 완료 판정과 피해야 할 실수
+
+Downstream 도입 완료는 clean clone에서 재현할 수 있고, 개인 전역 설정이 바뀌지 않았으며,
+upstream release·commit·checksum과 project override·rollback이 기록되고, 공통 gate와 실제 project
+gate가 모두 PASS한 상태다. `BLOCKED`, `NOT-RUN`, evidence 누락과 미응답 `TBD`가 하나라도 있으면
+완료로 표시하지 않는다. Pilot은 등록된 모든 tester의 필수 배정이 PASS해야 별도로 완료된다.
+
+- 조직 비밀·내부 endpoint·개인정보를 public issue나 Eval 결과에 넣지 않는다.
+- `.env*`를 AI에게 읽히거나 생성시키지 않는다. 비밀 없는 schema와 reference 이름만 기록한다.
+- 기존 project에 starter 파일을 그대로 복사하지 않는다. Inventory와 retrofit preview를 먼저
+  확인한다.
+- Backend에 frontend를 추가하는 등 stack이 바뀌면 application inventory, CodeSight, hook, CI와
+  deployment 경계를 다시 계산한다.
+- GitHub App Portal의 local PASS를 실제 GitHub 연결이나 Production 승인으로 해석하지 않는다.
+
+### `Conversation interrupted`가 표시된 경우
+
+이 메시지는 현재 응답 생성이 중단됐다는 뜻이다. `/feedback`은 대화를 재개하는 명령이 아니라 Codex
+feedback 창을 열어 문제 설명과 선택적으로 log를 제출하는 명령이다. 먼저 같은 대화에 마지막 요청을
+다시 보내되 다음처럼 현재 상태 확인을 포함한다.
+
+```text
+직전 작업이 중단됐습니다. 새 작업을 시작하기 전에 현재 Git 상태와 이미 완료된 외부 작업을 확인하고,
+중복 실행하지 말고 남은 단계부터 이어서 진행해 주세요. 파일 삭제·push·merge·release·배포는
+기존 승인 범위를 다시 확인한 뒤 실행하세요.
+```
+
+반복되거나 재현 가능한 오류, 잘못된 차단 또는 제품 문제라면 `/feedback`을 입력해 feedback dialog를
+열고 필요한 경우 현재 session과 log를 첨부한다. 비밀, `.env*`, credential과 개인정보가 포함되지
+않았는지 제출 전에 확인한다. Codex 공식 slash command 안내에서도 `/feedback`은 feedback 제출과
+선택적 log 첨부 용도이며, 제출 뒤 session ID를 받을 수 있다고 설명한다.
+
+- [Codex IDE slash commands](https://learn.chatgpt.com/docs/developer-commands?surface=ide)
+- [Codex CLI feedback](https://learn.chatgpt.com/docs/developer-commands#send-feedback-with-feedback)
 - 다음 작업 인계: 루트 `HANDOFF.md`, 실제 Git 상태와 관련 requirement를 함께 현행화한다.

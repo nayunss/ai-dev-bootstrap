@@ -50,8 +50,6 @@ jobs:
           npm run test:release-adoption
           npm run test:github-actions-adoption
           npm run test:github-app-portal
-          npm run test:desktop-gui
-          npm run test:desktop-resilience
           npm run test:capability-suite
           npm run test:stack-quality-adapters
           npm run test:adapter-parity
@@ -140,24 +138,3 @@ jobs:
           path: ${{ runner.temp }}/scancode-ci/output/summary.json
           if-no-files-found: error
           retention-days: 14
-
-  desktop-development-package:
-    runs-on: macos-14
-    timeout-minutes: 15
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: 22.23.1
-          cache: npm
-
-      - name: Install audited packaging tools and pinned Electron runtime
-        run: |
-          npm ci --ignore-scripts
-          node node_modules/electron/install.js
-
-      - name: Build and validate unsigned development package
-        run: npm run test:desktop-package
