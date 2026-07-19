@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 1 models | 0 components | 32 lib files | 10 env vars | 6 middleware
-> **Token savings:** this file is ~3,200 tokens. Without it, AI exploration would cost ~20,700 tokens. **Saves ~17,400 tokens per conversation.**
+> 0 routes | 1 models | 0 components | 33 lib files | 12 env vars | 6 middleware
+> **Token savings:** this file is ~3,300 tokens. Without it, AI exploration would cost ~21,200 tokens. **Saves ~17,900 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -96,6 +96,7 @@
 - `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
 - `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
+- `scripts/validate-web-adoption-pr.mjs` — function validateWebAdoptionPullRequest: ({...}, baseRevision, expectedPlanSha256, }) => void
 
 ---
 
@@ -103,12 +104,14 @@
 
 ## Environment Variables
 
+- `GITHUB_EVENT_PATH` **required** — scripts/validate-web-adoption-pr.mjs
 - `GITHUB_OUTPUT` **required** — scripts/github-actions-adoption.mjs
 - `GITHUB_STEP_SUMMARY` **required** — scripts/github-actions-adoption.mjs
 - `GITHUB_WORKSPACE` **required** — scripts/github-actions-adoption.mjs
 - `PATH` **required** — scripts/capability-suite.mjs
 - `QUALITY_NETWORK_ENFORCED` **required** — scripts/run-stack-quality.mjs
 - `RUNNER_TEMP` **required** — scripts/github-actions-adoption.mjs
+- `WEB_ADOPTION_BASE_REF` **required** — scripts/validate-web-adoption-pr.mjs
 - `WEB_ADOPTION_EXPECTED_PLAN_SHA256` **required** — scripts/github-actions-adoption.mjs
 - `WEB_ADOPTION_MODE` **required** — scripts/github-actions-adoption.mjs
 - `WEB_ADOPTION_RELEASE` **required** — scripts/github-actions-adoption.mjs

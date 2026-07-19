@@ -5,6 +5,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { runGitHubActionsAdoption } from "./github-actions-adoption.mjs";
+import { validateWebAdoptionPullRequest } from "./validate-web-adoption-pr.mjs";
 
 const root = process.cwd();
 const target = mkdtempSync(join(tmpdir(), "github-actions-adoption-"));
@@ -64,6 +65,32 @@ assert.equal(staged.includes("package.json"), true);
 assert.equal(staged.includes(".ai/manifests/release-adoption.lock.json"), true);
 assert.equal(readFileSync(join(target, "owner.txt"), "utf8"), "preserve\n");
 git("-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "apply v1");
+let validation = validateWebAdoptionPullRequest({
+  target,
+  baseRevision: initial,
+  expectedPlanSha256: planSha256,
+});
+assert.equal(validation.status, "PASS");
+assert.deepEqual(validation.changedPaths, staged);
+assert.throws(
+  () => validateWebAdoptionPullRequest({
+    target,
+    baseRevision: initial,
+    expectedPlanSha256: `sha256:${"0".repeat(64)}`,
+  }),
+  /approval plan does not match/u,
+);
+writeFileSync(join(target, "owner.txt"), "tampered after adoption\n");
+git("add", "owner.txt");
+git("-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "tamper owner");
+assert.throws(
+  () => validateWebAdoptionPullRequest({
+    target,
+    baseRevision: initial,
+    expectedPlanSha256: planSha256,
+  }),
+  /path boundary mismatch/u,
+);
 result = runGitHubActionsAdoption({
   mode: "preview",
   release: "reference-v2",
@@ -108,16 +135,28 @@ assert.equal(result.status, "BLOCKED");
 
 const workflow = readFileSync("docs/templates/github-actions-web-adoption-p0.yml", "utf8");
 const action = readFileSync(".github/actions/release-adoption/action.yml", "utf8");
+const validationAction = readFileSync(
+  ".github/actions/release-adoption-pr-validation/action.yml",
+  "utf8",
+);
 assert.match(workflow, /workflow_dispatch:/);
+assert.match(workflow, /pull_request:[\s\S]*branches: \[main\]/);
 assert.match(workflow, /operation:[\s\S]*type: choice/);
+assert.match(
+  workflow,
+  /validate-pr:[\s\S]*permissions:[\s\S]*contents: read[\s\S]*persist-credentials: false[\s\S]*release-adoption-pr-validation@REPLACE_WITH_EXACT_UPSTREAM_COMMIT/,
+);
 assert.match(workflow, /preview:[\s\S]*permissions:[\s\S]*contents: read/);
 assert.match(workflow, /apply:[\s\S]*permissions:[\s\S]*contents: write[\s\S]*pull-requests: write/);
 assert.match(workflow, /environment: web-adoption-apply/);
 assert.match(workflow, /github\.ref_name == github\.event\.repository\.default_branch/);
 assert.match(workflow, /REPLACE_WITH_EXACT_UPSTREAM_COMMIT/);
 assert.match(workflow, /gh pr create/);
+assert.match(workflow, /if ! gh pr create[\s\S]*git push origin --delete "\$BRANCH"[\s\S]*exit 1/);
 assert.doesNotMatch(workflow, /pull_request_target|write-all|git push origin (?:main|master)|gh pr merge|secrets\./u);
 assert.match(action, /using: composite/);
 assert.doesNotMatch(action, /\$\{\{\s*secrets\./u);
+assert.match(validationAction, /using: composite/);
+assert.doesNotMatch(validationAction, /\$\{\{\s*secrets\.|contents: write|pull-requests: write/u);
 
 process.stdout.write("REQ-047 GitHub Actions preview, approval, staged PR and least-privilege workflow fixture: PASS\n");

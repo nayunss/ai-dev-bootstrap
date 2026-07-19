@@ -1,6 +1,8 @@
 name: Web adoption P0
 
 on:
+  pull_request:
+    branches: [main]
   workflow_dispatch:
     inputs:
       operation:
@@ -23,6 +25,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  validate-pr:
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'web-adoption/')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: nayunss/ai-dev-bootstrap/.github/actions/release-adoption-pr-validation@REPLACE_WITH_EXACT_UPSTREAM_COMMIT
+        with:
+          base_ref: ${{ github.event.pull_request.base.ref }}
+
   preview:
     if: inputs.operation == 'preview'
     runs-on: ubuntu-24.04
@@ -73,6 +89,9 @@ jobs:
           git config user.email "web-adoption[bot]@users.noreply.github.com"
           git commit -m "chore(adoption): apply reviewed release"
           git push origin "HEAD:refs/heads/$BRANCH"
-          gh pr create --base "$BASE" --head "$BRANCH" \
-            --title "chore(adoption): apply reviewed release" \
-            --body "Protected web adoption run created this PR from approved plan $PLAN. Automatic merge is disabled."
+          if ! gh pr create --base "$BASE" --head "$BRANCH" \
+              --title "chore(adoption): apply reviewed release" \
+              --body "Protected web adoption run created this PR from approved plan $PLAN. Automatic merge is disabled."; then
+            git push origin --delete "$BRANCH"
+            exit 1
+          fi

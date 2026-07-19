@@ -6,11 +6,11 @@
 
 ## Scale
 
-1 database models · 32 library files · 6 middleware layers · 10 environment variables
+1 database models · 33 library files · 6 middleware layers · 12 environment variables
 
 **Database:** unknown, 1 models — see [database.md](./database.md)
 
-**Libraries:** 32 files — see [libraries.md](./libraries.md)
+**Libraries:** 33 files — see [libraries.md](./libraries.md)
 
 ## High-Impact Files
 
@@ -25,12 +25,14 @@ Changes to these files have the widest blast radius across the codebase:
 
 ## Required Environment Variables
 
+- `GITHUB_EVENT_PATH` — `scripts/validate-web-adoption-pr.mjs`
 - `GITHUB_OUTPUT` — `scripts/github-actions-adoption.mjs`
 - `GITHUB_STEP_SUMMARY` — `scripts/github-actions-adoption.mjs`
 - `GITHUB_WORKSPACE` — `scripts/github-actions-adoption.mjs`
 - `PATH` — `scripts/capability-suite.mjs`
 - `QUALITY_NETWORK_ENFORCED` — `scripts/run-stack-quality.mjs`
 - `RUNNER_TEMP` — `scripts/github-actions-adoption.mjs`
+- `WEB_ADOPTION_BASE_REF` — `scripts/validate-web-adoption-pr.mjs`
 - `WEB_ADOPTION_EXPECTED_PLAN_SHA256` — `scripts/github-actions-adoption.mjs`
 - `WEB_ADOPTION_MODE` — `scripts/github-actions-adoption.mjs`
 - `WEB_ADOPTION_RELEASE` — `scripts/github-actions-adoption.mjs`
