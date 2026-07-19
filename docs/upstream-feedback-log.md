@@ -3,7 +3,7 @@
 상태: 설계 승인
 
 downstream 작업 중 발견한 "upstream에 수정이 필요한 사항"을 기록하는 공통 계약이다.
-[제품 도입](downstream-getting-started.md)과 [하네스 검증](downstream-validation-guide.md)
+[제품 도입](bootstrap-user-guide.md)과 [하네스 검증](downstream-validation-guide.md)
 두 경우 모두 이 계약을 따른다.
 
 ## 원칙
@@ -105,7 +105,7 @@ release·commit·checksum을 고정한 실제 downstream 재시험 결과를 요
 
 ## 추적성
 
-- 관련 문서: [Downstream 시작 가이드](downstream-getting-started.md),
+- 관련 문서: [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md),
   [Downstream 검증 가이드](downstream-validation-guide.md),
   [유지보수와 도입 모델](adoption-and-maintenance-model.md),
   [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md),

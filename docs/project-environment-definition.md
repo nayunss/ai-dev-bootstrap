@@ -1,6 +1,7 @@
 # 프로젝트 개발환경 정의
 
-상태: 설계 승인
+상태: P0 profile·materializer reference 구현
+갱신일: 2026-07-19
 
 ## 결론
 

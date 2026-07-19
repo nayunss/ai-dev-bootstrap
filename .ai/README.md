@@ -29,6 +29,8 @@
 
 - `AGENTS.md`: Codex와 AGENTS 규약을 읽는 도구의 얇은 adapter
 - `CLAUDE.md`: Claude Code의 얇은 adapter
+- `adapters/github-copilot/files/.github/copilot-instructions.md`: Copilot을 선택한 downstream에
+  materialize하는 얇은 adapter source
 - 그 밖의 AI 도구: 이 README에서 시작해 `standards/engineering.md`, `standards/security.md`와
   `HANDOFF.md`, `../.codesight/wiki/index.md`를 같은 순서로 읽는다.
 

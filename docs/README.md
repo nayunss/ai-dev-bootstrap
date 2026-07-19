@@ -6,15 +6,15 @@
 
 | 문서 | 목적 | 상태 |
 |---|---|---|
-| [요구사항](requirements.md) | 승인된 REQ-001–REQ-052와 구현·검증 상태를 추적 | 설계 승인 |
+| [요구사항](requirements.md) | 승인된 REQ-001–REQ-052와 구현·검증 상태를 추적 | 적용 |
 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) | downstream 관찰을 일반화·중복 제거해 단일 primary REQ와 후속 task로 매핑 | 설계 승인 |
 | [설계 완료 감사](design-completion-audit.md) | 설계 명세 완료 범위, 실제 구현 경계와 감사 finding | 설계 승인 |
-| [권장 아키텍처](architecture.md) | 도구 중립 코어와 도구별 어댑터 구조 정의 | 설계 승인 |
+| [권장 아키텍처](architecture.md) | 현재 upstream의 도구 중립 코어·adapter·Portal-only 구조 정의 | 적용 |
 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md) | 공개 규약·저장소와 제공 이미지 기반 canonical 구조·adapter 비교 | 검토 완료 |
 | [AI 생성 코드 라이선스·출처](ai-generated-code-license-provenance.md) | public-code reference, dependency license와 source snippet provenance gate | 검토 완료 |
 | [API 계약과 문서화](api-contract-documentation.md) | FastAPI·OpenAPI·Swagger 역할, stack adapter와 production docs gate | 설계 승인 |
-| [하네스 구성](harness.md) | 최소 공통 하네스와 프로젝트별 구성 방식 정의 | 설계 승인 |
-| [프로젝트 개발환경 정의](project-environment-definition.md) | 기술 스택 자동 감지·질문·버전 확정 절차 | 설계 승인 |
+| [하네스 구성](harness.md) | 최소 공통 하네스와 프로젝트별 구성 방식 정의 | reference 구현 |
+| [프로젝트 개발환경 정의](project-environment-definition.md) | 기술 스택 자동 감지·질문·version 확정 절차 | P0 reference 구현 |
 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md) | canonical YAML·JSON Schema·drift·readiness validator 구현 범위 | P0 reference 구현 |
 | [2026년 기준 최초 검증 Stack과 Adapter 우선순위](stack-adapter-priority-review.md) | 기준일 현재 최신 공개 사용량 기반 frontend·backend·full-stack P0~P3 순서 | P0 reference fixture 구현 |
 | [저장소 구조와 Project Template 우선순위](repository-topology-and-template-priority.md) | 단일 starter·retrofit·workspace monorepo·전문 orchestrator 제공 순서 | P0 reference fixture 구현 |
@@ -28,13 +28,11 @@
 | [Git Hosting·Namespace·Remote 계약](git-hosting-and-remote-review.md) | GitHub·GitLab·enterprise·self-hosted provider-neutral 원격 계약 | reference 구현 |
 | [Branch 전략과 Review 승인 계약](branch-and-review-strategy.md) | project별 branch·merge·위험별 reviewer·self-review 경계 | 설계 승인 |
 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md) | 단독·다중 tester의 frontend·backend·full-stack 생성, AI provenance·증거·환류 절차 | 설계 승인 |
-| [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | 설계 승인 |
-| [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 설계 승인 |
+| [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md) | upstream.lock의 역할과 materialization 적용 원리 | reference 구현 |
 | [AI Dev Bootstrap 처음부터 끝까지 사용 가이드](bootstrap-user-guide.md) | release 선택·진단·onboarding·adapter·검증·update·rollback과 Portal 실행 | 적용 |
-| [GitHub 기반 Web Adoption Delivery](web-adoption-delivery-review.md) | Actions preview→승인→PR P0와 GitHub App Portal 승격 gate | Actions 실제 pilot·Portal local reference PASS |
+| [GitHub 기반 Web Adoption 설계·Delivery](web-adoption-delivery-review.md) | 진입 방식 비교·공통 UX·Actions preview→승인→PR P0와 Portal 승격 gate | Actions 실제 pilot·Portal local reference PASS |
 | [GitHub App Web Portal Reference](github-app-web-portal-reference.md) | 최소 권한·token·webhook·격리 계약, 로컬 비개발자 화면과 Production pilot 순서 | local deterministic PASS, Production NOT-RUN |
 | [GitHub App Web Portal 로컬 no-network 사용 가이드](github-app-web-portal-local-guide.md) | loopback demo 준비·실행·확인 순서와 구현 범위 | local deterministic PASS |
-| [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md) | Portal·CLI 공통 adoption core·release bundle과 rollback 검토 | shared core reference 구현 |
 | [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 설계 승인 |
 | [Upstream 피드백 기록 계약](upstream-feedback-log.md) | downstream 저장소에 남기는 upstream 수정 필요 사항 기록 형식 | 설계 승인 |
 | [Supabase·Firebase 보안](backend-as-a-service-security.md) | BaaS key·권한·Rules·배포 가드레일 | 설계 승인 |
@@ -83,9 +81,9 @@
 | [v0.2.4-pilot Release](releases/v0.2.4-pilot.md) | 공통 installer·adapter·canonical lock·upgrade rollback automation | 발행 완료 |
 | [v0.2.5-pilot Release](releases/v0.2.5-pilot.md) | deterministic capability·quality·adapter·FastAPI·full-stack materializer | 발행 완료 |
 | [v0.2.6-pilot Release](releases/v0.2.6-pilot.md) | REQ-047·048와 project별 profile·배포·저장소 구조 설계 baseline | 발행 완료 |
-| [v0.2.9-pilot Release](releases/v0.2.9-pilot.md) | GitHub App Portal local security·browser reference와 Production pilot 경계 | 발행 준비 |
 | [v0.2.7-pilot Release](releases/v0.2.7-pilot.md) | UF-001–UF-013 일반화·REQ 매핑과 tool-neutral 추적 자동화 우선순위 baseline | 발행 완료 |
 | [v0.2.8-pilot Release](releases/v0.2.8-pilot.md) | 전체 추적성·profile·provider·policy evidence·skill distribution·release adoption 공통 reference 구현 | 발행 완료 |
+| [v0.2.9-pilot Release](releases/v0.2.9-pilot.md) | GitHub App Portal local security·browser reference와 Production pilot 경계 | 발행 준비 |
 
 ## 문서 상태
 

@@ -29,7 +29,7 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 | Codex·Claude Code·GitHub Copilot 설정을 프로젝트에 연결하고 싶다 | [AI 도구 연결](#ai-도구-연결하기) |
 | Stack starter나 skill bundle을 검토된 manifest로 적용하고 싶다 | [고급 적용](#고급-적용-검토된-manifest가-있는-경우) |
 | Dependency 또는 보안 도구를 설치하고 싶다 | [별도 설치](#dependency와-보안-도구는-별도-설치) |
-| Apple 가입 없이 browser에서 적용 흐름을 검증하고 싶다 | [GitHub Actions P0](#설치-없는-github-actions-p0) |
+| GitHub Actions 화면에서 적용 흐름을 검증하고 싶다 | [GitHub Actions P0](#설치-없는-github-actions-p0) |
 | Browser에서 Portal 흐름을 확인하고 싶다 | [Local no-network Portal](#github-app-web-portal-local-no-network) |
 
 ## 먼저 알아둘 안전 경계
@@ -330,6 +330,21 @@ repository write와 PR 생성은 수행하지 않는다. 실행 순서와 오류
 - target drift: 사용자가 변경한 파일을 자동 덮어쓰지 말고 유지·재적용·제외 중 하나를 사람이 정한다.
 - upstream 공통 결함: project 고유 정보와 비밀을 제거하고
   [upstream feedback 계약](upstream-feedback-log.md)에 따라 재현 조건과 release baseline을 기록한다.
+
+## 완료 판정과 피해야 할 실수
+
+Downstream 도입 완료는 clean clone에서 재현할 수 있고, 개인 전역 설정이 바뀌지 않았으며,
+upstream release·commit·checksum과 project override·rollback이 기록되고, 공통 gate와 실제 project
+gate가 모두 PASS한 상태다. `BLOCKED`, `NOT-RUN`, evidence 누락과 미응답 `TBD`가 하나라도 있으면
+완료로 표시하지 않는다. Pilot은 등록된 모든 tester의 필수 배정이 PASS해야 별도로 완료된다.
+
+- 조직 비밀·내부 endpoint·개인정보를 public issue나 Eval 결과에 넣지 않는다.
+- `.env*`를 AI에게 읽히거나 생성시키지 않는다. 비밀 없는 schema와 reference 이름만 기록한다.
+- 기존 project에 starter 파일을 그대로 복사하지 않는다. Inventory와 retrofit preview를 먼저
+  확인한다.
+- Backend에 frontend를 추가하는 등 stack이 바뀌면 application inventory, CodeSight, hook, CI와
+  deployment 경계를 다시 계산한다.
+- GitHub App Portal의 local PASS를 실제 GitHub 연결이나 Production 승인으로 해석하지 않는다.
 
 ### `Conversation interrupted`가 표시된 경우
 

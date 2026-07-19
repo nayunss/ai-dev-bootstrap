@@ -75,8 +75,11 @@
 - `권장`: 자동화 수준을 높이지만 수동 대체 절차가 있음
 - `개인`: 개인 취향이며 팀 결과에 영향을 주지 않음
 
-필수 및 권장 플러그인은 지원 도구별 이름, 버전, 권한, 대체 절차를 `tools.yaml`에 기록한다.
-플러그인에서 얻은 결과도 테스트나 리뷰 같은 저장소의 품질 게이트를 통과해야 한다.
+현재 공통 배포는 실행 플러그인을 필수로 두지 않는다. 검토 후보는 skill distribution release의
+`reviewedPlugins` catalog에 이름·version·권한·대체 절차를 기록하되 catalog 등재를 설치 승인으로
+해석하지 않는다. 실제로 materialize한 portable skill과 adapter는 downstream
+`.ai/manifests/skills.lock.json`에서 version·hash·소유 파일을 검증한다. 플러그인에서 얻은 결과도
+테스트나 review 같은 저장소의 품질 gate를 통과해야 한다.
 
 공통 배포의 우선순위는 `감사된 Markdown 스킬 → 감사된 로컬 스크립트 → 훅 또는 플러그인
 런타임 → 외부 MCP` 순이다. 뒤로 갈수록 권한과 공격 표면이 커지므로 더 강한 검토가 필요하다.

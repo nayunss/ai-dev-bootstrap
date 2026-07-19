@@ -68,9 +68,12 @@ README.md
 사용한다. 이 사례들은 하나의 거대한 도구 전용 vault보다 canonical source와 adapter·generated
 artifact를 구분하는 근거가 된다.
 
-## 권장 구조
+## 현재 구조와 권장 구조
 
 ### Upstream 저장소
+
+다음은 2026-07-19 현재 구현된 upstream 구조다. 아직 지원하지 않는 adapter 후보를 빈 디렉터리로
+표시하지 않는다.
 
 ```text
 common-project/
@@ -80,34 +83,26 @@ common-project/
 ├── HANDOFF.md                        # 현재 세션 재개 상태
 ├── .ai/                              # canonical source of truth
 │   ├── README.md
-│   ├── standards/                    # engineering, security, testing 등
-│   ├── skills/<skill-name>/
-│   │   ├── SKILL.md
-│   │   ├── scripts/                  # 필요한 경우에만
-│   │   ├── references/               # 필요한 경우에만
-│   │   └── assets/                   # 필요한 경우에만
+│   ├── standards/                    # engineering, security
 │   ├── agents/<role>.md              # 역할·권한 계약
 │   ├── workflows/<workflow>.md       # SDLC·HITL·Eval 절차
 │   ├── prompts/                      # 사람 의도 입력이 필요한 최소 template
 │   ├── manifests/                    # tool·skill·MCP 승인 및 lock
 │   └── approvals/                    # 구조화된 명시 승인 기록
 ├── adapters/                         # 선택 도구별 생성 원본·mapping
-│   ├── claude/
+│   ├── claude-code/
 │   ├── codex/
-│   ├── copilot/
-│   ├── cursor/
-│   ├── gemini/
-│   └── cline/
-├── docs/                             # 요구사항·아키텍처·ADR·운영 문서
+│   └── github-copilot/
+├── docs/                             # 요구사항·가이드·schema·template·release
 ├── evals/                            # task·fixture·grader·baseline
 ├── scripts/                          # preview 가능한 bootstrap·validate·security
-├── templates/                        # downstream 생성 template
+├── web-portal/                       # local no-network Portal reference
 ├── security/                         # scanner rule·보안 fixture
-└── .github/workflows/                # upstream 자체 CI
+└── .github/                          # upstream CI와 web adoption composite action
 ```
 
 `adapters/`는 지원 도구가 늘어날 때 추가하는 권장 논리 구조다. 빈 폴더를 미리 만들지 않고 실제
-지원·검증된 도구만 생성한다. 도구가 root `AGENTS.md`와 canonical `SKILL.md`를 직접 읽을 수 있으면
+지원·검증된 도구만 생성한다. 도구가 root `AGENTS.md`와 canonical `.ai/` 문서를 직접 읽을 수 있으면
 별도 adapter를 만들지 않는다.
 
 ### Downstream에 materialize되는 구조

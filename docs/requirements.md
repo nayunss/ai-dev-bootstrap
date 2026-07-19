@@ -66,20 +66,20 @@
 | REQ-018 | [CodeSight](codesight.md) |
 | REQ-019–REQ-024 | [프로젝트 개발환경 정의](project-environment-definition.md), [토큰 예산별 프로파일](token-budget-profiles.md), [프롬프트 템플릿](prompt-templates.md), [유지보수와 도입 모델](adoption-and-maintenance-model.md) |
 | REQ-025 | [Eval 전략](evaluation-strategy.md), [SkillOpt 논문 검토](skillopt-paper-review.md), [capability task schema](schemas/capability-task.schema.json) |
-| REQ-026–REQ-028 | [Downstream 시작 가이드](downstream-getting-started.md), [Downstream 검증 가이드](downstream-validation-guide.md), [dependency bootstrap schema](schemas/dependency-bootstrap.schema.json), [dependency bootstrap template](templates/dependency-bootstrap.json) |
+| REQ-026–REQ-028 | [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [dependency bootstrap schema](schemas/dependency-bootstrap.schema.json), [dependency bootstrap template](templates/dependency-bootstrap.json) |
 | REQ-029–REQ-030 | [Supabase·Firebase 보안](backend-as-a-service-security.md), [Human-in-the-loop](human-in-the-loop.md) |
 | REQ-031 | [AI 보안 가드레일](ai-security-guardrails.md), [프로젝트 개발환경 정의](project-environment-definition.md) |
 | REQ-032 | [MCP 보안과 승인 절차](mcp-security.md) |
-| REQ-033–REQ-036 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md), [프로젝트 유지관리 기록](project-maintenance.md), [Downstream 시작 가이드](downstream-getting-started.md), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
+| REQ-033–REQ-036 | [GitHub Actions·Vercel 프로파일](ci-deployment-profiles.md), [프로젝트 유지관리 기록](project-maintenance.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
 | REQ-037–REQ-039 | [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [에이전트 체계](agents.md), [페르소나와 작업 역할](persona-and-role-guidelines.md), [Upstream 피드백 기록 계약](upstream-feedback-log.md), [adapter parity schema](schemas/adapter-parity.schema.json) |
 | REQ-040 | [웹서비스 Production 준비](web-service-production-readiness.md), [Production readiness template](templates/production-readiness.json) |
 | REQ-041 | [Eval 전략](evaluation-strategy.md), [SkillOpt 논문 검토](skillopt-paper-review.md), [skill evolution trial template](templates/skill-evolution-trial.json) |
 | REQ-042 | [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [upstream lock schema](schemas/upstream-lock.schema.json), [upstream adoption template](templates/upstream-adoption.json), [v0.2.4-pilot release](releases/v0.2.4-pilot.md) |
 | REQ-043 | [AI 생성 코드 라이선스·출처](ai-generated-code-license-provenance.md), [공급망 보안](supply-chain-security.md) |
 | REQ-044 | [API 계약과 문서화](api-contract-documentation.md), [FastAPI contract adapter schema](schemas/fastapi-contract-adapter.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
-| REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 시작 가이드](downstream-getting-started.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
+| REQ-045 | [유지보수와 도입 모델](adoption-and-maintenance-model.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [full-stack materializer schema](schemas/fullstack-materializer.schema.json), [v0.2.3-pilot release](releases/v0.2.3-pilot.md) |
 | REQ-046 | [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [Downstream 검증 가이드](downstream-validation-guide.md), [pilot result schema](schemas/distributed-pilot-result.schema.json), [pilot campaign template](templates/distributed-pilot-campaign.json), [feedback triage schema](schemas/downstream-feedback-triage.schema.json) |
-| REQ-047 | [GitHub 기반 Web Adoption](web-adoption-delivery-review.md), [GitHub App Web Portal local no-network 가이드](github-app-web-portal-local-guide.md), [GitHub App Web Portal Reference](github-app-web-portal-reference.md), [GitHub Actions P0 template](templates/github-actions-web-adoption-p0.yml), [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [Downstream 시작 가이드](downstream-getting-started.md), [공급망 보안](supply-chain-security.md) |
+| REQ-047 | [GitHub 기반 Web Adoption 설계·Delivery](web-adoption-delivery-review.md), [GitHub App Web Portal local no-network 가이드](github-app-web-portal-local-guide.md), [GitHub App Web Portal Reference](github-app-web-portal-reference.md), [GitHub Actions P0 template](templates/github-actions-web-adoption-p0.yml), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md), [release adoption schema](schemas/release-adoption.schema.json), [release adoption result schema](schemas/release-adoption-result.schema.json), [Upstream–Downstream 아키텍처](upstream-downstream-architecture.md), [공급망 보안](supply-chain-security.md) |
 | REQ-048 | [개발환경 Profile Schema·Validator 검토](development-environment-profile-schema-review.md), [프로젝트 개발환경 정의](project-environment-definition.md), [설정 경계](personal-team-settings-boundary.md), [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
 | REQ-049 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [웹서비스 Production 준비](web-service-production-readiness.md), [API 계약과 문서화](api-contract-documentation.md), [policy evidence schema](schemas/policy-evidence.schema.json) |
 | REQ-050 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CodeSight](codesight.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [repository state schema](schemas/repository-state-invariants.schema.json) |
@@ -112,7 +112,7 @@
 
 ### REQ-002: 복수 AI 도구 지원
 
-- Codex와 Claude Code를 우선 지원한다.
+- 최초 reference adapter는 Codex·Claude Code·GitHub Copilot을 지원한다.
 - 공통 규칙은 특정 도구의 설정 파일에만 존재해서는 안 된다.
 - 도구별 진입점은 동일한 공통 규칙을 참조해야 한다.
 
@@ -942,9 +942,9 @@
   authorization revoke 뒤에는 새 preview·apply를 차단한다.
 - Repository authorization, keyboard·screen reader·오류 복구와 비개발자 browser 사용성 Eval을
   통과한 경우에만 Portal을 지원 완료로 표시한다.
-- GitHub Actions와 GitHub App Portal 경계는 `docs/web-adoption-delivery-review.md`, local
-  no-network 실행은 `docs/github-app-web-portal-local-guide.md`, 공통 UX와 단계적 구현은
-  `docs/one-click-project-adoption-review.md`를 따른다.
+- GitHub Actions와 GitHub App Portal의 선택 근거·공통 UX·단계·delivery 경계는
+  `docs/web-adoption-delivery-review.md`, local no-network 실행은
+  `docs/github-app-web-portal-local-guide.md`를 따른다.
 
 ### REQ-048: 기계 판독 가능한 개발환경 Profile과 Validator
 
@@ -1171,3 +1171,4 @@
 | 2026-07-19 | REQ-024·026·047 clone·공식 ZIP 사용자가 GitHub App 없이 AI 도구에서 source 무결성·모드·대상·read-only 진단부터 시작하는 최적화 프롬프트와 README 사용자 경로 추가 |
 | 2026-07-19 | REQ-047 desktop GUI 코드·패키징·CI·의존성과 설치 문서를 제거하고 CLI·web surface 및 Portal local no-network 가이드로 단일화 |
 | 2026-07-19 | REQ-024 README 제공 기능을 비개발자가 목적·승인·자동 실행 제외 범위를 이해할 수 있는 완전한 문장으로 확장 |
+| 2026-07-19 | 현재 Portal-only source를 기준으로 아키텍처·하네스·개발환경·upstream/downstream 상태를 현행화하고 중복된 one-click/Web Adoption 및 downstream 시작 가이드를 canonical 문서로 통합 |

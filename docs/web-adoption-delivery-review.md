@@ -1,10 +1,35 @@
-# GitHub 기반 Web Adoption Delivery
+# GitHub 기반 Web Adoption 설계·Delivery
 
 상태: Actions 실제 pilot·Portal local reference PASS, Production Portal `NOT-RUN`
 검토일: 2026-07-19
 관련 요구사항: `REQ-047`
 관련 작업: `REQ-047-web-adoption-actions-p0`, `REQ-047-web-adoption-p0-pilot`,
 `REQ-047-github-app-web-portal`
+
+## 해결하려는 문제
+
+Release archive, checksum, canonical manifest와 materializer가 있어도 terminal에 익숙하지 않은
+사용자는 압축 해제, checksum 대조와 `preview`·`apply` 인자를 직접 연결하기 어렵다. 목표는 보안
+확인을 없애는 무확인 적용이 아니라 GitHub 저장소에서 다음 흐름으로 줄이는 것이다.
+
+```text
+GitHub 로그인 → repository 선택 → preview 확인 → 적용 승인 → Pull Request 검토
+```
+
+변경 preview, 무결성 검사, 충돌 차단과 rollback은 화면 뒤의 공통 core가 수행한다. 사용자가
+checksum 형식을 몰라도 쉬운 요약과 상세 plan을 함께 볼 수 있어야 한다.
+
+## 검토한 진입 방식
+
+| 방식 | 장점 | 한계 | 판정 |
+|---|---|---|---|
+| 일반 웹페이지의 실행 버튼 | 접근이 쉬움 | 사용자 repository에 안전하게 쓰려면 별도 권한·격리 계층 필요 | 단독 방식 제외 |
+| `curl \| sh` | 짧음 | 실행 전 내용·checksum 검토가 어려움 | 금지 |
+| IDE extension | IDE 안에서 diff 표시 가능 | 특정 IDE 종속 | 후속 adapter 후보 |
+| GitHub template | 신규 repository 생성이 쉬움 | 기존 project retrofit·충돌 처리에 부족 | 보조 방식 |
+| CLI | 자동화·CI·전문가 사용에 적합 | terminal 비숙련자의 기본 경로로 어려움 | Web과 공통 core 사용 |
+| GitHub Actions | 별도 service 없이 browser에서 preview·승인·PR 가능 | workflow 설치와 plan별 capability 차이 | Portal 전 P0 pilot PASS |
+| GitHub App Web Portal | repository 선택부터 PR review까지 한 화면에서 제공 | App 권한·token·webhook·격리 운영 검증 필요 | 기본 비개발자 surface |
 
 ## 결정
 
@@ -16,6 +41,39 @@ P0는 downstream 저장소에 설치된 `workflow_dispatch` 화면에서 reviewe
 plan SHA-256을 artifact로 제공한다. Apply는 exact plan SHA-256과 보호된
 `web-adoption-apply` environment의 사람 승인을 요구하고, default branch가 아닌 새 branch와 pull
 request만 생성한다.
+
+Portal·CLI·GitHub Actions는 각각 파일 적용 로직을 만들지 않는다.
+
+```text
+Reviewed release
+  ├─ exact commit·archive·checksum
+  ├─ canonical manifest
+  └─ migration·rollback note
+            │
+            ▼
+Shared adoption core
+  pin → verify → inspect → plan → approve → apply → validate → rollback
+            │
+            ├─ CLI: local preview·apply·validate·rollback
+            ├─ Actions P0: read-only preview → 승인 → branch·PR
+            └─ App Portal: repository 선택 → preview → 승인 → PR review
+```
+
+## Portal 사용자 흐름과 표시 원칙
+
+1. 사용자가 GitHub App을 선택한 account와 repository에만 설치한다.
+2. Portal이 exact release·commit·manifest와 현재 repository 권한을 검증한다.
+3. 격리 checkout에서 application·기존 lock·충돌·필수 질문을 read-only로 검사한다.
+4. 생성·변경·보존·차단 건수와 위험 요약, 선택 가능한 상세 diff를 보여준다.
+5. 충돌과 필수 결정 누락이 없을 때만 **적용 PR 만들기**를 활성화한다.
+6. 승인한 exact plan으로 새 branch와 PR만 만들고 default branch를 직접 수정하지 않는다.
+7. Hosted validation, release·commit·checksum을 PR에서 다시 검토한다.
+8. 실패하면 PR을 만들지 않고 원복 결과와 어떤 파일도 변경되지 않았는지를 쉬운 문장으로 표시한다.
+
+Stack, model·harness·비용, 법률·개인정보 책임자, retention, Production provider와 rollback은
+project마다 다르므로 Portal이 추정하지 않는다. `TBD`·`pending`은 dependency network, DB write,
+외부 model 호출 또는 Production 승인이 아니다. Keyboard semantic control, 명확한 focus·오류 요약,
+색상 외 상태 표시와 중복 요청 차단은 완료 조건에 포함한다.
 
 ## P0 흐름
 
@@ -134,3 +192,15 @@ provider API·persistent replay store·ephemeral compute·revoke와 모바일·P
 `REQ-047-github-app-web-portal-production-pilot`에서 별도 검증한다.
 
 Portal 배포·GitHub App 등록·권한 변경·Production 운영은 별도 사람 승인 전 `NOT-RUN`이다.
+
+## Release 동기화와 최종 완료 조건
+
+모든 release는 CLI entrypoint, tracked archive, canonical manifest, `SHA256SUMS`와
+migration·rollback note를 함께 제공해야 한다. Clean install·retrofit·upgrade·rollback,
+manifest/archive 변조·기존 파일 충돌·target drift·부분 실패 원복, Web·CLI plan parity와 게시
+asset 재다운로드 checksum 중 하나라도 실패하면 발행하지 않는다.
+
+Portal 지원 완료는 local 화면이나 synthetic fixture만으로 판정하지 않는다. 실제 분리된
+non-production repository에서 App 설치, authorization·webhook·token·격리 실행, read-only preview,
+사람 승인, branch·PR, hosted check, 실패 rollback과 비개발자 browser·keyboard·screen reader Eval이
+모두 PASS해야 한다.
