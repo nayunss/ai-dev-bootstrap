@@ -51,6 +51,16 @@ export function summarizeAdoptionResult(result) {
     FAIL: "작업 중 오류가 발생했습니다. 복구 결과를 확인하세요.",
     CANCELLED: "작업을 취소했습니다. 어떤 파일도 변경하지 않았습니다.",
   };
+  const userError = (value) => {
+    const error = String(value);
+    if (/checksum drift|manifest checksum|archive checksum/u.test(error)) return "선택한 release의 무결성 검증에 실패했습니다. 다른 파일을 선택하거나 공식 bundle을 다시 확인하세요.";
+    if (/target drift|target or rollback binding drift/u.test(error)) return "적용 이후 파일이 변경되어 자동 작업을 중단했습니다. 현재 파일을 보존했습니다.";
+    if (/existing target differs|blocked-existing|already exists/u.test(error)) return "기존 파일 또는 적용 기록과 충돌해 작업하지 않았습니다.";
+    if (/already installed/u.test(error)) return "선택한 release가 이미 적용되어 있습니다. 적용 상태 확인을 실행하세요.";
+    if (/another operation|다른 작업/u.test(error)) return "다른 작업이 진행 중입니다. 완료 또는 취소 후 다시 시도하세요.";
+    if (/worker|transaction completed/u.test(error)) return "작업 실행이 예기치 않게 종료되었습니다. 성공으로 처리하지 않았으며 적용 상태를 다시 확인하세요.";
+    return "요청을 안전하게 완료하지 못했습니다. 입력과 현재 적용 상태를 확인하세요.";
+  };
   return {
     status: result?.status ?? "INVALID",
     message: messages[result?.status] ?? messages.INVALID,
@@ -62,7 +72,7 @@ export function summarizeAdoptionResult(result) {
       remove: count("remove-managed"),
       blocked: count("blocked-existing-different"),
     },
-    errors: Array.isArray(result?.errors) ? result.errors.map(String) : [],
+    errors: Array.isArray(result?.errors) ? [...new Set(result.errors.map(userError))] : [],
     entries: entries.map(({ path, action, beforeSha256, afterSha256 }) => ({
       path,
       action,

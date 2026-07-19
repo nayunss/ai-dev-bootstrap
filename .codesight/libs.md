@@ -16,6 +16,7 @@
   - function runCapabilityTask: (task, root) => void
   - function aggregateCapabilityResults: (results) => void
   - function loadTask: (path) => void
+- `scripts/desktop-package-provenance.mjs` — function validateDesktopDevelopmentPackage: (outputValue) => void, function buildDesktopDevelopmentPackage: (outputValue) => void
 - `scripts/development-profile.mjs`
   - function serializeDevelopmentProfile: (profile) => void
   - function parseDevelopmentProfileYaml: (source) => void
@@ -41,6 +42,7 @@
 - `scripts/release-adoption.mjs`
   - function sha256: (value) => void
   - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void
+  - function inspectReleaseAdoption: (targetValue) => void
   - function runReleaseAdoption: (mode, manifest, sourceValue, targetValue, options) => void
 - `scripts/skill-distribution.mjs`
   - function sha256: (value) => void

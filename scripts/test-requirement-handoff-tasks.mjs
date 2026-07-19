@@ -17,7 +17,7 @@ assert.deepEqual(validateRequirementHandoffTasks(input), []);
 const missingTask = {
   ...input,
   requirements: input.requirements.replace(
-    "| 비개발자 도입 | REQ-047 | GUI·CLI 공통 core와 macOS 개발용 desktop shell·취소/재실행 구현, installer 미발행 | reviewed bundle 전체 흐름·core·IPC deterministic PASS와 화면 시각 확인, package·signing·notarization·사람 사용성 NOT-RUN | `REQ-047-gui-installer-delivery` |",
+    /^\| 비개발자 도입 \| REQ-047 \|.+\| `REQ-047-gui-installer-delivery` \|/mu,
     "| 비개발자 도입 | REQ-047 | 미완료 fixture | NOT-RUN | `REQ-047-one-click-adoption`, `REQ-047-gui-installer-delivery` |",
   ),
 };
