@@ -1,6 +1,6 @@
 {
   "name": "common-ai-development-harness",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "private": true,
   "packageManager": "npm@10.9.8",
   "engines": {
@@ -32,6 +32,8 @@
     "test:skill-distribution": "node scripts/test-skill-distribution.mjs",
     "test:release-adoption": "node scripts/test-release-adoption.mjs",
     "test:github-actions-adoption": "node scripts/test-github-actions-adoption.mjs",
+    "test:github-app-portal": "node scripts/test-github-app-portal.mjs",
+    "portal:demo": "node scripts/github-app-portal-demo.mjs",
     "test:desktop-gui": "node scripts/test-desktop-gui.mjs",
     "test:desktop-resilience": "node scripts/test-desktop-resilience-accessibility.mjs",
     "desktop:package:development": "node scripts/desktop-package-provenance.mjs build",

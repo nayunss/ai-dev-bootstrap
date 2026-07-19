@@ -2,10 +2,11 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**33 library files** across 3 modules
+**35 library files** across 3 modules
 
-## Scripts (29 files)
+## Scripts (31 files)
 
+- `scripts/github-app-portal.mjs` — validatePortalConfiguration, authorizeRepository, verifyWebhookDelivery, redactPortalValue, createPortalCoordinator, AuthStateStore, …
 - `scripts/upstream-lock.mjs` — sha256, safeRelativePath, targetPath, canonicalContentHash, validateUpstreamLock, serializeUpstreamLock, …
 - `scripts/capability-suite.mjs` — hashFixture, validateCapabilityTask, runCapabilityTask, aggregateCapabilityResults, loadTask
 - `scripts/development-profile.mjs` — serializeDevelopmentProfile, parseDevelopmentProfileYaml, safeProfilePath, validateDevelopmentProfile, loadDevelopmentProfile
@@ -16,6 +17,7 @@
 - `scripts/release-adoption-surfaces.mjs` — runCliAdoption, runGuiAdoption, runWebAdoption
 - `scripts/skill-distribution.mjs` — sha256, validateSkillDistribution, runSkillDistribution
 - `scripts/validate-repository-state.mjs` — validateRepositoryState, captureTrackedState, compareCheckOnlyState
+- `scripts/validate-requirement-traceability.mjs` — validateTraceability, requiresManifestChange, handoffTraceabilityProjection
 - `scripts/adapter-parity.mjs` — validateAdapterParity, readParityManifest
 - `scripts/application-inventory.mjs` — discoverApplications, readDeclaredInventory
 - `scripts/desktop-package-provenance.mjs` — validateDesktopDevelopmentPackage, buildDesktopDevelopmentPackage
@@ -23,15 +25,13 @@
 - `scripts/fastapi-contract-adapter.mjs` — evaluateFastApiContract, readJson
 - `scripts/materialize-development-profile.mjs` — planDevelopmentProfileMaterialization, applyDevelopmentProfileMaterialization
 - `scripts/stack-profile-fixtures.mjs` — validateStackProfile, runStackProfileFixture
-- `scripts/validate-requirement-traceability.mjs` — validateTraceability, requiresManifestChange
+- `scripts/validate-downstream-feedback-triage.mjs` — feedbackTraceabilityProjection, validateDownstreamFeedbackTriage
 - `scripts/github-actions-adoption.mjs` — runGitHubActionsAdoption
+- `scripts/github-app-portal-demo.mjs` — createPortalDemoServer
 - `scripts/provider-profile-adapters.mjs` — validateProviderProfile
 - `scripts/upgrade-core.mjs` — applyFileTransaction
 - `scripts/validate-delivery-evidence.mjs` — validateDeliveryEvidence
-- `scripts/validate-downstream-feedback-triage.mjs` — validateDownstreamFeedbackTriage
-- `scripts/validate-fullstack-locale.mjs` — validateFullstackLocale
-- `scripts/validate-policy-evidence.mjs` — validatePolicyEvidence
-- _…and 4 more files_
+- _…and 6 more files_
 
 ## Desktop (2 files)
 

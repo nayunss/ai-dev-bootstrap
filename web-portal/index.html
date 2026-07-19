@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="GitHub App Web Portal의 로컬 보안 reference">
+    <title>Project Adoption Portal — Local Reference</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Project Adoption Portal 홈">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span>Adoption Portal</span>
+      </a>
+      <p class="mode"><span aria-hidden="true"></span> 로컬 검증 모드</p>
+    </header>
+
+    <main id="main">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">REQ-047 · GitHub App Web Portal</p>
+        <h1 id="page-title">터미널 없이,<br>변경 전에 먼저 확인하세요.</h1>
+        <p class="lede">
+          선택한 저장소에 적용될 파일과 위험을 미리 보여주고, 승인한 계획 그대로 새 Pull Request만
+          만듭니다. 기본 브랜치와 기존 파일은 직접 수정하지 않습니다.
+        </p>
+        <div class="boundary" role="note" aria-label="현재 실행 범위">
+          <strong>현재는 로컬 reference입니다.</strong>
+          실제 GitHub 로그인, App 설치, 저장소 변경과 Pull Request 생성은 실행하지 않습니다.
+        </div>
+      </section>
+
+      <section class="workspace" aria-labelledby="flow-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">안전한 적용 흐름</p>
+            <h2 id="flow-title">프로젝트에 적용</h2>
+          </div>
+          <ol class="steps" aria-label="진행 단계">
+            <li class="active"><span>1</span> 선택</li>
+            <li><span>2</span> 미리보기</li>
+            <li><span>3</span> 승인</li>
+          </ol>
+        </div>
+
+        <form id="adoption-form">
+          <fieldset>
+            <legend>적용할 저장소</legend>
+            <label class="repo-card">
+              <input name="repository" type="radio" value="fixture/example" checked>
+              <span class="repo-icon" aria-hidden="true">F</span>
+              <span>
+                <strong>fixture/example</strong>
+                <small>선택 저장소만 접근 · 데모 데이터</small>
+              </span>
+              <span class="check" aria-hidden="true">✓</span>
+            </label>
+          </fieldset>
+
+          <div class="permission-summary">
+            <h3>요청 권한</h3>
+            <dl>
+              <div><dt>Metadata</dt><dd>읽기</dd></div>
+              <div><dt>Contents</dt><dd>읽기·쓰기</dd></div>
+              <div><dt>Pull requests</dt><dd>읽기·쓰기</dd></div>
+            </dl>
+            <p>저장소 설정, Secrets, Actions, 배포 권한은 요청하지 않습니다.</p>
+          </div>
+
+          <button class="primary" id="preview-button" type="submit">
+            변경 내용 미리보기 <span aria-hidden="true">→</span>
+          </button>
+        </form>
+
+        <section id="preview-panel" class="result-panel" aria-labelledby="preview-title" hidden>
+          <div class="result-header">
+            <div>
+              <p class="eyebrow">승인 전 미리보기</p>
+              <h3 id="preview-title">예상 변경</h3>
+            </div>
+            <span class="status-safe">삭제 없음</span>
+          </div>
+          <ul class="counts" aria-label="예상 변경 요약">
+            <li><strong id="create-count">0</strong><span>새로 생성</span></li>
+            <li><strong id="update-count">0</strong><span>업데이트</span></li>
+            <li><strong id="preserve-count">0</strong><span>그대로 보존</span></li>
+            <li><strong id="blocked-count">0</strong><span>차단</span></li>
+          </ul>
+          <p id="risk-summary" class="risk-summary"></p>
+          <details>
+            <summary>승인 계획 식별자 보기</summary>
+            <code id="plan-hash"></code>
+          </details>
+          <label class="approval-check">
+            <input id="approval" type="checkbox">
+            <span>이 계획과 새 Pull Request 생성에 동의합니다. 자동 병합은 하지 않습니다.</span>
+          </label>
+          <button class="primary" id="apply-button" type="button" disabled>
+            승인하고 Pull Request 준비
+          </button>
+        </section>
+
+        <section id="done-panel" class="result-panel done" aria-labelledby="done-title" hidden>
+          <p class="done-icon" aria-hidden="true">✓</p>
+          <p class="eyebrow">로컬 계약 검증 완료</p>
+          <h3 id="done-title" tabindex="-1">Pull Request 생성 경계를 확인했습니다.</h3>
+          <p>
+            실제 GitHub 호출은 하지 않았습니다. Production에서는 같은 계획 해시를 재검증한 뒤 새
+            branch와 Pull Request만 만들고, 최종 병합은 사람의 리뷰로 남깁니다.
+          </p>
+          <p class="example-pr">예시 경로: <code id="pr-link">fixture/example/pull/12</code></p>
+        </section>
+
+        <p id="live-status" class="sr-only" aria-live="polite"></p>
+        <div id="error" class="error" role="alert" hidden></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Telemetry 꺼짐 · Token 저장 안 함 · 외부 네트워크 호출 안 함</p>
+      <p>Production GitHub App 등록 및 배포: NOT-RUN</p>
+    </footer>
+  </body>
+</html>

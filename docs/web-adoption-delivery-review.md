@@ -1,6 +1,6 @@
 # GitHub 기반 Web Adoption Delivery
 
-상태: GitHub Actions P0 reference·실제 downstream delivery mechanics pilot PASS
+상태: Actions 실제 pilot·Portal local reference PASS, Production Portal `NOT-RUN`
 검토일: 2026-07-19
 관련 요구사항: `REQ-047`
 관련 작업: `REQ-047-web-adoption-actions-p0`, `REQ-047-web-adoption-p0-pilot`,
@@ -121,15 +121,21 @@ billing plan별 capability를 사전 검사해야 한다.
 ## GitHub App Web Portal 구현 조건
 
 `REQ-047-web-adoption-p0-pilot`은 실제 분리된 downstream에서 PASS했다.
-`REQ-047-github-app-web-portal`은 다음을 별도 설계·검증해야 한다.
+`REQ-047-github-app-web-portal`의 local reference는 다음 계약을 구현하고 deterministic fixture를
+PASS했다.
 
 - 선택한 repository만 접근하는 GitHub App installation
 - Metadata read, Contents와 Pull Requests의 필요한 최소 권한
-- 짧은 수명의 installation token, 저장 금지와 log redaction
+- callback 범위의 installation·user access token, 저장 금지와 log redaction
 - repository·organization authorization과 webhook replay·중복 요청 차단
 - ephemeral checkout 격리, egress allowlist, retention·삭제와 운영 책임자
-- 모바일·desktop browser에서 비개발자 preview·승인·오류 이해·PR review Eval
 - app suspension·uninstall, incident revoke와 생성 PR의 rollback
+
+구현·실행 방법, threat boundary와 Production pilot 순서는
+[GitHub App Web Portal Reference](github-app-web-portal-reference.md)를 따른다. 현재 PASS는
+no-network local reference와 synthetic browser contract에 한정한다. 실제 App registration,
+provider API·persistent replay store·ephemeral compute·revoke와 모바일·desktop 비개발자 Eval은
+`REQ-047-github-app-web-portal-production-pilot`에서 별도 검증한다.
 
 Portal 배포·GitHub App 등록·권한 변경·Production 운영은 별도 사람 승인 전 `NOT-RUN`이다.
 

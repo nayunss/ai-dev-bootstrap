@@ -57,6 +57,38 @@ function forbiddenFields(value, path = "$", errors = []) {
   return errors;
 }
 
+export function feedbackTraceabilityProjection(traceability) {
+  const taskProjection = (tasks) => (tasks ?? [])
+    .filter((task) => (task.feedbackIds ?? []).length > 0)
+    .map((task) => ({
+      taskId: task.taskId,
+      status: task.status,
+      requirementIds: [...(task.requirementIds ?? [])].sort(),
+      feedbackIds: [...(task.feedbackIds ?? [])].sort(),
+    }))
+    .sort((left, right) => left.taskId.localeCompare(right.taskId));
+  return {
+    feedbackPrimaryMappings: [...(traceability?.feedbackPrimaryMappings ?? [])]
+      .map((mapping) => ({
+        feedbackId: mapping.feedbackId,
+        primaryRequirementId: mapping.primaryRequirementId,
+      }))
+      .sort((left, right) => left.feedbackId.localeCompare(right.feedbackId)),
+    implementationTasks: taskProjection(traceability?.implementationTasks),
+    externalTasks: taskProjection(traceability?.externalTasks),
+  };
+}
+
+function traceabilityChangedForFeedback(mode, base) {
+  const path = ".ai/manifests/requirement-traceability.json";
+  const beforeRef = mode === "staged" ? `HEAD:${path}` : `${base}:${path}`;
+  const afterRef = mode === "staged" ? `:${path}` : `HEAD:${path}`;
+  const before = JSON.parse(execFileSync("git", ["show", beforeRef], { encoding: "utf8" }));
+  const after = JSON.parse(execFileSync("git", ["show", afterRef], { encoding: "utf8" }));
+  return JSON.stringify(feedbackTraceabilityProjection(before))
+    !== JSON.stringify(feedbackTraceabilityProjection(after));
+}
+
 export function validateDownstreamFeedbackTriage(document, {
   traceability = null,
 } = {}) {
@@ -154,8 +186,10 @@ function main() {
       : ["diff", "--name-only", "--diff-filter=ACMR", "-z", `${base}...HEAD`], { encoding: "utf8" })
       .split("\0")
       .filter(Boolean);
+    const traceabilityChanged = files.includes(".ai/manifests/requirement-traceability.json")
+      && traceabilityChangedForFeedback(mode, base);
     const sourceChanged = files.includes("docs/downstream-feedback-requirement-triage.md")
-      || files.includes(".ai/manifests/requirement-traceability.json");
+      || traceabilityChanged;
     if (sourceChanged && !files.includes(path)) errors.push(`triage source changed without ${path}`);
   }
   if (errors.length) {

@@ -32,6 +32,15 @@
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
 - `scripts/github-actions-adoption.mjs` — function runGitHubActionsAdoption: ({...}, release, source, target, expectedPlanSha256, stage, }) => void
+- `scripts/github-app-portal-demo.mjs` — function createPortalDemoServer: () => void
+- `scripts/github-app-portal.mjs`
+  - function validatePortalConfiguration: (config) => void
+  - function authorizeRepository: ({...}, repository, userAccess }) => void
+  - function verifyWebhookDelivery: ({...}, signature, deliveryId, event, secret, replayGuard, }) => void
+  - function redactPortalValue: (value, key) => void
+  - function createPortalCoordinator: ({...}, provider, workspace, core, sessionTtlMs, resultRetentionMs, maximumSessions, }) => void
+  - class AuthStateStore
+  - _...2 more_
 - `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
@@ -68,7 +77,7 @@
   - function serializeUpstreamLock: (lock) => void
   - _...2 more_
 - `scripts/validate-delivery-evidence.mjs` — function validateDeliveryEvidence: (document) => void
-- `scripts/validate-downstream-feedback-triage.mjs` — function validateDownstreamFeedbackTriage: (document, {...}, }) => void
+- `scripts/validate-downstream-feedback-triage.mjs` — function feedbackTraceabilityProjection: (traceability) => void, function validateDownstreamFeedbackTriage: (document, {...}, }) => void
 - `scripts/validate-fullstack-locale.mjs` — function validateFullstackLocale: (document) => void
 - `scripts/validate-policy-evidence.mjs` — function validatePolicyEvidence: (profile) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
@@ -77,6 +86,9 @@
   - function captureTrackedState: (root, paths) => void
   - function compareCheckOnlyState: (before, after) => void
 - `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
-- `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
+- `scripts/validate-requirement-traceability.mjs`
+  - function validateTraceability: (manifest, {...}, read) => void
+  - function requiresManifestChange: (files) => void
+  - function handoffTraceabilityProjection: (source) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
 - `scripts/validate-web-adoption-pr.mjs` — function validateWebAdoptionPullRequest: ({...}, baseRevision, expectedPlanSha256, }) => void

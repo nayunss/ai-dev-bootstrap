@@ -2,9 +2,15 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 0 routes | 1 models | 0 components | 33 lib files | 12 env vars | 6 middleware
-> **Token savings:** this file is ~3,300 tokens. Without it, AI exploration would cost ~21,200 tokens. **Saves ~17,900 tokens per conversation.**
+> 1 routes (1 inferred) | 1 models | 0 components | 35 lib files | 13 env vars | 6 middleware
+> **Token savings:** this file is ~3,500 tokens. Without it, AI exploration would cost ~22,400 tokens. **Saves ~18,800 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
+
+---
+
+# Routes
+
+- `GET` `/api/demo/status` [auth, cache, payment] `[inferred]`
 
 ---
 
@@ -49,6 +55,15 @@
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
 - `scripts/github-actions-adoption.mjs` — function runGitHubActionsAdoption: ({...}, release, source, target, expectedPlanSha256, stage, }) => void
+- `scripts/github-app-portal-demo.mjs` — function createPortalDemoServer: () => void
+- `scripts/github-app-portal.mjs`
+  - function validatePortalConfiguration: (config) => void
+  - function authorizeRepository: ({...}, repository, userAccess }) => void
+  - function verifyWebhookDelivery: ({...}, signature, deliveryId, event, secret, replayGuard, }) => void
+  - function redactPortalValue: (value, key) => void
+  - function createPortalCoordinator: ({...}, provider, workspace, core, sessionTtlMs, resultRetentionMs, maximumSessions, }) => void
+  - class AuthStateStore
+  - _...2 more_
 - `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void
@@ -85,7 +100,7 @@
   - function serializeUpstreamLock: (lock) => void
   - _...2 more_
 - `scripts/validate-delivery-evidence.mjs` — function validateDeliveryEvidence: (document) => void
-- `scripts/validate-downstream-feedback-triage.mjs` — function validateDownstreamFeedbackTriage: (document, {...}, }) => void
+- `scripts/validate-downstream-feedback-triage.mjs` — function feedbackTraceabilityProjection: (traceability) => void, function validateDownstreamFeedbackTriage: (document, {...}, }) => void
 - `scripts/validate-fullstack-locale.mjs` — function validateFullstackLocale: (document) => void
 - `scripts/validate-policy-evidence.mjs` — function validatePolicyEvidence: (profile) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
@@ -94,7 +109,10 @@
   - function captureTrackedState: (root, paths) => void
   - function compareCheckOnlyState: (before, after) => void
 - `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
-- `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
+- `scripts/validate-requirement-traceability.mjs`
+  - function validateTraceability: (manifest, {...}, read) => void
+  - function requiresManifestChange: (files) => void
+  - function handoffTraceabilityProjection: (source) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
 - `scripts/validate-web-adoption-pr.mjs` — function validateWebAdoptionPullRequest: ({...}, baseRevision, expectedPlanSha256, }) => void
 
@@ -109,6 +127,7 @@
 - `GITHUB_STEP_SUMMARY` **required** — scripts/github-actions-adoption.mjs
 - `GITHUB_WORKSPACE` **required** — scripts/github-actions-adoption.mjs
 - `PATH` **required** — scripts/capability-suite.mjs
+- `PORTAL_DEMO_PORT` **required** — scripts/github-app-portal-demo.mjs
 - `QUALITY_NETWORK_ENFORCED` **required** — scripts/run-stack-quality.mjs
 - `RUNNER_TEMP` **required** — scripts/github-actions-adoption.mjs
 - `WEB_ADOPTION_BASE_REF` **required** — scripts/validate-web-adoption-pr.mjs
@@ -152,10 +171,10 @@
 - `scripts/adapter-parity.mjs` — imported by **2** files
 - `desktop/ipc-contract.mjs` — imported by **2** files
 - `scripts/provider-profile-adapters.mjs` — imported by **2** files
+- `scripts/github-app-portal.mjs` — imported by **1** files
 - `scripts/stack-quality-adapters.mjs` — imported by **1** files
 - `scripts/upgrade-core.mjs` — imported by **1** files
 - `scripts/validate-delivery-evidence.mjs` — imported by **1** files
-- `scripts/validate-downstream-feedback-triage.mjs` — imported by **1** files
 - `scripts/validate-fullstack-locale.mjs` — imported by **1** files
 
 ## Import Map (who imports what)

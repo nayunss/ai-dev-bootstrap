@@ -4,7 +4,11 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { requiresManifestChange, validateTraceability } from "./validate-requirement-traceability.mjs";
+import {
+  handoffTraceabilityProjection,
+  requiresManifestChange,
+  validateTraceability,
+} from "./validate-requirement-traceability.mjs";
 
 const manifest = JSON.parse(readFileSync(".ai/manifests/requirement-traceability.json", "utf8"));
 assert.deepEqual(validateTraceability(manifest), []);
@@ -80,9 +84,25 @@ git("init", "-q");
 git("add", ".");
 git("-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "initial");
 const base = git("rev-parse", "HEAD").trim();
-writeFileSync(join(fixture, "HANDOFF.md"), `${readFileSync("HANDOFF.md", "utf8")}\n`);
+const originalHandoff = readFileSync("HANDOFF.md", "utf8");
+writeFileSync(join(fixture, "HANDOFF.md"), `${originalHandoff}\n검증 증거 설명만 추가\n`);
+git("add", "HANDOFF.md");
+assert.equal(validate("staged").status, 0);
+assert.deepEqual(
+  handoffTraceabilityProjection(`${originalHandoff}\n검증 증거 설명만 추가\n`),
+  handoffTraceabilityProjection(originalHandoff),
+);
+writeFileSync(
+  join(fixture, "HANDOFF.md"),
+  originalHandoff.replace(
+    "### 공통 저장소에서 진행 가능",
+    "### 공통 저장소에서 진행 가능\n\n1. [작업:REQ-047-new-reference] [공통 구현] REQ-047 추가 작업",
+  ),
+);
 git("add", "HANDOFF.md");
 assert.match(validate("staged").stderr, /traceability source changed without/);
+writeFileSync(join(fixture, "HANDOFF.md"), originalHandoff);
+git("add", "HANDOFF.md");
 writeFileSync(
   join(fixture, ".ai/manifests/requirement-traceability.json"),
   `${JSON.stringify(manifest, null, 2)}\n`,
