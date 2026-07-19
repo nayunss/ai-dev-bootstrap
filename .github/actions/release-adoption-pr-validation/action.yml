@@ -1,0 +1,13 @@
+name: Validate reviewed release adoption PR
+description: Verify the approved plan, managed file hashes and PR path boundary without write permissions.
+inputs:
+  base_ref:
+    description: Pull request base branch
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        WEB_ADOPTION_BASE_REF: ${{ inputs.base_ref }}
+      run: node "$GITHUB_ACTION_PATH/../../../scripts/validate-web-adoption-pr.mjs"

@@ -42,7 +42,7 @@
 | REQ-044 | reference 구현 | deterministic·pilot PASS | 기존 Spring Boot 4/SpringDoc 3·Next.js BFF pilot에 더해 FastAPI/OpenAPI syntax·breaking component/operation/response/required-parameter drift, route inventory의 undocumented/stale operation과 Production `/openapi.json`·`/docs`·`/redoc` exposure synthetic Eval PASS. 실제 FastAPI runtime·authorization E2E는 미수행 |
 | REQ-045 | reference 구현 | deterministic·pilot PASS | 재귀 inventory, 최초 full-stack materializer와 P0 single/workspace starter transaction·rollback fixture PASS. 실제 dependency install·DB execution·restore는 NOT-RUN |
 | REQ-046 | reference 구현 | synthetic PASS | campaign/result schema, validator·aggregator, 2-tester synthetic regression과 sanitized feedback triage·고정 release baseline reference automation PASS. 실제 독립 tester campaign·결과 취합 및 새 baseline 전이 검증은 NOT-RUN |
-| REQ-047 | 부분 구현 | deterministic PASS | CLI·web·historical GUI surface 공통 adoption core와 GitHub Actions preview→승인→PR P0 reference 구현. Clean·upgrade·rollback·변조·충돌·drift·부분 실패·권한 fixture PASS. 기본 비개발자 경로는 GitHub App Web Portal이며 실제 downstream pilot·Portal·browser 사용성 Eval은 NOT-RUN. Desktop installer는 `DEFERRED / OUT-OF-SCOPE` |
+| REQ-047 | 부분 구현 | deterministic·downstream pilot PASS | CLI·web·historical GUI surface 공통 adoption core와 GitHub Actions preview→승인→PR P0 구현. 분리된 public fixture에서 exact commit preview artifact·protected apply·branch·PR·read-only hosted check·OWNER approval·실패 branch rollback PASS, main·owner file 보존과 no-auto-merge 확인. GitHub App Portal·browser 사용성 Eval은 NOT-RUN. Desktop installer는 `DEFERRED / OUT-OF-SCOPE` |
 | REQ-048 | reference 구현 | deterministic PASS | canonical YAML parser/serializer, Draft 2020-12 schema와 read-only 구조·의미·repository drift·local/CI/Production readiness validator, 4개 topology positive 및 path·secret·version·approval·symlink negative fixture PASS. P1 materializer·migration·실제 downstream retrofit은 NOT-RUN |
 | REQ-049 | reference 구현 | deterministic PASS | claim·실제 service/region/data flow·server/database/provider enforcement·반증 가능한 evidence 연결과 disposal read/write/token/session 차단 fixture PASS. 법률 결론·실제 Production 승인은 NOT-RUN |
 | REQ-050 | reference 구현 | deterministic PASS | Git index blob 기반 generated artifact·source hash 검증, working/staged partial commit과 check-only tracked source mutation 실제 Git fixture PASS. 생성 의미·CI·배포 검증은 별도 |
@@ -100,7 +100,7 @@
 | Branch·review | REQ-016, REQ-019–REQ-021, REQ-033, REQ-035, REQ-046, REQ-048 | risk별 승인·필수 역할·self-review·emergency 계약 reference 구현 | deterministic fixture PASS, 실제 branch policy NOT-RUN | 완료 | [Branch·Review 계약](branch-and-review-strategy.md) |
 | CI·artifact·deployment | REQ-019–REQ-024, REQ-033–REQ-036, REQ-040, REQ-044–REQ-047 | provider-neutral CI·artifact·deployment와 `none` reference adapter 구현 | synthetic matrix PASS, provider write·deploy NOT-RUN | 완료 | [CI·배포 Provider](ci-deployment-provider-selection.md) |
 | 저장소 구조·Template | REQ-020, REQ-026, REQ-033, REQ-045, REQ-047–REQ-048 | P0 single-project·workspace starter와 기존 full-stack materializer reference 구현 | clean·retrofit·collision·rollback deterministic PASS, 실제 stack install/DB NOT-RUN | 완료 | [저장소 구조·Template 우선순위](repository-topology-and-template-priority.md) |
-| 비개발자 도입 | REQ-047 | 공통 core와 GitHub Actions read-only preview·protected apply→PR P0 구현, GitHub App Portal 미구현, desktop installer 범위 제외 | Core surface parity, clean checkout·plan binding·least privilege·stage-only·no-auto-merge deterministic PASS. 실제 web pilot·Portal·browser 사용성 NOT-RUN | `REQ-047-github-app-web-portal` | [Web Adoption](web-adoption-delivery-review.md), [GUI 범위 결정 기록](gui-installation-distribution-review.md) |
+| 비개발자 도입 | REQ-047 | 공통 core와 GitHub Actions read-only preview·protected apply→PR P0 구현·실제 pilot PASS, GitHub App Portal 미구현, desktop installer 범위 제외 | Core surface parity와 분리된 downstream의 exact plan·least privilege·PR hosted check·OWNER approval·실패 branch rollback PASS. Portal·browser 사용성 NOT-RUN | `REQ-047-github-app-web-portal` | [Web Adoption](web-adoption-delivery-review.md), [GUI 범위 결정 기록](gui-installation-distribution-review.md) |
 | 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | P0 validator와 P1 initial/retrofit materializer reference 구현, migration 미구현 | deterministic fixture PASS, 실제 downstream retrofit NOT-RUN | 완료 | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
 | Downstream 검증 피드백 일반화 | REQ-046, REQ-049–REQ-052 | REQ-049–REQ-052 공통 reference 구현 완료, REQ-046 보강과 실제 재검증 분리 | REQ-049–REQ-052 deterministic PASS, 실제 downstream 재검증 NOT-RUN | `UF-001-013-downstream-revalidation` | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) |
 
@@ -901,6 +901,10 @@
 - Web adoption은 exact upstream commit과 reviewed release allowlist를 사용한다. GitHub token은
   provider delivery adapter에서만 사용하며 공통 core의 filesystem·network·credential 경계를
   확대하지 않는다.
+- 생성된 adoption PR은 `contents: read` 전용 hosted check에서 approved plan, lock file allowlist,
+  managed file SHA-256과 execution `NOT_RUN` 경계를 재검증한다.
+- Branch push 뒤 PR 생성이 실패하면 해당 run이 만든 review branch만 삭제하고 실패 상태를
+  유지한다. 기존 branch, default branch와 owner file은 rollback 대상으로 확대하지 않는다.
 - Portal은 생성·변경·보존·차단 건수와 위험 요약을 쉬운 문장으로 표시하고, 상세 file diff와 release·
   commit·checksum은 선택 가능한 고급 정보로 제공한다.
 - 기존 사용자 파일이 release source와 다르거나 project 밖 경로, `.env*`, manifest/archive 변조,
@@ -1148,3 +1152,4 @@
 | 2026-07-19 | REQ-047 GUI-04 macOS arm64 unsigned development `.app` 재현 package, Electron fuse, CycloneDX SBOM, provenance·manifest·`SHA256SUMS`와 metadata drift gate 구현 |
 | 2026-07-19 | REQ-047 GitHub Actions P0의 read-only preview, protected apply·exact plan binding·허용 경로 stage, branch·PR 생성 template와 least-privilege negative fixture 구현 |
 | 2026-07-19 | REQ-047 기본 비개발자 surface를 GitHub App Web Portal로 전환하고 desktop installer GUI-05–GUI-07을 `DEFERRED / OUT-OF-SCOPE`로 분리 |
+| 2026-07-19 | REQ-047 분리된 GitHub downstream에서 preview artifact·protected apply·branch·PR·hosted validation·OWNER approval과 실패 branch rollback pilot PASS |

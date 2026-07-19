@@ -10,7 +10,8 @@
 >
 > - 설치 가능한 GUI 앱은 아직 없다.
 > - 지금 바로 검증된 기본 경로는 terminal에서 실행하는 CLI다.
-> - 설치 없는 GitHub Actions P0도 구현됐지만 실제 downstream 검증 전인 reference다.
+> - 설치 없는 GitHub Actions P0 delivery mechanics는 실제 분리 저장소에서 검증됐지만 현재 release
+>   allowlist는 synthetic fixture다.
 > - 기본 명령은 프로젝트를 바꾸지 않는 `preview`다.
 > - `apply`와 `--approve`가 포함된 명령만 파일을 변경할 수 있다.
 > - `v0.2.8-pilot`의 전체 release adoption은 reference 구현이다. 일반 사용자가 바로 적용할
@@ -169,7 +170,9 @@ scripts/bootstrap skills apply /absolute/path/to/project /path/to/release/manife
 
 이 경로는 macOS 인증서나 특정 device가 필요하지 않다. Downstream GitHub 저장소의 Actions
 화면에서 workflow를 수동 실행하고, 변경 계획을 artifact로 확인한 뒤 승인된 변경만 PR로 받는다.
-아직 실제 downstream pilot 전이므로 일반 사용자용 설치 서비스나 GitHub App Portal은 아니다.
+실제 분리된 public downstream에서 preview→승인→PR delivery mechanics는 PASS했지만 일반 사용자용
+설치 서비스나 GitHub App Portal은 아니다. 현재 `reference-v1`, `reference-v2`는 synthetic
+release이므로 production 프로젝트에 적용하지 않는다.
 
 진행 순서는 다음과 같다.
 
@@ -177,10 +180,16 @@ scripts/bootstrap skills apply /absolute/path/to/project /path/to/release/manife
    `.github/workflows/`에 복사한다.
 2. `REPLACE_WITH_EXACT_UPSTREAM_COMMIT`을 검증된 upstream 40자리 commit SHA로 바꾼다.
 3. Downstream 설정에 승인자가 필요한 `web-adoption-apply` environment를 만든다.
+   Private repository는 GitHub plan에 따라 required reviewer를 지원하지 않을 수 있으므로 실행 전에
+   capability를 확인한다.
 4. Actions의 **Run workflow**에서 `preview`를 실행한다. 이 job은 repository를 변경하지 않는다.
 5. 결과 artifact의 plan SHA-256과 변경 파일을 검토한다.
 6. 같은 plan SHA-256을 입력해 `apply`를 실행하고 environment 승인자가 승인한다.
 7. 생성된 새 branch와 PR의 diff·hosted checks를 검토한다. 자동 merge하지 않는다.
+
+Repository 설정에서 GitHub Actions의 PR 생성이 비활성화돼 있으면 apply는 PR 생성 단계에서
+fail-closed한다. 필요한 경우 해당 repository에 한해 기본 workflow 권한은 `read`로 유지하면서 PR
+생성 허용을 별도 승인한다. PR 생성 실패 뒤 run-scoped branch가 남지 않는지도 확인한다.
 
 현재 allowlist의 `reference-v1`, `reference-v2`는 synthetic 검증용이다. 실제 프로젝트에 적용할
 production release로 사용하지 않는다. Preview에 write 권한이 생기거나, apply가 default branch를

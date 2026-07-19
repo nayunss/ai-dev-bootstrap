@@ -32,7 +32,7 @@
 | [Downstream 시작 가이드](downstream-getting-started.md) | clone 후 프로젝트 도입·개발 시작 순서 | 설계 승인 |
 | [AI Dev Bootstrap 처음부터 끝까지 사용 가이드](bootstrap-user-guide.md) | release 선택·진단·onboarding·adapter·검증·update·rollback과 GUI 설치 상태 | 적용 |
 | [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md) | 과거 desktop 개발 증거, source archive 구분과 범위 재개 시 release gate | DEFERRED / OUT-OF-SCOPE |
-| [GitHub 기반 Web Adoption Delivery](web-adoption-delivery-review.md) | Credential 없는 Actions preview→승인→PR P0와 향후 GitHub App Portal 승격 gate | P0 reference 구현 |
+| [GitHub 기반 Web Adoption Delivery](web-adoption-delivery-review.md) | Credential 없는 Actions preview→승인→PR P0와 향후 GitHub App Portal 승격 gate | 실제 delivery mechanics pilot PASS |
 | [Desktop GUI Delivery Baseline](desktop-gui-delivery-baseline.md) | 최초 macOS arm64·Electron 후보, IPC threat model, package·signing·update와 dependency 승인 경계 | 기술 기준 확정·dependency 승인 대기 |
 | [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md) | GUI 설치 버튼·공통 adoption core·release bundle과 rollback 검토 | shared core reference 구현 |
 | [Downstream 검증 가이드](downstream-validation-guide.md) | 단독·독립 tester가 수행하는 무맥락 하네스 검증과 전원 PASS 판정 | 설계 승인 |

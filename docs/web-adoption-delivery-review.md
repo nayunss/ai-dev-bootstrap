@@ -1,6 +1,6 @@
 # GitHub 기반 Web Adoption Delivery
 
-상태: GitHub Actions P0 reference 구현·deterministic PASS, 실제 downstream pilot `NOT-RUN`
+상태: GitHub Actions P0 reference·실제 downstream delivery mechanics pilot PASS
 검토일: 2026-07-19
 관련 요구사항: `REQ-047`
 관련 작업: `REQ-047-web-adoption-actions-p0`, `REQ-047-web-adoption-p0-pilot`,
@@ -51,6 +51,7 @@ Template의 `REPLACE_WITH_EXACT_UPSTREAM_COMMIT`은 검증된 upstream commit 40
 |---|---|
 | Preview | `contents: read`, checkout credential 미보존, repository write 0 |
 | Apply | default branch dispatch만 허용, protected environment 승인, `contents: write`와 `pull-requests: write` |
+| PR validation | `contents: read`, approved plan·lock allowlist·managed SHA-256·execution 경계 재검증 |
 | Core | GUI·CLI와 같은 release pin·checksum·plan·lock·transaction·rollback 구현 |
 | 변경 범위 | Core plan entry와 release adoption lock·rollback record만 stage |
 | Git | 고정 bot identity, run별 새 branch, force push·default branch push·자동 merge 금지 |
@@ -71,11 +72,42 @@ Reference 구현 완료 조건:
 - 누락·stale plan SHA-256, dirty checkout, unreviewed release 차단
 - Apply가 expected file만 stage하고 commit·push·PR·merge하지 않는 adapter fixture
 - Workflow preview/apply 권한 분리, protected environment와 default branch binding
+- PR hosted check의 plan·path·hash 검증과 PR 생성 실패 branch rollback
 - `pull_request_target`, broad permission, secret context, default branch push와 auto merge 부재
 
-현재 reference fixture는 위 조건을 deterministic PASS했다. 실제 downstream repository에서의
-workflow 설치, hosted preview artifact, environment 승인, branch push, PR checks와 merge 전
-review는 `REQ-047-web-adoption-p0-pilot`까지 `NOT-RUN`이다.
+Reference fixture와 실제 downstream pilot이 위 조건을 PASS했다.
+
+### 실제 pilot 증거
+
+- 저장소: <https://github.com/nayunss/web-adoption-p0-pilot>
+- Exact upstream action commit:
+  `d10afe781d03d662114a1ca6b38e469ed8f72dbb`
+- Read-only preview run:
+  <https://github.com/nayunss/web-adoption-p0-pilot/actions/runs/29675164760>
+- Plan:
+  `sha256:fc4790ebc11f9b603480189e16f27d96bdad80898956825d353fc32eae858835`
+- Protected apply run:
+  <https://github.com/nayunss/web-adoption-p0-pilot/actions/runs/29675351632>
+- Review PR:
+  <https://github.com/nayunss/web-adoption-p0-pilot/pull/1>
+- Read-only PR validation run:
+  <https://github.com/nayunss/web-adoption-p0-pilot/actions/runs/29675770560>
+
+Preview 전후 main commit은 같았고 apply는 run-scoped branch와 12-file PR만 생성했다. PR은 exact
+plan, lock file allowlist와 managed SHA-256, execution `NOT_RUN` 경계, owner file 보존을 hosted
+check로 검증하고 OWNER approval을 받았다. Adoption PR은 open 상태로 유지하고 자동 merge하지
+않았다.
+
+1차 apply는 repository의 Actions PR 생성 설정이 꺼져 있어 branch push 후 PR 생성이 실패했다.
+Pilot repository에서만 기본 workflow 권한 `read`를 유지한 채 PR 생성 허용을 승인했고 attempt 2는
+PASS했다. 실패가 남긴 정확한 run-scoped branch는 승인 후 삭제했다. Template은 PR 생성 실패 시
+방금 만든 branch만 삭제하고 실패를 유지하며, 별도 read-only PR validator가 plan·path·hash를
+검증하도록 보강했다.
+
+Private repository에서는 현재 billing plan이 environment required reviewer 생성을 HTTP 422로
+거부했다. 비밀 없는 격리 fixture를 승인 후 public으로 전환해 required reviewer를 검증했다. 이는
+private downstream에서도 동일 기능이 지원된다는 증거가 아니며 Portal은 repository visibility와
+billing plan별 capability를 사전 검사해야 한다.
 
 다음이면 P0 pilot과 Portal 승격을 중단한다.
 
@@ -88,8 +120,8 @@ review는 `REQ-047-web-adoption-p0-pilot`까지 `NOT-RUN`이다.
 
 ## GitHub App Web Portal 구현 조건
 
-`REQ-047-web-adoption-p0-pilot`이 실제 분리된 downstream에서 PASS한 뒤에만
-`REQ-047-github-app-web-portal`을 시작한다. Portal은 다음을 별도 설계·검증해야 한다.
+`REQ-047-web-adoption-p0-pilot`은 실제 분리된 downstream에서 PASS했다.
+`REQ-047-github-app-web-portal`은 다음을 별도 설계·검증해야 한다.
 
 - 선택한 repository만 접근하는 GitHub App installation
 - Metadata read, Contents와 Pull Requests의 필요한 최소 권한

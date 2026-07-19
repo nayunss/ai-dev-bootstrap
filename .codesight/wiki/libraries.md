@@ -2,9 +2,9 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**32 library files** across 3 modules
+**33 library files** across 3 modules
 
-## Scripts (28 files)
+## Scripts (29 files)
 
 - `scripts/upstream-lock.mjs` — sha256, safeRelativePath, targetPath, canonicalContentHash, validateUpstreamLock, serializeUpstreamLock, …
 - `scripts/capability-suite.mjs` — hashFixture, validateCapabilityTask, runCapabilityTask, aggregateCapabilityResults, loadTask
@@ -31,7 +31,7 @@
 - `scripts/validate-downstream-feedback-triage.mjs` — validateDownstreamFeedbackTriage
 - `scripts/validate-fullstack-locale.mjs` — validateFullstackLocale
 - `scripts/validate-policy-evidence.mjs` — validatePolicyEvidence
-- _…and 3 more files_
+- _…and 4 more files_
 
 ## Desktop (2 files)
 

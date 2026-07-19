@@ -79,3 +79,4 @@
 - `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
 - `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
+- `scripts/validate-web-adoption-pr.mjs` — function validateWebAdoptionPullRequest: ({...}, baseRevision, expectedPlanSha256, }) => void
