@@ -3,7 +3,9 @@
 - `desktop/ipc-contract.mjs`
   - function validateSelectedRoot: (value) => void
   - function validateDesktopRequest: (value) => void
+  - function cancelledAdoptionResult: (mode) => void
   - function summarizeAdoptionResult: (result) => void
+- `desktop/session.mjs` — class DesktopAdoptionSession
 - `evals/fixtures/stack-quality/javascript/source.js` — function greet: (name) => void
 - `evals/fixtures/stack-quality/python/app.py` — function greet: (name) -> str
 - `scripts/adapter-parity.mjs` — function validateAdapterParity: (manifest, options) => void, function readParityManifest: (path) => void

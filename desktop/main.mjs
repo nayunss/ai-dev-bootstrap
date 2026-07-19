@@ -1,13 +1,12 @@
 import { readFileSync } from "node:fs";
-import { basename, dirname, extname, join, normalize, resolve } from "node:path";
+import { dirname, extname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, dialog, ipcMain, protocol } from "electron";
-import { runReleaseAdoption, validateReleaseAdoptionManifest } from "../scripts/release-adoption.mjs";
-import { summarizeAdoptionResult, validateDesktopRequest, validateSelectedRoot } from "./ipc-contract.mjs";
+import { DesktopAdoptionSession } from "./session.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const rendererRoot = resolve(here, "renderer");
-const state = { target: null, manifest: null, source: null, previewPlanSha256: null };
+const session = new DesktopAdoptionSession();
 
 protocol.registerSchemesAsPrivileged([{
   scheme: "app",
@@ -36,55 +35,33 @@ function validSender(event) {
   if (!value.startsWith("app://renderer/")) throw new Error("허용되지 않은 화면에서 보낸 요청입니다.");
 }
 
-function requireSelection() {
-  if (!state.target) throw new Error("먼저 프로젝트 폴더를 선택하세요.");
-  if (!state.manifest || !state.source) throw new Error("먼저 검토된 release manifest를 선택하세요.");
-}
-
 function registerIpc() {
   ipcMain.handle("desktop:select-project", async (event) => {
     validSender(event);
     const selected = await dialog.showOpenDialog({ properties: ["openDirectory"], title: "적용할 프로젝트 폴더 선택" });
     if (selected.canceled) return { canceled: true };
-    state.target = validateSelectedRoot(selected.filePaths[0]);
-    state.previewPlanSha256 = null;
-    return { canceled: false, name: basename(state.target), path: state.target };
+    return { canceled: false, ...session.selectProject(selected.filePaths[0]) };
   });
 
   ipcMain.handle("desktop:select-manifest", async (event) => {
     validSender(event);
     const selected = await dialog.showOpenDialog({
       properties: ["openFile"],
-      filters: [{ name: "Release manifest", extensions: ["json"] }],
+      filters: [{ name: "Reviewed release manifest", extensions: ["json"] }],
       title: "검토된 release manifest 선택",
     });
     if (selected.canceled) return { canceled: true };
-    const manifestPath = resolve(selected.filePaths[0]);
-    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-    const source = dirname(manifestPath);
-    const validation = validateReleaseAdoptionManifest(manifest, source);
-    if (!validation.valid) throw new Error(`Release manifest를 사용할 수 없습니다: ${validation.errors.join(", ")}`);
-    state.manifest = manifest;
-    state.source = source;
-    state.previewPlanSha256 = null;
-    return { canceled: false, release: manifest.release.version, file: basename(manifestPath) };
+    return { canceled: false, ...session.selectManifest(selected.filePaths[0]) };
   });
 
-  ipcMain.handle("desktop:run", (event, rawRequest) => {
+  ipcMain.handle("desktop:run", async (event, rawRequest) => {
     validSender(event);
-    requireSelection();
-    const request = validateDesktopRequest(rawRequest);
-    if (request.mode === "apply" && request.expectedPlanSha256 !== state.previewPlanSha256) {
-      return summarizeAdoptionResult({ status: "BLOCKED", errors: ["화면에서 확인한 변경 계획과 승인 요청이 일치하지 않습니다."] });
-    }
-    const result = runReleaseAdoption(request.mode, state.manifest, state.source, state.target, {
-      surface: "gui",
-      approved: request.mode === "apply" || request.mode === "rollback",
-      expectedPlanSha256: request.expectedPlanSha256,
-    });
-    if (request.mode === "preview" && result.status === "PREVIEW") state.previewPlanSha256 = result.planSha256;
-    if (request.mode !== "preview") state.previewPlanSha256 = null;
-    return summarizeAdoptionResult(result);
+    return session.run(rawRequest);
+  });
+
+  ipcMain.handle("desktop:cancel", async (event, operationId) => {
+    validSender(event);
+    return session.cancel(operationId);
   });
 }
 

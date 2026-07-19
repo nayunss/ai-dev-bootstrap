@@ -7,7 +7,7 @@
   "required": ["status", "execution"],
   "properties": {
     "status": {
-      "enum": ["PREVIEW", "APPROVAL_REQUIRED", "PASS", "BLOCKED", "INVALID", "FAIL"]
+      "enum": ["PREVIEW", "APPROVAL_REQUIRED", "PASS", "BLOCKED", "INVALID", "FAIL", "CANCELLED"]
     },
     "surface": { "enum": ["gui", "cli"] },
     "planSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
@@ -28,6 +28,14 @@
               "remove-managed",
               "preserve-removed-drifted"
             ]
+          },
+          "beforeSha256": {
+            "type": ["string", "null"],
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "afterSha256": {
+            "type": ["string", "null"],
+            "pattern": "^sha256:[a-f0-9]{64}$"
           }
         }
       }
