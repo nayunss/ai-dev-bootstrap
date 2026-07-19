@@ -18,6 +18,53 @@
 플러그인은 이를 생성하거나 자동으로 불러오고 실행하는 편의 계층이다. 플러그인이 없어도
 사람과 AI가 문서를 읽고 같은 검증 명령을 실행할 수 있어야 한다.
 
+## 이 저장소의 하네스 구성
+
+위 여섯 요소는 추상 계약이 아니라 이 저장소에 실제 폴더로 존재한다. "규칙 → 진입점 →
+집행 → 기록"이 파일로 있고, `adapters/`가 선택한 AI 도구에만 코어를 복사(materialize)하며,
+downstream은 `upstream.lock.yaml`로 도입한 버전을 고정한다.
+
+```text
+┌─ AI 개발 하네스 (이 저장소) ──────────────────────────────────────┐
+│                                                                   │
+│  ① 진입점  AGENTS.md · CLAUDE.md                                  │
+│       │  얇은 adapter — 정책을 복제하지 않고 .ai/로 읽기 순서만 안내│
+│       ▼                                                           │
+│  ② 공통 코어  .ai/                                                │
+│       ├─ standards/   engineering.md · security.md      규칙      │
+│       ├─ workflows/   change-mode · security-review …   실행 절차 │
+│       ├─ prompts/     change-request · bug-report …     재사용 입력│
+│       ├─ agents/      security-reviewer.md              역할·권한 │
+│       └─ manifests/   approved-mcp · security-tools …   승인 버전 │
+│       ▼                                                           │
+│  ③ 집행  scripts/ + .github/workflows/                            │
+│       bootstrap(도입) · validate(상태) · security-check(비밀·license)│
+│       │  로컬과 CI가 같은 gate를 fail-closed로 실행               │
+│       ▼                                                           │
+│  ④ 기록  docs/requirements.md · docs/releases/ · HANDOFF.md       │
+│       REQ 추적 · versioned release+SHA-256 · 세션 재개 지점       │
+│                                                                   │
+└───────────────────────────┬───────────────────────────────────────┘
+                            │ adapters/ 로 선택한 도구만 materialize
+                            ▼
+         downstream 프로젝트  .ai/manifests/upstream.lock.yaml
+         도입한 release·checksum 고정 → 같은 gate를 자기 저장소에서 집행
+```
+
+| 하네스 요소 | 이 저장소의 실제 위치 |
+|---|---|
+| 따라야 할 규칙 | `.ai/standards/engineering.md`, `.ai/standards/security.md` |
+| 도구가 규칙을 발견하는 진입점 | `AGENTS.md`, `CLAUDE.md` (도구별 얇은 adapter) |
+| 재사용 스킬·워크플로 | `.ai/workflows/`, `.ai/prompts/` |
+| 허용된 도구·버전·권한 | `.ai/manifests/`, `.ai/approvals/` |
+| 로컬·CI 품질 게이트 | `scripts/bootstrap`·`validate`·`security-check`, `.github/workflows/` |
+| 요구사항·결정·변경 이력 | `docs/requirements.md`, `docs/releases/`, `HANDOFF.md` |
+
+GitHub Copilot 등 추가 도구는 `adapters/`에 선택 adapter로 정의하고 실제 도입한 downstream에만
+materialize한다. 계층 간 pin→materialize→enforce→upgrade 흐름은
+[Upstream–Downstream 아키텍처](upstream-downstream-architecture.md)를, 권장 구조 원칙은
+[권장 아키텍처](architecture.md)를 따른다.
+
 ## FAQ
 
 ### 특정 플러그인을 설치해야 하네스를 구성할 수 있는가
