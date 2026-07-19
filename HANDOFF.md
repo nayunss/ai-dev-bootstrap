@@ -1,10 +1,10 @@
 # Handoff
 
-갱신: 2026-07-18 Asia/Seoul
+갱신: 2026-07-19 Asia/Seoul
 상태: v0.2.8-pilot prerelease 발행·공통 reference 구현 검증 완료
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, GUI-01-delivery-baseline
-다음 작업: REQ-047-gui-installer-delivery, GUI-02-desktop-shell, GUI-03-resilience-accessibility, GUI-04-package-provenance, GUI-05-signing-notarization, GUI-06-usability-eval, GUI-07-release-publish, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, GUI-01-delivery-baseline, GUI-02-desktop-shell
+다음 작업: REQ-047-gui-installer-delivery, GUI-03-resilience-accessibility, GUI-04-package-provenance, GUI-05-signing-notarization, GUI-06-usability-eval, GUI-07-release-publish, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
 
 ## 목표
 
@@ -521,7 +521,8 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   rollback: PASS
 - release manifest·archive binding·component checksum 변조, 기존 파일 충돌·target drift와 두 번째
   write 실패 전체 transaction 원복 negative fixture: PASS
-- desktop GUI·folder picker·signing·notarization·게시 asset 재다운로드·비개발자 사용성 Eval: NOT-RUN
+- desktop 개발 셸·folder/release picker·reviewed bundle 전체 흐름과 read-only 취소·재실행: PASS.
+  Packaging·signing·notarization·게시 asset 재다운로드·비개발자 사용성 Eval: NOT-RUN
 - `v0.2.8-pilot` package version·migration·rollback·검증 경계, hosted PR checks, PR #22 merge,
   tag와 게시 archive 재다운로드 evidence: PASS
 - PR #22 hosted `security`: PASS. `license-provenance` 1차 run은 skill distribution release
@@ -552,8 +553,15 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   통과했다.
 - GUI-02 desktop shell은 local-only renderer, sandbox·context isolation, typed IPC sender/argument
   검증, project/release picker, preview·apply·validate·rollback과 apply 직전 plan SHA-256 재확인을
-  공통 adoption core에 연결했다. 자동 fixture와 macOS 개발 runtime 기본 화면을 확인했지만 실제
-  release 입력 전 과정, 취소·재실행·screen reader·사람 사용성은 아직 완료하지 않았다.
+  공통 adoption core에 연결했다. 독립된 reviewed bundle을 clean target에서
+  preview→apply→validate→rollback으로 검증했고 preview·validate는 별도 worker 취소 후 무변경
+  재실행을 통과했다. Apply·rollback은 transaction 중 강제 취소를 허용하지 않는다. Release
+  commit·manifest·unsigned 상태와 파일별 현재/목표 SHA-256을 UI에 표시하고 root·home·`.env*`
+  선택과 작업 중 selection 교체를 차단했다. Screen reader·crash·중복 실행과 사람 사용성은
+  GUI-03·GUI-06 범위다.
+- PR #25의 첫 hosted security run은 requirements 변경과 downstream feedback manifest 동기화 누락을
+  fail-closed로 차단했다. 두 traceability manifest의 검토일을 2026-07-19로 동기화하고 동일 base
+  range validator를 다시 적용한다.
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
@@ -565,12 +573,9 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 1. [작업:REQ-047-gui-installer-delivery] REQ-047의 실제 GUI installer 발행을
    `docs/gui-installation-distribution-review.md`의 순서와 중단 조건에 따라 진행한다. 현재 공통
    headless adoption core PASS를 desktop 지원 완료로 확대하지 않는다.
-2. [작업:GUI-02-desktop-shell] 구현된 folder/release picker, 요약·diff,
-   apply·validate·rollback을 실제 reviewed release bundle로 검증하고 취소·재실행
-   복구 UI를 공통 core에 연결한다. `.env*`, project 밖 경로와 credential store는 접근하지 않는다.
-3. [작업:GUI-03-resilience-accessibility] GUI·CLI plan/lock/result parity, clean·retrofit·upgrade,
+2. [작업:GUI-03-resilience-accessibility] GUI·CLI plan/lock/result parity, clean·retrofit·upgrade,
    충돌·변조·부분 실패·crash·중복 실행, keyboard·screen reader·focus·오류 요약 fixture를 구현한다.
-4. [작업:GUI-04-package-provenance] 지원 후보 OS별 재현 가능한 unsigned development package,
+3. [작업:GUI-04-package-provenance] 지원 후보 OS별 재현 가능한 unsigned development package,
    SBOM·provenance, manifest·`SHA256SUMS`, 게시 전후 asset 재다운로드 drift gate를 구현한다.
    산출물은 signing·사용성 gate 전까지 `UNSIGNED_DEVELOPMENT_ONLY`로 유지한다.
 

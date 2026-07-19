@@ -154,5 +154,8 @@ metadata에서 생성하거나 drift 검사한다.
 component checksum 변조·충돌·두 번째 write 실패 원복 fixture를 통과했다. Network·dependency
 install·DB migration·provider write·Production deploy·telemetry는 실행하지 않는다.
 
-이는 desktop application 또는 지원 OS 발행이 아니다. Folder picker와 실제 GUI, code signing,
-notarization, publisher credential, 게시 asset 재다운로드와 비개발자 사용성 Eval은 계속 `NOT_RUN`이다.
+2026-07-19 reference desktop shell은 macOS 개발 runtime에서 folder/reviewed-release picker,
+manifest-bound preview·apply·validate·rollback, read-only 취소·재실행과 파일별 현재/목표 hash 표시를
+공통 core에 연결했다. 이는 packaged desktop application 또는 지원 OS 발행이 아니다. Code signing,
+notarization, publisher credential, 게시 asset 재다운로드와 비개발자 사용성 Eval은 계속
+`NOT_RUN`이다.

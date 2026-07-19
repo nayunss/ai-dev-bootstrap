@@ -2,7 +2,7 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**29 library files** across 3 modules
+**30 library files** across 3 modules
 
 ## Scripts (26 files)
 
@@ -33,14 +33,15 @@
 - `scripts/validate-requirement-handoff-tasks.mjs` — validateRequirementHandoffTasks
 - _…and 1 more files_
 
+## Desktop (2 files)
+
+- `desktop/ipc-contract.mjs` — validateSelectedRoot, validateDesktopRequest, cancelledAdoptionResult, summarizeAdoptionResult
+- `desktop/session.mjs` — DesktopAdoptionSession
+
 ## Evals (2 files)
 
 - `evals/fixtures/stack-quality/javascript/source.js` — greet
 - `evals/fixtures/stack-quality/python/app.py` — greet
-
-## Desktop (1 files)
-
-- `desktop/ipc-contract.mjs` — validateSelectedRoot, validateDesktopRequest, summarizeAdoptionResult
 
 ---
 _Back to [overview.md](./overview.md)_

@@ -169,17 +169,33 @@ function planFiles(files, target, currentLock) {
   const owned = new Map((currentLock?.files ?? []).map((file) => [file.path, file]));
   return files.map((file) => {
     const targetPath = confined(target, file.path, "adoption target", true);
-    if (!existsSync(targetPath)) return { ...file, targetPath, action: "create", managed: true };
+    if (!existsSync(targetPath)) return { ...file, targetPath, action: "create", managed: true, currentSha256: null };
     const current = sha256(readFileSync(targetPath));
-    if (current === file.sha256) return { ...file, targetPath, action: "preserve-identical", managed: owned.get(file.path)?.managed ?? false };
-    if (owned.get(file.path)?.managed && current === owned.get(file.path).sha256) return { ...file, targetPath, action: "update-managed", managed: true };
-    return { ...file, targetPath, action: "blocked-existing-different", managed: false };
+    if (current === file.sha256) return { ...file, targetPath, action: "preserve-identical", managed: owned.get(file.path)?.managed ?? false, currentSha256: current };
+    if (owned.get(file.path)?.managed && current === owned.get(file.path).sha256) return { ...file, targetPath, action: "update-managed", managed: true, currentSha256: current };
+    return { ...file, targetPath, action: "blocked-existing-different", managed: false, currentSha256: current };
   });
 }
 
-function planSummary(plan, removals) {
-  const entries = [...plan, ...removals].map(({ path, action }) => ({ path, action })).sort((a, b) => a.path.localeCompare(b.path));
-  return { entries, planSha256: sha256(JSON.stringify(entries)) };
+function planSummary(plan, removals, manifestSha256) {
+  const entries = [
+    ...plan.map(({ path, action, currentSha256, sha256: desiredSha256 }) => ({
+      path,
+      action,
+      beforeSha256: currentSha256,
+      afterSha256: desiredSha256,
+    })),
+    ...removals.map(({ path, action, currentSha256 }) => ({
+      path,
+      action,
+      beforeSha256: currentSha256,
+      afterSha256: null,
+    })),
+  ].sort((a, b) => a.path.localeCompare(b.path));
+  return {
+    entries,
+    planSha256: sha256(JSON.stringify({ manifestSha256, entries })),
+  };
 }
 
 export function runReleaseAdoption(mode, manifest, sourceValue, targetValue, options = {}) {
@@ -211,9 +227,14 @@ export function runReleaseAdoption(mode, manifest, sourceValue, targetValue, opt
       const removals = (currentLock?.files ?? []).filter((file) => !desiredPaths.has(file.path)).map((file) => {
         const targetPath = confined(target, file.path, "removed adoption target", true);
         const current = existsSync(targetPath) ? sha256(readFileSync(targetPath)) : null;
-        return { ...file, targetPath, action: file.managed && current === file.sha256 ? "remove-managed" : "preserve-removed-drifted" };
+        return {
+          ...file,
+          targetPath,
+          currentSha256: current,
+          action: file.managed && current === file.sha256 ? "remove-managed" : "preserve-removed-drifted",
+        };
       });
-      const summary = planSummary(plan, removals);
+      const summary = planSummary(plan, removals, manifest.release.manifestSha256);
       if (plan.some((file) => file.action === "blocked-existing-different")) {
         return { status: "BLOCKED", ...summary, errors: ["existing target differs; no files changed"], execution: EXECUTION };
       }
