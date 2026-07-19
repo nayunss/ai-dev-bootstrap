@@ -2,8 +2,8 @@
 
 > **Stack:** raw-http | none | unknown | javascript
 
-> 1 routes (1 inferred) | 1 models | 0 components | 35 lib files | 13 env vars | 6 middleware
-> **Token savings:** this file is ~3,500 tokens. Without it, AI exploration would cost ~22,400 tokens. **Saves ~18,800 tokens per conversation.**
+> 1 routes (1 inferred) | 1 models | 0 components | 32 lib files | 13 env vars | 6 middleware
+> **Token savings:** this file is ~3,300 tokens. Without it, AI exploration would cost ~21,600 tokens. **Saves ~18,300 tokens per conversation.**
 > **Last scanned:** normalized — Git diff is the freshness authority
 
 ---
@@ -23,12 +23,6 @@
 
 # Libraries
 
-- `desktop/ipc-contract.mjs`
-  - function validateSelectedRoot: (value) => void
-  - function validateDesktopRequest: (value) => void
-  - function cancelledAdoptionResult: (mode) => void
-  - function summarizeAdoptionResult: (result) => void
-- `desktop/session.mjs` — class DesktopAdoptionSession
 - `evals/fixtures/stack-quality/javascript/source.js` — function greet: (name) => void
 - `evals/fixtures/stack-quality/python/app.py` — function greet: (name) -> str
 - `scripts/adapter-parity.mjs` — function validateAdapterParity: (manifest, options) => void, function readParityManifest: (path) => void
@@ -39,7 +33,6 @@
   - function runCapabilityTask: (task, root) => void
   - function aggregateCapabilityResults: (results) => void
   - function loadTask: (path) => void
-- `scripts/desktop-package-provenance.mjs` — function validateDesktopDevelopmentPackage: (outputValue) => void, function buildDesktopDevelopmentPackage: (outputValue) => void
 - `scripts/development-profile.mjs`
   - function serializeDevelopmentProfile: (profile) => void
   - function parseDevelopmentProfileYaml: (source) => void
@@ -71,10 +64,7 @@
   - function validatePilotResult: (result, campaign) => void
   - function aggregatePilotResults: (campaign, results) => void
 - `scripts/provider-profile-adapters.mjs` — function validateProviderProfile: (profile) => void
-- `scripts/release-adoption-surfaces.mjs`
-  - function runCliAdoption: (mode, manifest, source, target, options) => void
-  - function runGuiAdoption: (mode, manifest, source, target, options) => void
-  - function runWebAdoption: (mode, manifest, source, target, options) => void
+- `scripts/release-adoption-surfaces.mjs` — function runCliAdoption: (mode, manifest, source, target, options) => void, function runWebAdoption: (mode, manifest, source, target, options) => void
 - `scripts/release-adoption.mjs`
   - function sha256: (value) => void
   - function validateReleaseAdoptionManifest: (manifest, sourceValue) => void
@@ -156,10 +146,9 @@
 
 ## Most Imported Files (change these carefully)
 
-- `scripts/release-adoption.mjs` — imported by **6** files
 - `scripts/fullstack-materializer.mjs` — imported by **4** files
-- `desktop/session.mjs` — imported by **3** files
 - `scripts/release-adoption-surfaces.mjs` — imported by **3** files
+- `scripts/release-adoption.mjs` — imported by **3** files
 - `scripts/development-profile.mjs` — imported by **3** files
 - `scripts/skill-distribution.mjs` — imported by **3** files
 - `scripts/stack-profile-fixtures.mjs` — imported by **3** files
@@ -169,26 +158,27 @@
 - `scripts/fastapi-contract-adapter.mjs` — imported by **2** files
 - `scripts/application-inventory.mjs` — imported by **2** files
 - `scripts/adapter-parity.mjs` — imported by **2** files
-- `desktop/ipc-contract.mjs` — imported by **2** files
 - `scripts/provider-profile-adapters.mjs` — imported by **2** files
 - `scripts/github-app-portal.mjs` — imported by **1** files
 - `scripts/stack-quality-adapters.mjs` — imported by **1** files
 - `scripts/upgrade-core.mjs` — imported by **1** files
 - `scripts/validate-delivery-evidence.mjs` — imported by **1** files
 - `scripts/validate-fullstack-locale.mjs` — imported by **1** files
+- `scripts/github-actions-adoption.mjs` — imported by **1** files
+- `scripts/validate-web-adoption-pr.mjs` — imported by **1** files
 
 ## Import Map (who imports what)
 
-- `scripts/release-adoption.mjs` ← `desktop/adoption-worker.mjs`, `scripts/github-actions-adoption.mjs`, `scripts/release-adoption-surfaces.mjs`, `scripts/test-desktop-gui.mjs`, `scripts/test-desktop-resilience-accessibility.mjs` +1 more
 - `scripts/fullstack-materializer.mjs` ← `scripts/materialize-fullstack.mjs`, `scripts/release-adoption.mjs`, `scripts/skill-distribution.mjs`, `scripts/stack-profile-fixtures.mjs`
-- `desktop/session.mjs` ← `desktop/main.mjs`, `scripts/test-desktop-gui.mjs`, `scripts/test-desktop-resilience-accessibility.mjs`
 - `scripts/release-adoption-surfaces.mjs` ← `scripts/adopt-release.mjs`, `scripts/github-actions-adoption.mjs`, `scripts/test-release-adoption.mjs`
+- `scripts/release-adoption.mjs` ← `scripts/github-actions-adoption.mjs`, `scripts/release-adoption-surfaces.mjs`, `scripts/test-release-adoption.mjs`
 - `scripts/development-profile.mjs` ← `scripts/materialize-development-profile.mjs`, `scripts/test-development-profile-materializer.mjs`, `scripts/validate-development-environment-profile.mjs`
 - `scripts/skill-distribution.mjs` ← `scripts/materialize-skill-distribution.mjs`, `scripts/release-adoption.mjs`, `scripts/test-skill-distribution.mjs`
 - `scripts/stack-profile-fixtures.mjs` ← `scripts/materialize-stack-profile-fixture.mjs`, `scripts/release-adoption.mjs`, `scripts/test-stack-profile-fixtures.mjs`
 - `scripts/upstream-lock.mjs` ← `scripts/test-downstream-validator.mjs`, `scripts/validate-core-upgrade-record.mjs`, `scripts/validate-upstream-lock.mjs`
 - `scripts/capability-suite.mjs` ← `scripts/aggregate-capability-results.mjs`, `scripts/run-capability-task.mjs`
 - `scripts/pilot-results.mjs` ← `scripts/aggregate-pilot-results.mjs`, `scripts/validate-pilot-result.mjs`
+- `scripts/fastapi-contract-adapter.mjs` ← `scripts/evaluate-fastapi-contract.mjs`, `scripts/test-fastapi-contract-adapter.mjs`
 
 ---
 
@@ -198,7 +188,7 @@
 
 | Workflow | Triggers | Jobs | Deploy | Environments |
 |---|---|---|---|---|
-| Security | pull_request, push | 3 | — | — |
+| Security | pull_request, push | 2 | — | — |
 
 ### Security
 
@@ -211,9 +201,6 @@
   - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
   - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
   - `actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02`
-- **desktop-development-package** on `macos-14` — 4 steps
-  - `actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5`
-  - `actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020`
 
 ---
 _Source: .github/workflows/security.yml_

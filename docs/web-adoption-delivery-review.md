@@ -9,17 +9,13 @@
 ## 결정
 
 GitHub 저장소를 대상으로 하는 비개발자 도입의 기본 surface는 GitHub App Web Portal로 결정한다.
-Apple Developer Program과 Developer ID credential이 필요한 desktop installer는 현재 제품 범위에서
-`DEFERRED / OUT-OF-SCOPE`이며, P0는 Portal의 권한·승인·PR 흐름을 GitHub Actions로 먼저 검증한다.
+P0는 Portal의 권한·승인·PR 흐름을 GitHub Actions로 먼저 검증한다.
 
 P0는 downstream 저장소에 설치된 `workflow_dispatch` 화면에서 reviewed release와
 `preview | apply`를 선택한다. Preview는 read-only job에서 공통 headless adoption core의 plan과
 plan SHA-256을 artifact로 제공한다. Apply는 exact plan SHA-256과 보호된
 `web-adoption-apply` environment의 사람 승인을 요구하고, default branch가 아닌 새 branch와 pull
 request만 생성한다.
-
-이 경로는 desktop installer 발행이 아니다. 기존 desktop 개발 산출물은 증거로 보존하지만 Portal
-완료 조건이나 활성 backlog에 포함하지 않는다.
 
 ## P0 흐름
 
@@ -52,7 +48,7 @@ Template의 `REPLACE_WITH_EXACT_UPSTREAM_COMMIT`은 검증된 upstream commit 40
 | Preview | `contents: read`, checkout credential 미보존, repository write 0 |
 | Apply | default branch dispatch만 허용, protected environment 승인, `contents: write`와 `pull-requests: write` |
 | PR validation | `contents: read`, approved plan·lock allowlist·managed SHA-256·execution 경계 재검증 |
-| Core | GUI·CLI와 같은 release pin·checksum·plan·lock·transaction·rollback 구현 |
+| Core | Web·CLI가 공유하는 release pin·checksum·plan·lock·transaction·rollback 구현 |
 | 변경 범위 | Core plan entry와 release adoption lock·rollback record만 stage |
 | Git | 고정 bot identity, run별 새 branch, force push·default branch push·자동 merge 금지 |
 | Secret | 사용자 secret·`.env*`·ambient credential 읽기 금지; GitHub가 job에 발급한 token만 PR 생성 단계에서 사용 |
@@ -67,7 +63,7 @@ Core 결과의 `execution.providerWrite: NOT_RUN`은 core 자체가 provider API
 
 Reference 구현 완료 조건:
 
-- Web·GUI·CLI의 plan entry와 plan SHA-256 parity
+- Web·CLI의 plan entry와 plan SHA-256 parity
 - Clean checkout preview 무변경
 - 누락·stale plan SHA-256, dirty checkout, unreviewed release 차단
 - Apply가 expected file만 stage하고 commit·push·PR·merge하지 않는 adapter fixture
@@ -134,14 +130,7 @@ PASS했다.
 구현·실행 방법, threat boundary와 Production pilot 순서는
 [GitHub App Web Portal Reference](github-app-web-portal-reference.md)를 따른다. 현재 PASS는
 no-network local reference와 synthetic browser contract에 한정한다. 실제 App registration,
-provider API·persistent replay store·ephemeral compute·revoke와 모바일·desktop 비개발자 Eval은
+provider API·persistent replay store·ephemeral compute·revoke와 모바일·PC browser 비개발자 Eval은
 `REQ-047-github-app-web-portal-production-pilot`에서 별도 검증한다.
 
 Portal 배포·GitHub App 등록·권한 변경·Production 운영은 별도 사람 승인 전 `NOT-RUN`이다.
-
-## Desktop 범위
-
-Desktop GUI-01–GUI-04의 개발·검증 산출물은 폐기하지 않는다. 다만 installer 발행,
-signing·notarization, desktop 사람 Eval과 release publish는 현재
-`DEFERRED / OUT-OF-SCOPE`다. GitHub 외 local·offline repository 지원 요구와 OS publisher
-credential이 별도 승인될 때만 새 요구사항과 threat model로 재개한다.

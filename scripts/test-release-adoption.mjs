@@ -11,7 +11,7 @@ import {
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { runReleaseAdoption, validateReleaseAdoptionManifest } from "./release-adoption.mjs";
-import { runCliAdoption, runGuiAdoption, runWebAdoption } from "./release-adoption-surfaces.mjs";
+import { runCliAdoption, runWebAdoption } from "./release-adoption-surfaces.mjs";
 
 const root = process.cwd();
 const read = (version) => JSON.parse(readFileSync(`evals/fixtures/release-adoption/${version}.json`, "utf8"));
@@ -24,14 +24,10 @@ assert.equal(validateReleaseAdoptionManifest(v2, root).valid, true);
 
 const clean = target("clean");
 const cliPreview = runCliAdoption("preview", v1, root, clean);
-const guiPreview = runGuiAdoption("preview", v1, root, clean);
 const webPreview = runWebAdoption("preview", v1, root, clean);
 assert.equal(cliPreview.status, "PREVIEW");
-assert.equal(guiPreview.status, "PREVIEW");
 assert.equal(webPreview.status, "PREVIEW");
-assert.deepEqual(guiPreview.entries, cliPreview.entries);
 assert.deepEqual(webPreview.entries, cliPreview.entries);
-assert.equal(guiPreview.planSha256, cliPreview.planSha256);
 assert.equal(webPreview.planSha256, cliPreview.planSha256);
 assert.equal(existsSync(join(clean, "package.json")), false);
 assert.deepEqual(cliPreview.execution, {
@@ -42,9 +38,9 @@ assert.deepEqual(cliPreview.execution, {
   providerWrite: "NOT_RUN",
   productionDeploy: "NOT_RUN",
 });
-let result = runReleaseAdoption("apply", v1, root, clean, { surface: "gui" });
+let result = runReleaseAdoption("apply", v1, root, clean, { surface: "web" });
 assert.equal(result.status, "APPROVAL_REQUIRED");
-result = runReleaseAdoption("apply", v1, root, clean, { surface: "gui", approved: true });
+result = runReleaseAdoption("apply", v1, root, clean, { surface: "web", approved: true });
 assert.equal(result.status, "PASS");
 assert.equal(result.planSha256, cliPreview.planSha256);
 assert.equal(existsSync(join(clean, "package.json")), true);
@@ -104,10 +100,6 @@ const componentTamper = structuredClone(v1);
 componentTamper.components.stackProfile.sha256 = `sha256:${"4".repeat(64)}`;
 assert.match(validateReleaseAdoptionManifest(componentTamper, root).errors.join("\n"), /stack profile checksum drift/);
 
-const desktopEscalation = structuredClone(v1);
-desktopEscalation.desktop.signing = "PASS";
-assert.match(validateReleaseAdoptionManifest(desktopEscalation, root).errors.join("\n"), /desktop support must remain unsigned/);
-
 const executionEscalation = structuredClone(v1);
 executionEscalation.execution.network = "RUN";
 assert.match(validateReleaseAdoptionManifest(executionEscalation, root).errors.join("\n"), /execution boundary/);
@@ -139,4 +131,4 @@ assert.match(runReleaseAdoption("validate", v1, root, drift).errors.join("\n"), 
 assert.equal(runReleaseAdoption("rollback", v1, root, drift, { approved: true }).status, "BLOCKED");
 assert.equal(readFileSync(join(drift, "package.json"), "utf8"), "drift\n");
 
-process.stdout.write("REQ-047 shared GUI/CLI/web release adoption clean, upgrade, rollback, tamper and partial-failure Eval: PASS\n");
+process.stdout.write("REQ-047 shared CLI/web release adoption clean, upgrade, rollback, tamper and partial-failure Eval: PASS\n");

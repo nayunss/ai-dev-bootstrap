@@ -8,14 +8,14 @@
 
 > **현재 상태**
 >
-> - 설치 가능한 GUI 앱은 아직 없다.
-> - 지금 바로 검증된 기본 경로는 terminal에서 실행하는 CLI다.
+> - 비개발자용 Portal은 local no-network reference까지 구현됐다.
+> - 로컬 프로젝트에 사용하는 기본 경로는 terminal CLI 또는 AI 도구 시작 프롬프트다.
 > - 설치 없는 GitHub Actions P0 delivery mechanics는 실제 분리 저장소에서 검증됐지만 현재 release
 >   allowlist는 synthetic fixture다.
 > - 기본 명령은 프로젝트를 바꾸지 않는 `preview`다.
 > - `apply`와 `--approve`가 포함된 명령만 파일을 변경할 수 있다.
 > - `v0.2.8-pilot`의 전체 release adoption은 reference 구현이다. 일반 사용자가 바로 적용할
->   production manifest나 서명된 installer는 아직 제공하지 않는다.
+>   production manifest는 아직 제공하지 않는다.
 
 명령의 `/absolute/path/to/project`는 설정하려는 프로젝트 폴더의 절대 경로로 바꾼다. 예를 들어
 macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명/Documents/my-app`처럼 입력한다.
@@ -30,7 +30,7 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 | Stack starter나 skill bundle을 검토된 manifest로 적용하고 싶다 | [고급 적용](#고급-적용-검토된-manifest가-있는-경우) |
 | Dependency 또는 보안 도구를 설치하고 싶다 | [별도 설치](#dependency와-보안-도구는-별도-설치) |
 | Apple 가입 없이 browser에서 적용 흐름을 검증하고 싶다 | [GitHub Actions P0](#설치-없는-github-actions-p0) |
-| GUI 앱을 설치하고 싶다 | [GUI 설치 상태](#gui-설치-상태) |
+| Browser에서 Portal 흐름을 확인하고 싶다 | [Local no-network Portal](#github-app-web-portal-local-no-network) |
 
 ## 먼저 알아둘 안전 경계
 
@@ -97,8 +97,7 @@ cd ai-dev-bootstrap
 git checkout v0.2.8-pilot
 ```
 
-이 clone은 CLI와 문서를 받는 과정이며 GUI 설치가 아니다. Release page의 source archive도 GUI
-installer가 아니다.
+이 clone은 CLI와 문서를 받는 과정이다.
 
 Release archive를 직접 내려받았다면 release note의 SHA-256과 파일 checksum을 대조한다.
 `v0.2.8-pilot` archive SHA-256은
@@ -195,10 +194,9 @@ scripts/bootstrap skills preview /absolute/path/to/project /path/to/release/mani
 scripts/bootstrap skills apply /absolute/path/to/project /path/to/release/manifest.json --optional=frontend --adapters=codex --approve
 ```
 
-`scripts/bootstrap adopt`는 GUI와 CLI가 공유하는 headless adoption core의 reference 진입점이다.
+`scripts/bootstrap adopt`는 CLI와 web surface가 공유하는 headless adoption core의 reference 진입점이다.
 `v0.2.8-pilot`에는 실제 사용자 프로젝트에 바로 적용할 production release-adoption manifest나
-서명된 desktop app이 포함되지 않으므로, 저장소의 synthetic fixture를 실제 프로젝트 설치 입력으로
-사용하지 않는다.
+bundle이 포함되지 않으므로 저장소의 synthetic fixture를 실제 프로젝트 설치 입력으로 사용하지 않는다.
 
 ## 설치 없는 GitHub Actions P0
 
@@ -307,23 +305,23 @@ node scripts/validate-production-readiness.mjs /path/to/profile.json --expect-re
 5. project regression과 security gate를 다시 실행한다.
 6. 실패하면 생성 시점의 rollback record 또는 이전 release pin으로 복귀한다.
 
-자동 rollback은 installer가 관리하고 hash가 변하지 않은 파일만 대상으로 한다. 사용자가 변경한
+자동 rollback은 adoption lock이 관리하고 hash가 변하지 않은 파일만 대상으로 한다. 사용자가 변경한
 파일, dependency, DB와 provider rollback은 각각 별도 절차와 승인이 필요하다.
 
-## GUI 설치 상태
+## GitHub App Web Portal local no-network
 
-GUI·CLI 공통 plan·lock·transaction core와 synthetic parity fixture는 구현돼 있다. 그러나
-`v0.2.8-pilot`에는 macOS·Windows·Linux용 서명된 desktop installer가 없으며, desktop 발행은 현재
-`DEFERRED / OUT-OF-SCOPE`다. GitHub 저장소의 비개발자 기본 경로는 GitHub App Web Portal이고,
-현재는 그 전 단계인 GitHub Actions P0를 검증한다.
+Portal은 로컬 reference까지 구현돼 있다. 다음 명령으로 loopback demo를 실행하면 synthetic
+repository의 선택·preview·승인·PR-only 결과 흐름을 확인할 수 있다.
 
-- 설치 asset 확인: <https://github.com/nayunss/ai-dev-bootstrap/releases/latest>
-- GUI 설치 자산과 현재 배포 상태:
-  [GUI 설치 자산·배포 준비 검토](gui-installation-distribution-review.md)
-- GUI UX와 공통 core 설계:
-  [비개발자용 원클릭 프로젝트 도입 검토](one-click-project-adoption-review.md)
+```sh
+npm run portal:demo
+```
 
-Release page의 source archive나 unsigned development package를 desktop 앱으로 설치하지 않는다.
+브라우저에서 <http://127.0.0.1:4173>을 연다. 실제 GitHub 로그인, App 설치, provider API,
+repository write와 PR 생성은 수행하지 않는다. 실행 순서와 오류 확인 방법은
+[GitHub App Web Portal 로컬 no-network 사용 가이드](github-app-web-portal-local-guide.md),
+보안 계약과 Production 중단 조건은
+[GitHub App Web Portal Reference](github-app-web-portal-reference.md)를 따른다.
 
 ## 문제가 생겼을 때
 

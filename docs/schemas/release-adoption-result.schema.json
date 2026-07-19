@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/common-ai-development-harness/release-adoption-result.schema.json",
-  "title": "Shared GUI and CLI release adoption result",
+  "title": "Shared CLI and web release adoption result",
   "type": "object",
   "additionalProperties": true,
   "required": ["status", "execution"],
@@ -9,7 +9,7 @@
     "status": {
       "enum": ["PREVIEW", "APPROVAL_REQUIRED", "PASS", "BLOCKED", "INVALID", "FAIL", "CANCELLED"]
     },
-    "surface": { "enum": ["gui", "cli", "web"] },
+    "surface": { "enum": ["cli", "web"] },
     "planSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
     "entries": {
       "type": "array",

@@ -136,7 +136,7 @@ fixture를 통과해야 지원으로 표시한다.
   기록한다.
 - read, push, PR/MR, branch policy, release와 admin 권한을 분리한다.
 - 일반 code push 승인은 branch protection·release·webhook 변경 권한으로 확대되지 않는다.
-- GUI·CLI는 OS credential store나 승인된 provider login을 사용할 수 있지만 token 값을 읽어
+- Portal·CLI는 승인된 provider login이나 credential reference를 사용할 수 있지만 token 값을 읽어
   표시하거나 log에 남기지 않는다.
 
 ## 이름과 생성 규칙
@@ -149,9 +149,9 @@ fixture를 통과해야 지원으로 표시한다.
 - 기존 remote URL 변경, repository rename·transfer와 visibility 변경은 migration·redirect·CI·
   deploy·package 영향이 있으므로 일반 설정 변경으로 처리하지 않는다.
 
-## GUI·CLI 질문
+## Portal·CLI 질문
 
-REQ-047 GUI는 다음 순서로 표시한다.
+REQ-047 Portal은 다음 순서로 표시한다.
 
 1. 이미 연결된 Git remote가 있으면 credential을 제외한 host·namespace·repository 후보를 보여준다.
 2. `회사/팀 저장소`, `개인 저장소`, `직접 입력`, `아직 연결하지 않음`을 선택할 수 있게 한다.
@@ -159,7 +159,7 @@ REQ-047 GUI는 다음 순서로 표시한다.
 4. **프로젝트에 적용**은 local 파일만 처리하고 remote 생성·push·PR/MR·release는 자동 실행하지 않는다.
 5. 외부 변경은 정확한 provider, namespace, repository, branch와 작업을 다시 preview하고 승인받는다.
 
-Terminal 사용자는 같은 profile과 provider adapter를 사용한다. GUI가 URL을 추정하고 CLI가
+Terminal 사용자는 같은 profile과 provider adapter를 사용한다. Portal이 URL을 추정하고 CLI가
 `origin`을 기본값으로 사용하는 식으로 결과가 달라지면 안 된다.
 
 ## 검증 기준
@@ -176,7 +176,7 @@ Terminal 사용자는 같은 profile과 provider adapter를 사용한다. GUI가
 - remote 생성·push·PR/MR·policy·release 미승인 차단
 - 개인·팀·고위험 profile별 branch strategy·승인 역할·self-review·emergency rule 검증
 - 승인 인원은 충족하지만 필수 security/release owner가 빠진 false approval 차단
-- GUI·CLI profile과 preview 결과 parity
+- Portal·CLI profile과 preview 결과 parity
 
 Bitbucket과 Azure DevOps는 schema에서 표현할 수 있어야 하지만 실제 provider API fixture와 pilot 전에는
 지원 완료로 표시하지 않는다.

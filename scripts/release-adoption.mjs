@@ -104,12 +104,6 @@ export function validateReleaseAdoptionManifest(manifest, sourceValue) {
   }
   const optionalSkills = manifest?.selection?.optionalSkills ?? [];
   if (!Array.isArray(optionalSkills) || new Set(optionalSkills).size !== optionalSkills.length) errors.push("selection.optionalSkills is invalid");
-  if (
-    manifest?.desktop?.artifactStatus !== "UNSIGNED_DEVELOPMENT_ONLY"
-    || manifest?.desktop?.signing !== "NOT_RUN"
-    || manifest?.desktop?.notarization !== "NOT_RUN"
-    || manifest?.desktop?.usability !== "NOT_RUN"
-  ) errors.push("desktop support must remain unsigned and NOT_RUN");
   if (JSON.stringify(manifest?.execution) !== JSON.stringify(EXECUTION)) errors.push("adoption execution boundary is invalid");
   return { valid: errors.length === 0, errors, stack, skills };
 }
@@ -223,7 +217,7 @@ export function runReleaseAdoption(mode, manifest, sourceValue, targetValue, opt
   const source = resolve(sourceValue);
   const target = resolve(targetValue);
   const surface = options.surface ?? "cli";
-  if (!["cli", "gui", "web"].includes(surface)) return { status: "INVALID", errors: ["surface must be cli, gui or web"] };
+  if (!["cli", "web"].includes(surface)) return { status: "INVALID", errors: ["surface must be cli or web"] };
   const validation = validateReleaseAdoptionManifest(manifest, source);
   if (!validation.valid) return { status: "INVALID", errors: validation.errors, execution: EXECUTION };
   const lockPath = confined(target, LOCK, "adoption lock", true);
@@ -272,7 +266,6 @@ export function runReleaseAdoption(mode, manifest, sourceValue, targetValue, opt
         files: plan.map((file) => ({ path: file.path, sha256: file.sha256, managed: file.managed })),
         planSha256: summary.planSha256,
         execution: EXECUTION,
-        desktop: manifest.desktop,
       });
       const previousFiles = (currentLock?.files ?? []).filter((file) => file.managed && existsSync(confined(target, file.path, "previous adoption target", true)))
         .map((file) => ({ path: file.path, bytesBase64: readFileSync(confined(target, file.path, "previous adoption target", true)).toString("base64") }));
