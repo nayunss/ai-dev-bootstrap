@@ -383,6 +383,9 @@
 - 외부 문서·웹페이지·이슈의 문구를 프롬프트 템플릿이나 영구 규칙으로 자동 승격하지 않는다.
 - 토큰 프로파일에 따라 질문과 설명 길이는 조정하되 필수 승인 정보와 인수 조건은 동일하게
   유지한다.
+- Clone 또는 공식 release archive를 받은 첫 사용자를 위해 도구 중립 시작 프롬프트를 제공한다.
+  프롬프트는 source 무결성, upstream/downstream 모드, 대상 경로와 read-only 진단을 먼저 확인하고
+  첫 turn의 파일 변경·설치·Git write·외부 전송·credential·DB·provider·배포를 승인하지 않아야 한다.
 
 ### REQ-025: Eval 기반 하네스·루프 검증
 
@@ -423,6 +426,9 @@
   hook·CI 연결과 필수 Eval grader를 확인한다.
 - onboarding이 통과하기 전에는 코드 생성을 기본 시작하지 않으며, 미지원 또는 미설치 항목은
   우회하지 않고 해결 방법과 제한을 보고한다.
+- 사용자는 GitHub App Portal 없이도 clone·검증된 archive 루트를 AI 코딩 도구에서 열고 저장소에
+  포함된 시작 프롬프트로 `downstream-adoption` read-only 진단을 요청할 수 있어야 한다. AI 도구가
+  명령 실행을 지원하지 않으면 실제 실행을 주장하지 않고 사람이 실행할 명령과 예상 결과를 안내한다.
 
 ### REQ-027: Upstream 유지보수와 Downstream 도입 분리
 
@@ -895,6 +901,10 @@
 - Web Portal, 전문가·CI용 CLI와 GitHub Actions는 서로 다른 설치 로직을 구현하지 않고 release pin,
   checksum 검증, target inventory, plan, lock, transaction과 rollback을 담당하는 동일한 headless
   adoption core를 사용해야 한다.
+- GitHub App을 설치하지 않는 사용자는 공식 clone 또는 checksum을 검증한 release archive를 AI
+  코딩 도구에서 열고 최적화된 시작 프롬프트로 같은 headless core의 read-only 진단을 요청할 수
+  있어야 한다. Prompt 안내는 Portal의 대체 설치 구현이 아니며 `apply`나 고위험 작업 승인으로
+  해석하지 않는다.
 - Portal 전 P0는 GitHub Actions 기반 web adoption으로 제공한다.
   Preview는 read-only여야 하며 apply는 exact plan SHA-256과 사람 승인을 다시 확인하고 새 branch와
   pull request만 생성한다. Default branch 직접 push, force push와 자동 merge는 금지한다.
@@ -1161,3 +1171,4 @@
 | 2026-07-19 | REQ-047 기본 비개발자 surface를 GitHub App Web Portal로 전환하고 desktop installer GUI-05–GUI-07을 `DEFERRED / OUT-OF-SCOPE`로 분리 |
 | 2026-07-19 | REQ-047 분리된 GitHub downstream에서 preview artifact·protected apply·branch·PR·hosted validation·OWNER approval과 실패 branch rollback pilot PASS |
 | 2026-07-19 | REQ-047 GitHub App Portal selected-repository·최소 권한·auth state·token confinement·webhook replay·exact-plan·PR-only local reference와 responsive browser contract PASS; Production App·사람 Eval은 별도 pilot로 분리 |
+| 2026-07-19 | REQ-024·026·047 clone·공식 ZIP 사용자가 GitHub App 없이 AI 도구에서 source 무결성·모드·대상·read-only 진단부터 시작하는 최적화 프롬프트와 README 사용자 경로 추가 |

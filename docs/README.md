@@ -21,7 +21,7 @@
 | [개인·팀·프로젝트 설정 경계](personal-team-settings-boundary.md) | 팀 필수·project 필수·개인 선택·사전 심사·금지 범위 | reference 구현 |
 | [프로젝트 유지관리 기록](project-maintenance.md) | 반복 문제·환경 함정의 원인·탐지·예방 기록 | 운영 메모 |
 | [토큰 예산별 프로파일](token-budget-profiles.md) | 토큰 절약형과 충분한 분석형 실행 방식 | 설계 승인 |
-| [프롬프트 템플릿](prompt-templates.md) | 프롬프트가 필요한 조건과 최소 공통 템플릿 | 설계 승인 |
+| [프롬프트 템플릿](prompt-templates.md) | 프롬프트가 필요한 조건, 최소 공통 템플릿과 clone·ZIP AI 도입 시작 문구 | 적용 |
 | [Eval 전략](evaluation-strategy.md) | 하네스·루프·모델 변경의 outcome 기반 평가 | 설계 승인 |
 | [SkillOpt 논문 검토](skillopt-paper-review.md) | 제한적 skill evolution의 근거·한계·차용 범위 | 검토 완료 |
 | [유지보수와 도입 모델](adoption-and-maintenance-model.md) | Upstream 기여와 회사·프로젝트 도입 경계 | 설계 승인 |

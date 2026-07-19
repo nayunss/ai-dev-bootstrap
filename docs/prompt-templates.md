@@ -67,6 +67,7 @@ OpenAI는 하네스 엔지니어링을 환경, 명확한 의도와 피드백 루
 | `architecture-decision.md` | 의미 있는 대안의 책임 있는 선택이 필요할 때 | 작은 로컬 구현 세부사항 |
 | `ui-intent.md` | 사용자, 콘텐츠 위계, 접근성과 시각 의도를 전달할 때 | 디자인 시스템에 이미 결정된 반복 UI |
 | `high-risk-approval.md` | 정확한 고위험 작업의 승인 정보를 준비할 때 | 일반 파일 편집·테스트 실행 |
+| `adopt-cloned-bootstrap.md` | Clone·공식 release ZIP을 연 뒤 AI 도구로 downstream 도입을 시작할 때 | 실제 apply·dependency·Git write·배포 승인 |
 
 ## 토큰 프로파일별 사용
 
@@ -95,6 +96,11 @@ OpenAI는 하네스 엔지니어링을 환경, 명확한 의도와 피드백 루
 
 프롬프트 템플릿에 비밀, 운영 자격증명, 개인정보 또는 신뢰하지 않는 외부 문서의 지시를
 복사하지 않는다.
+
+Clone·ZIP 시작 프롬프트는 OpenAI의 일반 prompting 구조인 목표, 필요한 context, 사용할 출력과
+실제 문제를 막는 boundary를 최소 범위로 결합한다. 반복 가능한 정책 전문을 복제하지 않고 AI가
+저장소의 `AGENTS.md`와 공통 source를 직접 읽게 하며, 첫 turn은 무결성·모드·대상·read-only
+진단에만 제한한다.
 
 ## 추적성
 

@@ -25,6 +25,7 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 | 원하는 일 | 이동할 절 |
 |---|---|
 | 프로젝트 상태만 안전하게 확인하고 싶다 | [빠른 시작](#빠른-시작-변경-없이-확인) |
+| Clone·ZIP을 받은 뒤 AI 도구에 무엇을 입력할지 모르겠다 | [AI 도구 첫 프롬프트](#ai-도구에-첫-프롬프트-입력하기) |
 | Codex·Claude Code·GitHub Copilot 설정을 프로젝트에 연결하고 싶다 | [AI 도구 연결](#ai-도구-연결하기) |
 | Stack starter나 skill bundle을 검토된 manifest로 적용하고 싶다 | [고급 적용](#고급-적용-검토된-manifest가-있는-경우) |
 | Dependency 또는 보안 도구를 설치하고 싶다 | [별도 설치](#dependency와-보안-도구는-별도-설치) |
@@ -44,6 +45,39 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 
 실제 적용 전에는 대상 프로젝트에서 새 branch를 만들고 기존 변경을 commit하거나 별도로 보존한다.
 기존 파일이 예상과 다르면 자동 덮어쓰지 않고 적용을 차단한다.
+
+## AI 도구에 첫 프롬프트 입력하기
+
+터미널 명령을 모두 알 필요는 없다. 이 저장소를 clone하거나 공식 release ZIP을 내려받아 압축을 푼
+뒤, 해당 폴더를 AI 코딩 도구에서 열고
+[Clone·ZIP 사용자용 AI 도입 시작 프롬프트](../.ai/prompts/adopt-cloned-bootstrap.md)를 복사한다.
+프롬프트의 `<대상 프로젝트 절대 경로>`만 실제 경로로 바꾼다.
+
+- 다른 프로젝트에 공통 환경을 적용하려면 그 프로젝트의 절대 경로를 입력한다.
+- 아직 적용할 프로젝트가 없고 문서만 살펴보려면 `미정`으로 둔다.
+- 이 저장소 자체를 유지보수하려는 contributor만 작업 모드로 `upstream-maintenance`를 사용한다.
+  일반 도입 사용자는 `downstream-adoption`이다.
+
+권장 프롬프트는 첫 응답에서 다음 다섯 가지를 먼저 확인하도록 최적화돼 있다.
+
+1. Clone인지 ZIP인지와 확인 가능한 release tag·commit·checksum
+2. Upstream 유지보수인지 downstream 도입인지
+3. 실제 대상 프로젝트 경로
+4. 읽기 전용 진단 결과와 변경 파일 0건
+5. 다음 한 단계와 그 단계에 필요한 사람 승인
+
+AI가 곧바로 설치·수정하거나 질문을 많이 늘어놓으면 진행하지 않는다. 먼저 source 무결성, 대상,
+읽기 전용 결과가 명확해야 한다. 이 시작 프롬프트는 `apply`, dependency 설치, Git write나 배포를
+승인하지 않는다.
+
+### Clone과 ZIP의 차이
+
+Git clone은 tag와 commit을 Git으로 확인할 수 있다. ZIP 사용자는 공식 GitHub Release asset인지와
+해당 release note의 SHA-256을 별도로 대조해야 한다. GitHub의 자동 생성 **Source code** archive나
+출처를 확인할 수 없는 ZIP을 설치 자산 또는 검증된 release bundle로 간주하지 않는다.
+
+AI 도구가 shell 명령을 실행할 수 없는 경우에는 실행했다고 가정하지 말고, 사용자가 직접 실행할
+읽기 전용 명령을 제시하도록 프롬프트에 명시돼 있다.
 
 ## 빠른 시작: 변경 없이 확인
 
@@ -298,4 +332,24 @@ Release page의 source archive나 unsigned development package를 desktop 앱으
 - target drift: 사용자가 변경한 파일을 자동 덮어쓰지 말고 유지·재적용·제외 중 하나를 사람이 정한다.
 - upstream 공통 결함: project 고유 정보와 비밀을 제거하고
   [upstream feedback 계약](upstream-feedback-log.md)에 따라 재현 조건과 release baseline을 기록한다.
+
+### `Conversation interrupted`가 표시된 경우
+
+이 메시지는 현재 응답 생성이 중단됐다는 뜻이다. `/feedback`은 대화를 재개하는 명령이 아니라 Codex
+feedback 창을 열어 문제 설명과 선택적으로 log를 제출하는 명령이다. 먼저 같은 대화에 마지막 요청을
+다시 보내되 다음처럼 현재 상태 확인을 포함한다.
+
+```text
+직전 작업이 중단됐습니다. 새 작업을 시작하기 전에 현재 Git 상태와 이미 완료된 외부 작업을 확인하고,
+중복 실행하지 말고 남은 단계부터 이어서 진행해 주세요. 파일 삭제·push·merge·release·배포는
+기존 승인 범위를 다시 확인한 뒤 실행하세요.
+```
+
+반복되거나 재현 가능한 오류, 잘못된 차단 또는 제품 문제라면 `/feedback`을 입력해 feedback dialog를
+열고 필요한 경우 현재 session과 log를 첨부한다. 비밀, `.env*`, credential과 개인정보가 포함되지
+않았는지 제출 전에 확인한다. Codex 공식 slash command 안내에서도 `/feedback`은 feedback 제출과
+선택적 log 첨부 용도이며, 제출 뒤 session ID를 받을 수 있다고 설명한다.
+
+- [Codex IDE slash commands](https://learn.chatgpt.com/docs/developer-commands?surface=ide)
+- [Codex CLI feedback](https://learn.chatgpt.com/docs/developer-commands#send-feedback-with-feedback)
 - 다음 작업 인계: 루트 `HANDOFF.md`, 실제 Git 상태와 관련 requirement를 함께 현행화한다.

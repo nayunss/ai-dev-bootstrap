@@ -30,6 +30,38 @@ Reference·synthetic PASS는 실제 dependency 설치, DB write, provider 변경
 [요구사항 상태표](docs/requirements.md)와 [최신 release note](docs/releases/v0.2.9-pilot.md)를
 기준으로 확인합니다.
 
+## AI 도구에 바로 물어보기
+
+GitHub App Web Portal을 통하지 않아도 된다. 이 저장소를 clone하거나 공식 release ZIP을 내려받아
+압축을 푼 뒤, 그 폴더를 Codex·Claude Code 등 AI 코딩 도구에서 열고 아래 프롬프트를 입력한다.
+`<대상 프로젝트 절대 경로>`만 실제 적용할 프로젝트 경로로 바꾼다. 아직 대상이 없으면 `미정`으로
+둔다.
+
+```text
+이 폴더는 AI Dev Bootstrap 저장소를 clone했거나 공식 release ZIP을 푼 루트입니다.
+공통 AI 개발환경을 <대상 프로젝트 절대 경로>에 안전하게 도입할 준비를 해주세요.
+
+먼저 루트 AGENTS.md 또는 현재 AI 도구의 진입 파일과 그 파일이 안내하는 공통 정책·HANDOFF·
+CodeSight·사용 문서를 실제 파일에서 읽으세요. Git clone과 release archive 중 어느 방식인지,
+확인 가능한 tag·commit·checksum, upstream-maintenance와 downstream-adoption 중 올바른 모드,
+대상 경로를 먼저 확인하세요.
+
+대상 경로가 `미정`이면 적용하지 말고 필요한 경로 한 가지만 질문하세요. 경로가 확정되면 기존 변경과
+untracked 파일을 보존하고 scripts/bootstrap preview <대상 경로>와 scripts/validate <대상 경로>의
+읽기 전용 진단만 수행하세요.
+
+첫 응답은 source 버전·무결성, 모드·대상, 진단 결과, 변경 0건 여부, 다음 한 단계와 필요한 승인만
+쉬운 말로 정리하세요. 이 단계에서는 파일 변경, .env* 읽기, dependency 설치, apply·--approve,
+외부 업로드, credential 접근, Git write, DB·provider·배포 작업을 하지 마세요. 실제 변경은 preview와
+정확한 명령을 보여준 뒤 제가 별도로 승인한 경우에만 진행하세요.
+```
+
+위 문구는 AI가 처음부터 설치를 추측하지 않도록 목표·context·첫 출력·승인 경계를 한 번에 전달하도록
+최적화한 시작 프롬프트다. 전체 원문과 ZIP 무결성 중단 조건은
+[Clone·ZIP 사용자용 프롬프트](.ai/prompts/adopt-cloned-bootstrap.md), 다음 단계별 안내는
+[처음부터 끝까지 사용 가이드](docs/bootstrap-user-guide.md#ai-도구에-첫-프롬프트-입력하기)를
+따른다.
+
 ## 빠른 시작
 
 ```text
