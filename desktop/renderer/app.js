@@ -7,6 +7,7 @@ const state = {
   operationId: null,
   activeOperation: null,
   lastSafeOperation: null,
+  action: "install",
 };
 const byId = (id) => document.getElementById(id);
 const actionNames = {
@@ -29,6 +30,8 @@ function updateControls() {
   byId("select-manifest").disabled = state.busy;
   byId("cancel").hidden = !state.busy;
   byId("cancel").disabled = !["preview", "validate"].includes(state.activeOperation);
+  byId("preview").textContent = state.action === "upgrade" ? "업데이트 계획 확인" : "변경 계획 확인";
+  byId("apply").textContent = state.action === "upgrade" ? "새 release로 업데이트" : "프로젝트에 적용";
 }
 
 function shortHash(value) {
@@ -50,6 +53,16 @@ function render(result, operation = null) {
     CANCELLED: "작업을 취소했습니다",
   }[result.status] ?? "결과를 확인하세요";
   byId("result-message").textContent = result.message;
+  byId("result").setAttribute("aria-busy", "false");
+  const errorSummary = byId("error-summary");
+  const errorList = byId("error-list");
+  errorList.replaceChildren();
+  for (const error of result.errors) {
+    const item = document.createElement("li");
+    item.textContent = error;
+    errorList.append(item);
+  }
+  errorSummary.hidden = result.errors.length === 0;
   for (const key of ["create", "update", "preserve", "blocked"]) byId(`count-${key}`).textContent = String(result.counts[key] ?? 0);
   const list = byId("details-list");
   list.replaceChildren();
@@ -62,12 +75,6 @@ function render(result, operation = null) {
     item.append(title, hashes);
     list.append(item);
   }
-  for (const error of result.errors) {
-    const item = document.createElement("li");
-    item.className = "error";
-    item.textContent = error;
-    list.append(item);
-  }
   if (!result.entries.length && !result.errors.length) {
     const item = document.createElement("li");
     item.textContent = "표시할 상세 항목이 없습니다.";
@@ -75,6 +82,9 @@ function render(result, operation = null) {
   }
   byId("retry").hidden = state.lastSafeOperation === null;
   updateControls();
+  if (result.errors.length) errorSummary.focus();
+  else if (result.status === "CANCELLED" && !byId("retry").hidden) byId("retry").focus();
+  else byId("result-title").focus();
 }
 
 async function run(operation) {
@@ -83,6 +93,7 @@ async function run(operation) {
   state.activeOperation = operation;
   if (["preview", "validate"].includes(operation)) state.lastSafeOperation = operation;
   byId("retry").hidden = true;
+  byId("result").setAttribute("aria-busy", "true");
   byId("result-title").textContent = operation === "preview" ? "변경 계획을 확인하고 있습니다" : "요청을 처리하고 있습니다";
   byId("result-message").textContent = ["preview", "validate"].includes(operation)
     ? "이 작업은 파일을 변경하지 않으며 취소할 수 있습니다."
@@ -111,7 +122,12 @@ byId("select-project").addEventListener("click", async () => {
     if (!result.canceled) {
       state.project = true;
       state.planSha256 = null;
+      state.action = result.action;
       byId("project-value").textContent = `${result.name}\n${result.path}`;
+      byId("installed-release").textContent = result.installedRelease
+        ? `현재 적용 release: ${result.installedRelease}`
+        : "현재 적용된 release가 없습니다.";
+      byId("installed-release").hidden = false;
     }
   } catch (error) {
     render({ status: "INVALID", message: "프로젝트 폴더를 선택하지 못했습니다.", counts: {}, entries: [], errors: [error.message] });
@@ -125,6 +141,7 @@ byId("select-manifest").addEventListener("click", async () => {
     if (!result.canceled) {
       state.manifest = true;
       state.planSha256 = null;
+      state.action = result.action;
       byId("manifest-value").textContent = `${result.release}\n${result.file}`;
       byId("release-commit").textContent = result.commit;
       byId("release-manifest-sha").textContent = result.manifestSha256;

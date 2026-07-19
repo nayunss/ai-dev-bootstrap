@@ -1,7 +1,10 @@
 import { readFileSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 import { Worker } from "node:worker_threads";
-import { validateReleaseAdoptionManifest } from "../scripts/release-adoption.mjs";
+import {
+  inspectReleaseAdoption,
+  validateReleaseAdoptionManifest,
+} from "../scripts/release-adoption.mjs";
 import {
   cancelledAdoptionResult,
   summarizeAdoptionResult,
@@ -18,12 +21,27 @@ export class DesktopAdoptionSession {
   #source = null;
   #previewPlanSha256 = null;
   #active = null;
+  #workerUrl;
+
+  constructor(options = {}) {
+    this.#workerUrl = options.workerUrl ?? workerUrl;
+  }
 
   selectProject(path) {
     if (this.#active) throw new Error("진행 중인 작업을 완료하거나 취소한 뒤 프로젝트를 변경하세요.");
-    this.#target = validateSelectedRoot(path);
+    const target = validateSelectedRoot(path);
+    const installed = inspectReleaseAdoption(target);
+    if (installed.status === "INVALID") {
+      throw new Error("기존 적용 상태가 변경되었거나 손상되었습니다. 파일을 자동으로 수정하지 않았습니다.");
+    }
+    this.#target = target;
     this.#previewPlanSha256 = null;
-    return { name: basename(this.#target), path: this.#target };
+    return {
+      name: basename(this.#target),
+      path: this.#target,
+      installedRelease: installed.release?.version ?? null,
+      action: this.#selectedAction(),
+    };
   }
 
   selectManifest(pathValue) {
@@ -47,7 +65,20 @@ export class DesktopAdoptionSession {
       signing: manifest.desktop.signing,
       notarization: manifest.desktop.notarization,
       file: basename(manifestPath),
+      action: this.#selectedAction(),
     };
+  }
+
+  #installedState() {
+    if (!this.#target) return { status: "EMPTY", release: null };
+    return inspectReleaseAdoption(this.#target);
+  }
+
+  #selectedAction() {
+    const installed = this.#installedState();
+    if (installed.status !== "INSTALLED") return "install";
+    if (installed.release.manifestSha256 === this.#manifest?.release?.manifestSha256) return "current";
+    return "upgrade";
   }
 
   #requireSelection() {
@@ -70,11 +101,23 @@ export class DesktopAdoptionSession {
         errors: ["화면에서 확인한 변경 계획과 승인 요청이 일치하지 않습니다."],
       });
     }
+    const action = this.#selectedAction();
+    if (request.mode === "preview" && action === "current") {
+      return summarizeAdoptionResult({
+        status: "BLOCKED",
+        errors: ["selected release is already installed; validate the current state instead"],
+      });
+    }
+    const workerMode = request.mode === "preview"
+      ? (action === "upgrade" ? "upgrade" : "preview")
+      : request.mode === "apply"
+        ? (action === "upgrade" ? "upgrade" : "apply")
+        : request.mode;
 
     return new Promise((resolveResult) => {
-      const worker = new Worker(workerUrl, {
+      const worker = new Worker(this.#workerUrl, {
         workerData: {
-          mode: request.mode,
+          mode: workerMode,
           manifest: this.#manifest,
           source: this.#source,
           target: this.#target,
@@ -90,10 +133,22 @@ export class DesktopAdoptionSession {
         if (settled) return;
         settled = true;
         this.#active = null;
+        if (request.mode === "preview" && workerMode === "upgrade" && result.status === "APPROVAL_REQUIRED") {
+          result = { ...result, status: "PREVIEW" };
+        }
         if (request.mode === "preview" && result.status === "PREVIEW") {
           this.#previewPlanSha256 = result.planSha256;
         } else {
           this.#previewPlanSha256 = null;
+        }
+        if (result.status === "PASS" && ["apply", "rollback"].includes(request.mode)) {
+          const installed = this.#installedState();
+          if (installed.status === "INVALID") {
+            result = {
+              status: "FAIL",
+              errors: ["transaction completed but installed state validation failed"],
+            };
+          }
         }
         resolveResult(summarizeAdoptionResult(result));
       };

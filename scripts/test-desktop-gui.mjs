@@ -18,6 +18,7 @@ import { runReleaseAdoption, sha256 } from "./release-adoption.mjs";
 
 const root = process.cwd();
 const manifest = JSON.parse(readFileSync("evals/fixtures/release-adoption/v1.json", "utf8"));
+const manifestV2 = JSON.parse(readFileSync("evals/fixtures/release-adoption/v2.json", "utf8"));
 
 const selectedRoot = mkdtempSync(join(tmpdir(), "desktop-selected-root-"));
 assert.equal(validateSelectedRoot(selectedRoot), realpathSync(selectedRoot));
@@ -33,12 +34,12 @@ assert.deepEqual(
 assert.throws(() => validateDesktopRequest({ mode: "shell", command: "rm" }), /알 수 없는|지원하지/);
 assert.throws(() => validateDesktopRequest({ mode: "apply", operationId: requestId, expectedPlanSha256: "wrong" }), /식별자/);
 
-function reviewedBundle() {
+function reviewedBundle(version = "v1", sourceManifest = manifest) {
   const bundle = mkdtempSync(join(tmpdir(), "desktop-reviewed-bundle-"));
-  cpSync("evals/fixtures/release-adoption/v1.bundle.json", join(bundle, "archive.json"));
+  cpSync(`evals/fixtures/release-adoption/${version}.bundle.json`, join(bundle, "archive.json"));
   cpSync("evals/fixtures/stack-profiles/react-vite.json", join(bundle, "stack-profile.json"));
-  cpSync("evals/fixtures/skill-distribution/releases/v1", join(bundle, "skills"), { recursive: true });
-  const reviewed = structuredClone(manifest);
+  cpSync(`evals/fixtures/skill-distribution/releases/${version}`, join(bundle, "skills"), { recursive: true });
+  const reviewed = structuredClone(sourceManifest);
   reviewed.release.archivePath = "archive.json";
   reviewed.release.archiveSha256 = sha256(readFileSync(join(bundle, "archive.json")));
   reviewed.components.stackProfile.path = "stack-profile.json";
@@ -77,7 +78,7 @@ assert.equal(result.status, "PASS");
 writeFileSync(join(target, "package.json"), "owner drift\n");
 result = summarizeAdoptionResult(runReleaseAdoption("rollback", manifest, root, target, { approved: true }));
 assert.equal(result.status, "BLOCKED");
-assert.match(result.errors.join("\n"), /target or rollback binding drift/);
+assert.match(result.errors.join("\n"), /적용 이후 파일이 변경/);
 
 const session = new DesktopAdoptionSession();
 const sessionTarget = mkdtempSync(join(tmpdir(), "desktop-session-target-"));
@@ -117,9 +118,19 @@ assert.equal(result.status, "PASS");
 assert.equal(existsSync(join(sessionTarget, "package.json")), true);
 result = await session.run({ mode: "validate", operationId: randomUUID() });
 assert.equal(result.status, "PASS");
+const upgradeEvidence = session.selectManifest(reviewedBundle("v2", manifestV2));
+assert.equal(upgradeEvidence.action, "upgrade");
+result = await session.run({ mode: "preview", operationId: randomUUID() });
+assert.equal(result.status, "PREVIEW");
+assert.equal(result.counts.update > 0, true);
+result = await session.run({ mode: "apply", operationId: randomUUID(), expectedPlanSha256: result.planSha256 });
+assert.equal(result.status, "PASS");
+result = await session.run({ mode: "validate", operationId: randomUUID() });
+assert.equal(result.status, "PASS");
 result = await session.run({ mode: "rollback", operationId: randomUUID() });
 assert.equal(result.status, "PASS");
-assert.equal(existsSync(join(sessionTarget, "package.json")), false);
+assert.equal(existsSync(join(sessionTarget, "package.json")), true);
+assert.match(readFileSync(join(sessionTarget, ".ai/skills/requirements/SKILL.md"), "utf8"), /testable requirements/);
 
 const html = readFileSync("desktop/renderer/index.html", "utf8");
 assert.match(html, /connect-src 'none'/);

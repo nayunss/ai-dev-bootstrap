@@ -165,6 +165,27 @@ function seal(payload) {
   return { ...payload, recordSha256: sha256(JSON.stringify(payload)) };
 }
 
+export function inspectReleaseAdoption(targetValue) {
+  const target = resolve(targetValue);
+  const lockPath = confined(target, LOCK, "adoption lock", true);
+  if (!existsSync(lockPath)) return { status: "EMPTY", release: null };
+  try {
+    const lock = readRecord(lockPath, "release-adoption-lock");
+    const drift = lock.files.filter((file) => {
+      const path = confined(target, file.path, "locked adoption target", true);
+      return !existsSync(path) || sha256(readFileSync(path)) !== file.sha256;
+    });
+    if (drift.length) return {
+      status: "INVALID",
+      release: lock.release,
+      errors: drift.map((file) => `target drift: ${file.path}`),
+    };
+    return { status: "INSTALLED", release: lock.release };
+  } catch (error) {
+    return { status: "INVALID", release: null, errors: [error.message] };
+  }
+}
+
 function planFiles(files, target, currentLock) {
   const owned = new Map((currentLock?.files ?? []).map((file) => [file.path, file]));
   return files.map((file) => {

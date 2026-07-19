@@ -28,6 +28,7 @@
           <article>
             <p class="label">프로젝트 폴더</p>
             <p id="project-value" class="selection-value">선택되지 않음</p>
+            <p id="installed-release" class="selection-note" hidden></p>
             <button id="select-project" type="button" class="secondary">폴더 선택</button>
           </article>
           <article>
@@ -47,14 +48,19 @@
         </div>
       </section>
 
-      <section id="result" class="result" aria-labelledby="result-title" aria-live="polite">
+      <section id="result" class="result" aria-labelledby="result-title" aria-busy="false">
         <div class="result-heading">
           <div>
             <p class="label">현재 상태</p>
-            <h2 id="result-title">변경 계획을 기다리고 있습니다</h2>
+            <h2 id="result-title" tabindex="-1">변경 계획을 기다리고 있습니다</h2>
           </div>
-          <p id="result-message">프로젝트와 release를 선택하세요.</p>
+          <p id="result-message" role="status" aria-live="polite">프로젝트와 release를 선택하세요.</p>
         </div>
+
+        <section id="error-summary" class="error-summary" role="alert" aria-labelledby="error-title" tabindex="-1" hidden>
+          <h3 id="error-title">확인이 필요한 문제</h3>
+          <ul id="error-list"></ul>
+        </section>
 
         <dl class="counts" aria-label="파일 변경 요약">
           <div><dt>새로 만들기</dt><dd id="count-create">0</dd></div>
@@ -69,7 +75,7 @@
         </details>
 
         <div class="approval">
-          <label>
+          <label for="approval">
             <input id="approval" type="checkbox" disabled>
             위 변경 계획을 확인했습니다.
           </label>
@@ -82,7 +88,8 @@
 
       <footer>
         <button id="validate" type="button" class="text-button" disabled>적용 상태 확인</button>
-        <button id="rollback" type="button" class="text-button danger" disabled>이전 상태로 복구</button>
+        <button id="rollback" type="button" class="text-button danger" aria-describedby="rollback-description" disabled>이전 상태로 복구</button>
+        <span id="rollback-description" class="visually-hidden">현재 적용 파일이 변경되지 않은 경우에만 이전 상태로 복구합니다.</span>
       </footer>
     </main>
   </body>

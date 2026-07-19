@@ -2,21 +2,22 @@
 
 > **Navigation aid.** Library inventory extracted via AST. Read the source files listed here before modifying exported functions.
 
-**30 library files** across 3 modules
+**31 library files** across 3 modules
 
-## Scripts (26 files)
+## Scripts (27 files)
 
 - `scripts/upstream-lock.mjs` — sha256, safeRelativePath, targetPath, canonicalContentHash, validateUpstreamLock, serializeUpstreamLock, …
 - `scripts/capability-suite.mjs` — hashFixture, validateCapabilityTask, runCapabilityTask, aggregateCapabilityResults, loadTask
 - `scripts/development-profile.mjs` — serializeDevelopmentProfile, parseDevelopmentProfileYaml, safeProfilePath, validateDevelopmentProfile, loadDevelopmentProfile
 - `scripts/fullstack-materializer.mjs` — sha256, validateFullStackProfile, applyFullStackTransaction, runFullStackMaterializer, readProfile
 - `scripts/pilot-results.mjs` — hashJson, validatePilotCampaign, validatePilotResult, aggregatePilotResults
+- `scripts/release-adoption.mjs` — sha256, validateReleaseAdoptionManifest, inspectReleaseAdoption, runReleaseAdoption
 - `scripts/stack-quality-adapters.mjs` — validateQualityProfile, runQualityProfile, previewQualityProfile, readQualityProfile
-- `scripts/release-adoption.mjs` — sha256, validateReleaseAdoptionManifest, runReleaseAdoption
 - `scripts/skill-distribution.mjs` — sha256, validateSkillDistribution, runSkillDistribution
 - `scripts/validate-repository-state.mjs` — validateRepositoryState, captureTrackedState, compareCheckOnlyState
 - `scripts/adapter-parity.mjs` — validateAdapterParity, readParityManifest
 - `scripts/application-inventory.mjs` — discoverApplications, readDeclaredInventory
+- `scripts/desktop-package-provenance.mjs` — validateDesktopDevelopmentPackage, buildDesktopDevelopmentPackage
 - `scripts/evaluate-skill-evolution.mjs` — sha256, evaluateSkillEvolution
 - `scripts/fastapi-contract-adapter.mjs` — evaluateFastApiContract, readJson
 - `scripts/materialize-development-profile.mjs` — planDevelopmentProfileMaterialization, applyDevelopmentProfileMaterialization
@@ -30,8 +31,7 @@
 - `scripts/validate-fullstack-locale.mjs` — validateFullstackLocale
 - `scripts/validate-policy-evidence.mjs` — validatePolicyEvidence
 - `scripts/validate-production-readiness.mjs` — validateProductionReadiness
-- `scripts/validate-requirement-handoff-tasks.mjs` — validateRequirementHandoffTasks
-- _…and 1 more files_
+- _…and 2 more files_
 
 ## Desktop (2 files)
 
