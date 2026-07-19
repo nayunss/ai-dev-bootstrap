@@ -5,7 +5,7 @@
     "to": "REQ-052"
   },
   "releaseBaseline": "v0.2.8-pilot",
-  "reviewedAt": "2026-07-18",
+  "reviewedAt": "2026-07-19",
   "sources": {
     "requirements": "docs/requirements.md",
     "handoff": "HANDOFF.md",

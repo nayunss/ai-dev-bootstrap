@@ -559,6 +559,9 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   commit·manifest·unsigned 상태와 파일별 현재/목표 SHA-256을 UI에 표시하고 root·home·`.env*`
   선택과 작업 중 selection 교체를 차단했다. Screen reader·crash·중복 실행과 사람 사용성은
   GUI-03·GUI-06 범위다.
+- PR #25의 첫 hosted security run은 requirements 변경과 downstream feedback manifest 동기화 누락을
+  fail-closed로 차단했다. 두 traceability manifest의 검토일을 2026-07-19로 동기화하고 동일 base
+  range validator를 다시 적용한다.
 - 기존 `REL-LOCK-2026-07-14-001`은 만료 상태로 역사 증적을 보존한다. validator는 만료 승인을 새
   dependency 변경에 사용할 수 없게 유지하면서 관련 없는 변경을 막지 않도록 회귀 보정했다.
 - Markdown 시각 렌더링 검사: 미구현
