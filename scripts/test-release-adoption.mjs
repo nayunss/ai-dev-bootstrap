@@ -11,7 +11,7 @@ import {
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { runReleaseAdoption, validateReleaseAdoptionManifest } from "./release-adoption.mjs";
-import { runCliAdoption, runGuiAdoption } from "./release-adoption-surfaces.mjs";
+import { runCliAdoption, runGuiAdoption, runWebAdoption } from "./release-adoption-surfaces.mjs";
 
 const root = process.cwd();
 const read = (version) => JSON.parse(readFileSync(`evals/fixtures/release-adoption/${version}.json`, "utf8"));
@@ -25,10 +25,14 @@ assert.equal(validateReleaseAdoptionManifest(v2, root).valid, true);
 const clean = target("clean");
 const cliPreview = runCliAdoption("preview", v1, root, clean);
 const guiPreview = runGuiAdoption("preview", v1, root, clean);
+const webPreview = runWebAdoption("preview", v1, root, clean);
 assert.equal(cliPreview.status, "PREVIEW");
 assert.equal(guiPreview.status, "PREVIEW");
+assert.equal(webPreview.status, "PREVIEW");
 assert.deepEqual(guiPreview.entries, cliPreview.entries);
+assert.deepEqual(webPreview.entries, cliPreview.entries);
 assert.equal(guiPreview.planSha256, cliPreview.planSha256);
+assert.equal(webPreview.planSha256, cliPreview.planSha256);
 assert.equal(existsSync(join(clean, "package.json")), false);
 assert.deepEqual(cliPreview.execution, {
   network: "NOT_RUN",
@@ -135,4 +139,4 @@ assert.match(runReleaseAdoption("validate", v1, root, drift).errors.join("\n"), 
 assert.equal(runReleaseAdoption("rollback", v1, root, drift, { approved: true }).status, "BLOCKED");
 assert.equal(readFileSync(join(drift, "package.json"), "utf8"), "drift\n");
 
-process.stdout.write("REQ-047 shared GUI/CLI release adoption clean, upgrade, rollback, tamper and partial-failure Eval: PASS\n");
+process.stdout.write("REQ-047 shared GUI/CLI/web release adoption clean, upgrade, rollback, tamper and partial-failure Eval: PASS\n");

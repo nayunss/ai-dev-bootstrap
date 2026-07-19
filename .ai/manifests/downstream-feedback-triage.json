@@ -25,14 +25,6 @@
     {"id": "UF-010", "generalizedCause": "배포 또는 상태 확인을 핵심 동작 검증으로 확대한다", "primaryRequirementId": "REQ-051", "duplicateOf": "UF-009", "implementationTaskId": "REQ-051-delivery-evidence-states", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
     {"id": "UF-011", "generalizedCause": "반증할 수 없는 확인을 정책 이행 증거로 채택한다", "primaryRequirementId": "REQ-049", "duplicateOf": "UF-001", "implementationTaskId": "REQ-049-policy-evidence-validator", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
     {"id": "UF-012", "generalizedCause": "사용자 표시 언어 계약을 단일 계층으로 한정한다", "primaryRequirementId": "REQ-052", "duplicateOf": null, "implementationTaskId": "REQ-052-fullstack-locale-contract", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"},
-    {
-      "id": "UF-013",
-      "generalizedCause": "재검증 결과에 고정된 상위 릴리스 기준선이 없다",
-      "primaryRequirementId": "REQ-046",
-      "duplicateOf": null,
-      "implementationTaskId": "REQ-046",
-      "revalidationTaskId": "UF-001-013-downstream-revalidation",
-      "status": "triaged"
-    }
+    {"id": "UF-013", "generalizedCause": "재검증 결과에 고정된 상위 릴리스 기준선이 없다", "primaryRequirementId": "REQ-046", "duplicateOf": null, "implementationTaskId": "REQ-046", "revalidationTaskId": "UF-001-013-downstream-revalidation", "status": "triaged"}
   ]
 }

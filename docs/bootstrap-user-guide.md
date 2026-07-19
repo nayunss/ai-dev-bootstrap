@@ -1,7 +1,7 @@
 # AI Dev Bootstrap 처음부터 끝까지 사용 가이드
 
 상태: `v0.2.8-pilot` 기준
-갱신일: 2026-07-18
+갱신일: 2026-07-19
 
 이 문서는 AI Dev Bootstrap을 처음 사용하는 사람이 “지금 무엇을 할 수 있는지”를 확인하고,
 안전하게 프로젝트를 진단·설정·검증하는 순서를 설명한다.
@@ -9,7 +9,8 @@
 > **현재 상태**
 >
 > - 설치 가능한 GUI 앱은 아직 없다.
-> - 지금 사용할 수 있는 공식 경로는 terminal에서 실행하는 CLI다.
+> - 지금 바로 검증된 기본 경로는 terminal에서 실행하는 CLI다.
+> - 설치 없는 GitHub Actions P0도 구현됐지만 실제 downstream 검증 전인 reference다.
 > - 기본 명령은 프로젝트를 바꾸지 않는 `preview`다.
 > - `apply`와 `--approve`가 포함된 명령만 파일을 변경할 수 있다.
 > - `v0.2.8-pilot`의 전체 release adoption은 reference 구현이다. 일반 사용자가 바로 적용할
@@ -26,6 +27,7 @@ macOS에서 프로젝트가 `Documents/my-app`에 있다면 `/Users/사용자명
 | Codex·Claude Code·GitHub Copilot 설정을 프로젝트에 연결하고 싶다 | [AI 도구 연결](#ai-도구-연결하기) |
 | Stack starter나 skill bundle을 검토된 manifest로 적용하고 싶다 | [고급 적용](#고급-적용-검토된-manifest가-있는-경우) |
 | Dependency 또는 보안 도구를 설치하고 싶다 | [별도 설치](#dependency와-보안-도구는-별도-설치) |
+| Apple 가입 없이 browser에서 적용 흐름을 검증하고 싶다 | [GitHub Actions P0](#설치-없는-github-actions-p0) |
 | GUI 앱을 설치하고 싶다 | [GUI 설치 상태](#gui-설치-상태) |
 
 ## 먼저 알아둘 안전 경계
@@ -162,6 +164,28 @@ scripts/bootstrap skills apply /absolute/path/to/project /path/to/release/manife
 `v0.2.8-pilot`에는 실제 사용자 프로젝트에 바로 적용할 production release-adoption manifest나
 서명된 desktop app이 포함되지 않으므로, 저장소의 synthetic fixture를 실제 프로젝트 설치 입력으로
 사용하지 않는다.
+
+## 설치 없는 GitHub Actions P0
+
+이 경로는 macOS 인증서나 특정 device가 필요하지 않다. Downstream GitHub 저장소의 Actions
+화면에서 workflow를 수동 실행하고, 변경 계획을 artifact로 확인한 뒤 승인된 변경만 PR로 받는다.
+아직 실제 downstream pilot 전이므로 일반 사용자용 설치 서비스나 GitHub App Portal은 아니다.
+
+진행 순서는 다음과 같다.
+
+1. Maintainer가 [P0 workflow template](templates/github-actions-web-adoption-p0.yml)을 downstream의
+   `.github/workflows/`에 복사한다.
+2. `REPLACE_WITH_EXACT_UPSTREAM_COMMIT`을 검증된 upstream 40자리 commit SHA로 바꾼다.
+3. Downstream 설정에 승인자가 필요한 `web-adoption-apply` environment를 만든다.
+4. Actions의 **Run workflow**에서 `preview`를 실행한다. 이 job은 repository를 변경하지 않는다.
+5. 결과 artifact의 plan SHA-256과 변경 파일을 검토한다.
+6. 같은 plan SHA-256을 입력해 `apply`를 실행하고 environment 승인자가 승인한다.
+7. 생성된 새 branch와 PR의 diff·hosted checks를 검토한다. 자동 merge하지 않는다.
+
+현재 allowlist의 `reference-v1`, `reference-v2`는 synthetic 검증용이다. 실제 프로젝트에 적용할
+production release로 사용하지 않는다. Preview에 write 권한이 생기거나, apply가 default branch를
+직접 수정하거나, exact plan 검증 없이 진행되면 즉시 중단한다. 상세 권한과 pilot 합격 조건은
+[GitHub 기반 Web Adoption Delivery](web-adoption-delivery-review.md)를 따른다.
 
 ## Dependency와 보안 도구는 별도 설치
 

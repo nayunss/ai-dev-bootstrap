@@ -223,7 +223,7 @@ export function runReleaseAdoption(mode, manifest, sourceValue, targetValue, opt
   const source = resolve(sourceValue);
   const target = resolve(targetValue);
   const surface = options.surface ?? "cli";
-  if (!["cli", "gui"].includes(surface)) return { status: "INVALID", errors: ["surface must be cli or gui"] };
+  if (!["cli", "gui", "web"].includes(surface)) return { status: "INVALID", errors: ["surface must be cli, gui or web"] };
   const validation = validateReleaseAdoptionManifest(manifest, source);
   if (!validation.valid) return { status: "INVALID", errors: validation.errors, execution: EXECUTION };
   const lockPath = confined(target, LOCK, "adoption lock", true);

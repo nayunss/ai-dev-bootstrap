@@ -1,0 +1,34 @@
+name: Reviewed release adoption
+description: Preview or stage a reviewed release through the shared headless adoption core.
+inputs:
+  operation:
+    description: preview or apply
+    required: true
+  release:
+    description: Reviewed P0 release identifier
+    required: true
+  expected_plan_sha256:
+    description: Exact preview plan SHA-256 required for apply
+    required: false
+    default: ""
+outputs:
+  status:
+    description: PREVIEW or PASS
+    value: ${{ steps.adoption.outputs.status }}
+  plan_sha256:
+    description: Plan SHA-256 bound to target inventory
+    value: ${{ steps.adoption.outputs.plan_sha256 }}
+  result_path:
+    description: Sanitized local result JSON path
+    value: ${{ steps.adoption.outputs.result_path }}
+runs:
+  using: composite
+  steps:
+    - id: adoption
+      shell: bash
+      env:
+        WEB_ADOPTION_MODE: ${{ inputs.operation }}
+        WEB_ADOPTION_RELEASE: ${{ inputs.release }}
+        WEB_ADOPTION_EXPECTED_PLAN_SHA256: ${{ inputs.expected_plan_sha256 }}
+        WEB_ADOPTION_STAGE: ${{ inputs.operation == 'apply' && 'true' || 'false' }}
+      run: node "$GITHUB_ACTION_PATH/../../../scripts/github-actions-adoption.mjs"
