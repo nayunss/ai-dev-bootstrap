@@ -32,6 +32,15 @@
   - function runFullStackMaterializer: (mode, profile, sourceValue, targetValue, options) => void
   - function readProfile: (path) => void
 - `scripts/github-actions-adoption.mjs` — function runGitHubActionsAdoption: ({...}, release, source, target, expectedPlanSha256, stage, }) => void
+- `scripts/github-app-portal-demo.mjs` — function createPortalDemoServer: () => void
+- `scripts/github-app-portal.mjs`
+  - function validatePortalConfiguration: (config) => void
+  - function authorizeRepository: ({...}, repository, userAccess }) => void
+  - function verifyWebhookDelivery: ({...}, signature, deliveryId, event, secret, replayGuard, }) => void
+  - function redactPortalValue: (value, key) => void
+  - function createPortalCoordinator: ({...}, provider, workspace, core, sessionTtlMs, resultRetentionMs, maximumSessions, }) => void
+  - class AuthStateStore
+  - _...2 more_
 - `scripts/materialize-development-profile.mjs` — function planDevelopmentProfileMaterialization: (target, profile) => void, function applyDevelopmentProfileMaterialization: (target, profile) => void
 - `scripts/pilot-results.mjs`
   - function hashJson: (value) => void

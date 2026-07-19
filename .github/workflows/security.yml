@@ -49,6 +49,7 @@ jobs:
           npm run test:skill-distribution
           npm run test:release-adoption
           npm run test:github-actions-adoption
+          npm run test:github-app-portal
           npm run test:desktop-gui
           npm run test:desktop-resilience
           npm run test:capability-suite
