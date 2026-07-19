@@ -83,7 +83,7 @@
 | [v0.2.6-pilot Release](releases/v0.2.6-pilot.md) | REQ-047·048와 project별 profile·배포·저장소 구조 설계 baseline | 발행 완료 |
 | [v0.2.7-pilot Release](releases/v0.2.7-pilot.md) | UF-001–UF-013 일반화·REQ 매핑과 tool-neutral 추적 자동화 우선순위 baseline | 발행 완료 |
 | [v0.2.8-pilot Release](releases/v0.2.8-pilot.md) | 전체 추적성·profile·provider·policy evidence·skill distribution·release adoption 공통 reference 구현 | 발행 완료 |
-| [v0.2.9-pilot Release](releases/v0.2.9-pilot.md) | GitHub App Portal local security·browser reference와 Production pilot 경계 | 발행 준비 |
+| [v0.2.9-pilot Release](releases/v0.2.9-pilot.md) | GitHub App Portal local security·browser reference와 Production pilot 경계 | 발행 완료 |
 
 ## 문서 상태
 
