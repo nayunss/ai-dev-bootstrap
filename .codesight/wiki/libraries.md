@@ -17,6 +17,7 @@
 - `scripts/release-adoption-surfaces.mjs` — runCliAdoption, runGuiAdoption, runWebAdoption
 - `scripts/skill-distribution.mjs` — sha256, validateSkillDistribution, runSkillDistribution
 - `scripts/validate-repository-state.mjs` — validateRepositoryState, captureTrackedState, compareCheckOnlyState
+- `scripts/validate-requirement-traceability.mjs` — validateTraceability, requiresManifestChange, handoffTraceabilityProjection
 - `scripts/adapter-parity.mjs` — validateAdapterParity, readParityManifest
 - `scripts/application-inventory.mjs` — discoverApplications, readDeclaredInventory
 - `scripts/desktop-package-provenance.mjs` — validateDesktopDevelopmentPackage, buildDesktopDevelopmentPackage
@@ -24,13 +25,12 @@
 - `scripts/fastapi-contract-adapter.mjs` — evaluateFastApiContract, readJson
 - `scripts/materialize-development-profile.mjs` — planDevelopmentProfileMaterialization, applyDevelopmentProfileMaterialization
 - `scripts/stack-profile-fixtures.mjs` — validateStackProfile, runStackProfileFixture
-- `scripts/validate-requirement-traceability.mjs` — validateTraceability, requiresManifestChange
+- `scripts/validate-downstream-feedback-triage.mjs` — feedbackTraceabilityProjection, validateDownstreamFeedbackTriage
 - `scripts/github-actions-adoption.mjs` — runGitHubActionsAdoption
 - `scripts/github-app-portal-demo.mjs` — createPortalDemoServer
 - `scripts/provider-profile-adapters.mjs` — validateProviderProfile
 - `scripts/upgrade-core.mjs` — applyFileTransaction
 - `scripts/validate-delivery-evidence.mjs` — validateDeliveryEvidence
-- `scripts/validate-downstream-feedback-triage.mjs` — validateDownstreamFeedbackTriage
 - _…and 6 more files_
 
 ## Desktop (2 files)

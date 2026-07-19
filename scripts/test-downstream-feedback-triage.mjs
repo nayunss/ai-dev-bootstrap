@@ -4,7 +4,10 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { validateDownstreamFeedbackTriage } from "./validate-downstream-feedback-triage.mjs";
+import {
+  feedbackTraceabilityProjection,
+  validateDownstreamFeedbackTriage,
+} from "./validate-downstream-feedback-triage.mjs";
 
 const document = JSON.parse(readFileSync(".ai/manifests/downstream-feedback-triage.json", "utf8"));
 const traceability = JSON.parse(readFileSync(".ai/manifests/requirement-traceability.json", "utf8"));
@@ -76,6 +79,27 @@ git("init", "-q");
 git("add", ".");
 git("-c", "user.name=fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "initial");
 const base = git("rev-parse", "HEAD").trim();
+const traceabilityPath = join(fixture, ".ai/manifests/requirement-traceability.json");
+const releaseOnly = structuredClone(traceability);
+releaseOnly.releaseBaseline = "v0.2.9-pilot-rc";
+assert.deepEqual(
+  feedbackTraceabilityProjection(releaseOnly),
+  feedbackTraceabilityProjection(traceability),
+);
+writeFileSync(traceabilityPath, `${JSON.stringify(releaseOnly, null, 2)}\n`);
+git("add", ".ai/manifests/requirement-traceability.json");
+assert.equal(run("staged").status, 0);
+writeFileSync(traceabilityPath, `${JSON.stringify(traceability, null, 2)}\n`);
+git("add", ".ai/manifests/requirement-traceability.json");
+
+const feedbackScopeChange = structuredClone(traceability);
+feedbackScopeChange.feedbackPrimaryMappings[0].primaryRequirementId = "REQ-050";
+writeFileSync(traceabilityPath, `${JSON.stringify(feedbackScopeChange, null, 2)}\n`);
+git("add", ".ai/manifests/requirement-traceability.json");
+assert.match(run("staged").stderr, /triage source changed without/);
+writeFileSync(traceabilityPath, `${JSON.stringify(traceability, null, 2)}\n`);
+git("add", ".ai/manifests/requirement-traceability.json");
+
 const triagePath = join(fixture, "docs/downstream-feedback-requirement-triage.md");
 writeFileSync(triagePath, `${readFileSync(triagePath, "utf8")}\n`);
 git("add", "docs/downstream-feedback-requirement-triage.md");

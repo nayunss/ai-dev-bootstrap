@@ -21,7 +21,7 @@
 - `scripts/stack-quality-adapters.mjs` — imported by **1** files
 - `scripts/upgrade-core.mjs` — imported by **1** files
 - `scripts/validate-delivery-evidence.mjs` — imported by **1** files
-- `scripts/validate-downstream-feedback-triage.mjs` — imported by **1** files
+- `scripts/validate-fullstack-locale.mjs` — imported by **1** files
 
 ## Import Map (who imports what)
 

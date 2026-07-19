@@ -100,7 +100,7 @@
   - function serializeUpstreamLock: (lock) => void
   - _...2 more_
 - `scripts/validate-delivery-evidence.mjs` — function validateDeliveryEvidence: (document) => void
-- `scripts/validate-downstream-feedback-triage.mjs` — function validateDownstreamFeedbackTriage: (document, {...}, }) => void
+- `scripts/validate-downstream-feedback-triage.mjs` — function feedbackTraceabilityProjection: (traceability) => void, function validateDownstreamFeedbackTriage: (document, {...}, }) => void
 - `scripts/validate-fullstack-locale.mjs` — function validateFullstackLocale: (document) => void
 - `scripts/validate-policy-evidence.mjs` — function validatePolicyEvidence: (profile) => void
 - `scripts/validate-production-readiness.mjs` — function validateProductionReadiness: (profile) => void
@@ -109,7 +109,10 @@
   - function captureTrackedState: (root, paths) => void
   - function compareCheckOnlyState: (before, after) => void
 - `scripts/validate-requirement-handoff-tasks.mjs` — function validateRequirementHandoffTasks: ({...}, triage, handoff }) => void
-- `scripts/validate-requirement-traceability.mjs` — function validateTraceability: (manifest, {...}, read) => void, function requiresManifestChange: (files) => void
+- `scripts/validate-requirement-traceability.mjs`
+  - function validateTraceability: (manifest, {...}, read) => void
+  - function requiresManifestChange: (files) => void
+  - function handoffTraceabilityProjection: (source) => void
 - `scripts/validate-skill-evolution-trial.mjs` — function validateTrialPlan: (plan, {...}) => void
 - `scripts/validate-web-adoption-pr.mjs` — function validateWebAdoptionPullRequest: ({...}, baseRevision, expectedPlanSha256, }) => void
 
@@ -172,7 +175,7 @@
 - `scripts/stack-quality-adapters.mjs` — imported by **1** files
 - `scripts/upgrade-core.mjs` — imported by **1** files
 - `scripts/validate-delivery-evidence.mjs` — imported by **1** files
-- `scripts/validate-downstream-feedback-triage.mjs` — imported by **1** files
+- `scripts/validate-fullstack-locale.mjs` — imported by **1** files
 
 ## Import Map (who imports what)
 

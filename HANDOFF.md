@@ -613,6 +613,12 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - 위 Portal local reference와 Actions P0 경계를 package·lock root version `0.2.9`,
   `v0.2.9-pilot` migration·rollback release note로 묶었다. Local·staged 검증은 PASS이며 hosted
   required checks·merge·tag·prerelease archive와 게시 asset 재다운로드 evidence는 `PENDING`이다.
+- PR #29 첫 hosted security run은 requirement traceability의 release baseline 변경만으로 downstream
+  feedback manifest 동기화를 요구해 차단됐다. Validator가 feedback primary mapping과 feedback을
+  가진 implementation·external task projection의 실제 변경만 비교하도록 보정하고, release-only
+  변경 허용과 feedback scope 변경 차단 fixture를 추가했다. 같은 원칙으로 HANDOFF는 완료 metadata와
+  공통·외부 task scope가 바뀔 때만 traceability manifest 동기화를 요구하고, 일반 evidence 설명
+  보강은 no-op manifest 변경 없이 허용하도록 회귀 fixture를 추가했다.
 - PR #25의 첫 hosted security run은 requirements 변경과 downstream feedback manifest 동기화 누락을
   fail-closed로 차단했다. 두 traceability manifest의 검토일을 2026-07-19로 동기화하고 동일 base
   range validator를 다시 적용한다.

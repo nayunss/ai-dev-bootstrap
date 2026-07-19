@@ -297,6 +297,31 @@ export function requiresManifestChange(files) {
     || files.includes("HANDOFF.md");
 }
 
+export function handoffTraceabilityProjection(source) {
+  const taskProjection = (heading) => [...parseHandoffTaskScopes(source, heading)]
+    .map(([taskId, scope]) => ({
+      taskId,
+      requirementIds: [...scope.requirementIds].sort(),
+      feedbackIds: [...scope.feedbackIds].sort(),
+    }))
+    .sort((left, right) => left.taskId.localeCompare(right.taskId));
+  return {
+    completedTasks: [...handoffMetadataIds(source, "완료 작업")].sort(),
+    implementationTasks: taskProjection("### 공통 저장소에서 진행 가능"),
+    externalTasks: taskProjection("### 외부 입력·실제 환경 대기"),
+  };
+}
+
+function handoffChangedForTraceability(mode, base) {
+  const path = "HANDOFF.md";
+  const beforeRef = mode === "staged" ? `HEAD:${path}` : `${base}:${path}`;
+  const afterRef = mode === "staged" ? `:${path}` : `HEAD:${path}`;
+  const before = execFileSync("git", ["show", beforeRef], { encoding: "utf8" });
+  const after = execFileSync("git", ["show", afterRef], { encoding: "utf8" });
+  return JSON.stringify(handoffTraceabilityProjection(before))
+    !== JSON.stringify(handoffTraceabilityProjection(after));
+}
+
 function main() {
   const mode = process.argv[2] ?? "full";
   const base = process.argv[3];
@@ -312,7 +337,14 @@ function main() {
     const files = mode === "staged"
       ? git(["diff", "--cached", "--name-only", "--diff-filter=ACMR", "-z"])
       : git(["diff", "--name-only", "--diff-filter=ACMR", "-z", `${base}...HEAD`]);
-    if (requiresManifestChange(files) && !files.includes(manifestRelative)) {
+    const sourceChanged = files.some((path) => [
+      "docs/requirements.md",
+      "docs/downstream-feedback-requirement-triage.md",
+      ".ai/manifests/downstream-feedback-triage.json",
+    ].includes(path)) || (
+      files.includes("HANDOFF.md") && handoffChangedForTraceability(mode, base)
+    );
+    if (sourceChanged && !files.includes(manifestRelative)) {
       errors.push(`traceability source changed without ${manifestRelative}`);
     }
   }
