@@ -5,7 +5,7 @@ import { isAbsolute, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const manifestRelative = ".ai/manifests/requirement-traceability.json";
-const expectedIds = Array.from({ length: 52 }, (_, index) => `REQ-${String(index + 1).padStart(3, "0")}`);
+const expectedIds = Array.from({ length: 53 }, (_, index) => `REQ-${String(index + 1).padStart(3, "0")}`);
 const expectedFeedbackIds = Array.from({ length: 13 }, (_, index) => `UF-${String(index + 1).padStart(3, "0")}`);
 
 function safePath(path) {
@@ -146,8 +146,8 @@ export function validateTraceability(manifest, {
 } = {}) {
   const errors = [];
   if (manifest?.schemaVersion !== 2) errors.push("schemaVersion must be 2");
-  if (manifest?.scope?.from !== "REQ-001" || manifest?.scope?.to !== "REQ-052") {
-    errors.push("scope must be REQ-001 through REQ-052");
+  if (manifest?.scope?.from !== "REQ-001" || manifest?.scope?.to !== "REQ-053") {
+    errors.push("scope must be REQ-001 through REQ-053");
   }
   if (!/^v\d+\.\d+\.\d+-pilot(?:-rc)?$/u.test(manifest?.releaseBaseline ?? "")) {
     errors.push("releaseBaseline must be an exact pilot or pilot RC version");

@@ -6,7 +6,7 @@
 
 | 문서 | 목적 | 상태 |
 |---|---|---|
-| [요구사항](requirements.md) | 승인된 REQ-001–REQ-052와 구현·검증 상태를 추적 | 적용 |
+| [요구사항](requirements.md) | 승인된 REQ-001–REQ-053과 구현·검증 상태를 추적 | 적용 |
 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) | downstream 관찰을 일반화·중복 제거해 단일 primary REQ와 후속 task로 매핑 | 설계 승인 |
 | [설계 완료 감사](design-completion-audit.md) | 설계 명세 완료 범위, 실제 구현 경계와 감사 finding | 설계 승인 |
 | [권장 아키텍처](architecture.md) | 현재 upstream의 도구 중립 코어·adapter·Portal-only 구조 정의 | 적용 |
@@ -41,7 +41,7 @@
 | [코드 품질 표준](code-quality-standards.md) | 언어 중립 클린 코드와 시멘틱 웹 접근성 기준 | 설계 승인 |
 | [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md) | Prettier·ESLint·Husky 및 AI·Git 훅 정책 | 설계 승인 |
 | [스킬 체계](skills.md) | 공통 스킬의 분류, 계약, 설치 및 검증 방식 정의 | 설계 승인 |
-| [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md) | core·optional·private skill과 adapter·plugin·MCP 배포 경계 | reference 구현 |
+| [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md) | core·optional·private skill, native marketplace adapter와 plugin·MCP 배포 경계 | marketplace 확장 설계 승인 |
 | [도구 호환성](tool-compatibility.md) | 선호 플러그인의 도구별 지원과 공통 대체 경로 | 설계 승인 |
 | [외부 도구 평가](external-tools-review.md) | GitHub Spec Kit과 Agent Skills의 도입·차용 가능성 평가 | 설계 승인 |
 | [공급망 보안](supply-chain-security.md) | 텔레메트리 없는 설치와 보안 검토 게이트 | 설계 승인 |

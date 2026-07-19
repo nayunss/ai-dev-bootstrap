@@ -12,7 +12,7 @@
 
 ## 확정 요구사항
 
-이 절의 REQ-001–REQ-052는 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
+이 절의 REQ-001–REQ-053은 모두 **요구사항 상태: 승인**이다. 승인은 구현 완료를 뜻하지 않는다.
 구현·검증 상태는 아래 표로 별도 관리하며, 새 요구사항을 추가하거나 상태가 바뀌면 관련 문서·Eval·
 `HANDOFF.md`를 같은 작업에서 갱신한다.
 
@@ -48,6 +48,7 @@
 | REQ-050 | reference 구현 | deterministic PASS | Git index blob 기반 generated artifact·source hash 검증, working/staged partial commit과 check-only tracked source mutation 실제 Git fixture PASS. 생성 의미·CI·배포 검증은 별도 |
 | REQ-051 | reference 구현 | deterministic PASS | created→pushed→CI→deploy→health→behavior→Production approval 8단계, provider-neutral evidence 종류·동일 ref·순서·사람 승인 synthetic fixture PASS. 실제 provider 실행·Production 승인은 별도 |
 | REQ-052 | reference 구현 | deterministic PASS | project별 locale profile과 frontend·BFF·backend adapter matrix, stable error code·문서/HTML/formatting/접근성·raw diagnostic 차단 cross-stack fixture PASS. 실제 번역 사람 검토는 NOT-RUN |
+| REQ-053 | 미구현 | NOT-RUN | Codex·Claude Code용 skills-only native plugin과 GitHub repository marketplace, 설치·발견·preview·update·uninstall·도구 간 parity 및 공식 directory 제출 gate를 승인했다. Native manifest·clean-profile pilot·공개 제출은 모두 미수행 |
 
 ### 요구사항별 문서·산출물 추적
 
@@ -85,6 +86,7 @@
 | REQ-050 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CodeSight](codesight.md), [프론트엔드 도구와 훅](frontend-tooling-and-hooks.md), [repository state schema](schemas/repository-state-invariants.schema.json) |
 | REQ-051 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [CI·배포 Provider](ci-deployment-provider-selection.md), [Downstream Pilot 검증](distributed-pilot-testing-guide.md), [delivery evidence schema](schemas/delivery-evidence-states.schema.json) |
 | REQ-052 | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md), [코드 품질 표준](code-quality-standards.md), [API 계약과 문서화](api-contract-documentation.md), [full-stack locale schema](schemas/fullstack-locale-contract.schema.json) |
+| REQ-053 | [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md), [다중 AI 폴더 구조 검토](multi-ai-project-structure-review.md), [공급망 보안](supply-chain-security.md), [처음부터 끝까지 사용 가이드](bootstrap-user-guide.md) |
 
 ### 승인된 횡단 검토 기준
 
@@ -103,6 +105,7 @@
 | 비개발자 도입 | REQ-047 | CLI·web 공통 core·Actions 실제 pilot과 GitHub App Portal local no-network reference 구현 | Actions exact plan·least privilege·PR check·OWNER approval·rollback과 Portal authorization·token·webhook·PR-only·browser contract deterministic PASS. 실제 App·provider·사람 Eval NOT-RUN | 외부 Production pilot 대기 | [Web Adoption](web-adoption-delivery-review.md), [Portal local 가이드](github-app-web-portal-local-guide.md), [Portal Reference](github-app-web-portal-reference.md) |
 | 개발환경 기계 판독 Profile | REQ-020–REQ-021, REQ-026, REQ-033, REQ-037, REQ-045, REQ-048 | P0 validator와 P1 initial/retrofit materializer reference 구현, migration 미구현 | deterministic fixture PASS, 실제 downstream retrofit NOT-RUN | 완료 | [Profile Schema·Validator](development-environment-profile-schema-review.md) |
 | Downstream 검증 피드백 일반화 | REQ-046, REQ-049–REQ-052 | REQ-049–REQ-052 공통 reference 구현 완료, REQ-046 보강과 실제 재검증 분리 | REQ-049–REQ-052 deterministic PASS, 실제 downstream 재검증 NOT-RUN | `UF-001-013-downstream-revalidation` | [Downstream 피드백 요구사항 Triage](downstream-feedback-requirement-triage.md) |
+| Codex·Claude Code native marketplace 배포 | REQ-005–REQ-008, REQ-032, REQ-037–REQ-038, REQ-042, REQ-053 | `.ai/` canonical source와 기존 release adoption core를 사용하는 skills-only wrapper 설계 승인, native manifest·catalog 미구현 | 자체 GitHub marketplace·clean-profile 설치·도구 간 parity·공식 directory 심사 모두 NOT-RUN | `REQ-053-ai-tool-marketplace-p0` | [Skill·Plugin 배포 방식](skill-plugin-distribution-review.md) |
 
 ### REQ-001: 독립 저장소
 
@@ -1035,6 +1038,40 @@
   제공한다. 내부 log·metric·protocol field는 사용자 표시 언어와 분리한다.
 - 일반화 근거와 UF mapping은 `docs/downstream-feedback-requirement-triage.md`를 따른다.
 
+### REQ-053: Codex·Claude Code Native Marketplace 배포
+
+- 사용자는 이 하네스 저장소를 먼저 clone하거나 ZIP으로 풀지 않아도 Codex 또는 Claude Code의
+  native plugin marketplace를 추가하고 하네스 도입 workflow를 설치할 수 있어야 한다.
+- `.ai/`와 versioned release asset은 계속 공통 정책·skill·adoption 동작의 단일 진실 원천이다.
+  Codex·Claude Code plugin은 이를 각 도구의 discovery 형식으로 생성한 얇은 배포 adapter이며,
+  독립적으로 수정하는 정책 사본을 만들지 않는다. Generated package는 source release·commit·
+  archive checksum과 generator/source/package hash를 기록하고 drift를 fail-closed한다.
+- P0는 공개 GitHub repository에서 사용자가 직접 추가하는 자체 marketplace다. Codex package는
+  `.codex-plugin/plugin.json`과 `.agents/plugins/marketplace.json`, Claude Code package는
+  `.claude-plugin/plugin.json`과 `.claude-plugin/marketplace.json`의 현재 공식 형식을 사용한다.
+  한 저장소에 두 catalog를 둘 수 있지만 package·manifest·cache·명령은 도구별로 독립 검증한다.
+- 최초 package는 prompt·skill·project-local script만 포함하는 **skills-only**로 제한한다.
+  MCP server, lifecycle hook, background service, credential, telemetry와 자동 network 요청은
+  포함하지 않는다. 이후 실행 권한을 확대하면 REQ-006·REQ-032의 별도 공급망·권한 심사와 새로운
+  명시 승인을 받아야 하며 기존 skills-only 승인으로 확대하지 않는다.
+- Marketplace 추가나 plugin 설치 자체는 대상 project 변경 승인이 아니다. 설치 후 첫 동작은
+  read-only 진단과 exact plan preview이며, apply·dependency 설치·Git write·외부 전송·DB·provider·
+  배포는 기존 Human-in-the-loop 계약에 따른 별도 승인이 있어야 한다.
+- Marketplace와 plugin source는 tag 또는 exact commit·checksum으로 고정한다. `latest`, 무고정
+  branch HEAD, `curl | sh`, 무확인 전역 설정 변경과 자동 update·apply는 지원 경로로 사용하지 않는다.
+  Update는 현재/후보 version·manifest·권한·파일 diff를 보여준 뒤 승인하고, uninstall은 installer가
+  소유하며 이후 변경되지 않은 cache·adapter만 제거한다.
+- P0 완료에는 깨끗한 사용자 profile에서 Codex·Claude Code 각각의 marketplace add/list,
+  plugin validate/install/discovery, 첫 prompt의 변경 0건 preview, 승인 apply, update·rollback·
+  uninstall과 기존 사용자 파일 보존을 실제 native 도구로 검증해야 한다. 두 도구는 같은 canonical
+  workflow ID·version·결과·보안 경계를 내야 하며 한 도구의 PASS를 다른 도구로 확대하지 않는다.
+- 자체 marketplace 공개와 OpenAI·Anthropic 공식 directory 등재를 별도 delivery 상태로 관리한다.
+  공식 등재는 P0 실제 pilot 뒤 publisher identity·listing·support·privacy·terms·test case와 각
+  provider의 최신 심사 요건을 다시 확인하고 외부 제출 승인을 받은 경우에만 진행한다. 제출·심사
+  시작, 승인과 공개를 각각 구분하며 제출만으로 설치 가능 또는 지원 완료로 표시하지 않는다.
+- 상세 package 계층, 예상 구조, 보안 경계, 검증 matrix와 공식 제출 중단 조건은
+  `docs/skill-plugin-distribution-review.md`를 따른다.
+
 ## 비기능 요구사항
 
 ### NFR-001: 도구 중립성
@@ -1173,3 +1210,4 @@
 | 2026-07-19 | REQ-024 README 제공 기능을 비개발자가 목적·승인·자동 실행 제외 범위를 이해할 수 있는 완전한 문장으로 확장 |
 | 2026-07-19 | 현재 Portal-only source를 기준으로 아키텍처·하네스·개발환경·upstream/downstream 상태를 현행화하고 중복된 one-click/Web Adoption 및 downstream 시작 가이드를 canonical 문서로 통합 |
 | 2026-07-19 | PR #30 merge commit `c08c38f52f434c5c29b882316f987e85db29620d`에 `v0.2.9-pilot` prerelease 발행, tracked archive·GitHub digest·재다운로드 SHA-256 일치 검증 |
+| 2026-07-19 | REQ-053 Codex·Claude Code skills-only native plugin, 자체 GitHub marketplace P0와 공식 directory 심사 분리·보안·검증 계약 승인 |

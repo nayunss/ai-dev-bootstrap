@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "scope": {
     "from": "REQ-001",
-    "to": "REQ-052"
+    "to": "REQ-053"
   },
   "releaseBaseline": "v0.2.9-pilot",
   "reviewedAt": "2026-07-19",
@@ -35,7 +35,8 @@
     {"requirementIds": ["REQ-046"], "implementationStatus": "reference 구현", "verificationStatus": "synthetic PASS"},
     {"requirementIds": ["REQ-047"], "implementationStatus": "부분 구현", "verificationStatus": "deterministic·downstream pilot PASS"},
     {"requirementIds": ["REQ-048"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
-    {"requirementIds": ["REQ-049", "REQ-050", "REQ-051", "REQ-052"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"}
+    {"requirementIds": ["REQ-049", "REQ-050", "REQ-051", "REQ-052"], "implementationStatus": "reference 구현", "verificationStatus": "deterministic PASS"},
+    {"requirementIds": ["REQ-053"], "implementationStatus": "미구현", "verificationStatus": "NOT-RUN"}
   ],
   "implementationTasks": [
     {"taskId": "REQ-005-008-skill-distribution", "status": "completed", "requirementIds": ["REQ-005", "REQ-006", "REQ-007", "REQ-008", "REQ-026", "REQ-027", "REQ-028", "REQ-032", "REQ-037", "REQ-038", "REQ-039", "REQ-040", "REQ-041", "REQ-042", "REQ-043", "REQ-047"], "feedbackIds": []},
@@ -53,10 +54,13 @@
     {"taskId": "REQ-049-policy-evidence-validator", "status": "completed", "requirementIds": ["REQ-049"], "feedbackIds": ["UF-001", "UF-002", "UF-003", "UF-004", "UF-005", "UF-006", "UF-011"]},
     {"taskId": "REQ-050-repository-state-invariants", "status": "completed", "requirementIds": ["REQ-050"], "feedbackIds": ["UF-007", "UF-008"]},
     {"taskId": "REQ-051-delivery-evidence-states", "status": "completed", "requirementIds": ["REQ-051"], "feedbackIds": ["UF-009", "UF-010"]},
-    {"taskId": "REQ-052-fullstack-locale-contract", "status": "completed", "requirementIds": ["REQ-052"], "feedbackIds": ["UF-012"]}
+    {"taskId": "REQ-052-fullstack-locale-contract", "status": "completed", "requirementIds": ["REQ-052"], "feedbackIds": ["UF-012"]},
+    {"taskId": "REQ-053-ai-tool-marketplace-requirement", "status": "completed", "requirementIds": ["REQ-053"], "feedbackIds": []},
+    {"taskId": "REQ-053-ai-tool-marketplace-p0", "status": "pending", "requirementIds": ["REQ-005", "REQ-006", "REQ-007", "REQ-008", "REQ-032", "REQ-037", "REQ-038", "REQ-042", "REQ-053"], "feedbackIds": []}
   ],
   "externalTasks": [
     {"taskId": "REQ-047-github-app-web-portal-production-pilot", "status": "waiting", "requirementIds": ["REQ-047"], "feedbackIds": []},
+    {"taskId": "REQ-053-official-marketplace-submission", "status": "waiting", "requirementIds": ["REQ-005", "REQ-006", "REQ-007", "REQ-008", "REQ-032", "REQ-037", "REQ-038", "REQ-042", "REQ-053"], "feedbackIds": []},
     {"taskId": "REQ-040-owner-evidence", "status": "waiting", "requirementIds": ["REQ-040"], "feedbackIds": []},
     {"taskId": "REQ-041-live-trial-release", "status": "waiting", "requirementIds": ["REQ-041"], "feedbackIds": []},
     {"taskId": "REQ-042-release-core-adoption", "status": "waiting", "requirementIds": ["REQ-042"], "feedbackIds": []},

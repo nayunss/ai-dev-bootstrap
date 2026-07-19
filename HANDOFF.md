@@ -1,10 +1,10 @@
 # Handoff
 
 갱신: 2026-07-19 Asia/Seoul
-상태: v0.2.9-pilot prerelease 발행·게시 asset 재다운로드 검증 완료
+상태: v0.2.9-pilot 발행 검증 완료, REQ-053 native marketplace 배포 요구사항 승인·P0 미구현
 Git 기준: 현재 작업 상태는 로컬 Git이 단일 진실 원천이며 `git status --short --branch`와 `git rev-parse HEAD`로 확인한다. 원격 동기화 상태는 `git fetch` 후 remote-tracking reference와 대조한다.
-완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, release:v0.2.9-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, REQ-047-web-adoption-actions-p0, REQ-047-web-adoption-p0-pilot, REQ-047-github-app-web-portal, REQ-024-026-047-ai-tool-adoption-prompt, REQ-047-portal-only-surface, REQ-024-047-048-documentation-consolidation
-다음 작업: REQ-047-github-app-web-portal-production-pilot, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
+완료 작업: release:v0.2.3-pilot, release:v0.2.4-pilot, release:v0.2.5-pilot, release:v0.2.6-pilot, release:v0.2.7-pilot, release:v0.2.8-pilot, release:v0.2.9-pilot, handoff-currentness, handoff-review, workspace-main-sync, REQ-043-review, REQ-043-archive-preview, REQ-043-runtime-design, REQ-043-synthetic-pilot, REQ-043-project-pilot, REQ-043-ci-conditional, REQ-043-required-checks, REQ-042-adapter-manager, REQ-041-bounded-patch-pilot, REQ-040-production-evidence-gate, pilot-result-aggregation, REQ-042-core-materializer, REQ-042-github-copilot-adapter, REQ-041-offline-trial-gate, project-decision-onboarding, design-baseline-audit, REQ-042-yaml-lock-schema, downstream-security-installer, stack-dependency-bootstrap, release-upgrade-rollback-automation, requirement-traceability-automation, requirements-doc-reference-audit, REQ-025-capability-suite, REQ-009-014-stack-quality-adapters, REQ-037-039-multi-tool-eval, REQ-044-fastapi-contract-adapter, REQ-045-fullstack-materializer, requirement-handoff-task-reconciliation, handoff-workflow-rule-sync, full-requirement-traceability, downstream-feedback-triage-automation, REQ-020-021-project-profile-materializer, REQ-033-035-provider-profile-adapters, REQ-048-development-profile-schema, REQ-049-policy-evidence-validator, REQ-050-repository-state-invariants, REQ-051-delivery-evidence-states, REQ-052-fullstack-locale-contract, REQ-026-045-stack-profile-fixtures, REQ-005-008-skill-distribution, REQ-047-one-click-adoption, REQ-047-web-adoption-actions-p0, REQ-047-web-adoption-p0-pilot, REQ-047-github-app-web-portal, REQ-024-026-047-ai-tool-adoption-prompt, REQ-047-portal-only-surface, REQ-024-047-048-documentation-consolidation, REQ-053-ai-tool-marketplace-requirement
+다음 작업: REQ-053-ai-tool-marketplace-p0, REQ-047-github-app-web-portal-production-pilot, REQ-053-official-marketplace-submission, REQ-040-owner-evidence, REQ-046, REQ-041-live-trial-release, REQ-042-release-core-adoption, UF-001-013-downstream-revalidation
 
 ## 목표
 
@@ -12,7 +12,7 @@ Codex, Claude Code 등 서로 다른 AI 도구에서 재사용할 수 있는 안
 설계하고 downstream pilot으로 검증한다. REQ-001–REQ-046 설계 명세는
 `DESIGN-BASELINE-2026-07-17` 감사로 완료됐고 실제 공통 환경 구현 단계로 전환한다. 구현·검증 상태는
 `docs/requirements.md`의 추적 표를 기준으로 하며 설계 완료를 실제 지원 완료로 해석하지 않는다.
-REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 구현·검증 상태로 추적한다.
+REQ-047–REQ-053은 baseline 이후 승인된 추가 요구사항이며 별도 구현·검증 상태로 추적한다.
 
 ## 완료
 
@@ -211,6 +211,12 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   하네스(ai-dev-bootstrap) 저장소"로 바꿨다. `docs/harness.md`에는 이 저장소의 실제 폴더를
   진입점→코어→집행→기록으로 매핑한 시각화와 요소별 위치 표를 추가해 이론 설명을 프로젝트
   기준으로 구체화했다.
+- REQ-053으로 Codex·Claude Code native marketplace 배포 요구사항을 승인했다. `.ai/`와 release
+  asset을 canonical source로 유지하는 skills-only wrapper, 자체 GitHub marketplace P0, 설치 뒤
+  변경 0건 preview·별도 apply 승인, clean-profile install·update·rollback·uninstall과 도구 간
+  parity를 완료 조건으로 정했다. 공식 OpenAI·Anthropic directory 제출은 publisher·법률·지원
+  자료와 외부 승인이 필요한 별도 단계로 분리했다. Native manifest·실제 설치·공식 제출은
+  `NOT-RUN`이다.
 
 ## 현재 상태
 
@@ -249,6 +255,12 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 
 ## 변경 파일
 
+- `docs/requirements.md`, `docs/skill-plugin-distribution-review.md`, `docs/README.md`: REQ-053 native
+  marketplace 요구사항, 자체 marketplace P0·공식 directory 제출 분리와 문서 추적
+- `.ai/manifests/requirement-traceability.json`,
+  `scripts/{validate-requirement-traceability,test-requirement-traceability}.mjs`: REQ-053 상태·공통
+  구현·외부 제출 task를 포함하는 전체 coverage gate
+- `HANDOFF.md`: REQ-053 설계 완료, 공통 P0·외부 공식 제출의 다음 작업과 안전한 시작점
 - `HANDOFF.md`: 실제 프로젝트 동기화, 작업 위치·JPEG 보존과 REQ-043 심사 결과 현행화
 - `docs/ai-generated-code-license-provenance.md`: scanner 후보 공급망·전송·비용 심사와 suppression 계약
 - `docs/requirements.md`: REQ-043을 부분 검증으로 갱신
@@ -317,7 +329,7 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - `.ai/approvals/dependency-upgrades.json`, `package.json`, `package-lock.json`,
   `docs/releases/v0.2.4-pilot.md`: 0.2.4 release metadata lock 승인과 migration·rollback·artifact 증적 준비
 - `.ai/manifests/requirement-traceability.json`, `scripts/validate-requirement-traceability.mjs`,
-  `scripts/test-requirement-traceability.mjs`: REQ-001–REQ-052 구현·검증 상태, 공통 구현·외부 task와
+  `scripts/test-requirement-traceability.mjs`: REQ-001–REQ-053 구현·검증 상태, 공통 구현·외부 task와
   UF-001–UF-013 primary mapping 추적 및 requirements·triage·HANDOFF staged·PR 동기화 gate
 - `docs/requirements.md`, `docs/README.md`, `docs/ai-generated-code-license-provenance.md`: 요구사항별
   문서·산출물 역참조, 구현/검증 상태 분리, 누락 schema·template와 REQ-043 문서 상태 현행화
@@ -491,8 +503,10 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 - `v0.2.4-pilot` tag 대상 commit·GitHub asset digest·재다운로드 archive SHA-256 일치: PASS
 - REQ-019–REQ-024 complete/sorted ID, evidence path, unsafe `.env*`, token impact와 requirements 동기화
   positive·negative fixture: PASS
-- REQ-001–REQ-052 상태 정확한 단일 coverage, requirements 상태 drift, 구현·외부 task 분리·범위와
+- REQ-001–REQ-053 상태 정확한 단일 coverage, requirements 상태 drift, 구현·외부 task 분리·범위와
   UF-001–UF-013 primary mapping drift negative fixture: PASS
+- REQ-053 요구사항 후속 task와 HANDOFF 공통 구현·외부 제출 분류 reconciliation: PASS
+- REQ-053 native manifest·clean-profile Codex·Claude 설치·공식 directory 제출: NOT-RUN
 - docs Markdown 43개 local link와 요구사항에서 설계·운영 문서 36개 역참조 completeness: PASS
 - REQ-025 task schema, fixture hash·격리 복제·grader allowlist와 2-trial deterministic runner: PASS
 - 비용 0·token 0, latency·tool-call·diff 집계와 failed hard gate 비상쇄: PASS
@@ -613,7 +627,12 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 
 ### 공통 저장소에서 진행 가능
 
-현재 즉시 진행할 공통 저장소 작업은 없다.
+1. [작업:REQ-053-ai-tool-marketplace-p0] [공통 구현] REQ-005–REQ-008, REQ-032,
+   REQ-037–REQ-038, REQ-042, REQ-053 범위에서 `.ai/`와 release asset으로부터 Codex·Claude Code
+   skills-only package를 생성한다. 도구별 native manifest와 GitHub marketplace catalog, source·
+   package hash lock, 기본 read-only preview, clean-profile validate·install·discovery·update·
+   rollback·uninstall과 cross-tool parity fixture를 구현한다. MCP·hook·credential·telemetry와
+   공식 directory 제출은 이 task에 포함하지 않는다.
 
 ### 외부 입력·실제 환경 대기
 
@@ -622,16 +641,22 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
    retention 결정을 확정한다. 별도 test App 등록·exact 권한·callback·webhook·배포를 각각 승인한 뒤
    non-production repository에서 provider API·revoke·rollback과 모바일·PC browser 비개발자 2명 Eval을
    수행한다. Production 등록·배포는 이 pilot PASS 뒤에도 별도 승인한다.
-2. [작업:REQ-040-owner-evidence] [프로젝트 입력·실제 환경 대기] downstream owner의 법률·retention evidence, 실제
+2. [작업:REQ-053-official-marketplace-submission] [외부 변경 승인·provider 심사 대기]
+   REQ-005–REQ-008, REQ-032, REQ-037–REQ-038, REQ-042, REQ-053의 자체 marketplace P0와 실제
+   Codex·Claude Code clean-profile pilot이 모두 PASS한 뒤 진행한다. 제출 직전에 각 provider의 최신
+   요건을 재확인하고 publisher identity·계정 권한, website·support·privacy·terms, exact package·
+   checksum·listing·starter prompt·test case를 준비한다. OpenAI와 Anthropic 제출을 각각 preview·
+   승인하고 `submitted → in-review → approved → published` 증거를 분리한다.
+3. [작업:REQ-040-owner-evidence] [프로젝트 입력·실제 환경 대기] downstream owner의 법률·retention evidence, 실제
    multi-instance bypass test와 provider restore rehearsal이 제공될 때만 schema v2를 READY로 승인한다.
-3. [작업:REQ-046] [사람 참여 대기] 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
+4. [작업:REQ-046] [사람 참여 대기] 독립 tester 최소 2명과 분리된 repository·workspace·resource에서 실제
    결과가 제출되면 취합한다. synthetic 결과만으로 완료하지 않는다. Feedback campaign에는 UF-013
    보강 계약에 따라 upstream repository·release·commit·archive checksum과 downstream commit을 고정한다.
-4. [작업:REQ-041-live-trial-release] [프로젝트 입력·외부 변경 승인 대기] project별 exact model·harness·비용·network·reviewer와
+5. [작업:REQ-041-live-trial-release] [프로젝트 입력·외부 변경 승인 대기] project별 exact model·harness·비용·network·reviewer와
    candidate가 정해지고 호출 승인을 받은 뒤 비결정 trial·사람 승인 held-out test·release를 수행한다.
-5. [작업:REQ-042-release-core-adoption] [외부 변경 승인·실제 환경 대기] release version과 manifest 발행 승인, 실제 downstream
+6. [작업:REQ-042-release-core-adoption] [외부 변경 승인·실제 환경 대기] release version과 manifest 발행 승인, 실제 downstream
    대상이 정해진 뒤 upgrade·rollback을 수행한다.
-6. [작업:UF-001-013-downstream-revalidation] [release 발행·실제 downstream 대기] REQ-049–REQ-052와
+7. [작업:UF-001-013-downstream-revalidation] [release 발행·실제 downstream 대기] REQ-049–REQ-052와
    REQ-046 보강을 포함한 새 upstream release·commit·archive checksum을 고정하고 실제 `env-be`에
    적용한다. UF-001–UF-013을 각각 재현해 `PASS | FAIL | BLOCKED | NOT-RUN`과 evidence를 갱신하며,
    공통 synthetic PASS만으로 downstream finding을 해결 처리하지 않는다.
@@ -642,6 +667,9 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
   `.ai/`와 공개 형식의 공통 source를 단일 진실 원천으로 유지하고 Codex·Claude Code·GitHub Copilot
   등 모든 지원 adapter가 이를 참조하게 한다. 같은 fixture를 실행해 도구가 달라도 동일한 판정과
   필수 산출물을 내야 하며, 도구별 native 기능 차이는 권한 확대 없이 명시적 fallback으로 보완한다.
+- Native marketplace 추가·plugin 설치와 공식 directory 등재는 downstream project apply 승인이
+  아니다. 설치 직후 project write·network·credential 사용을 자동 실행하지 않고 exact plan에 대한
+  별도 승인을 유지한다.
 - 사용자 JPEG는 untracked 상태로 반드시 보존하며 광범위한 `git add .` 대상에 포함하지 않는다.
 - Opengrep `1.22.0`은 opt-out 강제 조건부 승인이다. version·metrics 검증을 제거하지 않는다.
 - `.env*`, production credential과 실제 고객 데이터는 AI context에서 제외한다.
@@ -657,7 +685,10 @@ REQ-047–REQ-052는 baseline 이후 승인된 추가 요구사항이며 별도 
 2. 실제 프로젝트 경로에서 `git status --short --branch`와 `git rev-parse HEAD`를 확인한다.
 3. 사용자 JPEG가 untracked 상태로 보존되는지 확인하고, 원격 비교가 필요하면 `git fetch` 후
    remote-tracking reference와 대조한다.
-4. `REQ-047-github-app-web-portal-production-pilot`을 재개하면
+4. 공통 구현은 `REQ-053-ai-tool-marketplace-p0`부터 시작하며
+   `docs/skill-plugin-distribution-review.md`의 native marketplace P0 구조·검증 matrix와
+   `docs/requirements.md`의 REQ-053 중단 조건을 먼저 확인한다.
+5. `REQ-047-github-app-web-portal-production-pilot`을 재개하면
    `docs/github-app-web-portal-reference.md`의 8단계 입력·승인과 중단 조건부터 확인한다. 그 밖의
    외부 대기 작업이면 해당 작업 ID의 필요한 project·사람·release 입력과 승인
    범위를 먼저 확인한다. 새 공통 작업은 요구사항·설계와 실제 구현 상태를 대조한 뒤 안정적 작업 ID로
